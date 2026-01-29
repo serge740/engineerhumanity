@@ -32,7 +32,7 @@ const Mission = () => {
 
     return (
         <section className="py-20 bg-gray-50">
-            <div className="max-w-6xl mx-auto px-6">
+            <div className=" mx-auto px-6">
                 <h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">
                     Our Mission
                 </h2>

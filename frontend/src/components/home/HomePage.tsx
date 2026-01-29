@@ -11,8 +11,8 @@ const HomePage = () => {
         <main>
             <Hero />
             <Stats />
-            <Mission />
             <About />
+            <Mission />
             <Programs />
             <CTA />
         </main>

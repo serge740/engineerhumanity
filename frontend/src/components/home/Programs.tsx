@@ -63,21 +63,21 @@ const Programs = () => {
 
     return (
         <section className="py-20 bg-gray-50" id="programs">
-            <div className="max-w-7xl mx-auto px-6">
+            <div className="  mx-auto px-6">
                 <h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">
                     Our Programs
                 </h2>
-                <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {programs.map((program, index) => {
                         const Icon = program.icon;
                         return (
                             <div
                                 key={index}
-                                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300"
+                                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 h-full flex flex-col"
                             >
-                                <div className="md:flex">
-                                    <div className="md:w-80 bg-gradient-to-br from-sky-600 to-green-600 p-8 text-white flex flex-col justify-between">
-                                        <div>
+                                <div className="md:flex h-full">
+                                    <div className="md:w-80 bg-gradient-to-br from-sky-600 to-green-600 p-8 text-white flex flex-col justify-between flex-shrink-0">
+                                        <div className='flex-auto'>
                                             <Icon className="w-12 h-12 mb-4" strokeWidth={1.5} />
                                             <h3 className="font-serif text-2xl font-bold">
                                                 {program.title}
