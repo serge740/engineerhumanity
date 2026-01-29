@@ -5,6 +5,7 @@ import Mission from './Mission';
 import About from './About';
 import Programs from './Programs';
 import CTA from './CTA';
+import HistoryCards from './HistoryCards';
 
 const HomePage = () => {
     return (
@@ -12,6 +13,7 @@ const HomePage = () => {
             <Hero />
             <Stats />
             <About />
+            <HistoryCards />
             <Mission />
             <Programs />
             <CTA />

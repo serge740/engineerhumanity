@@ -9,40 +9,48 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
+    const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false);
     const [mobileTeamOpen, setMobileTeamOpen] = useState(false);
+    const [mobileEventsOpen, setMobileEventsOpen] = useState(false);
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `px-4 py-2 font-medium transition-colors rounded-lg flex items-center gap-1 ${isActive
-            ? 'text-sky-600 bg-sky-50'
-            : 'text-gray-700 hover:text-sky-600 hover:bg-sky-50'
+        `px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 no-underline ${
+            isActive
+                ? 'text-sky-600 bg-sky-50'
+                : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
     const mobileNavLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `px-4 py-3 font-medium transition-colors rounded-lg block ${isActive
-            ? 'text-sky-600 bg-sky-50'
-            : 'text-gray-700 hover:text-sky-600 hover:bg-sky-50'
+        `px-4 py-3 font-medium transition-all duration-200 rounded-lg block no-underline ${
+            isActive
+                ? 'text-sky-600 bg-sky-50'
+                : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
     const dropdownLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `px-4 py-2 text-sm font-medium transition-colors block ${isActive
-            ? 'text-sky-600 bg-sky-50'
-            : 'text-gray-700 hover:text-sky-600 hover:bg-sky-50'
+        `px-4 py-2.5 text-sm font-medium transition-all duration-200 block no-underline rounded-lg ${
+            isActive
+                ? 'text-sky-600 bg-sky-50'
+                : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
     return (
-        <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-            ? 'bg-white shadow-lg py-3'
-            : 'bg-white/95 backdrop-blur-md shadow-md py-4'
-            }`}>
-            <div className="max-w-7xl mx-auto px-6">
+        <nav
+            className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+                scrolled
+                    ? 'bg-white shadow-lg py-2'
+                    : 'bg-white/98 backdrop-blur-md shadow-md py-3'
+            }`}
+        >
+            <div className="mx-auto px-4 sm:px-6">
                 <div className="flex justify-between items-center">
                     {/* Logo */}
-                    <Link to="/" className="flex items-center gap-3 group">
-                        <div className="w-12 h-12 bg-gradient-to-br from-sky-600 to-green-600 rounded-lg flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow">
+                    <Link to="/" className="flex items-center gap-3 group no-underline">
+                        <div className="w-12 h-12 bg-gradient-to-br from-sky-600 to-green-600 rounded-xl flex items-center justify-center shadow-md group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">
                             <span className="text-white font-bold text-xl">E4H</span>
                         </div>
-                        <div className="hidden md:block">
-                            <div className="font-serif text-xl font-bold text-gray-900 leading-tight">
+                        <div className="hidden sm:block">
+                            <div className="font-serif text-lg md:text-xl font-bold text-gray-900 leading-tight group-hover:text-sky-600 transition-colors">
                                 Engineers4Humanity
                             </div>
                             <div className="text-xs text-gray-500 font-medium">
@@ -52,7 +60,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <ul className="hidden lg:flex items-center gap-1">
+                    <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
                         <li>
                             <NavLink to="/" className={navLinkClasses}>
                                 Home
@@ -63,63 +71,128 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 About
                             </NavLink>
                         </li>
+
                         {/* Team Dropdown */}
                         <li
-                            className="relative group block"
+                            className="relative"
                             onMouseEnter={() => setTeamDropdownOpen(true)}
                             onMouseLeave={() => setTeamDropdownOpen(false)}
                         >
                             <button
-                                className={`px-4 py-2 font-medium transition-colors rounded-lg flex items-center gap-1 cursor-pointer outline-none ${teamDropdownOpen ? 'text-sky-600 bg-sky-50' : 'text-gray-700 hover:text-sky-600 hover:bg-sky-50'
-                                    }`}
+                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${
+                                    teamDropdownOpen
+                                        ? 'text-sky-600 bg-sky-50'
+                                        : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                }`}
                             >
                                 Team
-                                <ChevronDown size={18} className={`transition-transform duration-200 ${teamDropdownOpen ? 'rotate-180' : ''}`} />
+                                <ChevronDown
+                                    size={16}
+                                    className={`transition-transform duration-300 ${
+                                        teamDropdownOpen ? 'rotate-180' : ''
+                                    }`}
+                                />
                             </button>
 
                             {/* Dropdown Menu */}
                             <div
-                                className={`absolute left-0 mt-1 w-52 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-200 origin-top overflow-hidden ${teamDropdownOpen
-                                        ? 'opacity-100 scale-100 translate-y-0'
-                                        : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
-                                    }`}
+                                className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-300 origin-top ${
+                                    teamDropdownOpen
+                                        ? 'opacity-100 scale-100 translate-y-0 visible'
+                                        : 'opacity-0 scale-95 -translate-y-2 invisible'
+                                }`}
                             >
-                                <NavLink to="/management-team" className={dropdownLinkClasses} onClick={() => setTeamDropdownOpen(false)}>
+                                <NavLink
+                                    to="/management-team"
+                                    className={dropdownLinkClasses}
+                                    onClick={() => setTeamDropdownOpen(false)}
+                                >
                                     Management Team
                                 </NavLink>
-                                <NavLink to="/board-members" className={dropdownLinkClasses} onClick={() => setTeamDropdownOpen(false)}>
+                                <NavLink
+                                    to="/board-members"
+                                    className={dropdownLinkClasses}
+                                    onClick={() => setTeamDropdownOpen(false)}
+                                >
                                     Board Members
                                 </NavLink>
                             </div>
                         </li>
+
                         <li>
-                            <a
-                                href="#programs"
-                                className="px-4 py-2 text-gray-700 font-medium hover:text-sky-600 transition-colors rounded-lg hover:bg-sky-50"
-                            >
+                            <NavLink to="/programs" className={navLinkClasses}>
                                 Programs
-                            </a>
+                            </NavLink>
                         </li>
-                        <li>
-                            <a
-                                href="#events"
-                                className="px-4 py-2 text-gray-700 font-medium hover:text-sky-600 transition-colors rounded-lg hover:bg-sky-50"
+
+                        {/* Events Dropdown */}
+                        <li
+                            className="relative"
+                            onMouseEnter={() => setEventsDropdownOpen(true)}
+                            onMouseLeave={() => setEventsDropdownOpen(false)}
+                        >
+                            <button
+                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${
+                                    eventsDropdownOpen
+                                        ? 'text-sky-600 bg-sky-50'
+                                        : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                }`}
                             >
                                 Events
-                            </a>
+                                <ChevronDown
+                                    size={16}
+                                    className={`transition-transform duration-300 ${
+                                        eventsDropdownOpen ? 'rotate-180' : ''
+                                    }`}
+                                />
+                            </button>
+
+                            {/* Dropdown Menu */}
+                            <div
+                                className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-300 origin-top ${
+                                    eventsDropdownOpen
+                                        ? 'opacity-100 scale-100 translate-y-0 visible'
+                                        : 'opacity-0 scale-95 -translate-y-2 invisible'
+                                }`}
+                            >
+                                <NavLink
+                                    to="/upcoming-event"
+                                    className={dropdownLinkClasses}
+                                    onClick={() => setEventsDropdownOpen(false)}
+                                >
+                                    Upcoming Events
+                                </NavLink>
+                                <NavLink
+                                    to="/past-event"
+                                    className={dropdownLinkClasses}
+                                    onClick={() => setEventsDropdownOpen(false)}
+                                >
+                                    Past Events
+                                </NavLink>
+                            </div>
+                        </li>
+
+                        <li>
+                            <NavLink to="/get-involved" className={navLinkClasses}>
+                                Get Involved
+                            </NavLink>
                         </li>
                         <li>
-                            <a
-                                href="#contact"
-                                className="px-4 py-2 text-gray-700 font-medium hover:text-sky-600 transition-colors rounded-lg hover:bg-sky-50"
-                            >
-                                Contact
-                            </a>
+                            <NavLink to="/gallery" className={navLinkClasses}>
+                                Gallery
+                            </NavLink>
                         </li>
-                        <li className="ml-4">
+                        <li>
+                            <NavLink to="/contact" className={navLinkClasses}>
+                                Contact
+                            </NavLink>
+                        </li>
+                        <li className="ml-2">
                             <a
                                 href="https://buy.stripe.com/3cIfZi6Jj4BfcNm6QPbAs02"
-                                className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 no-underline inline-block"
                             >
                                 Donate Now
                             </a>
@@ -129,16 +202,21 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="lg:hidden p-2 text-gray-700 hover:text-sky-600 transition-colors"
+                        className="lg:hidden p-2.5 text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer"
+                        aria-label="Toggle menu"
                     >
-                        {mobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
+                        {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
                     </button>
                 </div>
 
                 {/* Mobile Menu */}
-                {mobileMenuOpen && (
-                    <div className="lg:hidden mt-4 pb-4 border-t border-gray-100 max-h-[80vh] overflow-y-auto">
-                        <div className="flex flex-col gap-2 mt-4">
+                <div
+                    className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out ${
+                        mobileMenuOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'
+                    }`}
+                >
+                    <div className="border-t border-gray-100 mt-4 pt-4 pb-4">
+                        <div className="flex flex-col gap-1">
                             <NavLink
                                 to="/"
                                 onClick={() => setMobileMenuOpen(false)}
@@ -154,17 +232,26 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 About
                             </NavLink>
 
-                            {/* Mobile Team Dropdown/Accordion */}
-                            <div>
+                            {/* Mobile Team Accordion */}
+                            <div className="my-1">
                                 <button
                                     onClick={() => setMobileTeamOpen(!mobileTeamOpen)}
-                                    className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors flex items-center justify-between"
+                                    className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 flex items-center justify-between border-none bg-transparent cursor-pointer text-left"
                                 >
-                                    Team
-                                    <ChevronDown size={20} className={`transition-transform duration-200 ${mobileTeamOpen ? 'rotate-180' : ''}`} />
+                                    <span>Team</span>
+                                    <ChevronDown
+                                        size={20}
+                                        className={`transition-transform duration-300 ${
+                                            mobileTeamOpen ? 'rotate-180' : ''
+                                        }`}
+                                    />
                                 </button>
-                                {mobileTeamOpen && (
-                                    <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-gray-100 ml-4 mb-2">
+                                <div
+                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                                        mobileTeamOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                                    }`}
+                                >
+                                    <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
                                         <NavLink
                                             to="/management-team"
                                             onClick={() => setMobileMenuOpen(false)}
@@ -180,39 +267,89 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                             Board Members
                                         </NavLink>
                                     </div>
-                                )}
+                                </div>
                             </div>
 
-                            <a
-                                href="#programs"
+                            <NavLink
+                                to="/programs"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
+                                className={mobileNavLinkClasses}
                             >
                                 Programs
-                            </a>
-                            <a
-                                href="#events"
+                            </NavLink>
+
+                            {/* Mobile Events Accordion */}
+                            <div className="my-1">
+                                <button
+                                    onClick={() => setMobileEventsOpen(!mobileEventsOpen)}
+                                    className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 flex items-center justify-between border-none bg-transparent cursor-pointer text-left"
+                                >
+                                    <span>Events</span>
+                                    <ChevronDown
+                                        size={20}
+                                        className={`transition-transform duration-300 ${
+                                            mobileEventsOpen ? 'rotate-180' : ''
+                                        }`}
+                                    />
+                                </button>
+                                <div
+                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                                        mobileEventsOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                                    }`}
+                                >
+                                    <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+                                        <NavLink
+                                            to="/upcoming-event"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className={mobileNavLinkClasses}
+                                        >
+                                            Upcoming Events
+                                        </NavLink>
+                                        <NavLink
+                                            to="/past-event"
+                                            onClick={() => setMobileMenuOpen(false)}
+                                            className={mobileNavLinkClasses}
+                                        >
+                                            Past Events
+                                        </NavLink>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <NavLink
+                                to="/get-involved"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
+                                className={mobileNavLinkClasses}
                             >
-                                Events
-                            </a>
-                            <a
-                                href="#contact"
+                                Get Involved
+                            </NavLink>
+                            <NavLink
+                                to="/gallery"
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-sky-50 rounded-lg transition-colors"
+                                className={mobileNavLinkClasses}
+                            >
+                                Gallery
+                            </NavLink>
+                            <NavLink
+                                to="/contact"
+                                onClick={() => setMobileMenuOpen(false)}
+                                className={mobileNavLinkClasses}
                             >
                                 Contact
-                            </a>
+                            </NavLink>
+
+                            {/* Mobile Donate Button */}
                             <a
                                 href="https://buy.stripe.com/3cIfZi6Jj4BfcNm6QPbAs02"
-                                className="px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all shadow-md text-center mt-2"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="px-4 py-3.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg text-center mt-3 no-underline block"
                             >
                                 Donate Now
                             </a>
                         </div>
                     </div>
-                )}
+                </div>
             </div>
         </nav>
     );

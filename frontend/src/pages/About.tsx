@@ -186,7 +186,7 @@ const AboutUs = () => {
         if (!story) return null;
 
         return (
-            <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="fixed inset-0 bg-black /75 z-50 flex items-center justify-center p-4 overflow-y-auto">
                 <div className="bg-white rounded-2xl max-w-4xl w-full my-8 relative max-h-[90vh] overflow-y-auto">
                     <button
                         onClick={onClose}

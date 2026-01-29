@@ -1,5 +1,8 @@
 import React from 'react';
 import { Target, Eye, Heart, Users, Award, Globe } from 'lucide-react';
+import image1 from '../../assets/home/image1.png';
+import image2 from '../../assets/home/image3.png';
+
 
 const About = () => {
   return (
@@ -40,7 +43,7 @@ const About = () => {
 
             <div>
               <img
-                src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80"
+                src={image1}
                 alt="Community Impact"
                 className="w-full h-[400px] object-cover rounded-2xl shadow-2xl"
               />
@@ -55,7 +58,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+                src={image2}
                 alt="Eric Kamanzi"
                 className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
               />
