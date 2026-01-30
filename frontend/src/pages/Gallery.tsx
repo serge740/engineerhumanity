@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Header from '../components/Header';
+import image from '../assets/image6.jpg';
 
 function Gallery() {
   const [images] = useState([
@@ -129,8 +131,8 @@ function Gallery() {
 
   const categories = ['All', ...new Set(images.map(img => img.category))];
 
-  const filteredImages = selectedCategory === 'All' 
-    ? images 
+  const filteredImages = selectedCategory === 'All'
+    ? images
     : images.filter(img => img.category === selectedCategory);
 
   const openLightbox = (image) => {
@@ -157,13 +159,12 @@ function Gallery() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-700 to-cyan-600 text-white py-20">
-        <div className="max-w78xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-4">Photo Gallery</h1>
-       
-        </div>
-      </div>
+      <Header
+        title="Photo Gallery"
+        linkTitle="Gallery"
+        linkHref="/gallery"
+        backgroundImage={image}
+      />
 
       {/* Category Filter */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
@@ -173,11 +174,10 @@ function Gallery() {
               <button
                 key={category}
                 onClick={() => setSelectedCategory(category)}
-                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${
-                  selectedCategory === category
-                    ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
+                className={`px-6 py-2 rounded-full font-semibold transition-all duration-300 ${selectedCategory === category
+                  ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
               >
                 {category}
               </button>
@@ -204,7 +204,7 @@ function Gallery() {
                   alt={image.title}
                   className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                
+
                 {/* Overlay on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
@@ -228,7 +228,7 @@ function Gallery() {
                       </span>
                     </div>
                   </div>
-                  
+
                   {/* Click to View Icon */}
                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-3">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -283,7 +283,7 @@ function Gallery() {
                 alt={selectedImage.title}
                 className="w-full h-auto max-h-[100vh] object-contain rounded-lg shadow-2xl"
               />
-              
+
               {/* Image Info Overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 rounded-b-lg">
                 <span className="inline-block bg-blue-600 px-3 py-1 rounded-full text-xs font-semibold mb-2 text-white">

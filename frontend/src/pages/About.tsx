@@ -1,4 +1,20 @@
 import { useState } from 'react';
+import Header from '../components/Header';
+import image from '../assets/image6.jpg';
+
+import image1 from '../assets/home/image3.png';
+import image2 from '../assets/about/image6.png'
+import image3 from '../assets/about/image3.png'
+import image4 from '../assets/about/image4.png'
+import image5 from '../assets/about/testimonies/image1.png'
+import image6 from '../assets/about/testimonies/image2.png'
+import image7 from '../assets/about/testimonies/image3.png'
+import image8 from '../assets/about/testimonies/image4.png'
+import image9 from '../assets/about/testimonies/image5.png'
+import image10 from '../assets/about/testimonies/image6.png'
+import image11 from '../assets/about/book.png'
+import image12 from '../assets/about/image5.png'
+
 import {
     X,
     BookOpen,
@@ -20,7 +36,7 @@ const AboutUs = () => {
             id: 1,
             name: "Bosco Izabayo",
             role: "Alumnae / Beneficiary",
-            image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+            image: image5,
             summary: "From refugee camp to professional accountant, Bosco's journey shows the transformative power of education and mentorship.",
             fullStory: {
                 intro: "I am Bosco Izabayo, born in 1996 in Rwanda's Rubavu District, at Mudende Refugee Camp, but raised in Gihembe Refugee Camp as a Congolese refugee. My life began in adversity, and like many in the camp, I faced a childhood marked by hardship. My biological parents were not there to guide me, but my aunt and her husband took me in and raised me with love, treating me as their own.\n\nLife in the camp was difficult; poverty was a constant companion, and basic needs like food, clothing, and education were often out of reach. Attending school hungry and in an environment where the classrooms were built from mud and dust was far from ideal, yet we persevered. However, our school only offered education up to grade nine, so continuing to higher grades was a near-impossible dream.",
@@ -48,7 +64,7 @@ const AboutUs = () => {
             id: 2,
             name: "Bernard Ndizeye",
             role: "Alumnae / Beneficiary",
-            image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
+            image: image6,
             summary: "Graduated with A+ and 100% marks despite studying in difficult conditions. Now a top education graduate inspiring others.",
             fullStory: {
                 intro: "One of Hope School's alumni, Bernard, inspires others with his academic achievement. Even though he studied in miserable conditions, he graduated with an A+ grade and 100% marks at the Rwandan National exam.\n\nThis inspired the Gihembe Refugee camp and motivated the volunteer teachers and school administration under Mr Baudouin, who dedicated their time and money to refugee kids.",
@@ -68,7 +84,7 @@ const AboutUs = () => {
             id: 3,
             name: "Delice Kiracunda",
             role: "Alumnae / Beneficiary",
-            image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80",
+            image: image7,
             summary: "From Gihembe camp to studying Leisure, Tourism, and Hotel Management, Delice's journey shows determination and the power of support.",
             fullStory: {
                 intro: "I am a Congolese refugee living in the Mahama camp, and I am proudly pursuing my studies in Leisure, Tourism, and Hotel Management at Eastern Africa University in Rwanda.\n\nMy educational journey began at Gihembe camp, where I studied from primary school through my third year of high school. While facing the challenge of limited funding, I witnessed many talented students struggle to continue their education because they were refugees.",
@@ -92,7 +108,7 @@ const AboutUs = () => {
             id: 4,
             name: "Bahati Musuhuke",
             role: "Alumnae / Beneficiary",
-            image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
+            image: image8,
             summary: "From refugee camp to Global Youth Advisor at UNHCR and pursuing an MBA, Bahati's story exemplifies resilience and determination.",
             fullStory: {
                 intro: "My journey is a remarkable testament to resilience, ambition, and the power of support in the face of adversity. Born in 1998 in Gihembe Refugee Camp, my early years were shaped by the realities of life there, where educational and economic opportunities were limited. Nonetheless, my dedication to my studies shone through, beginning at Gihembe Primary School and later Gihembe Secondary School, where I completed Ordinary Level studies in 2015 with outstanding performance.",
@@ -128,7 +144,7 @@ const AboutUs = () => {
             id: 5,
             name: "Emmanuel Sebagisha",
             role: "Alumnae / Beneficiary",
-            image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+            image: image9,
             summary: "From Gihembe Refugee Camp to African Leadership University, Emmanuel's story showcases the power of education and mentorship.",
             fullStory: {
                 intro: "I grew up in Gihembe Refugee Camp as a Congolese refugee in Rwanda, where my mother primarily raised me. Despite the many challenges, I excelled academically, achieving 3rd place in my senior year at Gihembe Secondary School. This accomplishment opened the door for me to pursue a nine-year Education at Inyange High School, even though finding Rwf 5000, approximately $5 for registration, was a struggle.\n\nUltimately, my hard work and determination led to a transformative opportunity, thanks to Frere Malisaba Straton in partnership with the Engineers4humanity team, Forum- Amis de la Paix, who helped my peers and me secure admission to the Teacher Training College of Save (TTC Save).",
@@ -156,7 +172,7 @@ const AboutUs = () => {
             id: 6,
             name: "Emmy Kagiraneza Bukayire",
             role: "Alumnae / Beneficiary",
-            image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80",
+            image: image10,
             summary: "From Hope School to Kepler University graduate in Management, Emmy's journey proves refugees can excel when given opportunities.",
             fullStory: {
                 intro: "My name is Kagiraneza Bukayire Emmy, and I proudly share my story as someone born in Gihembe Refugee Camp in the Gicumbi district of northern Rwanda. As the firstborn in my family, I carry the legacy of my parents, who sought refuge in Rwanda after fleeing the DRC in 1996 due to political instability and ethnic conflict. Life in the camp has been challenging, but I am determined to rise above these hardships. The difficulties faced by the refugee community continue to grow, particularly affecting our young people, but I believe in our strength and resilience to overcome them.",
@@ -186,7 +202,7 @@ const AboutUs = () => {
         if (!story) return null;
 
         return (
-            <div className="fixed inset-0 bg-black /75 z-50 flex items-center justify-center p-4 overflow-y-auto">
+            <div className="fixed inset-0 bg-black/85 z-50 flex items-center justify-center p-4 overflow-y-auto">
                 <div className="bg-white rounded-2xl max-w-4xl w-full my-8 relative max-h-[90vh] overflow-y-auto">
                     <button
                         onClick={onClose}
@@ -243,30 +259,25 @@ const AboutUs = () => {
 
     return (
         <div className="font-sans text-gray-800">
-            {/* Hero Section */}
-            <section className="relative bg-gradient-to-br from-sky-600 to-green-600 text-white py-24">
-                <div className="max-w-7xl mx-auto px-6 text-center">
-                    <h1 className="font-serif text-5xl md:text-6xl font-bold mb-6">
-                        About Us
-                    </h1>
-                    <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-95">
-                        Refugee-founded nonprofit fostering resilience and self-reliance among displaced communities
-                    </p>
-                </div>
-            </section>
+            <Header
+                title="About Us"
+                linkTitle="About"
+                linkHref="/about"
+                backgroundImage={image}
+            />
 
             {/* Our History Section */}
-            <section className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex items-center gap-3 mb-12">
-                        <BookOpen className="w-10 h-10 text-sky-600" />
-                        <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900">
+            <section className="py-12 md:py-20 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-8 md:mb-12">
+                        <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-sky-600" />
+                        <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
                             Our History
                         </h2>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-12 items-center mb-12">
-                        <div className="space-y-6 text-lg leading-relaxed text-gray-700">
+                    <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center mb-8 md:mb-12">
+                        <div className="space-y-4 md:space-y-6 text-base md:text-lg leading-relaxed text-gray-700">
                             <p>
                                 Founded by philanthropist Eric Kamanzi, Engineers4Humanity is a refugee-founded non-profit organization 501(c)(3) registered in Dallas, Texas.
                             </p>
@@ -282,14 +293,14 @@ const AboutUs = () => {
                         </div>
                         <div>
                             <img
-                                src="https://images.unsplash.com/photo-1529390079861-591de354faf5?w=800&q=80"
+                                src={image12}
                                 alt="Community gathering"
-                                className="w-full h-[400px] object-cover rounded-2xl shadow-2xl"
+                                className="w-full h-64 sm:h-80 md:h-[400px] object-cover rounded-xl md:rounded-2xl shadow-2xl"
                             />
                         </div>
                     </div>
 
-                    <div className="bg-gray-50 p-8 rounded-2xl space-y-6 text-lg leading-relaxed text-gray-700">
+                    <div className="bg-gray-50 p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl space-y-4 md:space-y-6 text-base md:text-lg leading-relaxed text-gray-700">
                         <p>
                             They founded the Forum for Congolese refugee students. Eric served as the organization's first president and later as board chair. One notable achievement of the Forum is the establishment of Hope School in 2009, a refugee initiative school in the Gihembe refugee camp. The non-profit organization, including UNHCR, stopped the 12-year education program due to a funding shortage.
                         </p>
@@ -310,32 +321,32 @@ const AboutUs = () => {
             </section>
 
             {/* Founder Section */}
-            <section className="py-20 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-12">
-                        <h2 className="font-serif text-4xl font-bold text-gray-900 mb-4">
+            <section className="py-12 md:py-20 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="text-center mb-8 md:mb-12">
+                        <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
                             MEET OUR FOUNDER
                         </h2>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-12 items-start">
+                    <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-start">
                         <div>
                             <img
-                                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80"
+                                src={image1}
                                 alt="Eric Kamanzi"
-                                className="w-full h-[500px] object-cover rounded-2xl shadow-2xl mb-6"
+                                className="w-full object-cover rounded-xl md:rounded-2xl shadow-2xl mb-4 md:mb-6"
                             />
-                            <div className="bg-white p-6 rounded-xl shadow-lg">
+                            <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg">
                                 <img
-                                    src="https://via.placeholder.com/400x500/0ea5e9/ffffff?text=Breaking+Boundaries+Book+Cover"
+                                    src={image11}
                                     alt="Breaking Boundaries Book"
-                                    className="w-full h-64 object-cover rounded-lg mb-4"
+                                    className="w-full h-48 sm:h-64 object-contain rounded-lg mb-4"
                                 />
                                 <a
                                     href="https://www.amazon.com/dp/1949513467"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="flex items-center justify-center gap-2 bg-sky-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-sky-700 transition"
+                                    className="flex items-center justify-center gap-2 bg-sky-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:bg-sky-700 transition"
                                 >
                                     Buy Founder Book at Amazon
                                     <ExternalLink className="w-5 h-5" />
@@ -343,9 +354,9 @@ const AboutUs = () => {
                             </div>
                         </div>
 
-                        <div className="space-y-6">
-                            <div className="bg-gradient-to-br from-sky-600 to-green-600 text-white p-8 rounded-2xl">
-                                <h3 className="font-serif text-3xl font-bold mb-2">
+                        <div className="space-y-4 md:space-y-6">
+                            <div className="bg-gradient-to-br from-sky-600 to-green-600 text-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl">
+                                <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-2">
                                     Eric KAMANZI, PE, PMP
                                 </h3>
                                 <p className="text-lg opacity-95">
@@ -353,7 +364,7 @@ const AboutUs = () => {
                                 </p>
                             </div>
 
-                            <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6 text-gray-700 leading-relaxed">
+                            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
                                 <p>
                                     Eric Kamanzi is a refugee/Immigrant from the Democratic Republic of Congo, a father, a #1 best-selling author, a philanthropist, the founder of Engineers4Humanity, and a civil engineer with a Master's in Engineering Project Management and global sustainability.
                                 </p>
@@ -368,7 +379,7 @@ const AboutUs = () => {
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 p-6 rounded-xl border-l-4 border-green-600">
+                            <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border-l-4 border-green-600">
                                 <p className="text-gray-700 italic mb-4">
                                     Inspired by a famous quotation:
                                 </p>
@@ -380,19 +391,19 @@ const AboutUs = () => {
                                 </p>
                             </div>
 
-                            <div className="bg-sky-50 p-6 rounded-xl border-2 border-sky-600">
+                            <div className="bg-sky-50 p-4 sm:p-6 rounded-xl border-2 border-sky-600">
                                 <p className="text-gray-900 font-semibold mb-4">
                                     Let's join the social and economic community's transformative movement through education sponsorship.
                                 </p>
                                 <p className="text-gray-700 mb-4">
                                     Today, you can sponsor a child for <span className="font-bold text-green-600">$750 annually</span>, or we can connect you directly with a child to serve.
                                 </p>
-                                <div className="flex flex-col gap-3">
+                                <div className="flex flex-col gap-2 sm:gap-3">
                                     <a
                                         href="https://breakingboundaries.net/connect/"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="flex items-center justify-between bg-white px-4 py-3 rounded-lg hover:bg-gray-50 transition text-sky-600 font-semibold"
+                                        className="flex items-center justify-between bg-white px-3 sm:px-4 py-2.5 sm:py-3 rounded-lg hover:bg-gray-50 transition text-sky-600 text-sm sm:text-base font-semibold"
                                     >
                                         Visit Founder's Author Page
                                         <ChevronRight className="w-5 h-5" />
@@ -414,31 +425,31 @@ const AboutUs = () => {
             </section>
 
             {/* Education Champion Section */}
-            <section className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-12">
-                        <h2 className="font-serif text-4xl font-bold text-gray-900 mb-4">
+            <section className="py-12 md:py-20 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="text-center mb-8 md:mb-12">
+                        <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                             Meet Engineers4Humanity's Education Program Champion
                         </h2>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-12 items-center">
+                    <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center">
                         <div>
                             <img
-                                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=800&q=80"
+                                src={image2}
                                 alt="Frere Malisaba Straton"
-                                className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
+                                className="w-full h-80 sm:h-96 md:h-[500px] object-cover object-top rounded-xl md:rounded-2xl shadow-2xl"
                             />
                         </div>
 
-                        <div className="space-y-6">
-                            <div className="bg-gradient-to-br from-sky-600 to-green-600 text-white p-8 rounded-2xl">
-                                <h3 className="font-serif text-3xl font-bold">
+                        <div className="space-y-4 md:space-y-6">
+                            <div className="bg-gradient-to-br from-sky-600 to-green-600 text-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl">
+                                <h3 className="font-serif text-2xl sm:text-3xl font-bold">
                                     Mr. Frere Malisaba Straton
                                 </h3>
                             </div>
 
-                            <div className="bg-white p-8 rounded-2xl shadow-lg border-l-4 border-green-600 space-y-4 text-gray-700 leading-relaxed">
+                            <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg border-l-4 border-green-600 space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
                                 <p>
                                     Malisaba is a dedicated Catholic Church Marist brother. In 2024, he celebrated the 50th anniversary of his dedication to God and his community.
                                 </p>
@@ -458,21 +469,21 @@ const AboutUs = () => {
             </section>
 
             {/* Forum and Hope School Section */}
-            <section className="py-20 bg-gray-50">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="flex items-center gap-3 mb-12">
-                        <Building className="w-10 h-10 text-sky-600" />
-                        <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900">
+            <section className="py-12 md:py-20 bg-gray-50">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-8 md:mb-12">
+                        <Building className="w-8 h-8 sm:w-10 sm:h-10 text-sky-600" />
+                        <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
                             Forum and Hope School Initiatives
                         </h2>
                     </div>
 
                     {/* Forum Amis de la Paix */}
-                    <div className="mb-16">
-                        <h3 className="font-serif text-3xl font-bold text-gray-900 mb-6">
+                    <div className="mb-12 md:mb-16">
+                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
                             Forum-Amis de la Paix
                         </h3>
-                        <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6 text-gray-700 leading-relaxed">
+                        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
                             <p>
                                 Forum for Congolese refugee students /FCRS – Amis de la Paix is more than just a forum; it is a vibrant and empowering collective of Congolese refugee students founded in the Gihembe refugee camp in Rwanda in 2008.
                             </p>
@@ -482,7 +493,7 @@ const AboutUs = () => {
                             <p>
                                 Our organization brings together high school students, university graduates, and aspiring scholars, all driven by a shared vision of a brighter future for all.
                             </p>
-                            <div className="bg-sky-50 p-6 rounded-xl border-l-4 border-sky-600">
+                            <div className="bg-sky-50 p-4 sm:p-6 rounded-xl border-l-4 border-sky-600">
                                 <p className="font-semibold text-gray-900 mb-3">Our Mission:</p>
                                 <p>
                                     We are committed to igniting profound social and economic transformation within our community through passionate advocacy and unwavering support for education for all and the right to repatriation in our home country, the Democratic Republic of Congo.
@@ -511,24 +522,24 @@ const AboutUs = () => {
 
                     {/* Hope School Success Story */}
                     <div>
-                        <h3 className="font-serif text-3xl font-bold text-gray-900 mb-6">
+                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
                             Hope School: A Success Story
                         </h3>
 
-                        <div className="grid md:grid-cols-2 gap-6 mb-8">
+                        <div className="grid sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
                             <img
-                                src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80"
+                                src={image3}
                                 alt="Forum Members"
-                                className="w-full h-64 object-cover rounded-xl shadow-lg"
+                                className="w-full h-48 sm:h-64 md:max-h-[400px] object-cover rounded-xl shadow-lg"
                             />
                             <img
-                                src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80"
+                                src={image4}
                                 alt="Hope School Graduation"
-                                className="w-full h-64 object-cover rounded-xl shadow-lg"
+                                className="w-full h-48 sm:h-64 md:max-h-[400px] object-cover rounded-xl shadow-lg"
                             />
                         </div>
 
-                        <div className="bg-white p-8 rounded-2xl shadow-lg space-y-6 text-gray-700 leading-relaxed">
+                        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
                             <p>
                                 Hope School is an initiative by the Forum, FCRS-Amis de la Paix, designed to provide educational support for refugees. In 2009, the Jesuit Refugee Service (JRS) and other donors stopped funding students transitioning from Ordinary Level to Senior 4 and Senior 6, which left many young refugees feeling lost and discouraged.
                             </p>
@@ -544,7 +555,7 @@ const AboutUs = () => {
                             <p>
                                 We are very thankful to the volunteer teachers. Under the leadership of the famous school principal, Mr Bauduoin Ntabareshya, they did an excellent job for the community.
                             </p>
-                            <div className="bg-green-50 p-6 rounded-xl border-l-4 border-green-600">
+                            <div className="bg-green-50 p-4 sm:p-6 rounded-xl border-l-4 border-green-600">
                                 <p className="font-semibold text-gray-900 mb-3">Impact:</p>
                                 <p>
                                     The school has successfully helped hundreds of students from various camps improve and change their lives. The Hope School Alumni include engineers, lawyers, financial experts, Military personnel, and police.
@@ -589,44 +600,44 @@ const AboutUs = () => {
             </section>
 
             {/* Success Stories Section */}
-            <section className="py-20 bg-white">
-                <div className="max-w-7xl mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <div className="flex items-center justify-center gap-3 mb-6">
-                            <Award className="w-12 h-12 text-sky-600" />
-                            <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900">
+            <section className="py-12 md:py-20 bg-white">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="text-center mb-10 md:mb-16">
+                        <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 md:mb-6">
+                            <Award className="w-10 h-10 sm:w-12 sm:h-12 text-sky-600" />
+                            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
                                 Success Stories & Testimony
                             </h2>
                         </div>
-                        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                        <p className="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
                             The refugee education program has hundreds of success stories, and beneficiaries' testimonials highlight its positive impacts. Let's share a few of them.
                         </p>
                     </div>
 
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {successStories.map((story) => (
                             <div
                                 key={story.id}
                                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600"
                             >
-                                <div className="h-64 overflow-hidden">
+                                <div className="h-48 sm:h-56 md:h-64 overflow-hidden">
                                     <img
                                         src={story.image}
                                         alt={story.name}
-                                        className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                                        className="w-full h-full object-contain hover:scale-110 transition-transform duration-300"
                                     />
                                 </div>
-                                <div className="p-6">
-                                    <h3 className="font-serif text-2xl font-bold text-gray-900 mb-2">
+                                <div className="p-4 sm:p-6">
+                                    <h3 className="font-serif text-xl sm:text-2xl font-bold text-gray-900 mb-2">
                                         {story.name}
                                     </h3>
                                     <p className="text-sky-600 font-semibold mb-4">{story.role}</p>
-                                    <p className="text-gray-600 leading-relaxed mb-6 line-clamp-3">
+                                    <p className="text-sm sm:text-base text-gray-600 leading-relaxed mb-4 sm:mb-6 line-clamp-3">
                                         {story.summary}
                                     </p>
                                     <button
                                         onClick={() => setSelectedStory(story)}
-                                        className="w-full bg-gradient-to-r from-sky-600 to-green-600 text-white px-6 py-3 rounded-lg font-semibold hover:from-sky-700 hover:to-green-700 transition-all flex items-center justify-center gap-2"
+                                        className="w-full bg-gradient-to-r from-sky-600 to-green-600 text-white px-4 sm:px-6 py-2.5 sm:py-3 rounded-lg text-sm sm:text-base font-semibold hover:from-sky-700 hover:to-green-700 transition-all flex items-center justify-center gap-2"
                                     >
                                         View Full Story
                                         <ChevronRight className="w-5 h-5" />
@@ -639,17 +650,17 @@ const AboutUs = () => {
             </section>
 
             {/* CTA Section */}
-            <section className="py-20 bg-gradient-to-br from-sky-600 to-green-600 text-white">
-                <div className="max-w-4xl mx-auto px-6 text-center">
-                    <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
+            <section className="py-12 md:py-20 bg-gradient-to-br from-sky-600 to-green-600 text-white">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+                    <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6">
                         Your Support Can Make a World of Difference
                     </h2>
-                    <p className="text-xl mb-10 opacity-95">
+                    <p className="text-base sm:text-lg md:text-xl mb-8 md:mb-10 opacity-95">
                         Whether through donations, volunteering, or spreading the word, you can help empower vulnerable communities.
                     </p>
                     <a
                         href="https://donate.stripe.com/8wM3fJeRjekd0i4aEE"
-                        className="inline-block bg-white text-sky-600 px-10 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl"
+                        className="inline-block bg-white text-sky-600 px-6 sm:px-8 md:px-10 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl"
                     >
                         Donate Now
                     </a>

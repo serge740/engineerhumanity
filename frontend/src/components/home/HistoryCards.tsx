@@ -69,13 +69,13 @@ const HistoryCards: React.FC = () => {
           >
             <X className="w-6 h-6" />
           </button>
-          
+
           <img
             src={image.image}
             alt={image.description}
             className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
           />
-          
+
           <div className="bg-white p-6 mt-4 rounded-lg">
             <p className="text-gray-800 leading-relaxed text-lg">
               {image.description}
@@ -88,11 +88,23 @@ const HistoryCards: React.FC = () => {
 
   return (
     <div className="font-sans text-gray-800">
-     
+      {/* Header Section */}
+      <section className="py-16 bg-gradient-to-br from-sky-50 via-white to-blue-50">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Our Journey
+          </h2>
+          <p className="text-lg md:text-xl text-gray-600 leading-relaxed">
+            Explore the milestones and moments that have shaped Engineers4Humanity.
+            From our humble beginnings to transformative partnerships, each image tells
+            a story of hope, resilience, and impact in refugee communities.
+          </p>
+        </div>
+      </section>
 
       {/* Gallery Grid */}
       <section className="py-20 bg-white">
-        <div className=" mx-auto px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {galleryImages.map((item) => (
               <div
@@ -112,7 +124,7 @@ const HistoryCards: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="p-6">
                   <p className="text-gray-700 leading-relaxed line-clamp-3">
                     {item.description}

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { X, ExternalLink, Users, Award, Globe } from 'lucide-react';
+import { X, ExternalLink } from 'lucide-react';
+import Header from '../../components/Header';
+import image from '../../assets/image6.jpg';
 
 interface TeamMember {
   id: number;
@@ -264,12 +266,7 @@ const ManagementTeamPage: React.FC = () => {
     }
   ];
 
-  const categories = [
-    { key: 'leadership', label: 'Leadership Team', icon: Award },
-    { key: 'operations', label: 'Operations Team', icon: Users },
-    { key: 'programs', label: 'Program Managers', icon: Globe },
-    { key: 'projects', label: 'Project Teams', icon: Users }
-  ];
+
 
   const TeamMemberModal: React.FC<{ member: TeamMember | null; onClose: () => void }> = ({ member, onClose }) => {
     if (!member) return null;
@@ -299,7 +296,7 @@ const ManagementTeamPage: React.FC = () => {
                   )}
                 </h2>
                 <p className="text-xl text-gray-600 mb-4">{member.title}</p>
-                
+
                 {member.linkedIn && (
                   <a
                     href={member.linkedIn}
@@ -319,7 +316,7 @@ const ManagementTeamPage: React.FC = () => {
                 Role & Responsibilities
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                {member.title.includes('Founder') && 
+                {member.title.includes('Founder') &&
                   "As Founder and Chief Executive Officer, Eric leads Engineers4Humanity's mission to empower refugees and underserved communities through education, engineering solutions, and servant leadership. With over 17 years of humanitarian service, he guides the organization's strategic vision and global operations."
                 }
                 {member.title.includes('Board Chair') && !member.title.includes('Vice') &&
@@ -370,20 +367,20 @@ const ManagementTeamPage: React.FC = () => {
                 {member.title.includes('Vocational Training') &&
                   "Develops and delivers vocational training programs that equip refugee youth with practical, marketable skills in trades and technical fields, enabling economic independence."
                 }
-                {!member.title.includes('Founder') && 
-                 !member.title.includes('Board') && 
-                 !member.title.includes('Country Director') && 
-                 !member.title.includes('Chief') && 
-                 !member.title.includes('Manager') && 
-                 !member.title.includes('Finance') && 
-                 !member.title.includes('Youth') && 
-                 !member.title.includes('Marketing') && 
-                 !member.title.includes('Engineering') && 
-                 !member.title.includes('Environmental') && 
-                 !member.title.includes('Media') && 
-                 !member.title.includes('Representative') && 
-                 !member.title.includes('Job') && 
-                 !member.title.includes('Vocational') &&
+                {!member.title.includes('Founder') &&
+                  !member.title.includes('Board') &&
+                  !member.title.includes('Country Director') &&
+                  !member.title.includes('Chief') &&
+                  !member.title.includes('Manager') &&
+                  !member.title.includes('Finance') &&
+                  !member.title.includes('Youth') &&
+                  !member.title.includes('Marketing') &&
+                  !member.title.includes('Engineering') &&
+                  !member.title.includes('Environmental') &&
+                  !member.title.includes('Media') &&
+                  !member.title.includes('Representative') &&
+                  !member.title.includes('Job') &&
+                  !member.title.includes('Vocational') &&
                   `Contributes essential expertise and dedication to Engineers4Humanity's mission as part of the ${member.title} team, working to empower refugees and underserved communities through sustainable development initiatives.`
                 }
               </p>
@@ -397,9 +394,9 @@ const ManagementTeamPage: React.FC = () => {
               <div className="bg-green-50 p-4 rounded-lg text-center">
                 <p className="text-sm text-gray-600 mb-1">Location</p>
                 <p className="font-semibold text-gray-900">
-                  {member.title.includes('USA') ? 'United States' : 
-                   member.title.includes('Rwanda') ? 'Rwanda' : 
-                   member.title.includes('Africa') ? 'Africa' : 'Global'}
+                  {member.title.includes('USA') ? 'United States' :
+                    member.title.includes('Rwanda') ? 'Rwanda' :
+                      member.title.includes('Africa') ? 'Africa' : 'Global'}
                 </p>
               </div>
             </div>
@@ -411,84 +408,65 @@ const ManagementTeamPage: React.FC = () => {
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-sky-600 to-green-600 text-white py-24">
-        <div className=" mx-auto px-6 text-center">
-          <h1 className="font-serif text-5xl md:text-6xl font-bold mb-6">
-            Engineers4Humanity Global Team
-          </h1>
-          <p className="text-xl md:text-2xl max-w-3xl mx-auto opacity-95">
-            Below is our Engineers4Humanity Global Team behind our success
-          </p>
+      <Header
+        title="Engineers4Humanity Global Team"
+        linkTitle="Management Team"
+        linkHref="/management-team"
+        backgroundImage={image}
+      />
+
+      {/* All Team Members - Single Grid */}
+      <section className="py-20 bg-white">
+        <div className="mx-auto px-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {teamMembers.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600 group"
+              >
+                <div className="h-64 overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-serif text-xl font-bold text-gray-900 mb-1">
+                    {member.name}
+                    {member.credentials && (
+                      <span className="text-lg text-sky-600">, {member.credentials}</span>
+                    )}
+                  </h3>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                    {member.title}
+                  </p>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedMember(member)}
+                      className="flex-1 bg-gradient-to-r from-sky-600 to-green-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:from-sky-700 hover:to-green-700 transition-all text-sm"
+                    >
+                      View Profile
+                    </button>
+                    {member.linkedIn && (
+                      <a
+                        href={member.linkedIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-gray-100 text-gray-700 p-2.5 rounded-lg hover:bg-gray-200 transition"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink className="w-5 h-5" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
-
-      {/* Team Members by Category */}
-      {categories.map((category) => {
-        const members = teamMembers.filter(m => m.category === category.key);
-        const Icon = category.icon;
-        
-        return (
-          <section key={category.key} className="py-20 bg-white even:bg-gray-50">
-            <div className=" mx-auto px-6">
-              <div className="flex items-center gap-3 mb-12">
-                <Icon className="w-10 h-10 text-sky-600" />
-                <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900">
-                  {category.label}
-                </h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600 group"
-                  >
-                    <div className="h-64 overflow-hidden">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-serif text-xl font-bold text-gray-900 mb-1">
-                        {member.name}
-                        {member.credentials && (
-                          <span className="text-lg text-sky-600">, {member.credentials}</span>
-                        )}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
-                        {member.title}
-                      </p>
-                      
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelectedMember(member)}
-                          className="flex-1 bg-gradient-to-r from-sky-600 to-green-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:from-sky-700 hover:to-green-700 transition-all text-sm"
-                        >
-                          View Profile
-                        </button>
-                        {member.linkedIn && (
-                          <a
-                            href={member.linkedIn}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-gray-100 text-gray-700 p-2.5 rounded-lg hover:bg-gray-200 transition"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <ExternalLink className="w-5 h-5" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })}
 
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-sky-600 to-green-600 text-white">

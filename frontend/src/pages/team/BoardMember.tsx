@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { X, ExternalLink, Shield, Award, Users } from 'lucide-react';
+import Header from '../../components/Header';
+import image from '../../assets/image6.jpg';
 
 interface BoardMember {
   id: number;
@@ -114,7 +116,7 @@ const BoardMembers: React.FC = () => {
                   )}
                 </h2>
                 <p className="text-2xl text-gray-600 mb-6">{member.title}</p>
-                
+
                 <div className="flex flex-wrap gap-3 justify-center md:justify-start mb-6">
                   <div className="bg-sky-100 text-sky-700 px-4 py-2 rounded-full font-semibold capitalize flex items-center gap-2">
                     <Shield className="w-5 h-5" />
@@ -184,108 +186,71 @@ const BoardMembers: React.FC = () => {
     );
   };
 
-  const getRoleCategory = (role: string) => {
-    switch (role) {
-      case 'chair':
-        return { label: 'Board Leadership', members: boardMembers.filter(m => m.role === 'chair') };
-      case 'vice-chair':
-        return { label: 'Board Vice Chairs', members: boardMembers.filter(m => m.role === 'vice-chair') };
-      case 'executive':
-        return { label: 'Executive Leadership', members: boardMembers.filter(m => m.role === 'executive') };
-      case 'member':
-        return { label: 'Board Members', members: boardMembers.filter(m => m.role === 'member') };
-      default:
-        return { label: 'Board Members', members: [] };
-    }
-  };
 
-  const categories = ['chair', 'vice-chair', 'executive', 'member'];
 
   return (
     <div className="font-sans text-gray-800">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-sky-600 to-green-600 text-white py-24">
-        <div className="max-w-7xl mx-auto px-6 text-center">
-          <div className="flex items-center justify-center gap-4 mb-6">
-            <Shield className="w-16 h-16" />
-            <h1 className="font-serif text-5xl md:text-6xl font-bold">
-              Board Members
-            </h1>
+      <Header
+        title="Board Members"
+        linkTitle="Board Members"
+        linkHref="/board-members"
+        backgroundImage={image}
+      />
+
+      {/* All Board Members - Single Grid */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {boardMembers.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600 group"
+              >
+                <div className="h-80 overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-serif text-2xl font-bold text-gray-900 mb-1">
+                    {member.name}
+                  </h3>
+                  {member.credentials && (
+                    <p className="text-lg text-sky-600 font-semibold mb-3">
+                      {member.credentials}
+                    </p>
+                  )}
+                  <p className="text-gray-600 mb-6">
+                    {member.title}
+                  </p>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedMember(member)}
+                      className="flex-1 bg-gradient-to-r from-sky-600 to-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:from-sky-700 hover:to-green-700 transition-all"
+                    >
+                      View Full Profile
+                    </button>
+                    {member.linkedIn && (
+                      <a
+                        href={member.linkedIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-gray-100 text-gray-700 p-3 rounded-lg hover:bg-gray-200 transition"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink className="w-6 h-6" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-          <p className="text-xl md:text-2xl max-w-4xl mx-auto opacity-95">
-            Below are the Engineers4Humanity Board Members providing an advisory, governance, and networking role to achieve the organization's mission
-          </p>
         </div>
       </section>
-
-      {/* Board Members by Role */}
-      {categories.map((categoryKey) => {
-        const category = getRoleCategory(categoryKey);
-        if (category.members.length === 0) return null;
-
-        return (
-          <section key={categoryKey} className="py-20 bg-white even:bg-gray-50">
-            <div className="max-w-7xl mx-auto px-6">
-              <div className="flex items-center justify-center gap-3 mb-12">
-                <Award className="w-10 h-10 text-sky-600" />
-                <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 text-center">
-                  {category.label}
-                </h2>
-              </div>
-
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-                {category.members.map((member) => (
-                  <div
-                    key={member.id}
-                    className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600 group"
-                  >
-                    <div className="h-80 overflow-hidden">
-                      <img
-                        src={member.image}
-                        alt={member.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-serif text-2xl font-bold text-gray-900 mb-1">
-                        {member.name}
-                      </h3>
-                      {member.credentials && (
-                        <p className="text-lg text-sky-600 font-semibold mb-3">
-                          {member.credentials}
-                        </p>
-                      )}
-                      <p className="text-gray-600 mb-6">
-                        {member.title}
-                      </p>
-                      
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => setSelectedMember(member)}
-                          className="flex-1 bg-gradient-to-r from-sky-600 to-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:from-sky-700 hover:to-green-700 transition-all"
-                        >
-                          View Full Profile
-                        </button>
-                        {member.linkedIn && (
-                          <a
-                            href={member.linkedIn}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="bg-gray-100 text-gray-700 p-3 rounded-lg hover:bg-gray-200 transition"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <ExternalLink className="w-6 h-6" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-        );
-      })}
 
       {/* Governance Overview */}
       <section className="py-20 bg-gray-50">

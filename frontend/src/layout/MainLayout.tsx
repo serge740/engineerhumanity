@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 
 const MainLayout = () => {
     const [scrolled, setScrolled] = useState(false);
+     
 
     useEffect(() => {
         const handleScroll = () => {

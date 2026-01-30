@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
+import Header from '../components/Header';
+import image from '../assets/image6.jpg';
 
 function Upcoming() {
   const [events] = useState([
@@ -75,22 +77,18 @@ function Upcoming() {
 
   const categories = ['all', 'Conference', 'Workshop', 'Training', 'Community Event', 'Seminar', 'Forum'];
 
-  const filteredEvents = filter === 'all' 
-    ? events 
+  const filteredEvents = filter === 'all'
+    ? events
     : events.filter(event => event.category === filter);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-green-50">
-      {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-4">Upcoming Events</h1>
-          <p className="text-xl text-blue-100 max-w-3xl">
-            Join us in our mission to promote health equity and community wellness. 
-            Explore our upcoming events and be part of the change.
-          </p>
-        </div>
-      </div>
+      <Header
+        title="Upcoming Events"
+        linkTitle="Events"
+        linkHref="/upcoming"
+        backgroundImage={image}
+      />
 
       {/* Filter Section */}
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -99,11 +97,10 @@ function Upcoming() {
             <button
               key={category}
               onClick={() => setFilter(category)}
-              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
-                filter === category
-                  ? 'bg-blue-600 text-white shadow-lg scale-105'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 shadow'
-              }`}
+              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${filter === category
+                ? 'bg-blue-600 text-white shadow-lg scale-105'
+                : 'bg-white text-gray-700 hover:bg-gray-100 shadow'
+                }`}
             >
               {category === 'all' ? 'All Events' : category}
             </button>

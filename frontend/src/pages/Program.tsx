@@ -7,14 +7,14 @@ import Header from "../components/Header";
 function Program() {
   return (
     <div className="min-h-screen bg-gray-50">
-       <Header
-        title="Get Involved"
-        linkTitle="Get Involved"
-        linkHref="/get-involved"
+      <Header
+        title="Programs"
+        linkTitle="Programs"
+        linkHref="/programs"
         backgroundImage={image}
       />
 
-    
+
 
       {/* Overview Section */}
       <div className="container mx-auto px-4 py-12">
@@ -59,14 +59,15 @@ function Program() {
                 </p>
               </div>
               <div>
-                <img 
-                  src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=600&h=400&fit=crop" 
+                <img
+                  src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=600&h=400&fit=crop"
                   alt="Water Engineering"
                   className="w-full h-64 object-cover rounded-lg shadow-md"
                 />
+                <p className="text-sm text-gray-600 italic mt-2 text-center">"Clean water infrastructure bringing hope to underserved communities"</p>
               </div>
             </div>
-            
+
             <p className="text-gray-700 mb-6 leading-relaxed">
               Our projects include support for disaster emergency preparedness, environmental protection, and enhanced public safety in Texas through partnerships with the Government, the Private sector, Civil society organizations, and the community.
             </p>
@@ -75,16 +76,22 @@ function Program() {
             </p>
 
             <div className="grid md:grid-cols-2 gap-6 mb-8">
-              <img 
-                src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=300&fit=crop" 
-                alt="Community Water Project"
-                className="w-full h-48 object-cover rounded-lg shadow-md"
-              />
-              <img 
-                src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=300&fit=crop" 
-                alt="Sanitation Facilities"
-                className="w-full h-48 object-cover rounded-lg shadow-md"
-              />
+              <div>
+                <img
+                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=300&fit=crop"
+                  alt="Community Water Project"
+                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                />
+                <p className="text-sm text-gray-600 italic mt-2 text-center">"Community members accessing safe, clean water from new water supply systems"</p>
+              </div>
+              <div>
+                <img
+                  src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=300&fit=crop"
+                  alt="Sanitation Facilities"
+                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                />
+                <p className="text-sm text-gray-600 italic mt-2 text-center">"Modern sanitation facilities improving health and dignity in refugee camps"</p>
+              </div>
             </div>
 
             <div className="bg-gray-50 p-6 rounded-lg mb-6">
@@ -123,7 +130,7 @@ function Program() {
               </ul>
             </div>
 
-            <a 
+            <a
               href="https://e4hinitiative.org/apply-for-paid-training/"
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-300 shadow-md"
             >
@@ -146,11 +153,12 @@ function Program() {
                   </p>
                 </div>
                 <div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop" 
+                  <img
+                    src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop"
                     alt="Education Program"
                     className="w-full h-64 object-cover rounded-lg shadow-md"
                   />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Empowering refugee youth through quality education and STEM scholarships"</p>
                 </div>
               </div>
               <p className="text-gray-700 mb-4 leading-relaxed">
@@ -199,7 +207,7 @@ function Program() {
                 </ul>
               </div>
 
-              <a 
+              <a
                 href="https://e4hinitiative.org/apply-for-education-scholarships-empower-your-copy/"
                 className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-300 shadow-md"
               >
@@ -208,21 +216,30 @@ function Program() {
 
               {/* Education Images */}
               <div className="mt-10 grid md:grid-cols-3 gap-6">
-                <img 
-                  src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=300&fit=crop" 
-                  alt="Students in classroom"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop" 
-                  alt="Graduation ceremony"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop" 
-                  alt="Student mentorship"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
+                <div>
+                  <img
+                    src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=300&fit=crop"
+                    alt="Students in classroom"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Students engaged in interactive STEM learning activities"</p>
+                </div>
+                <div>
+                  <img
+                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop"
+                    alt="Graduation ceremony"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Celebrating academic achievements and new beginnings"</p>
+                </div>
+                <div>
+                  <img
+                    src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop"
+                    alt="Student mentorship"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"One-on-one mentorship guiding students toward success"</p>
+                </div>
               </div>
 
               {/* Testimonials */}
@@ -260,11 +277,12 @@ function Program() {
                 </p>
               </div>
               <div>
-                <img 
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop" 
+                <img
+                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
                   alt="Vocational Training"
                   className="w-full h-64 object-cover rounded-lg shadow-md"
                 />
+                <p className="text-sm text-gray-600 italic mt-2 text-center">"Hands-on vocational training preparing youth for skilled careers"</p>
               </div>
             </div>
             <p className="text-gray-700 mb-4 leading-relaxed">
@@ -309,7 +327,7 @@ function Program() {
               </ul>
             </div>
 
-            <a 
+            <a
               href="/"
               className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-300 shadow-md"
             >
@@ -332,11 +350,12 @@ function Program() {
                   </p>
                 </div>
                 <div>
-                  <img 
-                    src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop" 
+                  <img
+                    src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop"
                     alt="Community Leadership"
                     className="w-full h-64 object-cover rounded-lg shadow-md"
                   />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Community leaders working together for peace and sustainable development"</p>
                 </div>
               </div>
               <p className="text-gray-700 mb-4 leading-relaxed">
@@ -373,7 +392,7 @@ function Program() {
                 </ul>
               </div>
 
-              <a 
+              <a
                 href="https://e4hinitiative.org/support-our-mission-sponsorship-partnership-form/"
                 className="inline-block bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-300 shadow-md"
               >
@@ -389,21 +408,22 @@ function Program() {
         <div className="max-w-8xl mx-auto">
           <div className="bg-white rounded-lg shadow-lg p-8">
             <h2 className="text-3xl font-bold text-purple-700 mb-6">ENTREPRENEURSHIP PROGRAM</h2>
-            
+
             <div className="grid md:grid-cols-2 gap-8 mb-8">
               <div>
                 <h3 className="text-2xl font-bold text-gray-800 mb-6">Engineers4Humanity Consultancy</h3>
-                
+
                 <p className="text-gray-700 mb-4 leading-relaxed">
                   Engineers4Humanity Consultancy is a social enterprise registered in East Africa, dedicated to delivering a dynamic range of Engineering consultancy services, social-environmental study consultancy, education & skills development services.
                 </p>
               </div>
               <div>
-                <img 
-                  src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop" 
+                <img
+                  src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop"
                   alt="Business Consulting"
                   className="w-full h-64 object-cover rounded-lg shadow-md"
                 />
+                <p className="text-sm text-gray-600 italic mt-2 text-center">"Professional consultancy services driving social enterprise and community development"</p>
               </div>
             </div>
             <p className="text-gray-700 mb-4 leading-relaxed">
@@ -459,27 +479,36 @@ function Program() {
               <p className="text-xl font-semibold text-gray-800 mb-4">
                 Join us as we embark on this journey to make a meaningful impact together!
               </p>
-              
+
               {/* Entrepreneurship Images */}
               <div className="grid md:grid-cols-3 gap-6 mb-8">
-                <img 
-                  src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=300&fit=crop" 
-                  alt="Engineering Projects"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=400&h=300&fit=crop" 
-                  alt="Construction Management"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
-                <img 
-                  src="https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=400&h=300&fit=crop" 
-                  alt="Team Collaboration"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
-                />
+                <div>
+                  <img
+                    src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?w=400&h=300&fit=crop"
+                    alt="Engineering Projects"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Innovative engineering solutions transforming communities across Africa"</p>
+                </div>
+                <div>
+                  <img
+                    src="https://images.unsplash.com/photo-1541746972996-4e0b0f43e02a?w=400&h=300&fit=crop"
+                    alt="Construction Management"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Construction projects creating jobs and building sustainable infrastructure"</p>
+                </div>
+                <div>
+                  <img
+                    src="https://images.unsplash.com/photo-1565688534245-05d6b5be184a?w=400&h=300&fit=crop"
+                    alt="Team Collaboration"
+                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                  />
+                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Collaborative teamwork driving entrepreneurship and economic empowerment"</p>
+                </div>
               </div>
-              
-              <a 
+
+              <a
                 href="https://e4hinitiative.org/job-seekers-apply-for-employment-opportunity/"
                 className="inline-block bg-purple-600 hover:bg-purple-700 text-white font-semibold px-8 py-3 rounded-lg transition duration-300 shadow-md"
               >

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Header from '../components/Header';
+import image from '../assets/image6.jpg';
 
 function PastEvent() {
   const [events] = useState([
@@ -117,16 +119,12 @@ function PastEvent() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50">
-      {/* Header Section */}
-      <div className="bg-gradient-to-r from-blue-700 to-cyan-600 text-white py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-5xl font-bold mb-4">Past Events</h1>
-          <p className="text-xl text-blue-100 max-w-3xl">
-            Explore our journey of impact and community transformation. Discover the events 
-            that have shaped our mission to promote health equity through engineering solutions.
-          </p>
-        </div>
-      </div>
+      <Header
+        title="Past Events"
+        linkTitle="Past Events"
+        linkHref="/past-events"
+        backgroundImage={image}
+      />
 
       {/* Events Grid - Three Columns */}
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -184,7 +182,7 @@ function PastEvent() {
                   {event.description}
                 </p>
 
-             
+
 
                 <button
                   onClick={() => openModal(event)}
@@ -203,7 +201,7 @@ function PastEvent() {
 
       {/* Full Page Modal */}
       {selectedEvent && (
-        <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl max-w-4xl w-full my-8 shadow-2xl animate-fadeIn">
             {/* Modal Header with Image */}
             <div className="relative h-80 overflow-hidden rounded-t-2xl">

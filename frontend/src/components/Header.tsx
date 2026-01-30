@@ -1,19 +1,19 @@
 import React from "react";
-import defaultBackground from '../assets/image6.jpg';
+import defaultBackground from '../assets/header.png';
 
 const Header = ({ title, linkTitle, linkHref, backgroundImage }) => {
   return (
     <div
       className="relative w-full h-60 flex items-center justify-center text-white text-center"
       style={{
-        backgroundImage: `url(${backgroundImage || defaultBackground})`,
+        backgroundImage: `url(${defaultBackground})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        minHeight: "300px"
+        minHeight: "400px"
       }}
     >
       {/* Blue Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-500 via-gray-800/80 to-gray-600" />
+      <div className="absolute inset-0 bg-gradient-to-br from-sky-700/60 via-emerald-800/50 to-green-500/30" />
             
       {/* Content */}
       <div className="relative z-10 px-4 max-w-4xl mx-auto">

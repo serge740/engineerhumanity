@@ -1,12 +1,13 @@
 import React from 'react';
 import { Target, Eye, Heart, Users, Award, Globe } from 'lucide-react';
-import image1 from '../../assets/home/image1.png';
+import image1 from '../../assets/home/image4.png';
 import image2 from '../../assets/home/image3.png';
+import image3 from '../../assets/home/image1.png';
 
 
 const About = () => {
   return (
-    <div className="font-sans text-gray-800">
+    <div className="font-sans  text-gray-800">
  
 
       {/* Inspiration Section */}
@@ -167,7 +168,7 @@ const About = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src="https://images.unsplash.com/photo-1531545514256-b1400bc00f31?w=800&q=80"
+                src={ image3}
                 alt="Emmanuel Seba visiting students"
                 className="w-full h-[400px] object-cover rounded-2xl shadow-2xl"
               />
