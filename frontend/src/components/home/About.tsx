@@ -12,7 +12,7 @@ const About = () => {
 
       {/* Inspiration Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className=" mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6 text-gray-900">
               Engineers4Humanity's Inspiration
@@ -55,17 +55,17 @@ const About = () => {
 
       {/* Founder Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className=" mx-auto px-6">
+          <div className="grid md:grid-cols-3 gap-12 items-center">
             <div className="order-2 md:order-1">
               <img
                 src={image2}
                 alt="Eric Kamanzi"
-                className="w-full h-[500px] object-cover rounded-2xl shadow-2xl"
+                className="w-full h-[500px] object-top object-cover rounded-2xl shadow-2xl"
               />
             </div>
 
-            <div className="order-1 md:order-2 space-y-6">
+            <div className="order-1 md:order-2 space-y-6 md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
                 <Users className="w-10 h-10 text-sky-600" />
                 <h2 className="font-serif text-4xl font-bold text-gray-900">
@@ -107,7 +107,7 @@ const About = () => {
 
       {/* Vision & Mission Section */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className=" mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12">
             {/* Vision Card */}
             <div className="bg-gradient-to-br from-sky-600 to-green-600 text-white p-10 rounded-2xl shadow-2xl">
@@ -164,13 +164,13 @@ const About = () => {
 
       {/* Team Highlight Section */}
       <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className=" mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img
                 src={ image3}
                 alt="Emmanuel Seba visiting students"
-                className="w-full h-[400px] object-cover rounded-2xl shadow-2xl"
+                className="w-full h-[400px] object-top object-cover rounded-2xl shadow-2xl"
               />
               <p className="text-sm text-gray-600 italic mt-4 text-center">
                 "Mr. Emmanuel Seba, one of our Alumnae currently in charge of the Education Program, visiting sponsored students."

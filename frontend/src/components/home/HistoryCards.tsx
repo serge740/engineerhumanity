@@ -73,7 +73,7 @@ const HistoryCards: React.FC = () => {
           <img
             src={image.image}
             alt={image.description}
-            className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
+            className="w-full h-auto  max-h-[80vh] object-contain rounded-lg"
           />
 
           <div className="bg-white p-6 mt-4 rounded-lg">
@@ -104,7 +104,7 @@ const HistoryCards: React.FC = () => {
 
       {/* Gallery Grid */}
       <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className=" mx-auto px-6">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {galleryImages.map((item) => (
               <div
@@ -116,7 +116,7 @@ const HistoryCards: React.FC = () => {
                   <img
                     src={item.image}
                     alt={item.description}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white p-3 rounded-full">

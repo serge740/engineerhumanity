@@ -10,12 +10,12 @@ const Footer = () => {
                     {/* About Section */}
                     <div className="lg:col-span-1">
                         <div className="flex items-center gap-3 mb-4">
-                            <div className="w-12 h-12 bg-gradient-to-br from-sky-600 to-green-600 rounded-xl flex items-center justify-center shadow-lg">
-                                <span className="text-white font-bold text-lg">E4H</span>
-                            </div>
-                            <h3 className="font-serif text-xl font-bold text-white">
-                                Engineers4Humanity
-                            </h3>
+                            <img
+                                src="/tra_logo.png"
+                                alt="Engineers4Humanity Logo"
+                                className="w-60 h-60 object-contain"
+                            />
+                         
                         </div>
                         <p className="text-sm leading-relaxed mb-4">
                             Empowering refugees and underserved communities through education, engineering solutions, and sustainable development.
@@ -173,9 +173,9 @@ const Footer = () => {
                         <div className="text-center md:text-right">
                             <p className="text-sm text-gray-400 flex items-center justify-center md:justify-end gap-2">
                                 © {new Date().getFullYear()} Engineers4Humanity. Made By <a className='underline text-blue-500' href="http://abytechhub.com/">Abytech Hub</a>
-                                
+
                             </p>
-                            <p className="text-xs text-gray-500 mt-1"> 
+                            <p className="text-xs text-gray-500 mt-1">
                                 All Rights Reserved. | <a href="#" className="hover:text-sky-400 transition">Privacy Policy</a>
                             </p>
                         </div>

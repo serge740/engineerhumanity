@@ -3,6 +3,39 @@ import { X, ExternalLink } from 'lucide-react';
 import Header from '../../components/Header';
 import image from '../../assets/image6.jpg';
 
+import image1 from '../../assets/team/management/image1.png'
+import image2 from '../../assets/team/management/image2.png'
+import image3 from '../../assets/team/management/image3.png'
+import image4 from '../../assets/team/management/image4.png'
+import image5 from '../../assets/team/management/image5.png'
+import image6 from '../../assets/team/management/image6.png'
+import image7 from '../../assets/team/management/image7.png'
+import image8 from '../../assets/team/management/image8.png'
+import image9 from '../../assets/team/management/image9.png'
+import image10 from '../../assets/team/management/image10.png'
+import image11 from '../../assets/team/management/image11.png'
+import image12 from '../../assets/team/management/image12.png'
+import image13 from '../../assets/team/management/image13.png'
+import image14 from '../../assets/team/management/image14.png'
+import image15 from '../../assets/team/management/image15.png'
+import image16 from '../../assets/team/management/image16.png'
+import image17 from '../../assets/team/management/image17.png'
+import image18 from '../../assets/team/management/image18.png'
+import image19 from '../../assets/team/management/image19.png'
+import image20 from '../../assets/team/management/image20.png'
+import image21 from '../../assets/team/management/image21.png'
+import image22 from '../../assets/team/management/image22.png'
+import image23 from '../../assets/team/management/image23.png'
+import image24 from '../../assets/team/management/image24.png'
+import image25 from '../../assets/team/management/image25.png'
+import image26 from '../../assets/team/management/image26.png'
+import image27 from '../../assets/team/management/image27.png'
+import image28 from '../../assets/team/management/image28.png'
+import image29 from '../../assets/team/management/image29.png'
+import image30 from '../../assets/team/management/image30.png'
+// member images
+
+
 interface TeamMember {
   id: number;
   name: string;
@@ -22,7 +55,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Eric Kamanzi",
       credentials: "PMP, PE, MSc",
       title: "Founder & Chief Executive Officer",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80",
+      image: image1,
       linkedIn: "https://www.linkedin.com/in/eric-kamanzi-pmp/",
       category: 'leadership'
     },
@@ -31,7 +64,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Vin Hoey",
       credentials: "MBA",
       title: "Board Chair",
-      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80",
+      image: image2,
       linkedIn: "https://www.linkedin.com/in/vinhoey/",
       category: 'leadership'
     },
@@ -40,7 +73,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Frere Straton Malisaba",
       credentials: "M.Ed",
       title: "Board Vice Chair | Education Program",
-      image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80",
+      image: image3,
       linkedIn: "/board-members/#gallery",
       category: 'leadership'
     },
@@ -49,7 +82,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Theophile Karegesa Kivuye",
       credentials: "MEng",
       title: "Board Vice Chair | Engineering Program",
-      image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80",
+      image: image4,
       category: 'leadership'
     },
     {
@@ -57,7 +90,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Fabrice Kayisire",
       credentials: "PE",
       title: "Country Director - Rwanda",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
+      image: image5,
       linkedIn: "https://www.linkedin.com/in/fabrice-kayisire-94613a98/",
       category: 'operations'
     },
@@ -66,7 +99,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Innocent Habimana",
       credentials: "MPH",
       title: "Chief of Operations - Africa",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80",
+      image: image6,
       category: 'operations'
     },
     {
@@ -74,7 +107,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Emmanuel Sebagisha",
       credentials: "M.Ed",
       title: "Education Program Manager - Africa",
-      image: "https://images.unsplash.com/photo-1502767089025-6572583495f9?w=400&q=80",
+      image: image7,
       linkedIn: "https://www.linkedin.com/in/emmanuel-sebagisha-352532193/",
       category: 'programs'
     },
@@ -83,14 +116,14 @@ const ManagementTeamPage: React.FC = () => {
       name: "Octavien Rugirangoga",
       credentials: "PE",
       title: "Engineering Program Manager - Africa",
-      image: "https://images.unsplash.com/photo-1519345182560-3f2917c472ef?w=400&q=80",
+      image: image8,
       category: 'programs'
     },
     {
       id: 9,
       name: "Mukaneza Jacqueline",
       title: "Finance & Accounting - Rwanda",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=80",
+      image: image9,
       linkedIn: "https://www.linkedin.com/in/mukaneza-jacqueline-b5778b29b/",
       category: 'operations'
     },
@@ -98,14 +131,14 @@ const ManagementTeamPage: React.FC = () => {
       id: 10,
       name: "Bernard Ndizeye",
       title: "Youth Mentorship - Rwanda",
-      image: "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?w=400&q=80",
+      image: image10,
       category: 'programs'
     },
     {
       id: 11,
       name: "Jackson Mutega",
       title: "Youth Mentorship Program - Africa",
-      image: "https://images.unsplash.com/photo-1504257432389-52343af06ae3?w=400&q=80",
+      image: image11,
       linkedIn: "https://www.linkedin.com/in/dushimimana-mutega-a28585338/",
       category: 'programs'
     },
@@ -114,14 +147,14 @@ const ManagementTeamPage: React.FC = () => {
       name: "Samuel Ntirenganya",
       credentials: "EIT",
       title: "Engineering Project - Africa",
-      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=400&q=80",
+      image: image12,
       category: 'projects'
     },
     {
       id: 13,
       name: "Eric Ndayisaba",
       title: "Marketing & Fundraising",
-      image: "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?w=400&q=80",
+      image: image13,
       linkedIn: "https://www.linkedin.com/in/eric-ndayisaba/",
       category: 'operations'
     },
@@ -129,7 +162,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 14,
       name: "Ntwari Christian",
       title: "Environmental Project - Africa",
-      image: "https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?w=400&q=80",
+      image: image14,
       linkedIn: "https://www.linkedin.com/in/ntwari-christian-613764229/",
       category: 'projects'
     },
@@ -137,7 +170,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 15,
       name: "Enock Nkurunziza",
       title: "Education Project Manager - Rwanda",
-      image: "https://images.unsplash.com/photo-1539571639585-1841d85b2796?w=400&q=80",
+      image: image15,
       linkedIn: "https://www.linkedin.com/in/enock-nkurunziza/",
       category: 'programs'
     },
@@ -145,7 +178,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 16,
       name: "Bosco Izabayo",
       title: "Youth Mentorship Program - Africa",
-      image: "https://images.unsplash.com/photo-1506277886164-e25aa3f4ef7f?w=400&q=80",
+      image: image16,
       linkedIn: "https://www.linkedin.com/in/bosco-izabayo-9912761b4/",
       category: 'programs'
     },
@@ -153,7 +186,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 17,
       name: "Noel Rusine",
       title: "Media & Storytelling",
-      image: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=400&q=80",
+      image: image17,
       linkedIn: "https://www.linkedin.com/in/sine-noel-3004591b3/",
       category: 'operations'
     },
@@ -161,7 +194,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 18,
       name: "Innocent Habimfura",
       title: "Environmental Project - Africa",
-      image: "https://images.unsplash.com/photo-1521119989659-a83eee488004?w=400&q=80",
+      image: image18,
       linkedIn: "https://www.linkedin.com/in/habimfura-innocent-7a4540186/",
       category: 'projects'
     },
@@ -170,7 +203,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Joel S Rusine",
       credentials: "EIT",
       title: "Engineering Project - USA",
-      image: "https://images.unsplash.com/photo-1542909168-82c3e7fdca5c?w=400&q=80",
+      image: image19,
       linkedIn: "https://www.linkedin.com/in/joel-s-rusine-82260a259/",
       category: 'projects'
     },
@@ -179,7 +212,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Alex Rukamirwa",
       credentials: "EIT",
       title: "Engineering Project - Africa",
-      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&q=80",
+      image: image20,
       linkedIn: "https://www.linkedin.com/in/rukamirwa-alexis-b448b9213/",
       category: 'projects'
     },
@@ -188,7 +221,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Bahati Musuhuke",
       credentials: "MBA",
       title: "Youth Mentorship - Rwanda",
-      image: "https://images.unsplash.com/photo-1507591064344-4c6ce005b128?w=400&q=80",
+      image: image21,
       linkedIn: "https://www.linkedin.com/in/bahati-musuhuke/",
       category: 'programs'
     },
@@ -196,14 +229,14 @@ const ManagementTeamPage: React.FC = () => {
       id: 22,
       name: "Delice Kiracunda",
       title: "Girl Students' Representative - Rwanda",
-      image: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=400&q=80",
+      image: image22,
       category: 'programs'
     },
     {
       id: 23,
       name: "Kalisa Jacques",
       title: "Media & Marketing",
-      image: "https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?w=400&q=80",
+      image: image23,
       linkedIn: "https://www.linkedin.com/in/kalisa-j-0421b62b8/?originalSubdomain=be",
       category: 'operations'
     },
@@ -212,7 +245,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Fred Shyaka",
       credentials: "EIT",
       title: "Engineering Project - Africa",
-      image: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&q=80",
+      image: image24,
       linkedIn: "https://www.linkedin.com/in/shyaka-fred-1a2193260/",
       category: 'projects'
     },
@@ -220,7 +253,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 25,
       name: "Hodari R. Etienne",
       title: "Engineering Project - USA",
-      image: "https://images.unsplash.com/photo-1489980557514-251d61e3eeb6?w=400&q=80",
+      image: image25,
       linkedIn: "https://www.linkedin.com/in/etienne-hodari-rwakibibi-0b0aa497/",
       category: 'projects'
     },
@@ -229,21 +262,21 @@ const ManagementTeamPage: React.FC = () => {
       name: "Amani Faustin",
       credentials: "MBA",
       title: "Youth Job Opportunity - Rwanda",
-      image: "https://images.unsplash.com/photo-1558203728-00f45181dd84?w=400&q=80",
+      image: image26,
       category: 'programs'
     },
     {
       id: 27,
       name: "Mupenzi Niyomugabo",
       title: "Vocational Training - Rwanda",
-      image: "https://images.unsplash.com/photo-1519058082700-08a0b56da9b4?w=400&q=80",
+      image: image27,
       category: 'programs'
     },
     {
       id: 28,
       name: "Andy Bayingana",
       title: "Media & Storytelling",
-      image: "https://images.unsplash.com/photo-1552374196-c4e7ffc6e126?w=400&q=80",
+      image: image28,
       linkedIn: "https://www.linkedin.com/in/bayingana-andy-0b776721a/",
       category: 'operations'
     },
@@ -252,7 +285,7 @@ const ManagementTeamPage: React.FC = () => {
       name: "Theoneste Habimana",
       credentials: "PMP, QS",
       title: "Engineering Project | M&E",
-      image: "https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=400&q=80",
+      image: image29,
       linkedIn: "https://www.linkedin.com/in/habi-theo-pmp-qs-ur23/",
       category: 'projects'
     },
@@ -260,7 +293,7 @@ const ManagementTeamPage: React.FC = () => {
       id: 30,
       name: "Bosco S. Rusine",
       title: "Engineering Project - USA",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=400&q=80",
+      image: image30,
       linkedIn: "https://www.linkedin.com/in/bosco-rusine-b21466171/",
       category: 'projects'
     }
@@ -286,7 +319,7 @@ const ManagementTeamPage: React.FC = () => {
               <img
                 src={member.image}
                 alt={member.name}
-                className="w-48 h-48 rounded-full object-cover border-4 border-sky-600 shadow-xl"
+                className="w-48 h-48 rounded-full object-cover object-top border-4 border-sky-600 shadow-xl"
               />
               <div className="text-center md:text-left flex-1">
                 <h2 className="font-serif text-3xl font-bold text-gray-900 mb-2">
@@ -424,12 +457,12 @@ const ManagementTeamPage: React.FC = () => {
                 key={member.id}
                 className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600 group"
               >
-                <div className="h-64 overflow-hidden">
+                <div className="h-64  flex justify-center items-center overflow-hidden">
                   <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
+                src={member.image}
+                alt={member.name}
+                className="w-64 h-64 rounded-full object-cover object-top   shadow-xl"
+              />
                 </div>
                 <div className="p-6">
                   <h3 className="font-serif text-xl font-bold text-gray-900 mb-1">

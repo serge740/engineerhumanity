@@ -45,7 +45,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                         <img
                             src="/logo.png"
                             alt="Engineers4Humanity Logo"
-                            className="w-24 h-24  scale-110 object-contain  transition-all duration-300"
+                            className="w-20 h-20  scale-120 object-contain  transition-all duration-300"
                         />
                     </Link>
 

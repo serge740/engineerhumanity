@@ -2,6 +2,17 @@ import React from 'react';
 import image from '../assets/image6.jpg'
 import Header from "../components/Header";
 
+import image1 from '../assets/program/image1.png'
+import image2 from '../assets/program/image2.png'
+import image3 from '../assets/program/image3.png'
+import image4 from '../assets/program/image4.png'
+import image5 from '../assets/program/image5.png'
+import image6 from '../assets/program/image6.png'
+import image7 from '../assets/program/image7.png'
+import image8 from '../assets/program/image8.png'
+import scholarshipImage from '../assets/image5.jpg'
+
+
 
 
 function Program() {
@@ -29,23 +40,7 @@ function Program() {
         </div>
       </div>
 
-      {/* Recent Highlights */}
-      <div className="bg-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-            <div className="bg-blue-50 p-6 rounded-lg shadow-md">
-              <p className="text-gray-700 italic">
-                "Eric attended International Conference and Expo on Resilient City, and disasters management, held in Houston-Texas, 2025"
-              </p>
-            </div>
-            <div className="bg-blue-50 p-6 rounded-lg shadow-md">
-              <p className="text-gray-700 italic">
-                "Eric with President of Engineers without Borders Manuel Calderon, Matthew Craig and other fellow members of North Texas -EWB during fundraising event to support community Water Supply Projects"
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+
 
       {/* Public Health Engineering Program */}
       <div className="container mx-auto px-4 py-16">
@@ -57,42 +52,37 @@ function Program() {
                 <p className="text-gray-700 mb-6 leading-relaxed">
                   As an engineering humanitarian organization, Engineers4Humanity aims to address vital public health engineering issues in refugee camps, urban areas, and rural areas in underdeveloped African countries by providing water, improved sanitation, waste management solutions, and support for clean energy projects.
                 </p>
-              </div>
-              <div>
-                <img
-                  src="https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=600&h=400&fit=crop"
-                  alt="Water Engineering"
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
-                />
-                <p className="text-sm text-gray-600 italic mt-2 text-center">"Clean water infrastructure bringing hope to underserved communities"</p>
-              </div>
-            </div>
-
             <p className="text-gray-700 mb-6 leading-relaxed">
               Our projects include support for disaster emergency preparedness, environmental protection, and enhanced public safety in Texas through partnerships with the Government, the Private sector, Civil society organizations, and the community.
             </p>
             <p className="text-gray-700 mb-8 leading-relaxed">
               For Africa and other rural areas, we focus on designing affordable water supply systems, constructing proper sanitation facilities, transforming waste into renewable energy sources, and using available natural resources to serve the community.
             </p>
-
-            <div className="grid md:grid-cols-2 gap-6 mb-8">
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=600&h=300&fit=crop"
+                  src={image2}
                   alt="Community Water Project"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  className="w-full h-[300px] object-cover rounded-lg shadow-md"
                 />
-                <p className="text-sm text-gray-600 italic mt-2 text-center">"Community members accessing safe, clean water from new water supply systems"</p>
+                <p className="text-gray-700 text-center italic">
+                "Eric with President of Engineers without Borders Manuel Calderon, Matthew Craig and other fellow members of North Texas -EWB during fundraising event to support community Water Supply Projects"
+              </p>
+              </div>
               </div>
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1532629345422-7515f3d16bb6?w=600&h=300&fit=crop"
-                  alt="Sanitation Facilities"
-                  className="w-full h-48 object-cover rounded-lg shadow-md"
+                  src={image1}
+                  alt="Water Engineering"
+                  className="w-full h-[700px] object-cover object-center rounded-lg shadow-md"
                 />
-                <p className="text-sm text-gray-600 italic mt-2 text-center">"Modern sanitation facilities improving health and dignity in refugee camps"</p>
+                <p className="text-gray-700 text-center italic">
+                "Eric attended International Conference and Expo on Resilient City, and disasters management, held in Houston-Texas, 2025"
+              </p>
               </div>
             </div>
+
+
+          
 
             <div className="bg-gray-50 p-6 rounded-lg mb-6">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Outcomes:</h3>
@@ -154,7 +144,7 @@ function Program() {
                 </div>
                 <div>
                   <img
-                    src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=600&h=400&fit=crop"
+                    src={scholarshipImage}
                     alt="Education Program"
                     className="w-full h-64 object-cover rounded-lg shadow-md"
                   />
@@ -218,47 +208,47 @@ function Program() {
               <div className="mt-10 grid md:grid-cols-3 gap-6">
                 <div>
                   <img
-                    src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400&h=300&fit=crop"
+                    src={image3}
                     alt="Students in classroom"
-                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                    className="w-full h-48 object-cover object-top  rounded-lg shadow-md"
                   />
-                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Students engaged in interactive STEM learning activities"</p>
+                
+                  <p className="text-sm text-center text-gray-700 italic">
+                    "Chief of Operations, Mr Innocent and Muneza visited some of our students at ETEKA-Kabgayi, 2025"
+                  </p>
+            
+
                 </div>
                 <div>
                   <img
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=400&h=300&fit=crop"
+                    src={image4}
                     alt="Graduation ceremony"
-                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                    className="w-full h-48 object-cover object-top rounded-lg shadow-md"
                   />
-                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Celebrating academic achievements and new beginnings"</p>
+              
+                  <p className="text-sm text-center text-gray-700 italic">
+                    "Some of the Alumnae graduated from the University, with bachelor's and master's degrees. From right is Mr. Emmanuel Sebagisha, Musuhuke Bahati, with his classmate."
+                  </p>
+                
+                  
                 </div>
                 <div>
                   <img
-                    src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&h=300&fit=crop"
+                    src={image5}
                     alt="Student mentorship"
-                    className="w-full h-48 object-cover rounded-lg shadow-md"
+                    className="w-full h-48 object-cover  rounded-lg shadow-md"
                   />
-                  <p className="text-sm text-gray-600 italic mt-2 text-center">"One-on-one mentorship guiding students toward success"</p>
+               
+                  <p className="text-sm text-center text-gray-700 italic">
+                    "Eric, Malisaba and Fred, Meeting with some of the beneficiary women whose children are sponsored by the Engineers4Humanity Education Program, Gihembe Refugee Camp 2020"
+                  </p>
+                
+
                 </div>
               </div>
 
               {/* Testimonials */}
               <div className="mt-10 grid md:grid-cols-3 gap-6">
-                <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-5 rounded-lg">
-                  <p className="text-sm text-gray-700 italic">
-                    "Chief of Operations, Mr Innocent and Muneza visited some of our students at ETEKA-Kabgayi, 2025"
-                  </p>
-                </div>
-                <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-5 rounded-lg">
-                  <p className="text-sm text-gray-700 italic">
-                    "Some of the Alumnae graduated from the University, with bachelor's and master's degrees. From right is Mr. Emmanuel Sebagisha, Musuhuke Bahati, with his classmate."
-                  </p>
-                </div>
-                <div className="bg-gradient-to-br from-blue-100 to-blue-50 p-5 rounded-lg">
-                  <p className="text-sm text-gray-700 italic">
-                    "Eric, Malisaba and Fred, Meeting with some of the beneficiary women whose children are sponsored by the Engineers4Humanity Education Program, Gihembe Refugee Camp 2020"
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -278,11 +268,11 @@ function Program() {
               </div>
               <div>
                 <img
-                  src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
+                  src={image6}
                   alt="Vocational Training"
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
+                  className="w-full h-64 object-cover object-top rounded-lg shadow-md"
                 />
-                <p className="text-sm text-gray-600 italic mt-2 text-center">"Hands-on vocational training preparing youth for skilled careers"</p>
+                <p className="text-sm text-gray-600 italic mt-2 text-center">"Instructor Mapendo with the Engineers4Humanity Vocational Training Short Course trainees, Gihember 2020."</p>
               </div>
             </div>
             <p className="text-gray-700 mb-4 leading-relaxed">
@@ -295,12 +285,7 @@ function Program() {
               We are committed to collaborating with career development centers, the construction industry, academia, the private sector, and the government to transform refugee youth and immigrants into a highly skilled, competitive workforce that excels globally and contributes positively to national development.
             </p>
 
-            <div className="bg-blue-50 p-6 rounded-lg mb-6">
-              <p className="text-gray-700 italic mb-4">
-                "Instructor Mapendo with the Engineers4Humanity Vocational Training Short Course trainees, Gihember 2020."
-              </p>
-            </div>
-
+       
             <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-6 rounded-lg mb-6">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Focus Area:</h3>
               <ul className="space-y-3 text-gray-700">
@@ -351,11 +336,11 @@ function Program() {
                 </div>
                 <div>
                   <img
-                    src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=600&h=400&fit=crop"
+                    src={image7}
                     alt="Community Leadership"
-                    className="w-full h-64 object-cover rounded-lg shadow-md"
+                    className="w-full h-64 object-cover  rounded-lg shadow-md"
                   />
-                  <p className="text-sm text-gray-600 italic mt-2 text-center">"Community leaders working together for peace and sustainable development"</p>
+                  <p className="text-sm text-gray-600 italic mt-2 text-center"> "Eric Kamanzi, a keynote Speaker at Northwest Community Center-Dallas, sharing refugee story and resilience journey"</p>
                 </div>
               </div>
               <p className="text-gray-700 mb-4 leading-relaxed">
@@ -368,11 +353,7 @@ function Program() {
                 Our collaborative partnerships with the USA, the African Union, and regional organizations such as SADC and EAC are essential in our pursuit of an Africa we want that is free from discrimination and violence. Together, we can illuminate the path toward a brighter, more harmonious future for all, as outlined in SDG 2030.
               </p>
 
-              <div className="bg-green-50 p-6 rounded-lg mb-6">
-                <p className="text-gray-700 italic">
-                  "Eric Kamanzi, a keynote Speaker at Northwest Community Center-Dallas, sharing refugee story and resilience journey"
-                </p>
-              </div>
+              
 
               <div className="bg-gradient-to-r from-green-50 to-green-100 p-6 rounded-lg mb-6">
                 <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Focus Areas:</h3>
@@ -416,17 +397,8 @@ function Program() {
                 <p className="text-gray-700 mb-4 leading-relaxed">
                   Engineers4Humanity Consultancy is a social enterprise registered in East Africa, dedicated to delivering a dynamic range of Engineering consultancy services, social-environmental study consultancy, education & skills development services.
                 </p>
-              </div>
-              <div>
-                <img
-                  src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&h=400&fit=crop"
-                  alt="Business Consulting"
-                  className="w-full h-64 object-cover rounded-lg shadow-md"
-                />
-                <p className="text-sm text-gray-600 italic mt-2 text-center">"Professional consultancy services driving social enterprise and community development"</p>
-              </div>
-            </div>
-            <p className="text-gray-700 mb-4 leading-relaxed">
+
+                   <p className="text-gray-700 mb-4 leading-relaxed">
               Engineers4Humanity Consultancy is a skills development hub that transforms unskilled young people, primarily refugees and underserved communities in Rwanda, into competent, skilled technicians through hands-on training, career guidance, and an entrepreneurship incubation process. This results in job creation and the socioeconomic transformation of the community.
             </p>
             <p className="text-gray-700 mb-4 leading-relaxed">
@@ -435,12 +407,20 @@ function Program() {
             <p className="text-gray-700 mb-8 leading-relaxed">
               We have a skilled, experienced, committed, and competent team of engineers, environmental experts, and Real Estate and social environmental experts ready to serve you across Africa.
             </p>
-
-            <div className="bg-purple-50 p-6 rounded-lg mb-6">
-              <p className="text-gray-700 italic">
+              </div>
+              <div>
+                <img
+                  src={image8}
+                  alt="Business Consulting"
+                  className="w-full h-[500px] object-top object-cover rounded-lg shadow-md"
+                />
+<p className="text-gray-700 italic">
                 "Eric Kamanzi attended 2 days of training & Expo on Resilient City and disaster preparedness."
               </p>
+              </div>
             </div>
+         
+
 
             <div className="bg-gradient-to-r from-purple-50 to-purple-100 p-6 rounded-lg mb-8">
               <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Focus Areas:</h3>
@@ -480,7 +460,7 @@ function Program() {
                 Join us as we embark on this journey to make a meaningful impact together!
               </p>
 
-              {/* Entrepreneurship Images */}
+              {/* Entrepreneurship Images
               <div className="grid md:grid-cols-3 gap-6 mb-8">
                 <div>
                   <img
@@ -506,7 +486,7 @@ function Program() {
                   />
                   <p className="text-sm text-gray-600 italic mt-2 text-center">"Collaborative teamwork driving entrepreneurship and economic empowerment"</p>
                 </div>
-              </div>
+              </div> */}
 
               <a
                 href="https://e4hinitiative.org/job-seekers-apply-for-employment-opportunity/"

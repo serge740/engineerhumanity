@@ -1,36 +1,42 @@
-import React from "react";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { Phone, Mail, MapPin } from "lucide-react";
 
 const ContactCards = () => {
   const contacts = [
     {
       icon: <Phone size={40} className="text-white" />,
-      title: "Phone Number",
-      info: "+(250) 791 166 097",
+      title: "Texas Office",
+      info: "+1 (469) 967-0444",
       bgColor: "bg-[#0aa9d7]",
     },
     {
-      icon: <Mail size={40} className="text-white" />,
-      title: "Email Address",
-      info: "info@amisdelapaix.com",
+      icon: <Phone size={40} className="text-white" />,
+      title: "Rwanda Office",
+      info: "+250 788 307 186",
       bgColor: "bg-green-500",
     },
     {
-      icon: <MapPin size={40} className="text-white" />,
-      title: "Location",
-      info:"KN 78 st,  Kigali-Rwanda",
+      icon: <Mail size={40} className="text-white" />,
+      title: "Email (Texas)",
+      info: "contact@e4hinitiative.org",
+      bgColor: "bg-purple-500",
+    },
+    {
+      icon: <Mail size={40} className="text-white" />,
+      title: "Email (Rwanda)",
+      info: "engineersforhumanity20@gmail.com",
       bgColor: "bg-red-500",
     },
     {
-      icon: <Clock size={40} className="text-white" />,
-      title: "Working Hours",
-      info: (
-        <>
-          <span className="block">Mon – Sat: 9AM – 6PM</span>
-       
-        </>
-      ),
-      bgColor: "bg-purple-500",
+      icon: <MapPin size={40} className="text-white" />,
+      title: "Texas Address",
+      info: "908 Audelia RD, Suite 200, Box 139, Richardson, TX 75081, USA",
+      bgColor: "bg-sky-600",
+    },
+    {
+      icon: <MapPin size={40} className="text-white" />,
+      title: "Rwanda Address",
+      info: "Diamond House, 2nd Floor, Kigali City, Kicukiro Center",
+      bgColor: "bg-green-600",
     },
   ];
 
