@@ -10,8 +10,16 @@ import Gallery from '../pages/Gallery';
 
 const Home = lazy(() => import('../pages/Home'));
 const About = lazy(() => import('../pages/About'));
+const Donate = lazy(() => import('../pages/Donate'));
+const Impact = lazy(() => import('../pages/Impact'));
 const ManagementTeamPage = lazy(() => import('../pages/team/ManagementTeam'));
 const BoardMembers = lazy(() => import('../pages/team/BoardMember'));
+
+const SuspenseWrap = ({ children }: { children: React.ReactNode }) => (
+    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
+        {children}
+    </Suspense>
+);
 
 const router = createBrowserRouter([
     {
@@ -20,84 +28,78 @@ const router = createBrowserRouter([
         children: [
             {
                 index: true,
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <Home />
-                    </Suspense>
-                )
+                element: <SuspenseWrap><Home /></SuspenseWrap>
             },
+
+            // ── About (hash-scrolled sections: #who-we-are, #our-story) ──
             {
                 path: "about",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <About />
-                    </Suspense>
-                )
+                element: <SuspenseWrap><About /></SuspenseWrap>
             },
             {
+                path: "about/executive-team",
+                element: <SuspenseWrap><ManagementTeamPage /></SuspenseWrap>
+            },
+            {
+                path: "about/board-member",
+                element: <SuspenseWrap><BoardMembers /></SuspenseWrap>
+            },
+
+            // ── Legacy team routes ──
+            {
                 path: "management-team",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <ManagementTeamPage />
-                    </Suspense>
-                )
+                element: <SuspenseWrap><ManagementTeamPage /></SuspenseWrap>
             },
             {
                 path: "board-members",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <BoardMembers />
-                    </Suspense>
-                )
-            }   
-            ,{
-                path:"get-involved",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <GetInvolved />
-                    </Suspense>
-                )
+                element: <SuspenseWrap><BoardMembers /></SuspenseWrap>
             },
-              {
-                path:"contact",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <Contact />
-                    </Suspense>
-                )
+
+            // ── Programs (single page, hash-scrolled sections) ──
+            {
+                path: "programs",
+                element: <SuspenseWrap><Program /></SuspenseWrap>
             },
-             {
-                path:"programs",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                        <Program />
-                    </Suspense>
-                )
+
+            // ── Impact (single page, hash-scrolled sections) ──
+            {
+                path: "impact",
+                element: <SuspenseWrap><Impact /></SuspenseWrap>
             },
-             {
-                path:"upcoming-event",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                     <Upcoming />
-                    </Suspense>
-                )
+
+            // ── Get Involved ──
+            {
+                path: "get-involved",
+                element: <SuspenseWrap><GetInvolved /></SuspenseWrap>
             },
-              {
-                path:"past-event",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                     <PastEvent />
-                    </Suspense>
-                )
+
+            // ── Contact ──
+            {
+                path: "contact",
+                element: <SuspenseWrap><Contact /></SuspenseWrap>
             },
-                {
-                path:"gallery",
-                element: (
-                    <Suspense fallback={<div className="h-screen flex items-center justify-center">Loading...</div>}>
-                     <Gallery />
-                    </Suspense>
-                )
-            }
+
+            // ── Events ──
+            {
+                path: "upcoming-event",
+                element: <SuspenseWrap><Upcoming /></SuspenseWrap>
+            },
+            {
+                path: "past-event",
+                element: <SuspenseWrap><PastEvent /></SuspenseWrap>
+            },
+
+            // ── Gallery ──
+            {
+                path: "gallery",
+                element: <SuspenseWrap><Gallery /></SuspenseWrap>
+            },
+
+            // ── Donate ──
+            {
+                path: "donate",
+                element: <SuspenseWrap><Donate /></SuspenseWrap>
+            },
         ]
     }
 ]);

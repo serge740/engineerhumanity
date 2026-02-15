@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
@@ -7,10 +7,16 @@ interface NavbarProps {
 }
 
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
+    const navigate = useNavigate();
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-    const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
+    const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+    const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
+    const [impactDropdownOpen, setImpactDropdownOpen] = useState(false);
     const [eventsDropdownOpen, setEventsDropdownOpen] = useState(false);
-    const [mobileTeamOpen, setMobileTeamOpen] = useState(false);
+
+    const [mobileAboutOpen, setMobileAboutOpen] = useState(false);
+    const [mobileProgramsOpen, setMobileProgramsOpen] = useState(false);
+    const [mobileImpactOpen, setMobileImpactOpen] = useState(false);
     const [mobileEventsOpen, setMobileEventsOpen] = useState(false);
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
@@ -25,17 +31,32 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
             : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
+    const dropdownItemClass =
+        'px-4 py-2.5 text-sm font-medium transition-all duration-200 block no-underline rounded-lg text-gray-700 hover:text-sky-600 hover:bg-gray-50 cursor-pointer';
+
     const dropdownLinkClasses = ({ isActive }: { isActive: boolean }) =>
         `px-4 py-2.5 text-sm font-medium transition-all duration-200 block no-underline rounded-lg ${isActive
             ? 'text-sky-600 bg-sky-50'
             : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
+    const closeMobile = () => setMobileMenuOpen(false);
+
+    /** Navigate to a page with a hash, then scroll to the section */
+    const scrollToSection = (path: string, hash: string) => {
+        navigate(`${path}#${hash}`);
+        // If already on the page, scroll manually
+        setTimeout(() => {
+            const el = document.getElementById(hash);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 150);
+    };
+
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
                 ? 'bg-white shadow-lg py-2'
-                : 'bg-white/98  shadow-md py-3'
+                : 'bg-white/98 shadow-md py-3'
                 }`}
         >
             <div className="mx-auto px-4 sm:px-6">
@@ -45,7 +66,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                         <img
                             src="/logo.png"
                             alt="Engineers4Humanity Logo"
-                            className="w-20 h-20  scale-120 object-contain  transition-all duration-300"
+                            className="w-20 h-20 scale-120 object-contain transition-all duration-300"
                         />
                     </Link>
 
@@ -56,63 +77,165 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 Home
                             </NavLink>
                         </li>
-                        <li>
-                            <NavLink to="/about" className={navLinkClasses}>
-                                About
-                            </NavLink>
-                        </li>
 
-                        {/* Team Dropdown */}
+                        {/* ── About Us Dropdown ── */}
                         <li
                             className="relative"
-                            onMouseEnter={() => setTeamDropdownOpen(true)}
-                            onMouseLeave={() => setTeamDropdownOpen(false)}
+                            onMouseEnter={() => setAboutDropdownOpen(true)}
+                            onMouseLeave={() => setAboutDropdownOpen(false)}
                         >
                             <button
-                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${teamDropdownOpen
+                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${aboutDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
                             >
-                                Team
-                                <ChevronDown
-                                    size={16}
-                                    className={`transition-transform duration-300 ${teamDropdownOpen ? 'rotate-180' : ''
-                                        }`}
-                                />
+                                About Us
+                                <ChevronDown size={16} className={`transition-transform duration-300 ${aboutDropdownOpen ? 'rotate-180' : ''}`} />
                             </button>
 
-                            {/* Dropdown Menu */}
                             <div
-                                className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-300 origin-top ${teamDropdownOpen
+                                className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-300 origin-top ${aboutDropdownOpen
                                     ? 'opacity-100 scale-100 translate-y-0 visible'
                                     : 'opacity-0 scale-95 -translate-y-2 invisible'
                                     }`}
                             >
-                                <NavLink
-                                    to="/management-team"
-                                    className={dropdownLinkClasses}
-                                    onClick={() => setTeamDropdownOpen(false)}
+                                <button
+                                    className={dropdownItemClass}
+                                    onClick={() => { setAboutDropdownOpen(false); scrollToSection('/about', 'who-we-are'); }}
                                 >
-                                    Management Team
+                                    Who We Are
+                                </button>
+                                <button
+                                    className={dropdownItemClass}
+                                    onClick={() => { setAboutDropdownOpen(false); scrollToSection('/about', 'our-story'); }}
+                                >
+                                    Our Story
+                                </button>
+                                <NavLink to="/about/executive-team" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                    Executive Team
                                 </NavLink>
-                                <NavLink
-                                    to="/board-members"
-                                    className={dropdownLinkClasses}
-                                    onClick={() => setTeamDropdownOpen(false)}
-                                >
-                                    Board Members
+                                <NavLink to="/about/board-member" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                    Board Member
+                                </NavLink>
+                                <NavLink to="/get-involved" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                    Join Us
                                 </NavLink>
                             </div>
                         </li>
 
-                        <li>
-                            <NavLink to="/programs" className={navLinkClasses}>
+                        {/* ── Programs Mega Menu ── */}
+                        <li
+                            className="relative"
+                            onMouseEnter={() => setProgramsDropdownOpen(true)}
+                            onMouseLeave={() => setProgramsDropdownOpen(false)}
+                        >
+                            <button
+                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${programsDropdownOpen
+                                    ? 'text-sky-600 bg-sky-50'
+                                    : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                    }`}
+                            >
                                 Programs
-                            </NavLink>
+                                <ChevronDown size={16} className={`transition-transform duration-300 ${programsDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            <div
+                                className={`absolute left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white rounded-xl shadow-xl border border-gray-100 p-5 transition-all duration-300 origin-top ${programsDropdownOpen
+                                    ? 'opacity-100 scale-100 translate-y-0 visible'
+                                    : 'opacity-0 scale-95 -translate-y-2 invisible'
+                                    }`}
+                            >
+                                <div className="grid grid-cols-3 gap-4">
+                                    {/* Humanitarian */}
+                                    <div>
+                                        <h4 className="text-xs font-bold text-sky-600 uppercase tracking-wider mb-2 px-3">Humanitarian</h4>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'education'); }}>
+                                            Education
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'wash'); }}>
+                                            WASH
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'environment'); }}>
+                                            Environment
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'leadership-peace'); }}>
+                                            Leadership & Peace Building
+                                        </button>
+                                    </div>
+
+                                    {/* Consultancy */}
+                                    <div>
+                                        <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2 px-3">Consultancy</h4>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'engineering-consultancy'); }}>
+                                            Engineering Consultancy
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'construction-service'); }}>
+                                            Construction Service
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'environment-safeguarding'); }}>
+                                            Env. & Social Safeguarding
+                                        </button>
+                                    </div>
+
+                                    {/* E4H Institute */}
+                                    <div>
+                                        <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2 px-3">E4H Institute</h4>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'professional-development'); }}>
+                                            Professional Dev. Training
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'research-publication'); }}>
+                                            Research & Publication
+                                        </button>
+                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'vocational-training'); }}>
+                                            Vocational Technical Training
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </li>
 
-                        {/* Events Dropdown */}
+                        {/* ── Impact Dropdown ── */}
+                        <li
+                            className="relative"
+                            onMouseEnter={() => setImpactDropdownOpen(true)}
+                            onMouseLeave={() => setImpactDropdownOpen(false)}
+                        >
+                            <button
+                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${impactDropdownOpen
+                                    ? 'text-sky-600 bg-sky-50'
+                                    : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                    }`}
+                            >
+                                Impact
+                                <ChevronDown size={16} className={`transition-transform duration-300 ${impactDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            <div
+                                className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-300 origin-top ${impactDropdownOpen
+                                    ? 'opacity-100 scale-100 translate-y-0 visible'
+                                    : 'opacity-0 scale-95 -translate-y-2 invisible'
+                                    }`}
+                            >
+                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'our-impact'); }}>
+                                    Our Impact
+                                </button>
+                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'success-story'); }}>
+                                    Success Story
+                                </button>
+                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'testimony'); }}>
+                                    Testimony
+                                </button>
+                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'documentary'); }}>
+                                    Documentary
+                                </button>
+                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'article-publication'); }}>
+                                    Article and Publication
+                                </button>
+                            </div>
+                        </li>
+
+                        {/* ── Events Dropdown ── */}
                         <li
                             className="relative"
                             onMouseEnter={() => setEventsDropdownOpen(true)}
@@ -125,32 +248,19 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     }`}
                             >
                                 Events
-                                <ChevronDown
-                                    size={16}
-                                    className={`transition-transform duration-300 ${eventsDropdownOpen ? 'rotate-180' : ''
-                                        }`}
-                                />
+                                <ChevronDown size={16} className={`transition-transform duration-300 ${eventsDropdownOpen ? 'rotate-180' : ''}`} />
                             </button>
 
-                            {/* Dropdown Menu */}
                             <div
                                 className={`absolute left-0 mt-2 w-56 bg-white rounded-xl shadow-xl border border-gray-100 py-2 transition-all duration-300 origin-top ${eventsDropdownOpen
                                     ? 'opacity-100 scale-100 translate-y-0 visible'
                                     : 'opacity-0 scale-95 -translate-y-2 invisible'
                                     }`}
                             >
-                                <NavLink
-                                    to="/upcoming-event"
-                                    className={dropdownLinkClasses}
-                                    onClick={() => setEventsDropdownOpen(false)}
-                                >
+                                <NavLink to="/upcoming-event" className={dropdownLinkClasses} onClick={() => setEventsDropdownOpen(false)}>
                                     Upcoming Events
                                 </NavLink>
-                                <NavLink
-                                    to="/past-event"
-                                    className={dropdownLinkClasses}
-                                    onClick={() => setEventsDropdownOpen(false)}
-                                >
+                                <NavLink to="/past-event" className={dropdownLinkClasses} onClick={() => setEventsDropdownOpen(false)}>
                                     Past Events
                                 </NavLink>
                             </div>
@@ -172,14 +282,12 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                             </NavLink>
                         </li>
                         <li className="ml-2">
-                            <a
-                                href="https://buy.stripe.com/3cIfZi6Jj4BfcNm6QPbAs02"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to="/donate"
                                 className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 no-underline inline-block"
                             >
                                 Donate Now
-                            </a>
+                            </Link>
                         </li>
                     </ul>
 
@@ -193,18 +301,15 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                     </button>
                 </div>
 
-
                 {/* Mobile Sidebar Overlay */}
                 <div
-                    className={`lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-                        }`}
-                    onClick={() => setMobileMenuOpen(false)}
+                    className={`lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
+                    onClick={closeMobile}
                 />
 
                 {/* Mobile Sidebar */}
                 <div
-                    className={`lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-                        }`}
+                    className={`lg:hidden fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out overflow-y-auto ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'}`}
                 >
                     {/* Sidebar Header */}
                     <div className="sticky top-0 bg-gradient-to-r from-sky-600 to-green-600 text-white p-6 shadow-md">
@@ -213,11 +318,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 <h2 className="text-xl font-bold">Menu</h2>
                                 <p className="text-sm text-sky-100 mt-1">Engineers4Humanity</p>
                             </div>
-                            <button
-                                onClick={() => setMobileMenuOpen(false)}
-                                className="p-2 hover:bg-white/20 rounded-lg transition-colors"
-                                aria-label="Close menu"
-                            >
+                            <button onClick={closeMobile} className="p-2 hover:bg-white/20 rounded-lg transition-colors" aria-label="Close menu">
                                 <X size={24} />
                             </button>
                         </div>
@@ -226,132 +327,106 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                     {/* Sidebar Navigation */}
                     <div className="p-4">
                         <div className="flex flex-col gap-1">
-                            <NavLink
-                                to="/"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={mobileNavLinkClasses}
-                            >
-                                Home
-                            </NavLink>
-                            <NavLink
-                                to="/about"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={mobileNavLinkClasses}
-                            >
-                                About
-                            </NavLink>
+                            <NavLink to="/" onClick={closeMobile} className={mobileNavLinkClasses}>Home</NavLink>
 
-                            {/* Mobile Team Accordion */}
+                            {/* Mobile About Us */}
                             <div className="my-1">
                                 <button
-                                    onClick={() => setMobileTeamOpen(!mobileTeamOpen)}
+                                    onClick={() => setMobileAboutOpen(!mobileAboutOpen)}
                                     className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 flex items-center justify-between border-none bg-transparent cursor-pointer text-left"
                                 >
-                                    <span>Team</span>
-                                    <ChevronDown
-                                        size={20}
-                                        className={`transition-transform duration-300 ${mobileTeamOpen ? 'rotate-180' : ''
-                                            }`}
-                                    />
+                                    <span>About Us</span>
+                                    <ChevronDown size={20} className={`transition-transform duration-300 ${mobileAboutOpen ? 'rotate-180' : ''}`} />
                                 </button>
-                                <div
-                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileTeamOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                                        }`}
-                                >
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileAboutOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <NavLink
-                                            to="/management-team"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className={mobileNavLinkClasses}
-                                        >
-                                            Management Team
-                                        </NavLink>
-                                        <NavLink
-                                            to="/board-members"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className={mobileNavLinkClasses}
-                                        >
-                                            Board Members
-                                        </NavLink>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/about', 'who-we-are'); }}>Who We Are</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/about', 'our-story'); }}>Our Story</button>
+                                        <NavLink to="/about/executive-team" onClick={closeMobile} className={mobileNavLinkClasses}>Executive Team</NavLink>
+                                        <NavLink to="/about/board-member" onClick={closeMobile} className={mobileNavLinkClasses}>Board Member</NavLink>
+                                        <NavLink to="/get-involved" onClick={closeMobile} className={mobileNavLinkClasses}>Join Us</NavLink>
                                     </div>
                                 </div>
                             </div>
 
-                            <NavLink
-                                to="/programs"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={mobileNavLinkClasses}
-                            >
-                                Programs
-                            </NavLink>
+                            {/* Mobile Programs */}
+                            <div className="my-1">
+                                <button
+                                    onClick={() => setMobileProgramsOpen(!mobileProgramsOpen)}
+                                    className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 flex items-center justify-between border-none bg-transparent cursor-pointer text-left"
+                                >
+                                    <span>Programs</span>
+                                    <ChevronDown size={20} className={`transition-transform duration-300 ${mobileProgramsOpen ? 'rotate-180' : ''}`} />
+                                </button>
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileProgramsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+                                        <p className="px-4 py-1.5 text-xs font-bold text-sky-600 uppercase tracking-wider">Humanitarian</p>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'education'); }}>Education</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'wash'); }}>WASH</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'environment'); }}>Environment</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'leadership-peace'); }}>Leadership & Peace Building</button>
 
-                            {/* Mobile Events Accordion */}
+                                        <p className="px-4 py-1.5 text-xs font-bold text-green-600 uppercase tracking-wider mt-2">Consultancy</p>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'engineering-consultancy'); }}>Engineering Consultancy</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'construction-service'); }}>Construction Service</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'environment-safeguarding'); }}>Env. & Social Safeguarding</button>
+
+                                        <p className="px-4 py-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider mt-2">E4H Institute</p>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'professional-development'); }}>Professional Dev. Training</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'research-publication'); }}>Research & Publication</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'vocational-training'); }}>Vocational Technical Training</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Mobile Impact */}
+                            <div className="my-1">
+                                <button
+                                    onClick={() => setMobileImpactOpen(!mobileImpactOpen)}
+                                    className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 flex items-center justify-between border-none bg-transparent cursor-pointer text-left"
+                                >
+                                    <span>Impact</span>
+                                    <ChevronDown size={20} className={`transition-transform duration-300 ${mobileImpactOpen ? 'rotate-180' : ''}`} />
+                                </button>
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileImpactOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                    <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'our-impact'); }}>Our Impact</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'success-story'); }}>Success Story</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'testimony'); }}>Testimony</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'documentary'); }}>Documentary</button>
+                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'article-publication'); }}>Article and Publication</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Mobile Events */}
                             <div className="my-1">
                                 <button
                                     onClick={() => setMobileEventsOpen(!mobileEventsOpen)}
                                     className="w-full px-4 py-3 text-gray-700 font-medium hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 flex items-center justify-between border-none bg-transparent cursor-pointer text-left"
                                 >
                                     <span>Events</span>
-                                    <ChevronDown
-                                        size={20}
-                                        className={`transition-transform duration-300 ${mobileEventsOpen ? 'rotate-180' : ''
-                                            }`}
-                                    />
+                                    <ChevronDown size={20} className={`transition-transform duration-300 ${mobileEventsOpen ? 'rotate-180' : ''}`} />
                                 </button>
-                                <div
-                                    className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileEventsOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                                        }`}
-                                >
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileEventsOpen ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <NavLink
-                                            to="/upcoming-event"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className={mobileNavLinkClasses}
-                                        >
-                                            Upcoming Events
-                                        </NavLink>
-                                        <NavLink
-                                            to="/past-event"
-                                            onClick={() => setMobileMenuOpen(false)}
-                                            className={mobileNavLinkClasses}
-                                        >
-                                            Past Events
-                                        </NavLink>
+                                        <NavLink to="/upcoming-event" onClick={closeMobile} className={mobileNavLinkClasses}>Upcoming Events</NavLink>
+                                        <NavLink to="/past-event" onClick={closeMobile} className={mobileNavLinkClasses}>Past Events</NavLink>
                                     </div>
                                 </div>
                             </div>
 
-                            <NavLink
-                                to="/get-involved"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={mobileNavLinkClasses}
-                            >
-                                Get Involved
-                            </NavLink>
-                            <NavLink
-                                to="/gallery"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={mobileNavLinkClasses}
-                            >
-                                Gallery
-                            </NavLink>
-                            <NavLink
-                                to="/contact"
-                                onClick={() => setMobileMenuOpen(false)}
-                                className={mobileNavLinkClasses}
-                            >
-                                Contact
-                            </NavLink>
+                            <NavLink to="/get-involved" onClick={closeMobile} className={mobileNavLinkClasses}>Get Involved</NavLink>
+                            <NavLink to="/gallery" onClick={closeMobile} className={mobileNavLinkClasses}>Gallery</NavLink>
+                            <NavLink to="/contact" onClick={closeMobile} className={mobileNavLinkClasses}>Contact</NavLink>
 
-                            {/* Mobile Donate Button */}
-                            <a
-                                href="https://buy.stripe.com/3cIfZi6Jj4BfcNm6QPbAs02"
-                                target="_blank"
-                                rel="noopener noreferrer"
+                            <Link
+                                to="/donate"
+                                onClick={closeMobile}
                                 className="px-4 py-3.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg text-center mt-4 no-underline block"
                             >
                                 Donate Now
-                            </a>
+                            </Link>
                         </div>
                     </div>
                 </div>

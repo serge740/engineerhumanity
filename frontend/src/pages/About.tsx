@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import image from '../assets/image6.jpg';
 
@@ -30,6 +31,17 @@ import {
 
 const AboutUs = () => {
     const [selectedStory, setSelectedStory] = useState<any>(null);
+    const location = useLocation();
+
+    // Scroll to hash section on navigation
+    useEffect(() => {
+        if (location.hash) {
+            const el = document.getElementById(location.hash.slice(1));
+            if (el) {
+                setTimeout(() => el.scrollIntoView({ behavior: 'smooth' }), 100);
+            }
+        }
+    }, [location.hash]);
 
     const successStories = [
         {
@@ -267,7 +279,7 @@ const AboutUs = () => {
             />
 
             {/* Our History Section */}
-            <section className="py-12 md:py-20 bg-white">
+            <section id="who-we-are" className="py-12 md:py-20 bg-white scroll-mt-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="flex items-center gap-2 sm:gap-3 mb-8 md:mb-12">
                         <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-sky-600" />
@@ -321,7 +333,7 @@ const AboutUs = () => {
             </section>
 
             {/* Founder Section */}
-            <section className="py-12 md:py-20 bg-gray-50">
+            <section id="our-story" className="py-12 md:py-20 bg-gray-50 scroll-mt-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="text-center mb-8 md:mb-12">
                         <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
@@ -425,7 +437,7 @@ const AboutUs = () => {
             </section>
 
             {/* Education Champion Section */}
-            <section className="py-12 md:py-20 bg-white">
+            <section id="executive-team" className="py-12 md:py-20 bg-white scroll-mt-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="text-center mb-8 md:mb-12">
                         <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -600,7 +612,7 @@ const AboutUs = () => {
             </section>
 
             {/* Success Stories Section */}
-            <section className="py-12 md:py-20 bg-white">
+            <section id="success-stories" className="py-12 md:py-20 bg-white scroll-mt-24">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6">
                     <div className="text-center mb-10 md:mb-16">
                         <div className="flex items-center justify-center gap-2 sm:gap-3 mb-4 md:mb-6">
