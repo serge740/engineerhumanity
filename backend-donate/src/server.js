@@ -9,7 +9,9 @@ const PORT = process.env.PORT || 5400;
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:3000'],
+    // origin: ['http://localhost:5173', 'http://localhost:3000'],
+    origin: ['https://engineers-4-humanity.onrender.com', 'https://www.engineers-4-humanity.onrender.com'],
+    methods:['POST','PUT','DELETE','GET'],
     credentials: true
 }));
 app.use(express.json());
