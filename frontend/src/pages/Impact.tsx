@@ -150,19 +150,19 @@ const Impact = () => {
                     <div className="grid md:grid-cols-2 gap-8">
                         {[
                             {
-                                name: 'From Refugee Camp to Professional Accountant',
+                                name: 'Bosco Izabayo — From Refugee Camp to Professional Accountant',
                                 story: 'One of our beneficiaries grew up in Gihembe Refugee Camp with limited access to education. Through Engineers4Humanity\'s scholarship program and mentorship from our founder, he completed high school with top marks, earned a university degree in Business Administration, and is now a professional accountant helping others in his community.',
                             },
                             {
-                                name: 'Top Graduate Inspiring the Next Generation',
+                                name: 'Bernard Ndizeye — Top Graduate Inspiring the Next Generation',
                                 story: 'A Hope School alumnus who studied in difficult conditions graduated with distinction at the national exam. With support from partner organizations, he completed a Bachelor\'s degree in Education as the top student. Today, he teaches at a high school in Rwanda and mentors young refugee students as a volunteer with Engineers4Humanity.',
                             },
                             {
-                                name: 'Empowering Women Through Vocational Skills',
+                                name: 'Delice Kiracunda — Empowering Women Through Vocational Skills',
                                 story: 'A young woman from the refugee camp gained admission to study Leisure, Tourism, and Hotel Management at university. She credits her tailoring skills from TVET school and the guidance of Engineers4Humanity mentors for giving her the confidence to pursue higher education and uplift her community.',
                             },
                             {
-                                name: 'Global Youth Advisor at UNHCR',
+                                name: 'Bahati Musuhuke — Global Youth Advisor at UNHCR',
                                 story: 'Starting from Gihembe Refugee Camp, one of our alumni rose to become a Global Youth Advisor at UNHCR and a Financial Compliance Officer, representing refugees worldwide. He is currently pursuing an MBA and continues to support Engineers4Humanity\'s mission of empowering vulnerable communities.',
                             },
                         ].map((story, i) => (

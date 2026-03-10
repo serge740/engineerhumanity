@@ -12,12 +12,12 @@ const Hero = () => {
         {
             image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1920&q=80",
             title: "Education Changes Everything",
-            description: "Supporting 500+ high school graduates and 2,000+ young refugees with mentorship and career pathways"
+            description: "From refugee camps to universities — we open doors that were never meant to be closed"
         },
         {
             image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&q=80",
             title: "Creating Opportunities",
-            description: "300+ job opportunities created through vocational training and social entrepreneurship"
+            description: "Vocational training, mentorship, and social entrepreneurship transforming lives across East Africa and beyond"
         }
     ];
 

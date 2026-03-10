@@ -7,75 +7,75 @@ function Upcoming() {
   const [events] = useState([
     {
       id: 1,
-      title: "Annual Health Summit 2026",
-      date: "March 15, 2026",
-      time: "9:00 AM - 5:00 PM",
-      location: "Convention Center, Downtown",
-      description: "Join us for our flagship annual event bringing together healthcare professionals, community leaders, and advocates to discuss the future of health equity.",
+      title: "Engineers4Humanity Annual Fundraising Gala 2026",
+      date: "April 12, 2026",
+      time: "6:00 PM - 10:00 PM",
+      location: "Dallas, Texas",
+      description: "Join us for our annual gala celebrating 17+ years of empowering refugee communities through education and engineering. An evening of storytelling, impact updates, and community.",
       image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop",
-      category: "Conference",
+      category: "Fundraiser",
       status: "Registration Open"
     },
     {
       id: 2,
-      title: "Community Health Fair",
-      date: "April 8, 2026",
-      time: "10:00 AM - 3:00 PM",
-      location: "Central Park Pavilion",
-      description: "Free health screenings, wellness workshops, and resources for the entire family. Connect with local health providers and learn about preventive care.",
-      image: "https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?w=800&h=500&fit=crop",
-      category: "Community Event",
+      title: "Refugee Youth STEM Mentorship Day",
+      date: "April 26, 2026",
+      time: "9:00 AM - 3:00 PM",
+      location: "Richardson, Texas",
+      description: "A full day connecting refugee and immigrant youth with STEM professionals for career guidance, scholarship information, and hands-on engineering activities.",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=500&fit=crop",
+      category: "Mentorship",
       status: "Free Event"
     },
     {
       id: 3,
-      title: "Mental Health Awareness Workshop",
-      date: "April 22, 2026",
-      time: "6:00 PM - 8:00 PM",
+      title: "Hope School Alumni Reunion",
+      date: "May 10, 2026",
+      time: "2:00 PM - 6:00 PM",
       location: "Virtual Event",
-      description: "An interactive workshop focusing on mental health awareness, stress management techniques, and building resilient communities.",
-      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=500&fit=crop",
-      category: "Workshop",
-      status: "Virtual"
+      description: "Celebrating graduates of the Hope School program from Gihembe Refugee Camp. Alumni share their journeys and connect with current beneficiaries and supporters.",
+      image: "https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?w=800&h=500&fit=crop",
+      category: "Community Event",
+      status: "RSVP Required"
     },
     {
       id: 4,
-      title: "Youth Leadership Training",
-      date: "May 5, 2026",
-      time: "1:00 PM - 4:00 PM",
-      location: "Community Center Hall A",
-      description: "Empowering the next generation of health advocates through leadership training, mentorship, and hands-on community project planning.",
-      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=800&h=500&fit=crop",
-      category: "Training",
-      status: "Limited Spots"
+      title: "WASH Engineering Workshop — Rwanda",
+      date: "May 24, 2026",
+      time: "8:00 AM - 4:00 PM",
+      location: "Kigali, Rwanda",
+      description: "Hands-on training for refugee youth and local engineers on designing water supply systems and sanitation facilities in rural communities.",
+      image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&h=500&fit=crop",
+      category: "Workshop",
+      status: "Application Required"
     },
     {
       id: 5,
-      title: "Nutrition & Wellness Seminar",
-      date: "May 18, 2026",
-      time: "11:00 AM - 1:00 PM",
-      location: "Wellness Center",
-      description: "Learn about nutrition basics, meal planning on a budget, and creating sustainable healthy eating habits for you and your family.",
-      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=500&fit=crop",
-      category: "Seminar",
-      status: "Registration Open"
+      title: "Skills Development Institute Cohort Launch",
+      date: "June 7, 2026",
+      time: "10:00 AM - 12:00 PM",
+      location: "Gihembe, Rwanda",
+      description: "Launching the next cohort of the E4H vocational training program covering engineering skills, project management, and entrepreneurship for refugee youth.",
+      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=500&fit=crop",
+      category: "Training",
+      status: "Applications Closing Soon"
     },
     {
       id: 6,
-      title: "Healthcare Access Forum",
-      date: "June 2, 2026",
-      time: "2:00 PM - 6:00 PM",
-      location: "City Hall Auditorium",
-      description: "A critical discussion on improving healthcare access in underserved communities, featuring policymakers, healthcare providers, and community advocates.",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&h=500&fit=crop",
-      category: "Forum",
-      status: "RSVP Required"
+      title: "International World Refugee Day Commemoration",
+      date: "June 20, 2026",
+      time: "5:00 PM - 8:00 PM",
+      location: "Dallas, Texas",
+      description: "Honoring World Refugee Day with community leaders, donors, and beneficiaries. Features storytelling, a book reading from 'Breaking Boundaries,' and an impact report presentation.",
+      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&h=500&fit=crop",
+      category: "Community Event",
+      status: "Free Event"
     }
   ]);
 
   const [filter, setFilter] = useState('all');
 
-  const categories = ['all', 'Conference', 'Workshop', 'Training', 'Community Event', 'Seminar', 'Forum'];
+  const categories = ['all', 'Fundraiser', 'Mentorship', 'Community Event', 'Workshop', 'Training'];
 
   const filteredEvents = filter === 'all'
     ? events

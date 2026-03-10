@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Info } from 'lucide-react';
 import Header from '../components/Header';
 import image from '../assets/image6.jpg';
 
@@ -7,15 +8,15 @@ function Gallery() {
     {
       id: 1,
       src: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
-      title: "Water Filtration Workshop",
-      category: "Workshops",
-      location: "New York, US",
+      title: "WASH Engineering Field Work",
+      category: "Field Work",
+      location: "Gihembe, Rwanda",
       date: "June 2025"
     },
     {
       id: 2,
       src: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=900&fit=crop",
-      title: "Community Health Meeting",
+      title: "Community Outreach Meeting",
       category: "Community Events",
       location: "Kigali, Rwanda",
       date: "May 2025"
@@ -23,23 +24,23 @@ function Gallery() {
     {
       id: 3,
       src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop",
-      title: "Engineers Summit",
+      title: "Engineers4Humanity Annual Gala",
       category: "Conferences",
-      location: "Richardson, Texas",
+      location: "Dallas, Texas",
       date: "December 2024"
     },
     {
       id: 4,
       src: "https://images.unsplash.com/photo-1559511260-66a654ae982a?w=800&h=700&fit=crop",
-      title: "Sanitation Training",
-      category: "Training Programs",
+      title: "Vocational Skills Training Session",
+      category: "Training",
       location: "Eastern Province, Rwanda",
       date: "November 2024"
     },
     {
       id: 5,
       src: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&h=600&fit=crop",
-      title: "Water Quality Testing",
+      title: "Water Sanitation Site Visit",
       category: "Field Work",
       location: "East Africa",
       date: "October 2024"
@@ -47,23 +48,23 @@ function Gallery() {
     {
       id: 6,
       src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=800&fit=crop",
-      title: "Youth STEM Fair",
-      category: "Educational Events",
-      location: "Houston, Texas",
+      title: "Refugee Youth STEM Mentorship Day",
+      category: "Education",
+      location: "Richardson, Texas",
       date: "September 2024"
     },
     {
       id: 7,
       src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=550&fit=crop",
-      title: "Disaster Response Workshop",
-      category: "Workshops",
+      title: "Leadership & Peacebuilding Workshop",
+      category: "Training",
       location: "Virtual Event",
       date: "August 2024"
     },
     {
       id: 8,
       src: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=750&fit=crop",
-      title: "Partnership Forum",
+      title: "E4H Partner Organization Forum",
       category: "Community Events",
       location: "Kigali, Rwanda",
       date: "July 2024"
@@ -71,55 +72,55 @@ function Gallery() {
     {
       id: 9,
       src: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop",
-      title: "Filtration Technology Demo",
-      category: "Demonstrations",
-      location: "Dallas, Texas",
+      title: "Hope School Graduation Ceremony",
+      category: "Education",
+      location: "Gihembe, Rwanda",
       date: "June 2024"
     },
     {
       id: 10,
       src: "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?w=800&h=900&fit=crop",
-      title: "Clean Water Initiative",
+      title: "Refugee Camp Infrastructure Visit",
       category: "Field Work",
-      location: "Rural Communities",
+      location: "Northern Province, Rwanda",
       date: "May 2024"
     },
     {
       id: 11,
       src: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=650&fit=crop",
-      title: "Healthcare Infrastructure",
-      category: "Projects",
-      location: "Multiple Locations",
+      title: "Breaking Boundaries Book Reading",
+      category: "Outreach",
+      location: "Dallas, Texas",
       date: "April 2024"
     },
     {
       id: 12,
       src: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=550&fit=crop",
-      title: "Team Collaboration",
-      category: "Workshops",
+      title: "E4H Team Strategy Meeting",
+      category: "Conferences",
       location: "Kigali, Rwanda",
       date: "March 2024"
     },
     {
       id: 13,
       src: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=850&fit=crop",
-      title: "Water Safety Education",
-      category: "Educational Events",
-      location: "New York, US",
+      title: "Scholarship Recipient Mentorship",
+      category: "Education",
+      location: "Gihembe, Rwanda",
       date: "February 2024"
     },
     {
       id: 14,
       src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=600&fit=crop",
-      title: "Engineering Volunteers",
-      category: "Community Events",
-      location: "Various Locations",
+      title: "Volunteer Engineers in the Field",
+      category: "Field Work",
+      location: "East Africa",
       date: "January 2024"
     },
     {
       id: 15,
       src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=700&fit=crop",
-      title: "Strategy Planning Session",
+      title: "E4H Annual Planning Conference",
       category: "Conferences",
       location: "Dallas, Texas",
       date: "December 2023"
@@ -165,6 +166,16 @@ function Gallery() {
         linkHref="/gallery"
         backgroundImage={image}
       />
+
+      {/* Placeholder Notice */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 mb-4">
+          <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
+          <p className="text-sm">
+            <span className="font-semibold">Gallery update in progress.</span> We are currently collecting real photos from our programs and events. The images shown are temporary placeholders — check back soon!
+          </p>
+        </div>
+      </div>
 
       {/* Category Filter */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
