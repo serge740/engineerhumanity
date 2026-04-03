@@ -100,18 +100,12 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     : 'opacity-0 scale-95 -translate-y-2 invisible'
                                     }`}
                             >
-                                <button
-                                    className={dropdownItemClass}
-                                    onClick={() => { setAboutDropdownOpen(false); scrollToSection('/about', 'who-we-are'); }}
-                                >
+                                <NavLink to="/about/who-we-are" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Who We Are
-                                </button>
-                                <button
-                                    className={dropdownItemClass}
-                                    onClick={() => { setAboutDropdownOpen(false); scrollToSection('/about', 'our-story'); }}
-                                >
+                                </NavLink>
+                                <NavLink to="/about/our-story" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Our Story
-                                </button>
+                                </NavLink>
                                 <NavLink to="/about/executive-team" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Executive Team
                                 </NavLink>
@@ -150,46 +144,34 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     {/* Humanitarian */}
                                     <div>
                                         <h4 className="text-xs font-bold text-sky-600 uppercase tracking-wider mb-2 px-3">Humanitarian</h4>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'education'); }}>
-                                            Education
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'wash'); }}>
-                                            WASH
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'environment'); }}>
-                                            Environment
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'leadership-peace'); }}>
+                                
+                                        
+                                        <NavLink to="/programs/public-health-engineering" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
+                                            WASH & Environment
+                                        </NavLink>
+                                        <NavLink to="/programs/leadership-and-peace" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             Leadership & Peace Building
-                                        </button>
+                                        </NavLink>
                                     </div>
 
                                     {/* Consultancy */}
                                     <div>
                                         <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2 px-3">Consultancy</h4>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'engineering-consultancy'); }}>
+                                        <NavLink to="/programs/entrepreneurship" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             Engineering Consultancy
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'construction-service'); }}>
-                                            Construction Service
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'environment-safeguarding'); }}>
-                                            Env. & Social Safeguarding
-                                        </button>
+                                        </NavLink>
+                                      <NavLink to="/programs/education-program" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
+                                            Education
+                                        </NavLink>
                                     </div>
 
                                     {/* E4H Institute */}
                                     <div>
                                         <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2 px-3">E4H Institute</h4>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'professional-development'); }}>
-                                            Professional Dev. Training
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'research-publication'); }}>
-                                            Research & Publication
-                                        </button>
-                                        <button className={dropdownItemClass} onClick={() => { setProgramsDropdownOpen(false); scrollToSection('/programs', 'vocational-training'); }}>
+                                      
+                                        <NavLink to="/programs/institute" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             Vocational Technical Training
-                                        </button>
+                                        </NavLink>
                                     </div>
                                 </div>
                             </div>
@@ -217,21 +199,21 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     : 'opacity-0 scale-95 -translate-y-2 invisible'
                                     }`}
                             >
-                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'our-impact'); }}>
+                                <NavLink to="/impact/our-impact" className={dropdownLinkClasses} onClick={() => setImpactDropdownOpen(false)}>
                                     Our Impact
-                                </button>
-                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'success-story'); }}>
+                                </NavLink>
+                                <NavLink to="/impact/success-story" className={dropdownLinkClasses} onClick={() => setImpactDropdownOpen(false)}>
                                     Success Story
-                                </button>
-                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'testimony'); }}>
+                                </NavLink>
+                                <NavLink to="/impact/testimony" className={dropdownLinkClasses} onClick={() => setImpactDropdownOpen(false)}>
                                     Testimony
-                                </button>
-                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'documentary'); }}>
+                                </NavLink>
+                                <NavLink to="/impact/documentary" className={dropdownLinkClasses} onClick={() => setImpactDropdownOpen(false)}>
                                     Documentary
-                                </button>
-                                <button className={dropdownItemClass} onClick={() => { setImpactDropdownOpen(false); scrollToSection('/impact', 'article-publication'); }}>
+                                </NavLink>
+                                <NavLink to="/impact/article-publication" className={dropdownLinkClasses} onClick={() => setImpactDropdownOpen(false)}>
                                     Article and Publication
-                                </button>
+                                </NavLink>
                             </div>
                         </li>
 
@@ -340,8 +322,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 </button>
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileAboutOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/about', 'who-we-are'); }}>Who We Are</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/about', 'our-story'); }}>Our Story</button>
+                                        <NavLink to="/about/who-we-are" onClick={closeMobile} className={mobileNavLinkClasses}>Who We Are</NavLink>
+                                        <NavLink to="/about/our-story" onClick={closeMobile} className={mobileNavLinkClasses}>Our Story</NavLink>
                                         <NavLink to="/about/executive-team" onClick={closeMobile} className={mobileNavLinkClasses}>Executive Team</NavLink>
                                         <NavLink to="/about/board-member" onClick={closeMobile} className={mobileNavLinkClasses}>Board Member</NavLink>
                                         <NavLink to="/get-involved" onClick={closeMobile} className={mobileNavLinkClasses}>Join Us</NavLink>
@@ -361,20 +343,17 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileProgramsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
                                         <p className="px-4 py-1.5 text-xs font-bold text-sky-600 uppercase tracking-wider">Humanitarian</p>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'education'); }}>Education</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'wash'); }}>WASH</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'environment'); }}>Environment</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'leadership-peace'); }}>Leadership & Peace Building</button>
+                                        
+                                        <NavLink to="/programs/public-health-engineering" onClick={closeMobile} className={mobileNavLinkClasses}>WASH & Environment</NavLink>
+                                        <NavLink to="/programs/leadership-and-peace" onClick={closeMobile} className={mobileNavLinkClasses}>Leadership & Peace Building</NavLink>
 
                                         <p className="px-4 py-1.5 text-xs font-bold text-green-600 uppercase tracking-wider mt-2">Consultancy</p>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'engineering-consultancy'); }}>Engineering Consultancy</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'construction-service'); }}>Construction Service</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'environment-safeguarding'); }}>Env. & Social Safeguarding</button>
-
+                                        <NavLink to="/programs/education-program" onClick={closeMobile} className={mobileNavLinkClasses}>Education</NavLink>
+                                        <NavLink to="/programs/entrepreneurship" onClick={closeMobile} className={mobileNavLinkClasses}>Engineering Consultancy</NavLink>
+                                        
                                         <p className="px-4 py-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider mt-2">E4H Institute</p>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'professional-development'); }}>Professional Dev. Training</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'research-publication'); }}>Research & Publication</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/programs', 'vocational-training'); }}>Vocational Technical Training</button>
+
+                                        <NavLink to="/programs/institute" onClick={closeMobile} className={mobileNavLinkClasses}>Vocational Technical Training</NavLink>
                                     </div>
                                 </div>
                             </div>
@@ -390,11 +369,11 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                 </button>
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileImpactOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'our-impact'); }}>Our Impact</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'success-story'); }}>Success Story</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'testimony'); }}>Testimony</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'documentary'); }}>Documentary</button>
-                                        <button className="px-4 py-3 font-medium text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg text-left border-none bg-transparent cursor-pointer" onClick={() => { closeMobile(); scrollToSection('/impact', 'article-publication'); }}>Article and Publication</button>
+                                        <NavLink to="/impact/our-impact" onClick={closeMobile} className={mobileNavLinkClasses}>Our Impact</NavLink>
+                                        <NavLink to="/impact/success-story" onClick={closeMobile} className={mobileNavLinkClasses}>Success Story</NavLink>
+                                        <NavLink to="/impact/testimony" onClick={closeMobile} className={mobileNavLinkClasses}>Testimony</NavLink>
+                                        <NavLink to="/impact/documentary" onClick={closeMobile} className={mobileNavLinkClasses}>Documentary</NavLink>
+                                        <NavLink to="/impact/article-publication" onClick={closeMobile} className={mobileNavLinkClasses}>Article and Publication</NavLink>
                                     </div>
                                 </div>
                             </div>
