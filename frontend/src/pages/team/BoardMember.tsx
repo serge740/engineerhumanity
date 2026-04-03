@@ -38,34 +38,35 @@ const BoardMembers: React.FC = () => {
       role: 'chair',
       bio: "Vin Hoey serves as Board Chair of Engineers4Humanity, bringing decades of high-level experience in nonprofit governance, strategic planning, and organizational leadership. As Managing Director of Strategic4sight, he advises mission-driven organizations on strategy, marketing, leadership development, and board effectiveness.\n\nA dedicated Christian philanthropist and proud grandfather, Vin is deeply committed to serving refugees, vulnerable youth, and people experiencing homelessness. Vin has served on the boards of 25 nonprofits, chaired 10, and cofounded four, giving him exceptional depth in nonprofit governance and organizational development.\n\nHis compassion-driven service aligns directly with Engineers4Humanity's mission to restore dignity, expand opportunity, and build pathways to self-reliance for displaced and underserved communities. His extensive network across philanthropy, corporate leadership, and global nonprofit circles strengthens Engineers4Humanity's ability to build partnerships and mobilize resources for refugee self-reliance, job creation, and vocational training programs in Rwanda and East Africa.\n\nVin's global corporate background includes serving as Global Marketing Communications Manager for ExxonMobil Chemical and leading communications across Europe, Africa, and the Middle East from Brussels. He also teaches Nonprofit Marketing Strategies at the SMU Cox Graduate School of Business and has taught at SMU and DePauw University.\n\nAs Board Chair of Engineers4Humanity, Vin plays a pivotal role in strategic networking, donor engagement, and fundraising, helping expand refugee self-reliance, job creation, and vocational training programs across Rwanda and East Africa. His leadership strengthens the board's effectiveness, ensures strong governance, and supports the organization's long-term vision of engineering dignity and opportunity for all."
     },
-    {
+        {
       id: 2,
-      name: "Brother Malisaba Straton",
-      credentials: "M.Ed",
-      title: "Board Vice Chair | Education Program",
-      image: image2,
-      role: 'vice-chair',
-      bio: "Brother Malisaba Straton is a Marist brother, experienced educator and humanitarian leader whose five decades of service have strengthened schools and communities across East Africa (Rwanda, the DRC, Tanzania and Kenya) and with global network in education in the USA and Europe. As Board Vice Chair in charge of Education at Engineers4Humanity, he guides the organization's strategy for refugee education, school partnerships, and youth empowerment.\n\nBrother Straton has led and transformed numerous institutions, including Byimana School of Science—where he introduced Rwanda's first wireless internet in a public school—and Rwabuye Technical School, which he revitalized from 90 to 300 students within three years. His leadership has consistently combined academic excellence, financial discipline, and a deep commitment to student wellbeing.\n\nHe served as Deputy Provincial Superior of the Marist Brothers in Central and East Africa, supervised major school infrastructure projects, and held governance roles in national companies. A trained human rights educator, he has participated in international workshops in Geneva and has been a strong advocate for child protection and refugee learners.\n\nThrough partnerships with Forum Amis de la Paix and Engineers4Humanity, Brother Straton has helped refugee students access quality boarding schools, vocational training, mentorship, and long-term academic support. His lifelong dedication to education and human dignity continues to shape the next generation of leaders across East and Central Africa."
-    },
-    {
-      id: 3,
-      name: "Karegesa Muyango",
-      credentials: "MEng",
-      title: "Board Vice Chair | Engineering Program",
-      image: image3,
-      role: 'vice-chair',
-      bio: "Karegesa Muyango is an engineering leader and former refugee whose professional journey fuels his commitment to empowering young refugee engineers. As Vice Chair of Engineering at Engineers4Humanity, he guides the organization's technical programs, WASH initiatives, environmental protection projects, and job-creation pathways for displaced youth.\n\nWith a background in Chemistry and Mechanical Engineering from the American University in Cairo, Karegesa has built a diverse career across logistics, mining, hydropower, industrial installations, and public health engineering. His work includes rainwater harvesting systems for vulnerable families, effluent and wastewater management, dumpsite stabilization, and major environmental restoration projects across Rwanda.\n\nA dedicated mentor, he supports internship placement, technical apprenticeships, and career guidance for refugee engineers, helping them transition into meaningful employment. His humanitarian service spans rehabilitation support for war-injured veterans, artificial limb procurement, and fire-engine training in partnership with Japan.\n\nKaregesa champions engineering as a pathway to dignity, resilience, and sustainable peace."
-    },
-    {
-      id: 4,
       name: "Eric Kamanzi",
       credentials: "PMP, PE, MSc",
       title: "Founder & Chief Executive Officer",
-      image: image4,
+      image: image2,
       linkedIn: "https://www.linkedin.com/in/eric-kamanzi-pmp/",
       role: 'executive',
       bio: "Eric Kamanzi is the Founder & CEO of Engineers4Humanity and a member of the United Nations Association of the United States of America (UNAUSA), Dallas Chapter. Born in the DRC Congo and raised in a refugee camp in Rwanda as an orphan and survivor of violence, Eric transformed a life of hardship into a mission of hope, dignity, and opportunity for displaced communities. His journey from refugee camp to humanitarian engineer is captured in his #1 bestselling book Breaking Boundaries.\n\nEric's purpose was shaped by his father, Rusine, an elementary school teacher and community servant who taught him self-reliance, generosity, and the responsibility to lift others; and inspired by his spiritual mentors: The Purpose Driven Life by Pastor Rick Warren, The Power of Hope by Joyce Meyer, the Bible and many other human right activists which awakened his conviction that every life has meaning. These influences formed his lifelong message: \"Never Give Up. Never Lose Hope. God knows your name\".\n\nFor 17 years, Eric has led transformative initiatives for refugees, including co-founding Forum Amis de la Paix (2008) and establishing Hope School (2009), which enabled more than 500 high school graduates and 100 university students. In 2020, he founded Engineers4Humanity Consultancy and the Engineers4Humanity Technical & Innovation Hub Center—addressing today's urgent need for vocational training, climate-smart engineering, WASH solutions, and youth employment.\n\nA Civil Engineer and PMP-certified professional, Eric has led 100+ construction projects and serves as a Special Inspector at DFW International Airport. He is an active member of the National Society of Professional Engineers, RAPEPRwanda, PMI, Engineers Without Borders–USA, and the Institute of Engineers Rwanda.\n\nThrough Engineers4Humanity, Eric has impacted 100,000+ refugees and 2,000+ youth, championing dignity, self-reliance, and community-driven development."
     },
+    {
+      id: 3,
+      name: "Brother Malisaba Straton",
+      credentials: "M.Ed",
+      title: "Board Vice Chair | Education Program",
+      image: image3,
+      role: 'vice-chair',
+      bio: "Brother Malisaba Straton is a Marist brother, experienced educator and humanitarian leader whose five decades of service have strengthened schools and communities across East Africa (Rwanda, the DRC, Tanzania and Kenya) and with global network in education in the USA and Europe. As Board Vice Chair in charge of Education at Engineers4Humanity, he guides the organization's strategy for refugee education, school partnerships, and youth empowerment.\n\nBrother Straton has led and transformed numerous institutions, including Byimana School of Science—where he introduced Rwanda's first wireless internet in a public school—and Rwabuye Technical School, which he revitalized from 90 to 300 students within three years. His leadership has consistently combined academic excellence, financial discipline, and a deep commitment to student wellbeing.\n\nHe served as Deputy Provincial Superior of the Marist Brothers in Central and East Africa, supervised major school infrastructure projects, and held governance roles in national companies. A trained human rights educator, he has participated in international workshops in Geneva and has been a strong advocate for child protection and refugee learners.\n\nThrough partnerships with Forum Amis de la Paix and Engineers4Humanity, Brother Straton has helped refugee students access quality boarding schools, vocational training, mentorship, and long-term academic support. His lifelong dedication to education and human dignity continues to shape the next generation of leaders across East and Central Africa."
+    },
+    {
+      id: 4,
+      name: "Theo Karegesa Kivuye",
+      credentials: "MEng",
+      title: "Board Vice Chair | Engineering Program",
+      image: image4,
+      role: 'vice-chair',
+      bio: "Karegesa Muyango is an engineering leader and former refugee whose professional journey fuels his commitment to empowering young refugee engineers. As Vice Chair of Engineering at Engineers4Humanity, he guides the organization's technical programs, WASH initiatives, environmental protection projects, and job-creation pathways for displaced youth.\n\nWith a background in Chemistry and Mechanical Engineering from the American University in Cairo, Karegesa has built a diverse career across logistics, mining, hydropower, industrial installations, and public health engineering. His work includes rainwater harvesting systems for vulnerable families, effluent and wastewater management, dumpsite stabilization, and major environmental restoration projects across Rwanda.\n\nA dedicated mentor, he supports internship placement, technical apprenticeships, and career guidance for refugee engineers, helping them transition into meaningful employment. His humanitarian service spans rehabilitation support for war-injured veterans, artificial limb procurement, and fire-engine training in partnership with Japan.\n\nKaregesa champions engineering as a pathway to dignity, resilience, and sustainable peace."
+    },
+
     {
       id: 5,
       name: "Japhet Habinshuti",
@@ -78,24 +79,25 @@ const BoardMembers: React.FC = () => {
     },
     {
       id: 6,
+      name: "Joseph Masengesho",
+      credentials: "MBA",
+      title: "Board Member",
+      image: image6,
+      linkedIn: "https://www.linkedin.com/in/joseph-mboneza-masengesho-45373842/",
+      role: 'member',
+      bio: "Joseph Masengesho is an experienced project management professional (MBA) with nearly 14 years of experience advancing youth employment, entrepreneurship, and vocational skills development across Rwanda. His work with leading international development agencies—including AFD/Expertise France, APEFE, and DOT Rwanda—has focused on empowering vulnerable youth, women, and people with disabilities through TVET training, dual apprenticeship systems, and private-sector–driven job creation.\n\nJoseph has coordinated multi-stakeholder programs that strengthen TVET–industry collaboration, build the capacity of trainers and SMEs, and expand access to skills training and workplace integration for disadvantaged groups. He has led teams, managed project resources, and delivered large-scale training initiatives that have equipped thousands of young people with practical skills for employment and entrepreneurship.\n\nCurrently serving as Manager for Entrepreneurship, Employment, and Private Sector Engagement under the AFD/Expertise France AFTER I & II Projects, Joseph oversees the design and implementation of workforce development interventions, employer engagement strategies, and capacity-building programs for national TVET institutions.\n\nAs a Board Member of Engineers4Humanity, Joseph brings deep expertise in vocational training systems, youth workforce development, and inclusive job creation. His leadership strengthens Engineers4Humanity's mission to equip refugees and host communities with market-relevant skills, expand pathways to dignified employment, and build resilient livelihoods through engineering and technical education."
+    },
+    {
+      id: 7,
       name: "J. Baptist Ndahiriwe",
       credentials: "MPH",
       title: "Board Member",
-      image: image6,
+      image: image7,
       linkedIn: "https://www.linkedin.com/in/j-baptist-ndahiriwe-5691096a/",
       role: 'member',
       bio: "Ndahiriwe is a senior health systems consultant with over 20 years of experience across clinical practice, academia, regulation, and health policy in Rwanda and the East African region. He has led major national and regional initiatives focused on strengthening health workforce standards, accreditation systems, institutional governance, and quality assurance expertise that directly supports Engineers4Humanity's Public Health Engineering mission.\n\nWith deep experience in developing scopes of practice, training standards, accreditation frameworks, and compliance audits, he brings a strong foundation for improving the quality and safety of community-level health and WASH services. His leadership in curriculum development, education harmonization, and higher education quality assurance aligns with Engineers4Humanity's commitment to delivering high-quality vocational training and expanding job creation pathways for refugee and host communities.\n\nNdahiriwe has served on high-level Ministry of Health technical committees, regulatory councils, and university governance structures, and has contributed to major health systems strengthening projects, including serving as Technical Lead for the HSS NEXT project. He currently consults with Building Systems for Health on a Gates Foundation–funded Primary Health Care Performance Management initiative in Rwanda and Ghana.\n\nHe holds bachelor's degrees in Diagnostic Imaging and Pharmaceutical Sciences, a master's degree in medical Imaging, and Master of Public Health in Global Health. Fluent in English and French, he brings strong strategic, analytical, and governance expertise to the Board of Engineers4Humanity."
     },
-    {
-      id: 7,
-      name: "Joseph Masengesho",
-      credentials: "MBA",
-      title: "Board Member",
-      image: image7,
-      linkedIn: "https://www.linkedin.com/in/joseph-mboneza-masengesho-45373842/",
-      role: 'member',
-      bio: "Joseph Masengesho is an experienced project management professional (MBA) with nearly 14 years of experience advancing youth employment, entrepreneurship, and vocational skills development across Rwanda. His work with leading international development agencies—including AFD/Expertise France, APEFE, and DOT Rwanda—has focused on empowering vulnerable youth, women, and people with disabilities through TVET training, dual apprenticeship systems, and private-sector–driven job creation.\n\nJoseph has coordinated multi-stakeholder programs that strengthen TVET–industry collaboration, build the capacity of trainers and SMEs, and expand access to skills training and workplace integration for disadvantaged groups. He has led teams, managed project resources, and delivered large-scale training initiatives that have equipped thousands of young people with practical skills for employment and entrepreneurship.\n\nCurrently serving as Manager for Entrepreneurship, Employment, and Private Sector Engagement under the AFD/Expertise France AFTER I & II Projects, Joseph oversees the design and implementation of workforce development interventions, employer engagement strategies, and capacity-building programs for national TVET institutions.\n\nAs a Board Member of Engineers4Humanity, Joseph brings deep expertise in vocational training systems, youth workforce development, and inclusive job creation. His leadership strengthens Engineers4Humanity's mission to equip refugees and host communities with market-relevant skills, expand pathways to dignified employment, and build resilient livelihoods through engineering and technical education."
-    }
+    
   ];
 
   const BoardMemberModal: React.FC<{ member: BoardMember | null; onClose: () => void }> = ({ member, onClose }) => {
