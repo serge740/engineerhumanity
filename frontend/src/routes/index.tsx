@@ -5,6 +5,7 @@ import GetInvolved from '../pages/GetInvolvd';
 import Contact from '../pages/Contact';
 import Upcoming from '../pages/Upcoming';
 import PastEvent from '../pages/pasteEvent';
+import EventDetail from '../pages/EventDetail';
 import Gallery from '../pages/Gallery';
 
 const Home = lazy(() => import('../pages/Home'));
@@ -138,6 +139,10 @@ const router = createBrowserRouter([
             {
                 path: "past-event",
                 element: <SuspenseWrap><PastEvent /></SuspenseWrap>
+            },
+            {
+                path: "past-event/:id",
+                element: <SuspenseWrap><EventDetail /></SuspenseWrap>
             },
 
             // ── Gallery ──
