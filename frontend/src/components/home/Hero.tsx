@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import heroImage1 from '../../assets/home/image1.png';
-import heroImage2 from '../../assets/home/image2.png';
-import heroImage3 from '../../assets/home/image3.png';
+import heroImage1 from '../../assets/events/pictures vocationaltraining (1)/508D0046.jpg';
+import heroImage2 from '../../assets/events/Parent Visit in 2019 at Gihembe Refugee Camp/4784C9FB-E5D8-4530-808B-F90379DEA33F.jpg';
+import heroImage3 from '../../assets/events/pictures vocationaltraining (1)/508D0030.jpg';
 
 const Hero = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -42,8 +42,11 @@ const Hero = () => {
                     <img
                         src={slide.image}
                         alt={slide.title}
-                        className="w-full h-full object-cover brightness-75"
+                        className="w-full h-full object-cover brightness-50"
                     />
+
+
+                    
                     <div className="absolute inset-0 flex items-center justify-center">
                         <div className="text-center text-white max-w-4xl px-6">
                             <h1 className="font-serif text-5xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-2xl animate-[slideUp_0.8s_ease-out]">
