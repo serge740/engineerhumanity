@@ -1,7 +1,7 @@
 import React from 'react';
 import { Award } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import image1 from '../../assets/home/image4.png';
+import image1 from '../../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-18-29-44_1.jpg';
 
 
 const About = () => {

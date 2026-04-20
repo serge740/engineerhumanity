@@ -1,21 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import heroImage1 from '../../assets/home/image1.png';
+import heroImage2 from '../../assets/home/image2.png';
+import heroImage3 from '../../assets/home/image3.png';
 
 const Hero = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
 
     const slides = [
         {
-            image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1920&q=80",
+            image: heroImage1,
             title: "Building Dignified Lives",
             description: "Empowering refugees and underserved communities through education, engineering, and servant leadership"
         },
         {
-            image: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=1920&q=80",
+            image: heroImage2,
             title: "Education Changes Everything",
             description: "From refugee camps to universities — we open doors that were never meant to be closed"
         },
         {
-            image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1920&q=80",
+            image: heroImage3,
             title: "Creating Opportunities",
             description: "Vocational training, mentorship, and social entrepreneurship transforming lives across East Africa and beyond"
         }

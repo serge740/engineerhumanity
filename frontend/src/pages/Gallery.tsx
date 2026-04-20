@@ -1,133 +1,64 @@
-import React, { useState } from 'react';
-import { Info } from 'lucide-react';
+import { useState, useMemo } from 'react';
 import Header from '../components/Header';
 import image from '../assets/image6.jpg';
 
-function Gallery() {
-  const [images] = useState([
-    {
-      id: 1,
-      src: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=600&fit=crop",
-      title: "WASH Engineering Field Work",
-      category: "Field Work",
-      location: "Gihembe, Rwanda",
-      date: "June 2025"
-    },
-    {
-      id: 2,
-      src: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=900&fit=crop",
-      title: "Community Outreach Meeting",
-      category: "Community Events",
-      location: "Kigali, Rwanda",
-      date: "May 2025"
-    },
-    {
-      id: 3,
-      src: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&h=500&fit=crop",
-      title: "Engineers4Humanity Annual Gala",
-      category: "Conferences",
-      location: "Dallas, Texas",
-      date: "December 2024"
-    },
-    {
-      id: 4,
-      src: "https://images.unsplash.com/photo-1559511260-66a654ae982a?w=800&h=700&fit=crop",
-      title: "Vocational Skills Training Session",
-      category: "Training",
-      location: "Eastern Province, Rwanda",
-      date: "November 2024"
-    },
-    {
-      id: 5,
-      src: "https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&h=600&fit=crop",
-      title: "Water Sanitation Site Visit",
-      category: "Field Work",
-      location: "East Africa",
-      date: "October 2024"
-    },
-    {
-      id: 6,
-      src: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=800&h=800&fit=crop",
-      title: "Refugee Youth STEM Mentorship Day",
-      category: "Education",
-      location: "Richardson, Texas",
-      date: "September 2024"
-    },
-    {
-      id: 7,
-      src: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&h=550&fit=crop",
-      title: "Leadership & Peacebuilding Workshop",
-      category: "Training",
-      location: "Virtual Event",
-      date: "August 2024"
-    },
-    {
-      id: 8,
-      src: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&h=750&fit=crop",
-      title: "E4H Partner Organization Forum",
-      category: "Community Events",
-      location: "Kigali, Rwanda",
-      date: "July 2024"
-    },
-    {
-      id: 9,
-      src: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop",
-      title: "Hope School Graduation Ceremony",
-      category: "Education",
-      location: "Gihembe, Rwanda",
-      date: "June 2024"
-    },
-    {
-      id: 10,
-      src: "https://images.unsplash.com/photo-1532619675605-1ede6c2ed2b0?w=800&h=900&fit=crop",
-      title: "Refugee Camp Infrastructure Visit",
-      category: "Field Work",
-      location: "Northern Province, Rwanda",
-      date: "May 2024"
-    },
-    {
-      id: 11,
-      src: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&h=650&fit=crop",
-      title: "Breaking Boundaries Book Reading",
-      category: "Outreach",
-      location: "Dallas, Texas",
-      date: "April 2024"
-    },
-    {
-      id: 12,
-      src: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&h=550&fit=crop",
-      title: "E4H Team Strategy Meeting",
-      category: "Conferences",
-      location: "Kigali, Rwanda",
-      date: "March 2024"
-    },
-    {
-      id: 13,
-      src: "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=850&fit=crop",
-      title: "Scholarship Recipient Mentorship",
-      category: "Education",
-      location: "Gihembe, Rwanda",
-      date: "February 2024"
-    },
-    {
-      id: 14,
-      src: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?w=800&h=600&fit=crop",
-      title: "Volunteer Engineers in the Field",
-      category: "Field Work",
-      location: "East Africa",
-      date: "January 2024"
-    },
-    {
-      id: 15,
-      src: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=700&fit=crop",
-      title: "E4H Annual Planning Conference",
-      category: "Conferences",
-      location: "Dallas, Texas",
-      date: "December 2023"
-    }
-  ]);
+const gihembeModules = import.meta.glob(
+  '../assets/events/Parent Visit in 2019 at Gihembe Refugee Camp/*.{JPG,jpg,jpeg}',
+  { eager: true, query: '?url', import: 'default' }
+) as Record<string, string>;
 
-  const [selectedImage, setSelectedImage] = useState(null);
+const graduationModules = import.meta.glob(
+  '../assets/events/Past Event -Gallely _ Refugee student graduation November 2021 at Latayole-Kigali Rwanda/*.{jpeg,jpg,JPG}',
+  { eager: true, query: '?url', import: 'default' }
+) as Record<string, string>;
+
+const vocGradModules = import.meta.glob(
+  '../assets/events/Past Event Refugee Youth Vocational Training Graduation La Tayole November 2021-Kigali Rwanda/*.{jpg,JPG,jpeg}',
+  { eager: true, query: '?url', import: 'default' }
+) as Record<string, string>;
+
+const vocPicsModules = import.meta.glob(
+  '../assets/events/pictures vocationaltraining (1)/*.{jpg,JPG,jpeg}',
+  { eager: true, query: '?url', import: 'default' }
+) as Record<string, string>;
+
+const rwandaModules = import.meta.glob(
+  '../assets/events/rwandaconvention July 2025 (1)/*.{jpg,JPG,jpeg}',
+  { eager: true, query: '?url', import: 'default' }
+) as Record<string, string>;
+
+interface GalleryImage {
+  id: number;
+  src: string;
+  title: string;
+  category: string;
+  location: string;
+  date: string;
+}
+
+function buildImages(): GalleryImage[] {
+  const result: GalleryImage[] = [];
+  let id = 1;
+
+  for (const src of Object.values(gihembeModules).sort()) {
+    result.push({ id: id++, src, title: "Parent Engagement Visit – Gihembe", category: "Community Events", location: "Gihembe Refugee Camp, Rwanda", date: "2019" });
+  }
+  for (const src of Object.values(graduationModules).sort()) {
+    result.push({ id: id++, src, title: "Refugee Student Graduation Ceremony", category: "Education", location: "Latayole, Kigali, Rwanda", date: "November 2021" });
+  }
+  for (const src of [...Object.values(vocGradModules), ...Object.values(vocPicsModules)].sort()) {
+    result.push({ id: id++, src, title: "Vocational Training Graduation", category: "Training", location: "La Tayole, Kigali, Rwanda", date: "November 2021" });
+  }
+  for (const src of Object.values(rwandaModules).sort()) {
+    result.push({ id: id++, src, title: "Rwanda National Convention", category: "Conferences", location: "Kigali, Rwanda", date: "July 2025" });
+  }
+
+  return result;
+}
+
+function Gallery() {
+  const images = useMemo(() => buildImages(), []);
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
 
   const categories = ['All', ...new Set(images.map(img => img.category))];
@@ -136,7 +67,7 @@ function Gallery() {
     ? images
     : images.filter(img => img.category === selectedCategory);
 
-  const openLightbox = (image) => {
+  const openLightbox = (image: GalleryImage) => {
     setSelectedImage(image);
     document.body.style.overflow = 'hidden';
   };
@@ -147,15 +78,15 @@ function Gallery() {
   };
 
   const nextImage = () => {
+    if (!selectedImage) return;
     const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
-    const nextIndex = (currentIndex + 1) % filteredImages.length;
-    setSelectedImage(filteredImages[nextIndex]);
+    setSelectedImage(filteredImages[(currentIndex + 1) % filteredImages.length]);
   };
 
   const prevImage = () => {
+    if (!selectedImage) return;
     const currentIndex = filteredImages.findIndex(img => img.id === selectedImage.id);
-    const prevIndex = (currentIndex - 1 + filteredImages.length) % filteredImages.length;
-    setSelectedImage(filteredImages[prevIndex]);
+    setSelectedImage(filteredImages[(currentIndex - 1 + filteredImages.length) % filteredImages.length]);
   };
 
   return (
@@ -166,16 +97,6 @@ function Gallery() {
         linkHref="/gallery"
         backgroundImage={image}
       />
-
-      {/* Placeholder Notice */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-        <div className="flex items-start gap-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-xl px-5 py-4 mb-4">
-          <Info className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <p className="text-sm">
-            <span className="font-semibold">Gallery update in progress.</span> We are currently collecting real photos from our programs and events. The images shown are temporary placeholders — check back soon!
-          </p>
-        </div>
-      </div>
 
       {/* Category Filter */}
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
@@ -216,7 +137,6 @@ function Gallery() {
                   className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-110"
                 />
 
-                {/* Overlay on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                   <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                     <span className="inline-block bg-blue-600 px-3 py-1 rounded-full text-xs font-semibold mb-2">
@@ -240,7 +160,6 @@ function Gallery() {
                     </div>
                   </div>
 
-                  {/* Click to View Icon */}
                   <div className="absolute top-4 right-4 bg-white/20 backdrop-blur-sm rounded-full p-3">
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
@@ -256,7 +175,6 @@ function Gallery() {
       {/* Lightbox Modal */}
       {selectedImage && (
         <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center p-4">
-          {/* Close Button */}
           <button
             onClick={closeLightbox}
             className="absolute top-4 right-4 bg-white/10 backdrop-blur-sm text-white rounded-full p-3 hover:bg-white/20 transition-all z-50"
@@ -266,7 +184,6 @@ function Gallery() {
             </svg>
           </button>
 
-          {/* Previous Button */}
           <button
             onClick={prevImage}
             className="absolute left-4 bg-white/10 backdrop-blur-sm text-white rounded-full p-4 hover:bg-white/20 transition-all z-50"
@@ -276,7 +193,6 @@ function Gallery() {
             </svg>
           </button>
 
-          {/* Next Button */}
           <button
             onClick={nextImage}
             className="absolute right-4 bg-white/10 backdrop-blur-sm text-white rounded-full p-4 hover:bg-white/20 transition-all z-50"
@@ -286,7 +202,6 @@ function Gallery() {
             </svg>
           </button>
 
-          {/* Image Container */}
           <div className="max-w-6xl w-full mx-auto">
             <div className="relative">
               <img
@@ -295,7 +210,6 @@ function Gallery() {
                 className="w-full h-auto max-h-[100vh] object-contain rounded-lg shadow-2xl"
               />
 
-              {/* Image Info Overlay */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 to-transparent p-6 rounded-b-lg">
                 <span className="inline-block bg-blue-600 px-3 py-1 rounded-full text-xs font-semibold mb-2 text-white">
                   {selectedImage.category}
@@ -320,7 +234,6 @@ function Gallery() {
             </div>
           </div>
 
-          {/* Image Counter */}
           <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white/10 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold">
             {filteredImages.findIndex(img => img.id === selectedImage.id) + 1} / {filteredImages.length}
           </div>
