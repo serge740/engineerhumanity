@@ -1,63 +1,42 @@
-import React from 'react';
-import {
-    BookOpen,
-    Briefcase,
-    Wrench,
-    Heart
-} from 'lucide-react';
+import { BookOpen, Briefcase, Wrench, Heart } from 'lucide-react';
 
-const Mission = () => {
-    const missionCards = [
-        {
-            icon: BookOpen,
-            title: "Education & Skills",
-            description: "Enhancing education and vocational skills development to create pathways for success and self-sufficiency for refugees and underserved communities."
-        },
-        {
-            icon: Briefcase,
-            title: "Job Creation",
-            description: "Fostering self-reliance through job creation and entrepreneurship opportunities that transform lives and communities."
-        },
-        {
-            icon: Wrench,
-            title: "Engineering Solutions",
-            description: "Advancing sustainable engineering solutions for environmental protection, water, sanitation, and hygiene services."
-        },
-        {
-            icon: Heart,
-            title: "Peacebuilding",
-            description: "Encouraging servant leadership and peacebuilding initiatives in the East African region for lasting impact."
-        }
-    ];
+const cards = [
+    { icon: BookOpen, title: "Education & Skills", desc: "Enhancing education and vocational skills development to create pathways for success and self-sufficiency for refugees and underserved communities." },
+    { icon: Briefcase, title: "Job Creation", desc: "Fostering self-reliance through job creation and entrepreneurship opportunities that transform lives and communities." },
+    { icon: Wrench, title: "Engineering Solutions", desc: "Advancing sustainable engineering solutions for environmental protection, water, sanitation, and hygiene services." },
+    { icon: Heart, title: "Peacebuilding", desc: "Encouraging servant leadership and peacebuilding initiatives in the East African region for lasting impact." },
+];
 
-    return (
-        <section className="py-20 bg-gray-50">
-            <div className=" mx-auto px-6">
-                <h2 className="font-serif text-4xl md:text-5xl font-bold text-center mb-16 text-gray-900">
-                    Our Mission
-                </h2>
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {missionCards.map((card, index) => {
-                        const Icon = card.icon;
-                        return (
-                            <div
-                                key={index}
-                                className="bg-white p-8 rounded-xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all duration-300 border-l-4 border-transparent hover:border-sky-500"
-                            >
-                                <Icon className="w-10 h-10 text-sky-600 mb-4" strokeWidth={1.5} />
-                                <h3 className="font-serif text-xl font-semibold mb-3 text-gray-900">
-                                    {card.title}
-                                </h3>
-                                <p className="text-gray-600 leading-relaxed text-sm">
-                                    {card.description}
-                                </p>
-                            </div>
-                        );
-                    })}
-                </div>
+const Mission = () => (
+    <section className="py-28 px-16 bg-[#E1EEF9]">
+        <div className="text-center mb-16">
+            <div className="flex items-center justify-center gap-3 text-[11px] font-bold tracking-[0.18em] uppercase text-sky-600 mb-6">
+                <span className="w-7 h-0.5 bg-sky-600 block" />
+                What we do
+                <span className="w-7 h-0.5 bg-sky-600 block" />
             </div>
-        </section>
-    );
-};
+            <h2 className="font-serif text-[clamp(36px,4vw,56px)] font-normal leading-[1.1] tracking-tight text-[#0A1628]">
+                Our <em className="italic text-sky-500">Mission</em>
+            </h2>
+        </div>
+
+        <div className="grid grid-cols-4 gap-4">
+            {cards.map((card, i) => {
+                const Icon = card.icon;
+                return (
+                    <div key={i} className="bg-white p-10 rounded-[4px] group hover:bg-sky-600 hover:-translate-y-1 hover:shadow-2xl transition-all duration-250 cursor-default">
+                        <Icon className="w-10 h-10 text-sky-600 group-hover:text-white mb-6 transition-colors duration-250" strokeWidth={1.5} />
+                        <h3 className="font-serif text-[22px] font-semibold text-[#0A1628] group-hover:text-white mb-3 transition-colors duration-250">
+                            {card.title}
+                        </h3>
+                        <p className="text-sm leading-[1.75] text-[#3A5068] group-hover:text-white transition-colors duration-250">
+                            {card.desc}
+                        </p>
+                    </div>
+                );
+            })}
+        </div>
+    </section>
+);
 
 export default Mission;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { NavLink, Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 interface NavbarProps {
@@ -8,6 +8,9 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
     const navigate = useNavigate();
+    const location = useLocation();
+    const isHome = location.pathname === '/';
+    const transparent = isHome && !scrolled;
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
     const [programsDropdownOpen, setProgramsDropdownOpen] = useState(false);
@@ -21,8 +24,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
         `px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 no-underline ${isActive
-            ? 'text-sky-600 bg-sky-50'
-            : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+            ? transparent ? 'text-white bg-white/20' : 'text-sky-600 bg-sky-50'
+            : transparent ? 'text-white/85 hover:text-white hover:bg-white/10' : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
     const mobileNavLinkClasses = ({ isActive }: { isActive: boolean }) =>
@@ -54,9 +57,11 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
 
     return (
         <nav
-            className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-                ? 'bg-white shadow-lg py-2'
-                : 'bg-white/98 shadow-md py-3'
+            className={`fixed top-0 w-full z-50 transition-all duration-400 ${transparent
+                ? 'bg-transparent py-4'
+                : scrolled
+                    ? 'bg-[rgba(240,247,255,0.94)] backdrop-blur-[14px] shadow-sm py-2'
+                    : 'bg-white shadow-md py-3'
                 }`}
         >
             <div className="mx-auto px-4 sm:px-6">
@@ -64,7 +69,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                     {/* Logo */}
                     <Link to="/" className="flex items-center group no-underline">
                         <img
-                            src="/logo.png"
+                            src="/tra_logo.png"
                             alt="Engineers4Humanity Logo"
                             className="w-20 h-20 scale-120 object-contain transition-all duration-300"
                         />
@@ -135,17 +140,17 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                             </button>
 
                             <div
-                                className={`absolute left-1/2 -translate-x-1/2 mt-2 w-[520px] bg-white rounded-xl shadow-xl border border-gray-100 p-5 transition-all duration-300 origin-top ${programsDropdownOpen
+                                className={`absolute left-1/2 -translate-x-1/2 mt-2 w-[560px] bg-white rounded-xl shadow-xl border border-gray-100 p-5 transition-all duration-300 origin-top ${programsDropdownOpen
                                     ? 'opacity-100 scale-100 translate-y-0 visible'
                                     : 'opacity-0 scale-95 -translate-y-2 invisible'
                                     }`}
                             >
+                                {/* All Programs link */}
+                                
                                 <div className="grid grid-cols-3 gap-4">
                                     {/* Humanitarian */}
                                     <div>
                                         <h4 className="text-xs font-bold text-sky-600 uppercase tracking-wider mb-2 px-3">Humanitarian</h4>
-                                
-                                        
                                         <NavLink to="/programs/public-health-engineering" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             WASH & Environment
                                         </NavLink>
@@ -160,7 +165,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                         <NavLink to="/programs/entrepreneurship" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             Engineering Consultancy
                                         </NavLink>
-                                      <NavLink to="/programs/education-program" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
+                                        <NavLink to="/programs/education-program" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             Education
                                         </NavLink>
                                     </div>
@@ -168,7 +173,6 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     {/* E4H Institute */}
                                     <div>
                                         <h4 className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2 px-3">E4H Institute</h4>
-                                      
                                         <NavLink to="/programs/institute" className={dropdownLinkClasses} onClick={() => setProgramsDropdownOpen(false)}>
                                             Vocational Technical Training
                                         </NavLink>
@@ -340,9 +344,10 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     <span>Programs</span>
                                     <ChevronDown size={20} className={`transition-transform duration-300 ${mobileProgramsOpen ? 'rotate-180' : ''}`} />
                                 </button>
-                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileProgramsOpen ? 'max-h-[600px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileProgramsOpen ? 'max-h-[700px] opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <p className="px-4 py-1.5 text-xs font-bold text-sky-600 uppercase tracking-wider">Humanitarian</p>
+                                  
+                                        <p className="px-4 py-1.5 text-xs font-bold text-sky-600 uppercase tracking-wider mt-1">Humanitarian</p>
                                         
                                         <NavLink to="/programs/public-health-engineering" onClick={closeMobile} className={mobileNavLinkClasses}>WASH & Environment</NavLink>
                                         <NavLink to="/programs/leadership-and-peace" onClick={closeMobile} className={mobileNavLinkClasses}>Leadership & Peace Building</NavLink>

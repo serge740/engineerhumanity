@@ -1,24 +1,21 @@
-import React from 'react';
 import Hero from './Hero';
-import Stats from './Stats';
-import Mission from './Mission';
+import Ticker from './Ticker';
 import About from './About';
+import HistoryCards from './HistoryCards';
+import Mission from './Mission';
 import Programs from './Programs';
 import CTA from './CTA';
-import HistoryCards from './HistoryCards';
 
-const HomePage = () => {
-    return (
-        <main>
-            <Hero />
-            <Stats />
-            <About />
-            <HistoryCards />
-            <Mission />
-            <Programs />
-            <CTA />
-        </main>
-    );
-};
+const HomePage = () => (
+    <main className="font-sans text-[#0A1628] bg-[#F0F7FF]">
+        <Hero />
+        <Ticker />
+        <About />
+        <HistoryCards />
+        <Mission />
+        <Programs />
+        <CTA />
+    </main>
+);
 
 export default HomePage;

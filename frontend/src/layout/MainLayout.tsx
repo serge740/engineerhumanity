@@ -23,7 +23,7 @@ const MainLayout = () => {
         
     }, [location.pathname]);
     return (
-        <div className="font-sans text-gray-800">
+        <div className="font-sans text-[#0A1628]">
             <Navbar scrolled={scrolled} />
             <main>
                 <Outlet />

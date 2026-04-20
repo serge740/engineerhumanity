@@ -73,6 +73,10 @@ const router = createBrowserRouter([
 
             // ── Programs ──
             {
+                path: "programs",
+                element: <SuspenseWrap><ProgramOverview /></SuspenseWrap>
+            },
+            {
                 path: "programs/overview",
                 element: <SuspenseWrap><ProgramOverview /></SuspenseWrap>
             },
