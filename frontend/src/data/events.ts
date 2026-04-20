@@ -1,4 +1,10 @@
 // Real event image imports via Vite glob
+import rwandaImg1 from '../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-18-29-44_1.jpg';
+import rwandaImg2 from '../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-18-29-44_2.jpg';
+import rwandaImg3 from '../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-18-29-44.jpg';
+import rwandaImg4 from '../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-19-38-26.jpg';
+import rwandaImg5 from '../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-19-39-06.jpg';
+import rwandaImg6 from '../assets/events/rwandaconvention July 2025 (1)/PHOTO-2025-07-06-20-39-24.jpg';
 const gihembeModules = import.meta.glob(
   '../assets/events/Parent Visit in 2019 at Gihembe Refugee Camp/*.{JPG,jpg,jpeg}',
   { eager: true, query: '?url', import: 'default' }
@@ -20,15 +26,10 @@ const vocPicsModules = import.meta.glob(
   { eager: true, query: '?url', import: 'default' }
 ) as Record<string, string>;
 
-const rwandaModules = import.meta.glob(
-  '../assets/events/rwandaconvention July 2025 (1)/*.{jpg,JPG,jpeg}',
-  { eager: true, query: '?url', import: 'default' }
-) as Record<string, string>;
-
 const gihembeImages = Object.values(gihembeModules).sort();
 const graduationImages = Object.values(graduationModules).sort();
 const vocImages = [...Object.values(vocGradModules), ...Object.values(vocPicsModules)].sort();
-const rwandaImages = Object.values(rwandaModules).sort();
+const rwandaImages = [rwandaImg1, rwandaImg2, rwandaImg3, rwandaImg4, rwandaImg5, rwandaImg6];
 
 export interface PastEvent {
   id: number;

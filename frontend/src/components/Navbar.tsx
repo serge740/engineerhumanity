@@ -91,8 +91,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                         >
                             <button
                                 className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${aboutDropdownOpen
-                                    ? 'text-sky-600 bg-sky-50'
-                                    : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                    ? transparent ? 'text-white bg-white/20' : 'text-sky-600 bg-sky-50'
+                                    : transparent ? 'text-white/85 hover:text-white hover:bg-white/10' : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
                             >
                                 About Us
@@ -131,8 +131,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                         >
                             <button
                                 className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${programsDropdownOpen
-                                    ? 'text-sky-600 bg-sky-50'
-                                    : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                    ? transparent ? 'text-white bg-white/20' : 'text-sky-600 bg-sky-50'
+                                    : transparent ? 'text-white/85 hover:text-white hover:bg-white/10' : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Programs
@@ -189,8 +189,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                         >
                             <button
                                 className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${impactDropdownOpen
-                                    ? 'text-sky-600 bg-sky-50'
-                                    : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                    ? transparent ? 'text-white bg-white/20' : 'text-sky-600 bg-sky-50'
+                                    : transparent ? 'text-white/85 hover:text-white hover:bg-white/10' : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Impact
@@ -229,8 +229,8 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                         >
                             <button
                                 className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${eventsDropdownOpen
-                                    ? 'text-sky-600 bg-sky-50'
-                                    : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
+                                    ? transparent ? 'text-white bg-white/20' : 'text-sky-600 bg-sky-50'
+                                    : transparent ? 'text-white/85 hover:text-white hover:bg-white/10' : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
                             >
                                 Events
