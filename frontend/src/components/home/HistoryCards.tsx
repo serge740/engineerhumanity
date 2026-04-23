@@ -24,7 +24,7 @@ const HistoryCards: React.FC = () => {
     const [selected, setSelected] = useState<GalleryImage | null>(null);
 
     return (
-        <section className="py-24 px-16 bg-[#F0F7FF]">
+        <section className="py-12 px-4 sm:px-8 lg:px-16 lg:py-24 bg-[#F0F7FF]">
             {/* Header */}
             <div className="text-center mb-14">
                 <div className="flex items-center justify-center gap-3 text-[11px] font-bold tracking-[0.18em] uppercase text-sky-600 mb-5">

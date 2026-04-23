@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ title, titleEm, subtitle, tag, linkTitl
                 className="absolute inset-0"
                 style={{ background: 'linear-gradient(105deg, rgba(7,115,171,0.75) 0%, rgba(5,150,105,0.3) 60%, transparent 100%)' }}
             />
-            <div className="relative z-10 px-16 pt-24">
+            <div className="relative z-10 px-4 sm:px-8 lg:px-16 pt-20 sm:pt-24">
                 {tag && (
                     <div className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase text-emerald-400 bg-emerald-400/10 border border-emerald-400/40 px-4 py-2 rounded-full mb-6">
                         <span className="text-[7px]">◆</span>

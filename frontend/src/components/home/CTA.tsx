@@ -8,7 +8,7 @@ const joinCards = [
 ];
 
 const CTA = () => (
-    <section className="py-28 px-16 bg-[#E1EEF9] grid grid-cols-2 gap-20 items-start" id="join">
+    <section className="py-12 px-4 sm:px-8 lg:px-16 lg:py-28 bg-[#E1EEF9] grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start" id="join">
         {/* Left */}
         <div>
             <div className="flex items-center gap-3 text-[11px] font-bold tracking-[0.18em] uppercase text-sky-600 mb-6">

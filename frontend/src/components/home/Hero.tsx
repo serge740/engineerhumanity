@@ -36,30 +36,30 @@ const Hero = () => {
             ))}
 
             {/* Content */}
-            <div className="relative z-10 px-16 max-w-3xl">
-                <div className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase text-emerald-400 bg-emerald-400/10 border border-emerald-400/40 px-4 py-2 rounded-full mb-9">
+            <div className="relative z-10 px-4 sm:px-8 lg:px-16 max-w-3xl">
+                <div className="inline-flex items-center gap-2 text-[11px] font-bold tracking-[0.2em] uppercase text-emerald-400 bg-emerald-400/10 border border-emerald-400/40 px-4 py-2 rounded-full mb-6 sm:mb-9">
                     <span className="text-[7px]">◆</span>
                     Engineering for Good
                 </div>
-                <h1 className="font-serif text-[clamp(52px,6.5vw,90px)] font-light leading-none tracking-tight text-white mb-7">
+                <h1 className="font-serif text-[clamp(32px,6.5vw,90px)] font-light leading-none tracking-tight text-white mb-5 sm:mb-7">
                     {slides[current].title}<br />
                     <em className="italic text-sky-300">{slides[current].em}</em>
                 </h1>
-                <p className="text-lg leading-[1.75] text-white/75 max-w-[520px] mb-12">
+                <p className="text-sm sm:text-lg leading-[1.75] text-white/75 max-w-[520px] mb-8 sm:mb-12">
                     {slides[current].desc}
                 </p>
-                <div className="flex gap-4 flex-wrap items-center">
-                    <Link to="/get-involved" className="bg-emerald-600 hover:bg-emerald-700 text-white px-9 py-4 text-[13px] font-bold tracking-[0.08em] uppercase rounded-[3px] transition-all hover:-translate-y-0.5 no-underline">
+                <div className="flex gap-3 sm:gap-4 flex-wrap items-center">
+                    <Link to="/get-involved" className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 sm:px-9 py-3 sm:py-4 text-[13px] font-bold tracking-[0.08em] uppercase rounded-[3px] transition-all hover:-translate-y-0.5 no-underline">
                         Get Involved
                     </Link>
-                    <Link to="/about/who-we-are" className="border border-white/30 hover:border-white/70 text-white/80 hover:text-white px-9 py-4 text-[13px] font-semibold tracking-[0.08em] uppercase rounded-[3px] transition-all no-underline">
+                    <Link to="/about/who-we-are" className="border border-white/30 hover:border-white/70 text-white/80 hover:text-white px-6 sm:px-9 py-3 sm:py-4 text-[13px] font-semibold tracking-[0.08em] uppercase rounded-[3px] transition-all no-underline">
                         Our Mission
                     </Link>
                 </div>
             </div>
 
             {/* Slide dots */}
-            <div className="absolute bottom-28 left-16 flex gap-3 z-10">
+            <div className="absolute bottom-36 sm:bottom-28 left-4 sm:left-16 flex gap-3 z-10">
                 {slides.map((_, i) => (
                     <button key={i} onClick={() => setCurrent(i)}
                         className={`h-[3px] rounded-full transition-all border-none cursor-pointer ${i === current ? 'bg-white w-10' : 'bg-white/40 w-5'}`}
@@ -68,11 +68,11 @@ const Hero = () => {
             </div>
 
             {/* Stats strip */}
-            <div className="absolute bottom-0 left-0 right-0 z-10 grid grid-cols-4 bg-[rgba(7,115,171,0.85)] backdrop-blur-[10px] border-t border-sky-300/20">
+            <div className="absolute bottom-0 left-0 right-0 z-10 grid grid-cols-2 sm:grid-cols-4 bg-[rgba(7,115,171,0.85)] backdrop-blur-[10px] border-t border-sky-300/20">
                 {stats.map((s, i) => (
-                    <div key={i} className={`px-10 py-7 ${i < stats.length - 1 ? 'border-r border-sky-300/15' : ''}`}>
-                        <div className="font-serif text-[44px] font-bold text-white leading-none">{s.num}</div>
-                        <div className="text-[11px] font-semibold tracking-[0.1em] uppercase text-white/55 mt-1">{s.label}</div>
+                    <div key={i} className={`px-4 py-5 sm:px-6 sm:py-6 lg:px-10 lg:py-7 ${i < stats.length - 1 ? 'border-r border-sky-300/15' : ''} ${i === 1 ? 'sm:border-r border-sky-300/15' : ''}`}>
+                        <div className="font-serif text-3xl sm:text-[38px] lg:text-[44px] font-bold text-white leading-none">{s.num}</div>
+                        <div className="text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase text-white/55 mt-1">{s.label}</div>
                     </div>
                 ))}
             </div>

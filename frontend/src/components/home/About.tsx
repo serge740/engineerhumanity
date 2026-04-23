@@ -8,8 +8,8 @@ const pillars = [
 ];
 
 const About = () => (
-    <section className="py-28 px-16 bg-[#F0F7FF]" id="mission">
-        <div className="grid grid-cols-[2fr_3fr] gap-20 items-start">
+    <section className="py-12 px-4 sm:px-8 lg:px-16 lg:py-28 bg-[#F0F7FF]" id="mission">
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 lg:gap-20 items-start">
             {/* Left */}
             <div>
                 <div className="flex items-center gap-3 text-[11px] font-bold tracking-[0.18em] uppercase text-sky-600 mb-8">
@@ -33,7 +33,7 @@ const About = () => (
             {/* Right */}
             <div>
                 <img src={image1} alt="Community Impact" className="w-full h-[360px] object-cover rounded-[4px] block" />
-                <div className="grid grid-cols-3 gap-0.5 mt-0.5">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-0.5 mt-2 sm:mt-0.5">
                     {pillars.map(p => (
                         <div key={p.num} className="bg-[#E1EEF9] p-8 rounded-[2px] group hover:bg-sky-600 transition-colors duration-250 cursor-default">
                             <span className="font-serif text-[13px] font-bold text-emerald-600 group-hover:text-white mb-3.5 block transition-colors duration-250">{p.num}</span>
