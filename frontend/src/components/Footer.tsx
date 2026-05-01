@@ -53,7 +53,7 @@ const Footer = () => (
                 {[
                     { label: 'About Us', to: '/about/who-we-are' },
                     { label: 'Our Story', to: '/about/our-story' },
-                    { label: 'Executive Team', to: '/about/executive-team' },
+                    { label: 'Our Team', to: '/about/executive-team' },
                     { label: 'Board Member', to: '/about/board-member' },
                     { label: 'Get Involved', to: '/get-involved' },
                 ].map(l => (

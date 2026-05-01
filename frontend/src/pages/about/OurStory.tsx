@@ -315,42 +315,39 @@ const OurStory = () => {
                                 <p className="text-lg opacity-95">
                                     Founder & CEO, Engineers4Humanity
                                 </p>
+                                <p className="text-base opacity-80 mt-1 italic">
+                                    A God-Given Calling Shaped by Faith, Tragedy, Purpose, and Impact
+                                </p>
                             </div>
 
                             <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
                                 <p>
-                                    Eric Kamanzi is a refugee/Immigrant from the Democratic Republic of Congo, a father, a #1 best-selling author, a philanthropist, the founder of Engineers4Humanity, and a civil engineer with a Master's in Engineering Project Management and global sustainability.
+                                    Eric Kamanzi's life and work are rooted in a profound journey of survival, faith, and a deep commitment to restoring dignity for refugee youth. Born in 1986 in the Democratic Republic of Congo and raised as the eldest of five, his childhood was marked by responsibility and leadership. At age 10, he fled with his family to Rwanda, and one year later survived the 1997 Mudende Massacre, where his father was killed while protecting him and his siblings. This tragedy became the defining moment that shaped his lifelong mission.
                                 </p>
                                 <p>
-                                    His passion for humanitarian work stems from his father's humanitarian work and his life experiences as a refugee in East Africa.
+                                    Growing up in the Gihembe Refugee Camp for 25 years, Eric developed a philosophy rooted in self-reliance, education, and God's promises. His father's wisdom — "Teach a man to fish and you feed him for a lifetime" — shaped his understanding of responsibility and dignity. Eric expanded this into his own conviction: <span className="font-bold italic">"If you teach a child, you give him a lifetime gift."</span>
                                 </p>
                                 <p>
-                                    With over 17 years of service in refugee communities, Eric has dedicated his life to building a better world free from discrimination and violence and to advancing sustainable solutions for those affected by conflict and displacement through capacity-building programs.
+                                    His purpose was strengthened by Nelson Mandela's belief in the power of education and by the Scriptures that shaped his identity. He held tightly to God's assurance: <em>"Before I formed you in the womb I knew you, before you were born I set you apart."</em> — Jeremiah 1:5 and God's promise of hope: <em>"For I know the plans I have for you… plans to give you hope and a future."</em> — Jeremiah 29:11
                                 </p>
                                 <p>
-                                    His mentorship and education program have benefited hundreds of refugees in East Africa and America. His life vision is <span className="font-bold italic">"Living a happy and impactful life."</span>
+                                    Today, Eric is a father of four and a global advocate — author of <span className="font-semibold">Breaking Boundaries</span> — and a leader in refugee empowerment with 17+ years of measurable impact, where more than 2,000 youth have changed their lives through education and mentorship. His life vision is <span className="font-bold italic">"Living a happy and impactful life."</span>
                                 </p>
                             </div>
 
-                            <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border-l-4 border-green-600">
-                                <p className="text-gray-700 italic mb-4">
-                                    Inspired by a famous quotation:
-                                </p>
-                                <p className="text-lg font-semibold text-gray-900 mb-4">
-                                    "Give a man a fish, and you feed him for a day; teach him how to fish, and you feed him for a lifetime."
-                                </p>
-                                <p className="text-gray-700">
-                                    Based on his life experience, he believes, <span className="font-bold">"If you teach a child, you give him a lifetime gift."</span>
-                                </p>
+                            <div className="bg-gray-50 p-4 sm:p-6 rounded-xl border-l-4 border-green-600 space-y-3">
+                                <p className="font-semibold text-gray-900">Key milestones:</p>
+                                <ul className="space-y-2 text-base text-gray-700">
+                                    <li className="flex items-start gap-2"><span className="font-bold text-sky-600 flex-shrink-0">2004:</span> Served 70+ orphaned students through the Survivors' Association AERG at high school.</li>
+                                    <li className="flex items-start gap-2"><span className="font-bold text-sky-600 flex-shrink-0">2007:</span> Met Pastor Rick Warren in Kigali — a moment that spiritually confirmed his calling.</li>
+                                    <li className="flex items-start gap-2"><span className="font-bold text-sky-600 flex-shrink-0">2008:</span> Co-founded the Refugee Youth Club – Forum Amis de la Paix.</li>
+                                    <li className="flex items-start gap-2"><span className="font-bold text-sky-600 flex-shrink-0">2009:</span> Helped establish Hope School, a refugee-led secondary school in Gihembe.</li>
+                                    <li className="flex items-start gap-2"><span className="font-bold text-sky-600 flex-shrink-0">2020:</span> Launched Engineers4Humanity Consultancy in Rwanda.</li>
+                                    <li className="flex items-start gap-2"><span className="font-bold text-sky-600 flex-shrink-0">2024:</span> Established Engineers4Humanity 501(c)(3) in Texas, USA.</li>
+                                </ul>
                             </div>
 
                             <div className="bg-sky-50 p-4 sm:p-6 rounded-xl border-2 border-sky-600">
-                                <p className="text-gray-900 font-semibold mb-4">
-                                    Let's join the social and economic community's transformative movement through education sponsorship.
-                                </p>
-                                <p className="text-gray-700 mb-4">
-                                    Today, you can sponsor a child for <span className="font-bold text-green-600">$750 annually</span>, or we can connect you directly with a child to serve.
-                                </p>
                                 <div className="flex flex-col gap-2 sm:gap-3">
                                     <a
                                         href="https://breakingboundaries.net/connect/"
@@ -400,20 +397,21 @@ const OurStory = () => {
                                 <h3 className="font-serif text-2xl sm:text-3xl font-bold">
                                     Mr. Frere Malisaba Straton
                                 </h3>
+                                <p className="text-base opacity-90 mt-1">Board Vice Chair for Education Programs</p>
                             </div>
 
                             <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg border-l-4 border-green-600 space-y-4 text-base md:text-lg text-gray-700 leading-relaxed">
                                 <p>
-                                    Malisaba is a dedicated Catholic Church Marist brother. In 2024, he celebrated the 50th anniversary of his dedication to God and his community.
+                                    Frère Malisaba Straton is a Catholic Marist Brother, an accomplished educator, and a humanitarian leader whose five decades of service have strengthened schools and communities across East Africa. A former Deputy Provincial Superior of the Marist Brothers and a trained human-rights educator, he has championed child protection, academic excellence, and the dignity of vulnerable learners throughout his career.
                                 </p>
                                 <p>
-                                    Malisaba is the Board Vice Chair and the leading partner in the Engineers4Humanity education program
+                                    We are profoundly grateful for his compassion and leadership, which have shaped refugee education for more than twenty years and continue to guide Engineers4Humanity today. After visiting Hope School in 2013 at the request of his friend Mrs. Lycie, he saw firsthand the challenges refugee students faced and immediately began advocating for mobilizing support, writing to partners, and contributing his own resources. His 2014 meeting with Eric in Kigali deepened their shared commitment to vocational training and youth empowerment.
                                 </p>
                                 <p>
-                                    For the past 2 decades and to date, Malisaba has played a key role in the Refugee youth education, advocating for young refugees, sponsoring high school students, and financing vocational training.
+                                    Through partnerships with Rwabuye Vocational Center and Engineers4Humanity, he launched short-course training programs from 2015, enabling more than 200 refugee youth to gain practical skills and access scholarships from centers including Latoye in Kigali.
                                 </p>
                                 <p className="font-semibold text-gray-900">
-                                    He is a cornerstone for Engineers4Humanity's achievements, and we are very grateful to have him in our team.
+                                    After Hope School closed, Frère Malisaba continued working closely with Eric and played a key role in establishing Engineers4Humanity, where he now serves as Board Vice Chair for Education Programs. His mentorship, advocacy, and unwavering belief in refugee youth have transformed countless lives — he remains a cornerstone of Engineers4Humanity's mission.
                                 </p>
                             </div>
                         </div>
@@ -427,56 +425,35 @@ const OurStory = () => {
                     <div className="flex items-center gap-2 sm:gap-3 mb-8 md:mb-12">
                         <Building className="w-8 h-8 sm:w-10 sm:h-10 text-sky-600" />
                         <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
-                            Forum and Hope School Initiatives
+                            Hope School Success Story &amp; Inspiration of Engineers4Humanity
                         </h2>
+                    </div>
+
+                    <div className="bg-sky-50 p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl mb-8 md:mb-12 text-base md:text-lg text-gray-700 leading-relaxed">
+                        <p>
+                            Engineers4Humanity was born from the inspiration of Hope School — a journey of resilience, faith, and the belief that refugee youth can rise when given opportunity. Our founder, Eric, spent 25 years in the Gihembe Refugee Camp, where he learned that education, skills, and hope are the most powerful tools a young person can have.
+                        </p>
                     </div>
 
                     {/* Forum Amis de la Paix */}
                     <div className="mb-12 md:mb-16">
                         <h3 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
-                            Forum-Amis de la Paix
+                            Where It Began: Forum Amis de la Paix (2008)
                         </h3>
                         <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
                             <p>
-                                Forum for Congolese refugee students /FCRS – Amis de la Paix is more than just a forum; it is a vibrant and empowering collective of Congolese refugee students founded in the Gihembe refugee camp in Rwanda in 2008.
+                                In 2008, Eric co-founded the Refugee Youth Club — Forum Amis de la Paix — the first youth-led movement in the camp. The Forum united young people around education, peacebuilding, and community service. But one challenge became impossible to ignore: refugee students had no access to secondary education.
                             </p>
                             <p>
-                                We are grateful for the educational support provided by the Jesuit Refugee Service (JRS), UNHCR, and the Government of Rwanda, which has opened doors to our future.
-                            </p>
-                            <p>
-                                Our organization brings together high school students, university graduates, and aspiring scholars, all driven by a shared vision of a brighter future for all.
-                            </p>
-                            <div className="bg-sky-50 p-4 sm:p-6 rounded-xl border-l-4 border-sky-600">
-                                <p className="font-semibold text-gray-900 mb-3">Our Mission:</p>
-                                <p>
-                                    We are committed to igniting profound social and economic transformation within our community through passionate advocacy and unwavering support for education for all and the right to repatriation in our home country, the Democratic Republic of Congo.
-                                </p>
-                            </div>
-                            <p>
-                                We inspire young refugees to embrace their educational journeys and foster a supportive environment where they uplift one another in their academic pursuits.
-                            </p>
-                            <p>
-                                We are dedicated to empowering young refugees to cultivate strong self-confidence, elevate their living conditions, and create transformative opportunities for themselves and their communities.
-                            </p>
-                            <p>
-                                One of the Forum's key accomplishments is establishing Hope School in 2009. This initiative emerged when all donors had stopped supporting high school education for refugees. As a team, we crafted a future filled with hope, resilience, patriotism, and boundless possibilities.
-                            </p>
-                            <p>
-                                This achievement reflects our dedication to creating educational pathways for refugees and underserved communities and fostering support for future initiatives in refugee education.
-                            </p>
-                            <p>
-                                Our journey is significant, as our community faces considerable challenges while residing in refugee camps in East Africa. A few of them have been resettled in the USA and Europe, but many are still living a miserable life in refugee camps; therefore, we are requesting the USA administration to help achieve sustainable peace in the region and repatriate refugees.
-                            </p>
-                            <p className="font-semibold text-gray-900">
-                                As Engineers4Humanity and Forum Amis de la Paix, we are prepared to actively participate in initiatives that promote unity and reconciliation and support community empowerment and development. Together, we can work toward building a more prosperous and peaceful future for our community.
+                                This realization sparked a bold idea that changed the future of the camp.
                             </p>
                         </div>
                     </div>
 
                     {/* Hope School Success Story */}
-                    <div>
+                    <div className="mb-12 md:mb-16">
                         <h3 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
-                            Hope School: A Success Story
+                            Hope School: A Seed of Hope (2009–2016)
                         </h3>
 
                         <div className="grid sm:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
@@ -494,49 +471,64 @@ const OurStory = () => {
 
                         <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
                             <p>
-                                Hope School is an initiative by the Forum, FCRS-Amis de la Paix, designed to provide educational support for refugees. In 2009, the Jesuit Refugee Service (JRS) and other donors stopped funding students transitioning from Ordinary Level to Senior 4 and Senior 6, which left many young refugees feeling lost and discouraged.
+                                With no classrooms, no funding, and no infrastructure, Forum leaders launched what would become Hope School. On January 19, 2009, Inkurunziza Church opened its doors to the first students. To encourage them, Eric wrote a message on the cover of three teacher syllabus books — History, Geography, and Economics — books he had received from Riviera High School in Kigali:
+                            </p>
+                            <blockquote className="bg-green-50 p-4 sm:p-6 rounded-xl border-l-4 border-green-600 italic text-gray-800 font-medium">
+                                "Never give up, never lose hope. In God we trust."
+                            </blockquote>
+                            <p>
+                                A student named Shyengo was inspired to give the school its name — Hope School.
                             </p>
                             <p>
-                                In response, the Forum initiated the Hope School to help these youths.
-                            </p>
-                            <p>
-                                We began in churches, thanks to Pastor Rugamba of Inkurunziza church, who dedicated his church for refugee youth education.
-                            </p>
-                            <p>
-                                Later, we engaged the Refugee camp leadership under Nsengiyera Jean and Bahati Justine. We mobilized the entire refugee community and accepted the Hope School Initiative's voluntary support by donating 70 Rwandan Francs (around 5 cents of USD). Even though this amount was small, it played a key role in purchasing school supplies and essential needs for teachers.
-                            </p>
-                            <p>
-                                We are very thankful to the volunteer teachers. Under the leadership of the famous school principal, Mr Bauduoin Ntabareshya, they did an excellent job for the community.
+                                The school grew through sacrifice and unity. Teachers volunteered for a full year without pay. The community built classrooms from plastic sheeting, mud walls, and timber. Families contributed 70 RWF (about $0.12) to keep the school alive.
                             </p>
                             <div className="bg-green-50 p-4 sm:p-6 rounded-xl border-l-4 border-green-600">
-                                <p className="font-semibold text-gray-900 mb-3">Impact:</p>
+                                <p className="font-semibold text-gray-900 mb-3">Remarkable Impact:</p>
                                 <p>
-                                    The school has successfully helped hundreds of students from various camps improve and change their lives. The Hope School Alumni include engineers, lawyers, financial experts, Military personnel, and police.
+                                    Despite these conditions, Hope School became the top-performing school in the district. Every student passed the national exam, and one earned a perfect 100%. Over seven years, more than 500 students graduated — many now leaders in Rwanda, the USA, Canada, and Europe, and many serving today as Engineers4Humanity volunteers.
                                 </p>
                             </div>
                             <p>
-                                More than 400 students graduated from Hope School, but the school's impact is enormous. Due to advocacy, hundreds of refugee students get access to education under the government's and UNHCR's support through a 12-year basic education program.
+                                Hope School closed in 2016 due to infrastructure and financial challenges, but its legacy lives on. Eric is deeply grateful to Forum Members, school Principal Mr. Baudouin Ntabareshya, former refugee leaders Nsengiyera Jean and Bahati Justine, the dedicated teachers, staff, churches, youth volunteers, and the partner schools who supported Hope School with scholarships and supplies.
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* New Challenge and E4H Today */}
+                    <div className="mb-12 md:mb-16">
+                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
+                            A New Challenge: Skills and Employment (2013)
+                        </h3>
+                        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
+                            <p>
+                                Even before the school closed, Eric saw the next barrier: graduates had no jobs, no practical skills, no access to college or university education, and no opportunities.
                             </p>
                             <p>
-                                The Hope School initiative inspires everyone to see that a little effort can significantly impact community change.
+                                In 2013, he launched an on-the-job training pilot for 10 Hope School graduates. They learned masonry, steel fixing, carpentry, and construction directly on worksites. Within months, they were earning income and supporting their families. This pilot became the first spark of Engineers4Humanity.
                             </p>
                             <p>
-                                We are thankful that Hope School Alumni are leaders in their communities and are contributing to helping other young refugees in East Africa.
+                                Partners who believed in refugee potential — including Impact Hope (Mindy Thygeson), ADRA, World Vision, and many churches, schools, and community leaders — helped open doors for thousands of refugee youth.
                             </p>
+                        </div>
+                    </div>
+
+                    {/* Engineers4Humanity Today */}
+                    <div>
+                        <h3 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900 mb-4 md:mb-6">
+                            Engineers4Humanity Today
+                        </h3>
+                        <div className="bg-white p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl shadow-lg space-y-4 md:space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
+                            <p>Engineers4Humanity is the natural evolution of this story:</p>
+                            <ul className="space-y-2">
+                                <li className="flex items-start gap-2"><span className="mt-1.5 w-2 h-2 rounded-full bg-sky-500 flex-shrink-0" />Forum awakened youth leadership.</li>
+                                <li className="flex items-start gap-2"><span className="mt-1.5 w-2 h-2 rounded-full bg-sky-500 flex-shrink-0" />Hope School opened access to education.</li>
+                                <li className="flex items-start gap-2"><span className="mt-1.5 w-2 h-2 rounded-full bg-sky-500 flex-shrink-0" />The 2013 pilot proved that skills create dignity and income.</li>
+                            </ul>
                             <p>
-                                Hope School ceased operations in 2016 after the government introduced new regulations for independent schools and a 12-year program.
-                            </p>
-                            <p>
-                                We stopped the activity, and then Impact Hope, an American nonprofit organization, stepped in to support our students in gaining admission to other Boarding Schools. To date, Hope Impact has been helping high school refugee students in Rwanda.
-                            </p>
-                            <p>
-                                Inspired by the Hope school experience, we established Engineers4Humanity to continue the education mission and to promote STEM, Technical, and vocational training, as many high school graduates lack jobs.
-                            </p>
-                            <p>
-                                So, we equip them with hands-on skills, giving them the potential to compete in the job market.
+                                Today, Engineers4Humanity equips refugee youth with engineering skills, vocational training, innovation, and pathways to employment — building sustainable solutions for families who still face the hardships Eric once lived through.
                             </p>
                             <p className="font-semibold text-gray-900">
-                                We need additional support to continue this vital work. With your help, we can further empower these young individuals and ensure a brighter future for all.
+                                The seed of hope planted in 2009 continues to grow — transforming lives, communities, and futures.
                             </p>
                             <a
                                 href="https://www.impact-hope.org/aboutus/"

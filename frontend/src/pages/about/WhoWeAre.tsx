@@ -42,23 +42,23 @@ const WhoWeAre = () => {
                     <div className="flex items-center gap-2 sm:gap-3 mb-8 md:mb-12">
                         <BookOpen className="w-8 h-8 sm:w-10 sm:h-10 text-sky-600" />
                         <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900">
-                            Our History
+                            About Us
                         </h2>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-6 md:gap-12 items-center mb-8 md:mb-12">
                         <div className="space-y-4 md:space-y-6 text-base md:text-lg leading-relaxed text-gray-700">
                             <p>
-                                Founded by philanthropist Eric Kamanzi, Engineers4Humanity is a refugee-founded non-profit organization 501(c)(3) registered in Dallas, Texas.
+                                Founded by philanthropist Eric Kamanzi, Engineers4Humanity is a refugee-founded nonprofit organization with a U.S. 501(c)(3) organization registration in Dallas, Texas, in 2024 with the EIN: 99-2264956.
                             </p>
                             <p>
-                                It was inspired by Eric's experience as a refugee and founder of Engineers4Humanity Consultancy, a social enterprise operating in East Africa since 2020.
+                                It was inspired by Eric's experience as a refugee and founder of the Engineers4Humanity Consultancy, a social enterprise with TIN#111054632 operating in Rwanda since 2020.
                             </p>
                             <p>
-                                After witnessing firsthand the struggles of refugees and displaced communities, Eric was determined to develop a solution to foster long-term resilience and self-reliance among refugees and to play a key role in peacebuilding in the East African region.
+                                For more than 2 decades, after witnessing firsthand the struggles of refugees and displaced communities — mainly challenges in public health engineering, youth unemployment, education, and limited vocational pathways — Engineer Eric was determined to develop a sustainable engineering solution to foster long-term resilience and self-reliance among refugees and to play a key role in sustainable peacebuilding in the region by establishing the social enterprise Engineers4Humanity Consultancy in Rwanda in 2020.
                             </p>
                             <p>
-                                Eric's humanitarian journey began in 2008, when he gathered other young refugee students to explore how they could find lasting solutions to their daily challenges.
+                                In 2024, as an immigrant, Eric pursued his humanitarian mission by establishing the nonprofit Engineers4Humanity in the USA — a 501(c)(3) — to guide and support its social enterprise in Rwanda.
                             </p>
                         </div>
                         <div>
@@ -72,20 +72,68 @@ const WhoWeAre = () => {
 
                     <div className="bg-gray-50 p-4 sm:p-6 md:p-8 rounded-xl md:rounded-2xl space-y-4 md:space-y-6 text-base md:text-lg leading-relaxed text-gray-700">
                         <p>
-                            They founded the Forum for Congolese refugee students. Eric served as the organization's first president and later as board chair. One notable achievement of the Forum is the establishment of Hope School in 2009, a refugee initiative school in the Gihembe refugee camp. The non-profit organization, including UNHCR, stopped the 12-year education program due to a funding shortage.
+                            Since then, Engineers4Humanity has been transforming lives across Rwanda. Through education scholarships, vocational training, environmental stewardship, and peacebuilding programs, the organization empowers refugees and underserved communities to build self-reliant, dignified, and resilient futures.
                         </p>
                         <p>
-                            Eric, along with his refugee friends, founded Hope School; more than 500 students graduated from the school. More than 400 students graduate from high school, and their lives have changed.
+                            Eric's humanitarian journey began in 2008, when he gathered other young refugee students to explore how they could find lasting solutions to their daily challenges. They founded the youth club — Forum Amis de la Paix — with Eric serving as the organization's first president and later as board chair. One notable achievement of the Forum is the establishment of Hope School in 2009, a refugee initiative school in the Gihembe refugee camp, after nonprofit organizations including UNHCR stopped offering free high school education programs due to a funding shortage.
                         </p>
                         <p>
-                            After graduating as a civil engineer, Eric found that engineering could fulfill his mission. Then, he launched Engineers4Humanity Consultant, a social enterprise that provides engineering consultancy and promotes public health engineering, STEM, and vocational training for young refugees.
-                        </p>
-                        <p>
-                            As an immigrant, Eric pursued his humanitarian mission by establishing the Engineers4Humanity Initiative, which operates in the U.S. and supports its affiliated organization, Engineers4Humanity Consultancy, a social enterprise that operates in Rwanda and across Africa. Together, these organizations focus on sustainable development through engineering solutions and education, thereby improving the lives of underserved communities.
+                            Eric, along with his refugee friends, founded Hope School, from which more than 500 students graduated, including more than 400 high school graduates whose lives and opportunities remarkably improved. After graduating from the University of Rwanda as a civil engineer, Eric found that engineering could fulfill his mission. In 2020 in Rwanda, he launched the Engineers4Humanity Consultancy, a social enterprise that provides public health engineering, STEM education, and vocational training services for young refugees.
                         </p>
                         <p className="font-semibold text-gray-900">
-                            For more about our story, check out our founder's book, Breaking Boundaries, and Hope School Alumnae's Testimony at the link below.
+                            For more about us, check out our story, our founder's book "Breaking Boundaries," and Hope School Alumnae's Testimony at the link below.
                         </p>
+                    </div>
+                </div>
+            </section>
+
+            {/* Vision & Mission Section */}
+            <section id="vision-mission" className="py-12 md:py-20 bg-sky-50 scroll-mt-24">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="grid md:grid-cols-2 gap-8 md:gap-12">
+                        {/* Vision */}
+                        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-sky-600">
+                            <div className="flex items-center gap-3 mb-6">
+                                <Sun className="w-8 h-8 text-sky-600" />
+                                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">
+                                    Organization Vision
+                                </h2>
+                            </div>
+                            <blockquote className="text-lg md:text-xl leading-relaxed text-gray-700 italic border-l-4 border-sky-400 pl-6">
+                                "We envision a brighter future for all, where refugees and underserved communities thrive through empowerment, advocacy, and sustainable engineering solutions."
+                            </blockquote>
+                        </div>
+
+                        {/* Mission */}
+                        <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-emerald-600">
+                            <div className="flex items-center gap-3 mb-6">
+                                <TrendingUp className="w-8 h-8 text-emerald-600" />
+                                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">
+                                    Organization Mission
+                                </h2>
+                            </div>
+                            <p className="text-base md:text-lg leading-relaxed text-gray-700 mb-4">
+                                To build a dignified life for refugees and underserved communities in Rwanda, and promote country development by:
+                            </p>
+                            <ul className="space-y-3 text-base md:text-lg text-gray-700">
+                                <li className="flex items-start gap-3">
+                                    <span className="mt-1.5 w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                                    Enhancing education &amp; vocational skills development;
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="mt-1.5 w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                                    Fostering self-reliance through job creation and entrepreneurship;
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="mt-1.5 w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                                    Advancing engineering solutions for environmental protection, water, sanitation, and hygiene services; and
+                                </li>
+                                <li className="flex items-start gap-3">
+                                    <span className="mt-1.5 w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0" />
+                                    Inspiring servant leadership and elevating youth and women's participation to drive sustainable peacebuilding initiatives in the region.
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -101,12 +149,12 @@ const WhoWeAre = () => {
                             </h2>
                         </div>
                         <h3 className="text-2xl sm:text-3xl font-serif font-bold text-sky-600 mb-6">
-                            The RUSINE Principles Value
+                            Engineers4Humanity's RUSINE Principles
                         </h3>
                         <div className="max-w-4xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-lg border-t-4 border-sky-600 mb-12 text-left">
                             <h4 className="text-xl font-bold text-gray-900 mb-4 font-serif">Our Identity</h4>
                             <p className="text-gray-700 text-lg leading-relaxed">
-                                Our organization is built on a simple conviction: every person carries dignity, potential, and the capacity to transform their own future when given opportunity, support, and community. The RUSINE Principles—<span className="font-semibold text-sky-600">Resilience, Ubuntu, Self Reliance, Integrity, Non Violence, and Excellence</span>—anchor who we are, how we lead, and how we serve. These values guide our decisions, shape our partnerships, and define the culture we cultivate across teams, communities, and countries.
+                                Our organization is built on a simple conviction: every person carries dignity, potential, and the capacity to transform their own future when given opportunity, support, and community. Engineers4Humanity's Principles—<span className="font-semibold text-sky-600">Resilience, Ubuntu, Self-Reliance, Integrity, Non-Violence, and Excellence</span>—anchor who we are, how we lead, and how we serve. These values guide our decisions, shape our partnerships, and define the culture we cultivate across teams, communities, and countries.
                             </p>
                         </div>
                     </div>

@@ -112,7 +112,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     Our Story
                                 </NavLink>
                                 <NavLink to="/about/executive-team" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
-                                    Executive Team
+                                    Our Team
                                 </NavLink>
                                 <NavLink to="/about/board-member" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Board Member
@@ -328,7 +328,7 @@ const Navbar: React.FC<NavbarProps> = ({ scrolled }) => {
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
                                         <NavLink to="/about/who-we-are" onClick={closeMobile} className={mobileNavLinkClasses}>Who We Are</NavLink>
                                         <NavLink to="/about/our-story" onClick={closeMobile} className={mobileNavLinkClasses}>Our Story</NavLink>
-                                        <NavLink to="/about/executive-team" onClick={closeMobile} className={mobileNavLinkClasses}>Executive Team</NavLink>
+                                        <NavLink to="/about/executive-team" onClick={closeMobile} className={mobileNavLinkClasses}>Our Team</NavLink>
                                         <NavLink to="/about/board-member" onClick={closeMobile} className={mobileNavLinkClasses}>Board Member</NavLink>
                                         <NavLink to="/get-involved" onClick={closeMobile} className={mobileNavLinkClasses}>Join Us</NavLink>
                                     </div>
