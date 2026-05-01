@@ -4,7 +4,7 @@ import { Facebook, Twitter, Linkedin, Instagram, Youtube } from 'lucide-react';
 const Footer = () => (
     <footer className="bg-[#0A1628] text-white/65" id="contact">
         {/* Top */}
-        <div className="grid grid-cols-[2fr_1fr_1fr_1fr] gap-12 px-16 pt-18 pb-12 border-b border-white/10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 px-4 sm:px-8 lg:px-16 pt-12 lg:pt-18 pb-8 lg:pb-12 border-b border-white/10">
             {/* Brand */}
             <div>
                 <Link to="/" className="font-serif text-[22px] font-semibold tracking-tight text-white no-underline inline-block mb-4">
@@ -79,7 +79,7 @@ const Footer = () => (
         </div>
 
         {/* Bottom */}
-        <div className="flex items-center justify-between px-16 py-6 flex-wrap gap-3">
+        <div className="flex items-center justify-between px-4 sm:px-8 lg:px-16 py-6 flex-wrap gap-3">
             <span className="text-[13px]">
                 © {new Date().getFullYear()} Engineers4Humanity. Made by{' '}
                 <a href="http://abytechhub.com/" className="text-sky-400 underline">Abytech Hub</a>

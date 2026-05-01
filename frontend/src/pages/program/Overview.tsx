@@ -71,7 +71,7 @@ const Overview = () => (
         />
 
         {/* Intro */}
-        <div className="px-16 py-16 max-w-4xl">
+        <div className="px-4 sm:px-8 lg:px-16 py-12 lg:py-16 max-w-4xl">
             <p className="text-base leading-[1.9] text-[#3A5068]">
                 Engineers4Humanity addresses critical needs through education, public health engineering, and capacity-building programs.
                 We aim to build a better world for everyone — promoting self-reliance and sustainable livelihood among refugees, migrants, and underserved communities.
@@ -79,7 +79,7 @@ const Overview = () => (
         </div>
 
         {/* Programs Grid */}
-        <div className="px-16 pb-24">
+        <div className="px-4 sm:px-8 lg:px-16 pb-12 lg:pb-24">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {programs.map((p, i) => (
                     <Link
@@ -117,7 +117,7 @@ const Overview = () => (
         </div>
 
         {/* CTA Banner */}
-        <section className="mx-16 mb-20 bg-[#0A1628] rounded-[6px] px-14 py-16 flex flex-col md:flex-row items-center gap-10">
+        <section className="mx-4 sm:mx-8 lg:mx-16 mb-12 lg:mb-20 bg-[#0A1628] rounded-[6px] px-6 py-10 md:px-14 md:py-16 flex flex-col md:flex-row items-center gap-8 md:gap-10">
             <div className="flex-1">
                 <div className="flex items-center gap-2.5 text-[11px] font-bold tracking-[0.18em] uppercase text-sky-300/60 mb-5">
                     <span className="w-6 h-0.5 bg-sky-300/50 block" />
