@@ -1,0 +1,1671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineers4Humanity — Home</title>
+  <!-- Rule 7: Google Fonts via link -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+  <!-- Rule 7 / Rule 6: CDN link for icons is allowed -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Rule 1: box-sizing on everything */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* Rule 10: CSS variables declared before use */
+    :root {
+      --navy:         #0A1628;
+      --bg:           #F0F7FF;
+      --bg-alt:       #E1EEF9;
+      --muted:        #3A5068;
+      --sky:          #0284c7;
+      --sky-light:    #7dd3fc;
+      --sky-dark:     #075985;
+      --emerald:      #059669;
+      --emerald-dark: #047857;
+    }
+
+    /* Rule 8: body reset */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 16px;
+      color: var(--navy);
+      background: var(--bg);
+      line-height: 1.6;
+    }
+
+    /* Rule 2: Explicit font sizes — never rely on browser defaults */
+    h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 64px; font-weight: 400; line-height: 1.05; margin: 0 0 20px; }
+    h2 { font-family: 'Playfair Display', Georgia, serif; font-size: 48px; font-weight: 400; line-height: 1.1;  margin: 0 0 16px; }
+    h3 { font-family: 'Playfair Display', Georgia, serif; font-size: 28px; font-weight: 400; line-height: 1.2;  margin: 0 0 12px; }
+    p  { font-size: 16px; line-height: 1.75; margin: 0 0 14px; }
+
+    /* Rule 6: images */
+    img { max-width: 100%; display: block; }
+
+    /* Rule 9: container for centering */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Rule 3: sections use % or px — not vw/vh */
+    section { width: 100%; }
+
+    /* ════════════════════════════
+       HERO
+    ════════════════════════════ */
+    .hero {
+      position: relative;   /* anchors all absolute children */
+      min-height: 720px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background: var(--navy);
+    }
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+    .hero-slide.active { opacity: 1; }
+    .hero-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.45) saturate(1.1);
+    }
+    .hero-slide .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, rgba(7,115,171,0.72) 0%, rgba(5,150,105,0.3) 60%, transparent 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      padding: 64px 64px 140px;
+    }
+    .hero-text { max-width: 680px; }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #34d399;
+      background: rgba(52,211,153,0.1);
+      border: 1px solid rgba(52,211,153,0.4);
+      padding: 8px 16px;
+      border-radius: 100px;
+      margin-bottom: 36px;
+    }
+    .hero-badge .diamond { font-size: 7px; }
+
+    .hero-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 64px;
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      margin: 0 0 20px;
+    }
+    .hero-title em { font-style: italic; color: var(--sky-light); }
+
+    .hero-desc {
+      font-size: 16px;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.75);
+      max-width: 480px;
+      margin: 0;
+    }
+
+    /* Slide dots — Rule 4: no fixed, no vw/vh */
+    .hero-dots {
+      position: absolute;
+      bottom: 112px;
+      left: 64px;
+      display: flex;
+      gap: 12px;
+      z-index: 10;
+    }
+    .hero-dot {
+      height: 3px;
+      border-radius: 3px;
+      border: none;
+      cursor: pointer;
+      background: rgba(255,255,255,0.4);
+      width: 20px;
+      padding: 0;
+      transition: all 0.3s;
+    }
+    .hero-dot.active { background: #ffffff; width: 40px; }
+
+    /* Stats strip */
+    .hero-stats {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: rgba(7,115,171,0.85);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(125,211,252,0.2);
+    }
+    .stat-item {
+      padding: 20px 40px;
+      border-right: 1px solid rgba(125,211,252,0.15);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 36px;
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-top: 4px;
+    }
+
+    /* ════════════════════════════
+       TICKER
+    ════════════════════════════ */
+    .ticker {
+      background: var(--emerald);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .ticker-track {
+      display: inline-block;
+      animation: ticker 32s linear infinite;
+    }
+    .ticker-item {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 0 36px;
+    }
+    .ticker-diamond { opacity: 0.55; margin-right: 14px; }
+
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ════════════════════════════
+       ABOUT
+    ════════════════════════════ */
+    .about {
+      padding: 80px 64px;
+      background: var(--bg);
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 2fr 3fr;
+      gap: 80px;
+      align-items: start;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Shared label pattern */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 32px;
+    }
+    .section-label .line { width: 28px; height: 2px; background: var(--sky); flex-shrink: 0; }
+
+    .section-label-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sky);
+      margin-bottom: 20px;
+    }
+    .section-label-center .line { width: 28px; height: 2px; background: var(--sky); }
+
+    .about-h2 em    { font-style: italic; color: #0ea5e9; }
+    .sky-em         { font-style: italic; color: #0ea5e9; }
+    .emerald-em     { font-style: italic; color: var(--emerald); }
+    .skylight-em    { font-style: italic; color: var(--sky-light); }
+
+    .about-body { font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 20px; }
+
+    .mission-list { list-style: none; margin-bottom: 32px; }
+    .mission-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 16px;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .mission-list li .bullet { color: #0ea5e9; margin-top: 4px; flex-shrink: 0; }
+
+    .about-divider { border-top: 1px solid #bae6fd; padding-top: 24px; margin-bottom: 32px; }
+
+    .learn-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--sky);
+      font-weight: 600;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+    }
+    .learn-link:hover { color: var(--sky-dark); }
+
+    .about-img {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      border-radius: 4px;
+      display: block;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 16px;
+    }
+    .pillar {
+      background: var(--bg-alt);
+      padding: 32px;
+      border-radius: 2px;
+      cursor: default;
+      transition: background 0.25s;
+    }
+    .pillar:hover { background: var(--sky); }
+    .pillar-num {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--emerald);
+      margin-bottom: 14px;
+      display: block;
+      transition: color 0.25s;
+    }
+    .pillar:hover .pillar-num { color: #ffffff; }
+    .pillar-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 10px;
+      transition: color 0.25s;
+    }
+    .pillar:hover .pillar-title { color: #ffffff; }
+    .pillar-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--muted);
+      margin: 0;
+      transition: color 0.25s;
+    }
+    .pillar:hover .pillar-desc { color: #ffffff; }
+
+    /* ════════════════════════════
+       HISTORY / GALLERY
+    ════════════════════════════ */
+    .history {
+      position: relative;  /* anchors the modal overlay */
+      padding: 80px 64px;
+      background: var(--bg);
+    }
+    .history-header { text-align: center; margin-bottom: 56px; }
+    .history-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .gallery-card {
+      background: #ffffff;
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .gallery-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,0.12); transform: translateY(-4px); }
+
+    .gallery-img-wrap {
+      position: relative;
+      height: 256px;
+      overflow: hidden;
+    }
+    .gallery-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform 0.5s;
+      max-width: none;
+    }
+    .gallery-card:hover .gallery-img-wrap img { transform: scale(1.1); }
+
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2,132,199,0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    .gallery-card:hover .gallery-overlay { background: rgba(2,132,199,0.4); }
+
+    .zoom-icon {
+      opacity: 0;
+      background: #ffffff;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.3s;
+      font-size: 20px;
+    }
+    .gallery-card:hover .zoom-icon { opacity: 1; }
+
+    .gallery-body { padding: 24px; }
+    .gallery-body p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      margin: 0 0 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sky);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+    }
+    .view-btn:hover { color: var(--sky-dark); }
+
+    /* Modal — Rule 4: position:absolute within position:relative parent (not fixed) */
+    .modal-backdrop {
+      display: none;
+      position: absolute;
+      inset: 0;
+      z-index: 50;
+      background: rgba(10,22,40,0.92);
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-inner { position: relative; max-width: 800px; width: 100%; }
+    .modal-close {
+      position: absolute;
+      top: -48px;
+      right: 0;
+      background: #ffffff;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover { background: #f3f4f6; }
+    .modal-img { width: 100%; max-height: 500px; object-fit: contain; border-radius: 4px; display: block; }
+    .modal-caption {
+      background: #ffffff;
+      margin-top: 12px;
+      padding: 24px;
+      border-radius: 4px;
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--navy);
+    }
+
+    /* ════════════════════════════
+       PROGRAMS
+    ════════════════════════════ */
+    .programs {
+      padding: 0 64px 80px;
+      background: var(--bg);
+    }
+    .programs-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 16px;
+      margin-bottom: 48px;
+      border-top: 1px solid rgba(186,230,253,0.6);
+      padding-top: 48px;
+    }
+    .programs-intro {
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 300px;
+      text-align: right;
+      margin: 0;
+    }
+    .programs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .prog-card {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .prog-card:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.2); }
+    .prog-card > img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      max-width: none;
+      transition: transform 0.5s;
+    }
+    .prog-card:hover > img { transform: scale(1.05); }
+    .prog-card .grad { position: absolute; inset: 0; }
+    .prog-card.sky .grad    { background: linear-gradient(to top, rgba(7,89,133,0.9) 0%, rgba(7,89,133,0.3) 50%, transparent 100%); }
+    .prog-card.emerald .grad{ background: linear-gradient(to top, rgba(6,78,59,0.9) 0%, rgba(6,78,59,0.3) 50%, transparent 100%); }
+
+    .prog-body { position: relative; z-index: 10; padding: 32px; }
+    .prog-tag {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .prog-card.sky .prog-tag     { color: var(--sky-light); }
+    .prog-card.emerald .prog-tag { color: #6ee7b7; }
+
+    .prog-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 16px;
+    }
+    .prog-items { list-style: none; margin-bottom: 16px; }
+    .prog-items li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.8);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+    .prog-items li .dot { margin-top: 5px; flex-shrink: 0; }
+    .prog-card.sky    .prog-items li .dot { color: var(--sky-light); }
+    .prog-card.emerald .prog-items li .dot { color: #6ee7b7; }
+
+    .prog-desc { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; margin-bottom: 16px; }
+    .prog-link { color: #ffffff; font-size: 13px; font-weight: 600; text-decoration: none; letter-spacing: 0.05em; }
+
+    /* Featured band */
+    .featured-band {
+      background: var(--navy);
+      border-radius: 6px;
+      padding: 48px 56px;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .featured-left { flex: 1; min-width: 260px; }
+    .featured-sublabel {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(125,211,252,0.6);
+      margin-bottom: 20px;
+    }
+    .featured-sublabel .line { width: 24px; height: 2px; background: rgba(125,211,252,0.5); }
+    .featured-left h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 28px;
+      font-weight: 400;
+      line-height: 1.25;
+      color: #ffffff;
+      margin: 0;
+    }
+    .featured-body {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.65);
+      flex: 1;
+      min-width: 220px;
+      margin: 0;
+    }
+
+    /* Shared buttons */
+    .btn-sky {
+      display: inline-block;
+      background: var(--sky);
+      color: #ffffff;
+      padding: 16px 36px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.2s;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-sky:hover { background: var(--sky-dark); }
+    .btn-emerald {
+      display: inline-block;
+      background: var(--emerald);
+      color: #ffffff;
+      padding: 16px 36px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-emerald:hover { background: var(--emerald-dark); }
+
+    /* ════════════════════════════
+       CTA
+    ════════════════════════════ */
+    .cta {
+      padding: 80px 64px;
+      background: var(--bg-alt);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+    .cta-desc { font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 40px; }
+    .cta-btns { display: flex; gap: 16px; flex-wrap: wrap; }
+
+    .join-cards { display: flex; flex-direction: column; gap: 16px; }
+    .join-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .join-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .join-icon { font-size: 30px; line-height: 1; flex-shrink: 0; }
+    .join-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .join-desc { font-size: 14px; line-height: 1.7; color: var(--muted); margin: 0; }
+
+    /* ════════════════════════════
+       NAVBAR — Rule 4: sticky not fixed
+    ════════════════════════════ */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: #ffffff;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.1);
+      width: 100%;
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 72px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--navy);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .nav-logo span { color: var(--sky); }
+
+    /* Desktop links */
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-item {
+      display: block;
+      padding: 8px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #374151;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .nav-item:hover { color: var(--sky); background: #f0f9ff; }
+
+    /* Dropdown parent */
+    .nav-drop { position: relative; }
+    .drop-btn {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #374151;
+      background: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .drop-btn:hover { color: var(--sky); background: #f0f9ff; }
+    .drop-btn .chevron {
+      font-size: 10px;
+      transition: transform 0.25s;
+      display: inline-block;
+    }
+    .nav-drop:hover .chevron { transform: rotate(180deg); }
+
+    /* Dropdown panel */
+    .drop-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      box-shadow: 0 10px 32px rgba(0,0,0,0.12);
+      padding: 8px;
+      min-width: 220px;
+      opacity: 0;
+      transform: translateY(-8px) scale(0.97);
+      pointer-events: none;
+      transition: opacity 0.25s, transform 0.25s;
+    }
+    .nav-drop:hover .drop-menu {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+    .drop-link {
+      display: block;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #374151;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .drop-link:hover { color: var(--sky); background: #f0f9ff; }
+
+    /* Programs mega menu */
+    .drop-menu.mega {
+      left: 50%;
+      transform: translateX(-50%) translateY(-8px) scale(0.97);
+      width: 560px;
+      padding: 20px;
+    }
+    .nav-drop:hover .drop-menu.mega {
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+    .mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .mega-col-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 16px 8px;
+      margin: 0;
+    }
+    .mega-col-title.sky  { color: var(--sky); }
+    .mega-col-title.grn  { color: var(--emerald); }
+    .mega-col-title.pur  { color: #7c3aed; }
+
+    /* Donate button */
+    .btn-donate {
+      display: inline-block;
+      padding: 10px 24px;
+      background: linear-gradient(to right, var(--emerald), var(--emerald-dark));
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity 0.2s, transform 0.2s;
+      box-shadow: 0 2px 8px rgba(5,150,105,0.35);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-donate:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Mobile hamburger */
+    .mobile-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: #374151;
+      font-size: 24px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .mobile-btn:hover { background: #f3f4f6; }
+
+    /* Mobile dropdown menu — Rule 4: absolute not fixed */
+    .mobile-menu {
+      display: none;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      background: #ffffff;
+      border-top: 1px solid #e5e7eb;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      z-index: 99;
+      padding: 16px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .mobile-menu.open { display: block; }
+    .mobile-nav-item {
+      display: block;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #374151;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .mobile-nav-item:hover { color: var(--sky); background: #f0f9ff; }
+
+    /* Mobile accordion via <details>/<summary> */
+    .mob-details { margin-bottom: 2px; }
+    .mob-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #374151;
+      cursor: pointer;
+      border-radius: 8px;
+      list-style: none;
+      transition: background 0.2s;
+    }
+    .mob-summary:hover { background: #f0f9ff; color: var(--sky); }
+    .mob-summary::-webkit-details-marker { display: none; }
+    .mob-sub {
+      padding-left: 16px;
+      border-left: 2px solid #bae6fd;
+      margin: 4px 0 4px 16px;
+    }
+    .mob-sub-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 8px 16px 4px;
+      margin: 0;
+    }
+    .mob-sub-title.sky { color: var(--sky); }
+    .mob-sub-title.grn { color: var(--emerald); }
+    .mob-sub-title.pur { color: #7c3aed; }
+    .mob-donate {
+      display: block;
+      padding: 14px 16px;
+      margin-top: 12px;
+      background: linear-gradient(to right, var(--emerald), var(--emerald-dark));
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity 0.2s;
+    }
+    .mob-donate:hover { opacity: 0.9; }
+
+    /* ════════════════════════════
+       FOOTER
+    ════════════════════════════ */
+    .footer { background: var(--navy); color: rgba(255,255,255,0.65); }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding: 64px 64px 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: #ffffff;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .footer-tagline {
+      font-size: 14px;
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .footer-ein {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+    }
+    .footer-ein-label { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+    .footer-ein-val   { font-size: 14px; font-weight: 600; color: #ffffff; margin: 0; }
+    .social-links { display: flex; gap: 10px; }
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.65);
+      font-size: 14px;
+      text-decoration: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .social-link:hover { background: var(--sky); color: #ffffff; }
+
+    .footer-col-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 20px;
+    }
+    .footer-link {
+      display: block;
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+      line-height: 1.5;
+    }
+    .footer-link:hover { color: #ffffff; }
+
+    .footer-office-name { font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 4px; }
+    .footer-office-sub  { font-size: 12px; color: var(--sky-light); font-weight: 500; margin-bottom: 4px; }
+    .footer-office-tin  { font-size: 11px; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
+    .footer-office-addr { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 6px; }
+    .footer-office-space { margin-top: 20px; }
+    .footer-contact {
+      display: block;
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      margin-top: 4px;
+      transition: color 0.2s;
+    }
+    .footer-contact:hover { color: #ffffff; }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 24px 64px;
+    }
+    .footer-copy { font-size: 13px; color: rgba(255,255,255,0.65); }
+    .footer-copy a { color: #38bdf8; text-decoration: underline; }
+    .footer-legal { display: flex; gap: 24px; }
+    .footer-legal a {
+      font-size: 13px;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-legal a:hover { color: #ffffff; }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVBAR — position:sticky per Rule 4 ──────────────── -->
+<nav class="navbar">
+  <div class="nav-inner">
+
+    <!-- Logo (text — local /image.png can't be used per Rule 5) -->
+    <a href="#" class="nav-logo">Engineers<span>4</span>Humanity</a>
+
+    <!-- Desktop navigation -->
+    <ul class="nav-links">
+
+      <li><a href="#" class="nav-item">Home</a></li>
+
+      <!-- About Us -->
+      <li class="nav-drop">
+        <button class="drop-btn">About Us <span class="chevron">▾</span></button>
+        <div class="drop-menu">
+          <a href="#" class="drop-link">Who We Are</a>
+          <a href="#" class="drop-link">Our Story</a>
+          <a href="#" class="drop-link">Our Team</a>
+          <a href="#" class="drop-link">Board Members</a>
+          <a href="#" class="drop-link">Join Us</a>
+        </div>
+      </li>
+
+      <!-- Programs mega menu -->
+      <li class="nav-drop">
+        <button class="drop-btn">Programs <span class="chevron">▾</span></button>
+        <div class="drop-menu mega">
+          <div class="mega-grid">
+            <div>
+              <p class="mega-col-title sky">Education</p>
+              <a href="#" class="drop-link">High School &amp; University scholarships</a>
+              <a href="#" class="drop-link">Leadership &amp; Peacebuilding</a>
+            </div>
+            <div>
+              <p class="mega-col-title grn">Engineering</p>
+              <a href="#" class="drop-link">Public Health Engineering</a>
+              <a href="#" class="drop-link">Entrepreneurship &amp; Construction Service</a>
+            </div>
+            <div>
+              <p class="mega-col-title pur">E4H Institute</p>
+              <a href="#" class="drop-link">Professional Skills Development</a>
+              <a href="#" class="drop-link">Research &amp; Innovation Hub</a>
+            </div>
+          </div>
+        </div>
+      </li>
+
+      <!-- Impact -->
+      <li class="nav-drop">
+        <button class="drop-btn">Impact <span class="chevron">▾</span></button>
+        <div class="drop-menu">
+          <a href="#" class="drop-link">Our Impact</a>
+          <a href="#" class="drop-link">Success Story</a>
+          <a href="#" class="drop-link">Testimony</a>
+          <a href="#" class="drop-link">Documentary</a>
+          <a href="#" class="drop-link">Article &amp; Publication</a>
+        </div>
+      </li>
+
+      <li><a href="#join" class="nav-item">Get Involved</a></li>
+
+      <!-- Events -->
+      <li class="nav-drop">
+        <button class="drop-btn">Events <span class="chevron">▾</span></button>
+        <div class="drop-menu">
+          <a href="#" class="drop-link">Upcoming Events</a>
+          <a href="#" class="drop-link">Past Events</a>
+        </div>
+      </li>
+
+      <li><a href="#" class="nav-item">Contact</a></li>
+
+    </ul>
+
+    <a href="#" class="btn-donate">Donate Now</a>
+
+    <!-- Mobile hamburger -->
+    <button class="mobile-btn" onclick="toggleMobile()" aria-label="Toggle menu">&#9776;</button>
+  </div>
+
+  <!-- Mobile menu — Rule 4: position:absolute, not fixed -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" class="mobile-nav-item">Home</a>
+
+    <details class="mob-details">
+      <summary class="mob-summary">About Us <span>▾</span></summary>
+      <div class="mob-sub">
+        <a href="#" class="mobile-nav-item">Who We Are</a>
+        <a href="#" class="mobile-nav-item">Our Story</a>
+        <a href="#" class="mobile-nav-item">Our Team</a>
+        <a href="#" class="mobile-nav-item">Board Members</a>
+        <a href="#" class="mobile-nav-item">Join Us</a>
+      </div>
+    </details>
+
+    <details class="mob-details">
+      <summary class="mob-summary">Programs <span>▾</span></summary>
+      <div class="mob-sub">
+        <p class="mob-sub-title sky">Education</p>
+        <a href="#" class="mobile-nav-item">High School &amp; University scholarships</a>
+        <a href="#" class="mobile-nav-item">Leadership &amp; Peacebuilding</a>
+        <p class="mob-sub-title grn">Engineering</p>
+        <a href="#" class="mobile-nav-item">Public Health Engineering</a>
+        <a href="#" class="mobile-nav-item">Entrepreneurship &amp; Construction</a>
+        <p class="mob-sub-title pur">E4H Institute</p>
+        <a href="#" class="mobile-nav-item">Professional Skills Development</a>
+        <a href="#" class="mobile-nav-item">Research &amp; Innovation Hub</a>
+      </div>
+    </details>
+
+    <details class="mob-details">
+      <summary class="mob-summary">Impact <span>▾</span></summary>
+      <div class="mob-sub">
+        <a href="#" class="mobile-nav-item">Our Impact</a>
+        <a href="#" class="mobile-nav-item">Success Story</a>
+        <a href="#" class="mobile-nav-item">Testimony</a>
+        <a href="#" class="mobile-nav-item">Documentary</a>
+        <a href="#" class="mobile-nav-item">Article &amp; Publication</a>
+      </div>
+    </details>
+
+    <a href="#join" class="mobile-nav-item">Get Involved</a>
+
+    <details class="mob-details">
+      <summary class="mob-summary">Events <span>▾</span></summary>
+      <div class="mob-sub">
+        <a href="#" class="mobile-nav-item">Upcoming Events</a>
+        <a href="#" class="mobile-nav-item">Past Events</a>
+      </div>
+    </details>
+
+    <a href="#" class="mobile-nav-item">Contact</a>
+    <a href="#" class="mob-donate">Donate Now</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- ── HERO ─────────────────────────────────────────── -->
+  <section class="hero">
+
+    <!-- Background slides — Rule 5: absolute image URLs -->
+    <div class="hero-slide active" id="slide0">
+      <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1400&q=80" alt="Community" />
+      <div class="overlay"></div>
+    </div>
+    <div class="hero-slide" id="slide1">
+      <img src="https://images.unsplash.com/photo-1524069290683-0457abfe42c3?w=1400&q=80" alt="Education" />
+      <div class="overlay"></div>
+    </div>
+    <div class="hero-slide" id="slide2">
+      <img src="https://images.unsplash.com/photo-1531983412531-1f49a365ffed?w=1400&q=80" alt="Opportunities" />
+      <div class="overlay"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="hero-badge">
+          <span class="diamond">◆</span> Engineering for Good
+        </div>
+        <h1 class="hero-title" id="heroTitle">
+          Building Dignified<br /><em id="heroEm">Lives</em>
+        </h1>
+        <p class="hero-desc" id="heroDesc">
+          Empowering refugees and underserved communities through education, engineering, and servant leadership
+        </p>
+      </div>
+    </div>
+
+    <!-- Slide dots — Rule 4: position:absolute, not fixed -->
+    <div class="hero-dots">
+      <button class="hero-dot active" onclick="goSlide(0)"></button>
+      <button class="hero-dot"        onclick="goSlide(1)"></button>
+      <button class="hero-dot"        onclick="goSlide(2)"></button>
+    </div>
+
+    <!-- Stats strip -->
+    <div class="hero-stats" id="heroStats">
+      <div class="stat-item">
+        <div class="stat-num" id="stat0">0+</div>
+        <div class="stat-label">Hope School Graduates</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat1">0+</div>
+        <div class="stat-label">Lives Transformed</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num" id="stat2">0+</div>
+        <div class="stat-label">Years of Founder in Humanitarian Service</div>
+      </div>
+      <div class="stat-item" style="border-right:none">
+        <div class="stat-num" id="stat3">0</div>
+        <div class="stat-label">Year Founded</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TICKER ────────────────────────────────────────── -->
+  <div class="ticker">
+    <div class="ticker-track">
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Clean Water &amp; Sanitation</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Education &amp; Scholarships</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Vocational Training</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Servant Leadership</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Peacebuilding</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Social Entrepreneurship</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Engineering Consultancy</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Community Empowerment</span>
+      <!-- doubled for seamless loop -->
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Clean Water &amp; Sanitation</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Education &amp; Scholarships</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Vocational Training</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Servant Leadership</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Peacebuilding</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Social Entrepreneurship</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Engineering Consultancy</span>
+      <span class="ticker-item"><span class="ticker-diamond">◆</span>Community Empowerment</span>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ─────────────────────────────────────────── -->
+  <section class="about" id="mission">
+    <div class="about-grid">
+      <!-- Left column -->
+      <div>
+        <div class="section-label">
+          <span class="line"></span>
+          Who we are
+        </div>
+        <h2>Engineers4Humanity's <em class="sky-em">Mission</em></h2>
+        <p class="about-body">
+          To build a dignified life for refugees and underserved communities in Rwanda, and promote country development by:
+        </p>
+        <ul class="mission-list">
+          <li><span class="bullet">•</span> Enhancing education &amp; vocational skills development;</li>
+          <li><span class="bullet">•</span> Fostering self-reliance through job creation and entrepreneurship;</li>
+          <li><span class="bullet">•</span> Advancing engineering solutions for environmental protection, water, sanitation, and hygiene services; and</li>
+          <li><span class="bullet">•</span> Encouraging servant leadership and peacebuilding</li>
+        </ul>
+        <div class="about-divider">
+          <p class="about-body">
+            Engineers4Humanity is a registered <strong style="color:var(--navy)">501(c)(3) nonprofit organization</strong> based in Texas which guides and supports the Engineers4Humanity Consultancy social enterprise in Rwanda that fosters resilience and self-reliance in refugee camps through education, engineering, and servant leadership.
+          </p>
+          <p class="about-body" style="margin-bottom:0">
+            Founded by <strong style="color:var(--navy)">Eric Kamanzi</strong> — civil engineer, Project Management Professional, and former refugee — the organization has positively impacted more than <strong style="color:var(--emerald)">2,000 young refugees</strong> across Rwanda.
+          </p>
+        </div>
+        <a href="#" class="learn-link">Learn More About Us →</a>
+      </div>
+      <!-- Right column -->
+      <div>
+        <!-- Rule 5: absolute URL -->
+        <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=900&q=80" alt="Community Impact" class="about-img" />
+        <div class="pillars-grid">
+          <div class="pillar">
+            <span class="pillar-num">01</span>
+            <div class="pillar-title">Connect</div>
+            <p class="pillar-desc">Matching engineers and volunteers with communities where their skills create the most impact.</p>
+          </div>
+          <div class="pillar">
+            <span class="pillar-num">02</span>
+            <div class="pillar-title">Build</div>
+            <p class="pillar-desc">Designing and deploying real-world solutions in public health engineering and vocational skills development.</p>
+          </div>
+          <div class="pillar">
+            <span class="pillar-num">03</span>
+            <div class="pillar-title">Sustain</div>
+            <p class="pillar-desc">Training local communities to maintain solutions and lead long after our support ends.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HISTORY / GALLERY ─────────────────────────────── -->
+  <section class="history" id="journey">
+    <div class="history-header">
+      <div class="section-label-center">
+        <span class="line"></span>
+        Our Journey
+        <span class="line"></span>
+      </div>
+      <h2>Milestones that shaped <em class="sky-em">our story</em></h2>
+      <p class="history-desc">
+        Explore the milestones and moments that have shaped Engineers4Humanity. From our humble beginnings to transformative partnerships, each image tells a story of hope, resilience, and impact in refugee communities.
+      </p>
+    </div>
+
+    <div class="gallery-grid">
+      <div class="gallery-card" onclick="openModal(0)">
+        <div class="gallery-img-wrap">
+          <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=600&q=80" alt="Dallas Commissioners Court" />
+          <div class="gallery-overlay"><div class="zoom-icon">🔍</div></div>
+        </div>
+        <div class="gallery-body">
+          <p>Eric joins other civil society organization members in Dallas, presenting his Refugee Life journey to the Dallas County Commissioners Court for signing the resolution recognizing June 20, 2025, as the International World Refugee Day in Dallas</p>
+          <button class="view-btn">View Full Image 🔍</button>
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openModal(1)">
+        <div class="gallery-img-wrap">
+          <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=600&q=80" alt="Rwanda Team 2020" />
+          <div class="gallery-overlay"><div class="zoom-icon">🔍</div></div>
+        </div>
+        <div class="gallery-body">
+          <p>Engineers4Humanity Rwanda Team, 2020, with Theo Karegesa, Engineers4Humanity Board Vice Chair and Eric Kamanzi, Founder &amp; CEO on the left in blue shirts.</p>
+          <button class="view-btn">View Full Image 🔍</button>
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openModal(2)">
+        <div class="gallery-img-wrap">
+          <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" alt="Hope School 2009" />
+          <div class="gallery-overlay"><div class="zoom-icon">🔍</div></div>
+        </div>
+        <div class="gallery-body">
+          <p>Hope School 1st intake students of 2009</p>
+          <button class="view-btn">View Full Image 🔍</button>
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openModal(3)">
+        <div class="gallery-img-wrap">
+          <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=600&q=80" alt="Volunteer visit" />
+          <div class="gallery-overlay"><div class="zoom-icon">🔍</div></div>
+        </div>
+        <div class="gallery-body">
+          <p>From Left is Mr Musuhuke, our Alum who is serving as a volunteer, and Fr. Malisaba, Engineers4Humanity Vice-Board Chair in charge of Education, in the middle during the visit of sponsored students.</p>
+          <button class="view-btn">View Full Image 🔍</button>
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openModal(4)">
+        <div class="gallery-img-wrap">
+          <img src="https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=600&q=80" alt="Skills center 2020" />
+          <div class="gallery-overlay"><div class="zoom-icon">🔍</div></div>
+        </div>
+        <div class="gallery-body">
+          <p>Eric is in a meeting with our short-course trainees at the Engineers4Humanity Center for skills development, research, and Innovation 2020 in Gihembe Refugee camp.</p>
+          <button class="view-btn">View Full Image 🔍</button>
+        </div>
+      </div>
+      <div class="gallery-card" onclick="openModal(5)">
+        <div class="gallery-img-wrap">
+          <img src="https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=600&q=80" alt="Rwanda Convention" />
+          <div class="gallery-overlay"><div class="zoom-icon">🔍</div></div>
+        </div>
+        <div class="gallery-body">
+          <p>Meeting with Dr. Apotre Paul Gitwaza and sharing his book during the Rwanda Convention held in Dallas, July 2025</p>
+          <button class="view-btn">View Full Image 🔍</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal — Rule 4: position:absolute within position:relative section, not fixed -->
+    <div class="modal-backdrop" id="modal" onclick="closeModal()">
+      <div class="modal-inner" onclick="event.stopPropagation()">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <img class="modal-img" id="modalImg" src="" alt="" />
+        <div class="modal-caption" id="modalCaption"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROGRAMS ───────────────────────────────────────── -->
+  <section class="programs" id="programs">
+    <div class="programs-header">
+      <h2>Programs that<br /><em class="emerald-em">make a difference</em></h2>
+      <p class="programs-intro">
+        Each program targets a specific humanitarian challenge with measurable outcomes and a clear engineering mandate.
+      </p>
+    </div>
+
+    <div class="programs-grid">
+      <!-- Education -->
+      <div class="prog-card sky">
+        <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80" alt="Education" />
+        <div class="grad"></div>
+        <div class="prog-body">
+          <span class="prog-tag">Education</span>
+          <div class="prog-title">Education</div>
+          <ul class="prog-items">
+            <li><span class="dot">•</span> High School &amp; University</li>
+            <li><span class="dot">•</span> Leadership &amp; Peacebuilding</li>
+          </ul>
+          <p class="prog-desc">Encouraging servant leadership and peacebuilding initiatives in Rwanda for lasting impact.</p>
+          <a href="#" class="prog-link">Learn more ↗</a>
+        </div>
+      </div>
+      <!-- Engineering -->
+      <div class="prog-card sky">
+        <img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?w=600&q=80" alt="Engineering" />
+        <div class="grad"></div>
+        <div class="prog-body">
+          <span class="prog-tag">Engineering</span>
+          <div class="prog-title">Engineering</div>
+          <ul class="prog-items">
+            <li><span class="dot">•</span> Public Health Engineering</li>
+            <li><span class="dot">•</span> Social Entrepreneurship &amp; Construction Service</li>
+          </ul>
+          <p class="prog-desc">Addressing Water, Sanitation, and Hygiene (WASH) challenges in Rwanda refugee camps through sustainable engineering systems.</p>
+          <a href="#" class="prog-link">Learn more ↗</a>
+        </div>
+      </div>
+      <!-- Institute -->
+      <div class="prog-card emerald">
+        <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600&q=80" alt="Institute" />
+        <div class="grad"></div>
+        <div class="prog-body">
+          <span class="prog-tag">Institute</span>
+          <div class="prog-title">Engineers4Humanity Institute</div>
+          <ul class="prog-items">
+            <li><span class="dot">•</span> Professional Skills Development</li>
+            <li><span class="dot">•</span> Research &amp; Innovation Hub</li>
+          </ul>
+          <p class="prog-desc">Equipping refugee and immigrant youth with engineering, project management, and entrepreneurship skills to build self-reliance.</p>
+          <a href="#" class="prog-link">Learn more ↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Featured band -->
+    <div class="featured-band">
+      <div class="featured-left">
+        <div class="featured-sublabel">
+          <span class="line"></span>
+          Flagship Initiative
+        </div>
+        <h3>Servant Leadership &amp; Peacebuilding — <em class="skylight-em">empowering youth</em> across Rwanda</h3>
+      </div>
+      <p class="featured-body">
+        Empowering youth and women affected by conflict through mentorship, creative healing, and multicultural peace-building initiatives.
+      </p>
+      <a href="#" class="btn-sky">See All Programs ↗</a>
+    </div>
+  </section>
+
+  <!-- ── CTA ───────────────────────────────────────────── -->
+  <section class="cta" id="join">
+    <!-- Left -->
+    <div>
+      <div class="section-label">
+        <span class="line"></span>
+        Get Involved
+      </div>
+      <h2>Your support<br />can change <em class="sky-em">lives</em></h2>
+      <p class="cta-desc">
+        Whether through donations, volunteering, or spreading the word — you can help empower vulnerable communities and create lasting change across East Africa and beyond.
+      </p>
+      <div class="cta-btns">
+        <a href="#" class="btn-sky">Join the Movement</a>
+        <a href="#" class="btn-emerald">Donate Now</a>
+      </div>
+    </div>
+    <!-- Right -->
+    <div class="join-cards">
+      <div class="join-card">
+        <span class="join-icon">🔧</span>
+        <div>
+          <div class="join-title">Volunteer Engineer</div>
+          <p class="join-desc">Apply your technical skills to a real humanitarian project, near or far.</p>
+        </div>
+      </div>
+      <div class="join-card">
+        <span class="join-icon">🎓</span>
+        <div>
+          <div class="join-title">Student Programs</div>
+          <p class="join-desc">Chapter memberships, scholarships, and mentorship for engineering students.</p>
+        </div>
+      </div>
+      <div class="join-card">
+        <span class="join-icon">🤝</span>
+        <div>
+          <div class="join-title">Corporate Partnership</div>
+          <p class="join-desc">Partner your company's engineering talent with our on-the-ground programs.</p>
+        </div>
+      </div>
+      <div class="join-card">
+        <span class="join-icon">❤️</span>
+        <div>
+          <div class="join-title">Donate</div>
+          <p class="join-desc">Fund the tools, travel, and time that turns engineering into humanitarian relief.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── FOOTER ──────────────────────────────────────────── -->
+<footer class="footer" id="contact">
+  <div class="footer-top">
+    <!-- Brand -->
+    <div>
+      <a href="#" class="footer-logo">Engineers<span style="color:inherit">4</span>Humanity</a>
+      <p class="footer-tagline">Empowering refugees and underserved communities through education, engineering solutions, and sustainable development.</p>
+      <div class="footer-ein">
+        <p class="footer-ein-label">Registered 501(c)(3) nonprofit</p>
+        <p class="footer-ein-val">EIN: 99-2264956</p>
+      </div>
+      <div class="social-links">
+        <a href="https://facebook.com"  target="_blank" rel="noopener noreferrer" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
+        <a href="https://twitter.com"   target="_blank" rel="noopener noreferrer" class="social-link"><i class="fa-brands fa-x-twitter"></i></a>
+        <a href="https://linkedin.com"  target="_blank" rel="noopener noreferrer" class="social-link"><i class="fa-brands fa-linkedin-in"></i></a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link"><i class="fa-brands fa-instagram"></i></a>
+        <a href="https://youtube.com"   target="_blank" rel="noopener noreferrer" class="social-link"><i class="fa-brands fa-youtube"></i></a>
+      </div>
+    </div>
+
+    <!-- Programs -->
+    <div>
+      <div class="footer-col-title">Programs</div>
+      <a href="#" class="footer-link">High School &amp; University scholarships</a>
+      <a href="#" class="footer-link">Leadership &amp; Peacebuilding</a>
+      <a href="#" class="footer-link">Public Health Engineering</a>
+      <a href="#" class="footer-link">Entrepreneurship &amp; Construction Service</a>
+      <a href="#" class="footer-link">Professional Skills Development</a>
+      <a href="#" class="footer-link">Research &amp; Innovation Hub</a>
+    </div>
+
+    <!-- Organization -->
+    <div>
+      <div class="footer-col-title">Organization</div>
+      <a href="#" class="footer-link">About Us</a>
+      <a href="#" class="footer-link">Our Story</a>
+      <a href="#" class="footer-link">Our Team</a>
+      <a href="#" class="footer-link">Board Members</a>
+      <a href="#" class="footer-link">Upcoming Events</a>
+      <a href="#" class="footer-link">Past Events</a>
+      <a href="#" class="footer-link">Gallery</a>
+    </div>
+
+    <!-- Connect -->
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <p class="footer-office-name">Texas Office</p>
+      <p class="footer-office-sub">Engineers4Humanity</p>
+      <p class="footer-office-addr">2012 ELM Place, Northlake, TX 76247</p>
+      <a href="tel:+14699670444"                    class="footer-contact">+1 (469) 967-0444</a>
+      <a href="mailto:contact@engineers4humanity.org" class="footer-contact" style="font-size:12px">contact@engineers4humanity.org</a>
+
+      <div class="footer-office-space">
+        <p class="footer-office-name">Rwanda Office</p>
+        <p class="footer-office-sub">Engineers4Humanity Consultancy</p>
+        <p class="footer-office-tin">TIN# 111054632</p>
+        <p class="footer-office-addr">Diamond House, 2nd Floor, Kigali City, Kicukiro Center</p>
+        <a href="tel:+250785426752"                         class="footer-contact">+250 785 426 752</a>
+        <a href="mailto:kigalioffice@engineers4humanity.org"  class="footer-contact" style="font-size:12px">kigalioffice@engineers4humanity.org</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">
+      © <span id="footerYear"></span> Engineers4Humanity. Made by
+      <a href="http://abytechhub.com/" target="_blank" rel="noopener noreferrer">Abytech Hub</a>
+    </span>
+    <div class="footer-legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Hero Slideshow ─────────────────────────────────────
+  const slides = document.querySelectorAll('.hero-slide');
+  const dots   = document.querySelectorAll('.hero-dot');
+  const slideData = [
+    { title: 'Building Dignified',  em: 'Lives',         desc: 'Empowering refugees and underserved communities through education, engineering, and servant leadership' },
+    { title: 'Education Changes',   em: 'Everything',    desc: 'From refugee camps to universities — we open doors that were never meant to be closed' },
+    { title: 'Creating',            em: 'Opportunities', desc: 'Vocational training, mentorship, and social entrepreneurship transforming lives across East Africa and beyond' },
+  ];
+  let current = 0;
+
+  function goSlide(idx) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    document.getElementById('heroTitle').innerHTML =
+      slideData[current].title + '<br /><em id="heroEm">' + slideData[current].em + '</em>';
+    document.getElementById('heroDesc').textContent = slideData[current].desc;
+  }
+
+  setInterval(function() { goSlide((current + 1) % slides.length); }, 5000);
+
+  // ── Stats Count-Up ─────────────────────────────────────
+  const statConfig = [
+    { el: document.getElementById('stat0'), target: 500,  suffix: '+',  special: false },
+    { el: document.getElementById('stat1'), target: 2000, suffix: '+',  special: true  },
+    { el: document.getElementById('stat2'), target: 17,   suffix: '+',  special: false },
+    { el: document.getElementById('stat3'), target: 2020, suffix: '',   special: false },
+  ];
+
+  function animateStat(s) {
+    var steps = 60, duration = 3500, step = 0;
+    var timer = setInterval(function() {
+      step++;
+      var eased = 1 - Math.pow(1 - step / steps, 3);
+      var val = Math.round(eased * s.target);
+      if (s.special && val >= 1000) {
+        var thousands = val / 1000;
+        s.el.textContent = thousands.toFixed(val % 1000 === 0 ? 0 : 1).replace(/\.0$/, '') + ',000' + s.suffix;
+      } else {
+        s.el.textContent = val.toLocaleString() + s.suffix;
+      }
+      if (step >= steps) clearInterval(timer);
+    }, duration / steps);
+  }
+
+  var statsEl = document.getElementById('heroStats');
+  var statsObserver = new IntersectionObserver(function(entries) {
+    if (entries[0].isIntersecting) {
+      statConfig.forEach(animateStat);
+      statsObserver.disconnect();
+    }
+  }, { threshold: 0.3 });
+  statsObserver.observe(statsEl);
+
+  // ── Gallery Modal ──────────────────────────────────────
+  var modalData = [
+    { src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1000&q=80', caption: 'Eric joins other civil society organization members in Dallas, presenting his Refugee Life journey to the Dallas County Commissioners Court for signing the resolution recognizing June 20, 2025, as the International World Refugee Day in Dallas' },
+    { src: 'https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1000&q=80', caption: 'Engineers4Humanity Rwanda Team, 2020, with Theo Karegesa, Engineers4Humanity Board Vice Chair and Eric Kamanzi, Founder & CEO on the left in blue shirts.' },
+    { src: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1000&q=80', caption: 'Hope School 1st intake students of 2009' },
+    { src: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1000&q=80', caption: 'From Left is Mr Musuhuke, our Alum who is serving as a volunteer, and Fr. Malisaba, Engineers4Humanity Vice-Board Chair in charge of Education, in the middle during the visit of sponsored students.' },
+    { src: 'https://images.unsplash.com/photo-1559027615-cd4628902d4a?w=1000&q=80', caption: 'Eric is in a meeting with our short-course trainees at the Engineers4Humanity Center for skills development, research, and Innovation 2020 in Gihembe Refugee camp.' },
+    { src: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=1000&q=80', caption: 'Meeting with Dr. Apotre Paul Gitwaza and sharing his book during the Rwanda Convention held in Dallas, July 2025' },
+  ];
+
+  function openModal(idx) {
+    document.getElementById('modalImg').src         = modalData[idx].src;
+    document.getElementById('modalImg').alt         = modalData[idx].caption;
+    document.getElementById('modalCaption').textContent = modalData[idx].caption;
+    document.getElementById('modal').classList.add('open');
+  }
+  function closeModal() {
+    document.getElementById('modal').classList.remove('open');
+  }
+
+  // ── Mobile nav toggle ──────────────────────────────────
+  function toggleMobile() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // ── Footer year ────────────────────────────────────────
+  document.getElementById('footerYear').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

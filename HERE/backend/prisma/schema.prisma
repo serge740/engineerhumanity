@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id         String   @id @default(cuid())
+  adminName  String
+  adminEmail String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  sites      Site[]
+
+  @@map("admins")
+}
+
+model Site {
+  id         String      @id @default(cuid())
+  adminId    String
+  admin      Admin       @relation(fields: [adminId], references: [id])
+  name       String
+  domain     String?     @unique
+  metadata   Json
+  globalCSS  String      @db.Text
+  globalJS   String      @db.Text
+  version    Int         @default(1)
+  published  Boolean     @default(false)
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+
+  pages      Page[]
+  components Component[]
+  assets     Asset[]
+
+  @@index([adminId])
+  @@map("sites")
+}
+
+model Page {
+  id          String   @id @default(cuid())
+  siteId      String
+  site        Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  slug        String
+  title       String
+  description String?
+  html        Json
+  metadata    Json
+  published   Boolean  @default(false)
+  isLanding   Boolean  @default(false)
+  version     Int      @default(1)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([siteId, slug])
+  @@index([siteId])
+  @@map("pages")
+}
+
+model Component {
+  id        String   @id @default(cuid())
+  siteId    String
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  name      String
+  tag       String
+  html      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([siteId])
+  @@map("components")
+}
+
+model Asset {
+  id        String   @id @default(cuid())
+  siteId    String
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  type      String
+  name      String
+  url       String
+  size      Int
+  createdAt DateTime @default(now())
+
+  @@index([siteId])
+  @@map("assets")
+}

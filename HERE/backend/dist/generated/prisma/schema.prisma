@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Admin {
+  id         String   @id @default(cuid())
+  adminName  String
+  adminEmail String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("admins")
+}
+
+model Page {
+  id             String    @id @default(cuid())
+  title          String
+  slug           String    @unique
+  isHome         Boolean   @default(false)
+  isPublished    Boolean   @default(false)
+  hasChanges     Boolean   @default(false)
+  order          Int       @default(0)
+  seoTitle       String?
+  seoDescription String?   @db.Text
+  ogImage        String?
+  publishedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  blocks          Block[]
+  publishedBlocks PublishedBlock[]
+  versions        PageVersion[]
+
+  @@map("pages")
+}
+
+model Block {
+  id        String   @id @default(cuid())
+  pageId    String
+  page      Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type      String
+  order     Int
+  props     Json
+  styles    Json?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([pageId, order])
+  @@map("blocks")
+}
+
+model PublishedBlock {
+  id     String @id @default(cuid())
+  pageId String
+  page   Page   @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  type   String
+  order  Int
+  props  Json
+  styles Json?
+
+  @@index([pageId, order])
+  @@map("published_blocks")
+}
+
+model PageVersion {
+  id         String   @id @default(cuid())
+  pageId     String
+  page       Page     @relation(fields: [pageId], references: [id], onDelete: Cascade)
+  blocksJson Json
+  label      String?
+  createdAt  DateTime @default(now())
+
+  @@index([pageId, createdAt])
+  @@map("page_versions")
+}

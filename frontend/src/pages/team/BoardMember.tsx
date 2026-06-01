@@ -1,0 +1,323 @@
+import React, { useState } from 'react';
+import { X, ExternalLink, Shield, Award, Users } from 'lucide-react';
+import Header from '../../components/Header';
+import image from '../../assets/image6.jpg';
+
+// team member
+
+import image1 from '../../assets/team/board/image1.png'
+import image2 from '../../assets/team/board/image2.png'
+import image3 from '../../assets/team/board/image3.png'
+import image4 from '../../assets/team/board/image4.png'
+import image5 from '../../assets/team/board/image5.png'
+import image6 from '../../assets/team/board/image6.png'
+import image7 from '../../assets/team/board/image7.png'
+
+interface BoardMember {
+  id: number;
+  name: string;
+  title: string;
+  credentials?: string;
+  image: string;
+  linkedIn?: string;
+  role: 'chair' | 'vice-chair' | 'executive' | 'member';
+  bio: string;
+}
+
+const BoardMembers: React.FC = () => {
+  const [selectedMember, setSelectedMember] = useState<BoardMember | null>(null);
+
+  const boardMembers: BoardMember[] = [
+    {
+      id: 1,
+      name: "Vin Hoey",
+      credentials: "MBA",
+      title: "Board Chair",
+      image: image1,
+      linkedIn: "https://www.linkedin.com/in/vinhoey/",
+      role: 'chair',
+      bio: "Vin Hoey serves as the Engineers4Humanity Board Chair. A senior executive with extensive business and nonprofit leadership experience, he is passionate about serving nonprofits and teaching/mentoring the next generation of leaders. He brings nonprofit board and senior staff experience perspectives to fuel success for causes.\n\nHe is Managing Director of Strategic4sight, which provides leading-edge nonprofit strategic planning, marketing, leadership coaching, and governance consulting services. Throughout his career, Vin has provided significant volunteer leadership on the boards of directors of 25 different local, national, and international nonprofit organizations in various cities. He has served as board chair for 10 nonprofits and co-founded four nonprofits. He is committed to serving refugees and vulnerable youth and currently serves on the Leadership Advisory Councils of Heart House and Project Transformation - North Texas in Dallas.\n\nVin's servant leadership aligns directly with Engineers4Humanity's mission to restore dignity, expand opportunity, and build pathways to self-reliance for displaced and underserved communities. He supports Engineers4Humanity's ability to build partnerships and mobilize resources for refugee self-reliance, job creation, and vocational training programs in Rwanda.\n\nHis long career at ExxonMobil included serving as Global Marketing Communications Manager for ExxonMobil Chemical and earlier leading Corporate & Marketing Communications across Europe, Africa, and the Middle East from Brussels. He found, late in life, that he loves teaching and has taught the Nonprofit Marketing Strategies course at the SMU Cox Graduate School of Business in Dallas, and undergraduate courses at SMU and DePauw University in Indiana.\n\nAs Board Chair of Engineers4Humanity, Vin plays a pivotal role in developing strategic partnerships, donor engagement, and helping programs across Rwanda. His leadership strengthens board governance and supports the organization's mission."
+    },
+        {
+      id: 2,
+      name: "Eric Kamanzi",
+      credentials: "PMP, PE, MSc",
+      title: "Founder & Chief Executive Officer",
+      image: image2,
+      linkedIn: "https://www.linkedin.com/in/eric-kamanzi-pmp/",
+      role: 'executive',
+      bio: "Eric Kamanzi is the Founder & CEO of Engineers4Humanity — a civil engineer, humanitarian leader, and a father, whose journey from surviving violence in the DRC to growing up in a refugee camp in Rwanda has shaped a lifelong mission to restore dignity, hope, and opportunity for displaced communities. His story is captured in his book \"Breaking Boundaries\" available at Amazon, which chronicles his path from hardship to purpose-driven leadership.\n\nEric's values were formed by his father, a courageous social entrepreneur who taught self-reliance, generosity, and service. During the 1997 Mudende Refugee Camp massacre, his father sacrificed his life to save Eric and his siblings — an event that became the defining anchor of Eric's faith and calling. Guided by Scripture, by meeting Pastor Rick Warren in 2007, and by global human-rights advocates, Eric embraced a life of impact rooted in the declaration: \"As for me and my house, we will serve the Lord.\" His purpose remains clear: to live a happy and impactful life.\n\nFor 17 years, Eric has led transformative initiatives for refugees in Rwanda, co-founding Forum Amis de la Paix (2008) and establishing Hope School (2009), which enabled more than 500 high school graduates and 100 university students. In 2020, he launched Engineers4Humanity Consultancy and the Engineers4Humanity Technical & Innovation Hub, advancing vocational training, climate-smart engineering, WASH solutions, and youth employment.\n\nA Civil Engineer and PMP-certified professional, Eric has led more than 100 construction projects and serves as a Special Inspector at DFW International Airport. He is an active member of NSPE, PMI, Engineers Without Borders–USA, UNAUSA, the Institute of Engineers Rwanda, and RAPEP. Through Engineers4Humanity, he has impacted thousands of refugees and more than 2,000 youth — championing dignity, self-reliance, and community-driven development."
+    },
+    {
+      id: 3,
+      name: "Brother Malisaba Straton",
+      credentials: "M.Ed",
+      title: "Board Vice Chair | Education Program",
+      image: image3,
+      role: 'vice-chair',
+      bio: "Brother Malisaba Straton is a Marist brother, experienced educator and humanitarian leader whose five decades of service have strengthened schools and communities across East Africa (Rwanda, the DRC, Tanzania and Kenya) and with global network in education in the USA and Europe. As Engineers4Humanity Board Vice Chair for Education, he guides the organization's strategy for refugee education, school partnerships, and youth empowerment.\n\nBrother Straton has led and transformed numerous institutions, including Byimana School of Science—where he introduced Rwanda's first wireless internet in a public school—and Rwabuye Technical School, which he revitalized from 90 to 300 students within three years. His leadership has consistently combined academic excellence, financial discipline, and a deep commitment to student well-being.\n\nHe served as Deputy Provincial Superior of the Marist Brothers in Central and East Africa, supervised major school infrastructure projects, and held governance roles in national companies. A trained human rights educator, he has participated in international workshops in Geneva and has been a strong advocate for child protection and refugee learners.\n\nThrough a partnership with Engineers4Humanity, Brother Straton has helped refugee students access quality boarding schools, vocational training, mentorship, and long-term academic support. His lifelong dedication to education and human dignity continues to shape the next generation of leaders across East and Central Africa."
+    },
+    {
+      id: 4,
+      name: "Theo Karegesa Kivuye",
+      credentials: "MEng",
+      title: "Board Vice Chair | Engineering Program",
+      image: image4,
+      role: 'vice-chair',
+      bio: "Karegesa Muyango is an engineering leader, entrepreneur, and former refugee whose lived experience fuels his commitment to building pathways of dignity and opportunity for displaced youth. As Managing Director of VBN General Ventures Ltd in Kigali and Engineers4Humanity's Board Vice Chair for Engineering Programs, he provides strategic leadership across WASH, environmental protection, infrastructure development, and workforce-creation initiatives that equip refugee engineers to thrive.\n\nWith a BSc in Chemistry and Mechanical Engineering training from the American University in Cairo, Karegesa brings more than three decades of technical and managerial experience. His engineering portfolio spans logistics, mining, hydropower subcontracting, industrial installations, wastewater and effluent management, dumpsite stabilization, and large-scale environmental restoration — alongside landmark landscaping projects such as Epic Hotel and Kivu Marina Bay Hotel.\n\nA champion of refugee-to-leader transformation, he mentors young engineers, supports internship and job placement through Engineers4Humanity, and advocates for STEM as a tool for equitable development. His humanitarian service includes rehabilitation support for war-injured veterans, facilitating artificial limb procurement, and training Rwanda National Police after specialized fire-engine instruction in Japan.\n\nAs a founder and director of multiple companies — including SAMBAMBA Freight Forwarders, TwoK Enterprises, and VBN General Ventures — he has played a pivotal role in Rwanda's post-genocide reconstruction, from linking the country to Mombasa Port to advancing housing, energy, and industrial development.\n\nKaregesa embodies engineering leadership rooted in resilience, service, and community-centered innovation — demonstrating the capacity to guide transformative engineering programs that advance dignity, self-reliance, and sustainable peace."
+    },
+
+    {
+      id: 5,
+      name: "Japhet Habinshuti",
+      credentials: "PEng, MSc",
+      title: "Board Member",
+      image: image5,
+      linkedIn: "https://www.linkedin.com/in/japheth-habinshuti-n-430a54100/",
+      role: 'member',
+      bio: "Japhet is a leading Urban Planning and Climate Resilience expert with more than 13 years of experience delivering high-impact, community-centered solutions across Sub-Saharan Africa. He has mobilized tens of millions of dollars in climate adaptation, gender equity, and urban resilience investments — directly improving the lives of informal settlement residents, women, youth, and climate-exposed households.\n\nHe currently serves in Rwanda with the World Resources Institute (WRI) as a key implementer of the Africa Climate Resilient Cities Program, where he leads the US $22 million SUNCASA initiative, reducing flood risk for over 2 million people across Rwanda, Ethiopia, and South Africa. His leadership has shaped Kigali's first Urban Resilience Roadmap, secured major climate-finance commitments through the World Bank's Gap Fund, and advanced gender-responsive mobility, digital inclusion, and post-COVID recovery programs.\n\nJaphet's career includes influential roles with the World Bank, the Global Covenant of Mayors, the Resilient Cities Network, UNESCO, and Rwanda's Natural Resources Authority. Across these institutions, he has built a reputation for turning policy into practice — strengthening local government capacity and designing nature-based, GESI-responsive solutions that deliver measurable and scalable impact.\n\nAs an Engineers4Humanity Board Member, Japhet brings strategic leadership in climate adaptation, urban resilience, inclusive planning, and climate-finance mobilization. His expertise directly strengthens the organization's mission to equip refugees and host communities with engineering skills, resilient infrastructure, and dignified economic opportunities — ensuring they can thrive amid growing climate and economic shocks."
+    },
+    {
+      id: 6,
+      name: "Joseph Mboneza Masengesho",
+      credentials: "MBA",
+      title: "Board Member",
+      image: image6,
+      linkedIn: "https://www.linkedin.com/in/joseph-mboneza-masengesho-45373842/",
+      role: 'member',
+      bio: "Joseph Masengesho is an experienced project management professional with an MBA and 14 years of experience advancing youth employment, entrepreneurship, and vocational skills development across Rwanda. His work with leading international development agencies—including AFD/Expertise France, APEFE, and DOT Rwanda—has focused on empowering vulnerable youth, women, and people with disabilities through TVET training, dual apprenticeship systems, and private-sector–driven job creation.\n\nJoseph has coordinated multi-stakeholder programs that strengthen TVET–industry collaboration, build the capacity of trainers and SMEs, and expand access to skills training and workplace integration for disadvantaged groups. He has led teams, managed project resources, and delivered large-scale training initiatives that have equipped thousands of young people with practical skills for employment and entrepreneurship.\n\nCurrently serving in Rwanda as Manager for Entrepreneurship, Employment, and Private Sector Engagement under the AFD/Expertise France AFTER I & II Projects, Joseph oversees the design and implementation of workforce development interventions, employer engagement strategies, and capacity-building programs for national TVET institutions.\n\nAs an Engineers4Humanity Board Member, Joseph brings deep expertise in vocational training systems, youth workforce development, and inclusive job creation. His leadership strengthens Engineers4Humanity's mission to equip refugees and host communities with market-relevant skills, expand pathways to dignified employment, and build resilient livelihoods through engineering and technical education."
+    },
+    {
+      id: 7,
+      name: "J. Baptist Ndahiriwe",
+      credentials: "MPH",
+      title: "Board Member",
+      image: image7,
+      linkedIn: "https://www.linkedin.com/in/j-baptist-ndahiriwe-5691096a/",
+      role: 'member',
+      bio: "Ndahiriwe is a senior health systems consultant with over 20 years of experience across clinical practice, academia, regulation, and health policy in Rwanda and the East African region. He has led major national and regional initiatives focused on strengthening health workforce standards, accreditation systems, institutional governance, and quality assurance expertise that directly support Engineers4Humanity's Public Health Engineering mission.\n\nWith deep experience in developing scopes of practice, training standards, accreditation frameworks, and compliance audits, he brings a strong foundation for improving the quality and safety of community-level health and WASH services. His leadership in curriculum development, education harmonization, and higher education quality assurance aligns with Engineers4Humanity's commitment to delivering high-quality vocational training and expanding job-creation pathways for refugee and host communities.\n\nNdahiriwe has served on high-level Ministry of Health technical committees, regulatory councils, and university governance structures, and has contributed to major health systems strengthening projects, including serving as Technical Lead for the HSS NEXT project. He currently consults with Building Systems for Health on a Gates Foundation–funded Primary Health Care Performance Management initiative in Rwanda and Ghana.\n\nHe holds bachelor's degrees in Diagnostic Imaging and Pharmaceutical Sciences, a master's degree in medical Imaging, and a Master of Public Health in Global Health. Fluent in English and French, he brings strong strategic, analytical, and governance expertise to the Board of Engineers4Humanity."
+    },
+    
+  ];
+
+  const BoardMemberModal: React.FC<{ member: BoardMember | null; onClose: () => void }> = ({ member, onClose }) => {
+    if (!member) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 overflow-y-auto">
+        <div className="bg-white rounded-2xl max-w-3xl w-full my-8 relative max-h-[90vh] overflow-y-auto">
+          <button
+            onClick={onClose}
+            className="sticky top-4 float-right mr-4 mt-4 bg-gray-900 text-white p-2 rounded-full hover:bg-gray-700 transition z-10"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          <div className="p-6">
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-6 mb-6">
+              <img
+                src={member.image}
+                alt={member.name}
+                className="w-32 h-32 rounded-full object-cover object-top border-4 border-sky-600 shadow-lg"
+              />
+              <div className="flex-1 text-center md:text-left">
+                <h2 className="font-serif text-2xl font-bold text-gray-900 mb-1">
+                  {member.name}
+                  {member.credentials && (
+                    <span className="text-xl text-sky-600">, {member.credentials}</span>
+                  )}
+                </h2>
+                <p className="text-lg text-gray-600 mb-4">{member.title}</p>
+
+                <div className="flex flex-wrap gap-2 justify-center md:justify-start mb-4">
+                  <div className="bg-sky-100 text-sky-700 px-3 py-1 rounded-full text-sm font-semibold capitalize flex items-center gap-1">
+                    <Shield className="w-4 h-4" />
+                    {member.role.replace('-', ' ')}
+                  </div>
+                  {member.role === 'chair' && (
+                    <div className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                      <Award className="w-4 h-4" />
+                      Leadership
+                    </div>
+                  )}
+                </div>
+
+                {member.linkedIn && (
+                  <a
+                    href={member.linkedIn}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-sky-600 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-sky-700 transition"
+                  >
+                    LinkedIn Profile
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                )}
+              </div>
+            </div>
+
+            <div className="bg-gradient-to-r from-sky-50 to-green-50 p-5 rounded-xl border-l-4 border-sky-600">
+              <h3 className="font-serif text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+                <Users className="w-5 h-5 text-sky-600" />
+                Role & Impact
+              </h3>
+              <p className="text-gray-700 leading-relaxed text-sm whitespace-pre-line">
+                {member.bio}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
+  return (
+    <div className="font-sans text-gray-800">
+      <Header
+        title="Board Members"
+        linkTitle="Board Members"
+        linkHref="/board-members"
+        backgroundImage={image}
+      />
+
+      {/* All Board Members - Single Grid */}
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {boardMembers.map((member) => (
+              <div
+                key={member.id}
+                className="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 border-2 border-gray-100 hover:border-sky-600 group"
+              >
+                <div className="h-80 overflow-hidden">
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-serif text-2xl font-bold text-gray-900 mb-1">
+                    {member.name}
+                  </h3>
+                  {member.credentials && (
+                    <p className="text-lg text-sky-600 font-semibold mb-3">
+                      {member.credentials}
+                    </p>
+                  )}
+                  <p className="text-gray-600 mb-6">
+                    {member.title}
+                  </p>
+
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedMember(member)}
+                      className="flex-1 bg-gradient-to-r from-sky-600 to-green-600 text-white px-4 py-3 rounded-lg font-semibold hover:from-sky-700 hover:to-green-700 transition-all"
+                    >
+                      View Full Profile
+                    </button>
+                    {member.linkedIn && (
+                      <a
+                        href={member.linkedIn}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-gray-100 text-gray-700 p-3 rounded-lg hover:bg-gray-200 transition"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <ExternalLink className="w-6 h-6" />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Governance Overview */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="bg-white p-10 rounded-2xl shadow-xl">
+            <h2 className="font-serif text-3xl font-bold text-gray-900 mb-6 text-center">
+              Board Governance & Advisory Role
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8 text-center">
+              <div className="p-6">
+                <div className="bg-sky-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="w-8 h-8 text-sky-600" />
+                </div>
+                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">
+                  Governance
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Providing strategic oversight and ensuring accountability to stakeholders and the communities we serve
+                </p>
+              </div>
+              <div className="p-6">
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">
+                  Advisory
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Offering expert guidance on programs, strategy, and operations to maximize impact for refugee communities
+                </p>
+              </div>
+              <div className="p-6">
+                <div className="bg-sky-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="w-8 h-8 text-sky-600" />
+                </div>
+                <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">
+                  Networking
+                </h3>
+                <p className="text-gray-600 leading-relaxed">
+                  Leveraging connections and partnerships to expand opportunities and resources for the organization's mission
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-to-br from-sky-600 to-green-600 text-white">
+        <div className="max-w-4xl mx-auto px-6 text-center">
+          <h2 className="font-serif text-4xl md:text-5xl font-bold mb-6">
+            Your Support Can Make a World of Difference
+          </h2>
+          <p className="text-xl mb-10 opacity-95">
+            Whether through donations, volunteering, or spreading the word, you can help empower vulnerable communities.
+          </p>
+          <a
+            href="/donate"
+            className="inline-block bg-white text-sky-600 px-10 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all shadow-xl hover:shadow-2xl"
+          >
+            Donate Now
+          </a>
+        </div>
+      </section>
+
+      {/* Modal */}
+      {selectedMember && (
+        <BoardMemberModal member={selectedMember} onClose={() => setSelectedMember(null)} />
+      )}
+
+      <style jsx>{`
+        
+        .font-serif {
+          font-family: 'Playfair Display', serif;
+        }
+        
+        .font-sans {
+          font-family: 'DM Sans', sans-serif;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default BoardMembers;
