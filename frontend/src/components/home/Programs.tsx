@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
+import image2 from '../../assets/education.png';
 import image1 from '../../assets/home/program/image1.png';
-import image2 from '../../assets/home/program/image2.png';
 import image3 from '../../assets/home/program/image3.png';
 
 const cards = [

@@ -28,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ title, titleEm, subtitle, tag, linkTitl
                         {tag}
                     </div>
                 )}
-                <h1 className="font-serif text-[clamp(42px,5vw,72px)] font-light leading-none tracking-tight text-white mb-4">
+                <h1 className="font-serif text-[clamp(22px,3vw,72px)] font-light leading-none tracking-tight text-white mb-4">
                     {title}{titleEm && <> <em className="italic text-sky-300">{titleEm}</em></>}
                 </h1>
                 {subtitle && (

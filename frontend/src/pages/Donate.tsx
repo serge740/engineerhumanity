@@ -1,11 +1,18 @@
 import { useState } from 'react';
-import { Heart, DollarSign, User, MapPin, Phone, Gift, Check, Loader2 } from 'lucide-react';
+import { Heart, DollarSign, User, MapPin, Phone, Gift, Check, Loader2, Globe } from 'lucide-react';
 import Header from '../components/Header';
 import image from '../assets/image6.jpg';
 import { createDonation } from '../services/donationService';
+import {
+    CURRENCIES,
+    COUNTRIES,
+    POPULAR_CURRENCY_CODES,
+    POPULAR_COUNTRY_CODES,
+    formatAmount,
+    getCurrencySymbol,
+} from '../data/donationData';
 
 const PRESET_AMOUNTS = [25, 50, 100, 200, 300, 500, 750, 1000, 1500, 3000];
-const SUGGESTED_AMOUNT = 0;
 
 const PROGRAM_AREAS = [
     { id: 'education', label: 'Education' },
@@ -15,21 +22,17 @@ const PROGRAM_AREAS = [
     { id: 'general', label: 'General Fund (Greatest Need)' },
 ];
 
-const US_STATES = [
-    'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut',
-    'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa',
-    'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan',
-    'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-    'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio',
-    'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota',
-    'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
-    'Wisconsin', 'Wyoming'
-];
+const popularCurrencies = CURRENCIES.filter(c => POPULAR_CURRENCY_CODES.includes(c.code));
+const otherCurrencies = CURRENCIES.filter(c => !POPULAR_CURRENCY_CODES.includes(c.code));
+
+const popularCountries = COUNTRIES.filter(c => POPULAR_COUNTRY_CODES.includes(c.code));
+const otherCountries = COUNTRIES.filter(c => !POPULAR_COUNTRY_CODES.includes(c.code));
 
 const Donate = () => {
     const [frequency, setFrequency] = useState<'monthly' | 'once'>('monthly');
     const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
     const [customAmount, setCustomAmount] = useState('');
+    const [selectedCurrency, setSelectedCurrency] = useState('USD');
     const [displayPublicly, setDisplayPublicly] = useState(false);
     const [dedicateDonation, setDedicateDonation] = useState(false);
     const [selectedProgram, setSelectedProgram] = useState('general');
@@ -37,14 +40,17 @@ const Donate = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
+        country: '',
         street: '',
         city: '',
-        state: '',
+        adminDivision: '',
         phone: '',
         dedicateTo: '',
     });
 
     const effectiveAmount = customAmount ? parseFloat(customAmount) : selectedAmount;
+    const currencySymbol = getCurrencySymbol(selectedCurrency);
+    const selectedCountry = COUNTRIES.find(c => c.code === formData.country);
 
     const handleAmountClick = (amount: number) => {
         setSelectedAmount(amount);
@@ -60,20 +66,26 @@ const Donate = () => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
 
+    const handleCountryChange = (countryCode: string) => {
+        setFormData(prev => ({ ...prev, country: countryCode, adminDivision: '' }));
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!effectiveAmount || effectiveAmount <= 0) return;
 
         setSubmitting(true);
         try {
-            // Save donation record via service
             await createDonation({
                 firstName: formData.firstName || 'Anonymous',
                 lastName: formData.lastName || 'Donor',
+                country: formData.country,
                 street: formData.street,
                 city: formData.city,
-                state: formData.state,
+                state: formData.adminDivision,
+                adminDivision: formData.adminDivision,
                 phone: formData.phone,
+                currency: selectedCurrency,
                 amount: effectiveAmount,
                 frequency,
                 programArea: selectedProgram,
@@ -84,7 +96,6 @@ const Donate = () => {
             console.error('Failed to save donation record:', err);
         }
 
-        // Redirect to Stripe checkout regardless
         window.location.href = 'https://buy.stripe.com/3cIfZi6Jj4BfcNm6QPbAs02';
         setSubmitting(false);
     };
@@ -122,6 +133,7 @@ const Donate = () => {
             <section className="py-12 md:py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6">
                     <form onSubmit={handleSubmit}>
+
                         {/* Frequency Toggle */}
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
                             <h3 className="text-xl font-bold text-gray-900 mb-5">Choose your giving frequency</h3>
@@ -156,19 +168,43 @@ const Donate = () => {
 
                         {/* Amount Selection */}
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
-                            <h3 className="text-xl font-bold text-gray-900 mb-5">Choose an amount</h3>
+                            {/* Title + Currency selector */}
+                            <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+                                <h3 className="text-xl font-bold text-gray-900">Choose an amount</h3>
+                                <div className="flex items-center gap-2">
+                                    <Globe className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                    <select
+                                        value={selectedCurrency}
+                                        onChange={e => setSelectedCurrency(e.target.value)}
+                                        className="pl-2 pr-8 py-2 border-2 border-gray-200 rounded-lg text-sm font-semibold text-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none bg-white cursor-pointer"
+                                    >
+                                        <optgroup label="Popular">
+                                            {popularCurrencies.map(c => (
+                                                <option key={c.code} value={c.code}>{c.code} – {c.name}</option>
+                                            ))}
+                                        </optgroup>
+                                        <optgroup label="All currencies">
+                                            {otherCurrencies.map(c => (
+                                                <option key={c.code} value={c.code}>{c.code} – {c.name}</option>
+                                            ))}
+                                        </optgroup>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
                                 {PRESET_AMOUNTS.map(amount => (
                                     <button
                                         key={amount}
                                         type="button"
                                         onClick={() => handleAmountClick(amount)}
-                                        className={`relative py-4 px-3 rounded-xl font-bold text-lg transition-all duration-300 border-2 cursor-pointer ${selectedAmount === amount && !customAmount
+                                        className={`relative py-4 px-3 rounded-xl font-bold text-base transition-all duration-300 border-2 cursor-pointer ${selectedAmount === amount && !customAmount
                                             ? 'border-green-600 bg-green-50 text-green-700 shadow-md scale-[1.02]'
                                             : 'border-gray-200 bg-white text-gray-700 hover:border-green-300 hover:bg-green-50/50'
                                             }`}
                                     >
-                                        ${amount.toLocaleString()}
+                                        <span className="block text-xs font-medium text-gray-400 mb-0.5">{selectedCurrency}</span>
+                                        {amount.toLocaleString()}
                                         {selectedAmount === amount && !customAmount && (
                                             <span className="absolute top-2 right-2">
                                                 <Check className="w-4 h-4 text-green-600" />
@@ -179,15 +215,17 @@ const Donate = () => {
                             </div>
 
                             {/* Custom Amount */}
-                            <div className="relative">
-                                <DollarSign className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <div className="relative flex items-stretch">
+                                <span className="inline-flex items-center px-4 border-2 border-r-0 border-gray-200 rounded-l-xl bg-gray-50 text-gray-600 font-semibold text-sm select-none">
+                                    {currencySymbol.length <= 3 ? currencySymbol : selectedCurrency}
+                                </span>
                                 <input
                                     type="number"
                                     min="1"
-                                    placeholder="Enter custom amount (USD)"
+                                    placeholder="Enter custom amount"
                                     value={customAmount}
                                     onChange={e => handleCustomAmountChange(e.target.value)}
-                                    className="w-full pl-12 pr-4 py-4 border-2 border-gray-200 rounded-xl text-lg font-semibold text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none transition-all placeholder:text-gray-400 placeholder:font-normal"
+                                    className="flex-1 px-4 py-4 border-2 border-gray-200 rounded-r-xl text-lg font-semibold text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none transition-all placeholder:text-gray-400 placeholder:font-normal"
                                 />
                             </div>
                         </div>
@@ -207,11 +245,8 @@ const Donate = () => {
                                             : 'border-gray-200 bg-white text-gray-700 hover:border-sky-300'
                                             }`}
                                     >
-                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selectedProgram === program.id ? 'border-sky-600 bg-sky-600' : 'border-gray-300'
-                                            }`}>
-                                            {selectedProgram === program.id && (
-                                                <Check className="w-3 h-3 text-white" />
-                                            )}
+                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selectedProgram === program.id ? 'border-sky-600 bg-sky-600' : 'border-gray-300'}`}>
+                                            {selectedProgram === program.id && <Check className="w-3 h-3 text-white" />}
                                         </div>
                                         <span className="font-medium text-sm">{program.label}</span>
                                     </button>
@@ -226,7 +261,8 @@ const Donate = () => {
                                 <h3 className="text-xl font-bold text-gray-900">Your Information</h3>
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                            {/* Name */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">First Name</label>
                                     <input
@@ -249,6 +285,33 @@ const Donate = () => {
                                 </div>
                             </div>
 
+                            {/* Country */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    <Globe className="w-4 h-4 inline mr-1 text-gray-400" />
+                                    Country <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    value={formData.country}
+                                    onChange={e => handleCountryChange(e.target.value)}
+                                    required
+                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all bg-white cursor-pointer"
+                                >
+                                    <option value="">Select your country…</option>
+                                    <optgroup label="Popular">
+                                        {popularCountries.map(c => (
+                                            <option key={c.code} value={c.code}>{c.name}</option>
+                                        ))}
+                                    </optgroup>
+                                    <optgroup label="All countries">
+                                        {otherCountries.map(c => (
+                                            <option key={c.code} value={c.code}>{c.name}</option>
+                                        ))}
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                            {/* Street */}
                             <div className="mb-4">
                                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                                     <MapPin className="w-4 h-4 inline mr-1 text-gray-400" />
@@ -263,7 +326,8 @@ const Donate = () => {
                                 />
                             </div>
 
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+                            {/* City + Phone */}
+                            <div className={`grid gap-4 mb-4 ${selectedCountry?.admin ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2'}`}>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">City</label>
                                     <input
@@ -271,21 +335,8 @@ const Donate = () => {
                                         value={formData.city}
                                         onChange={e => handleInputChange('city', e.target.value)}
                                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
-                                        placeholder="Dallas"
+                                        placeholder="City"
                                     />
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">State</label>
-                                    <select
-                                        value={formData.state}
-                                        onChange={e => handleInputChange('state', e.target.value)}
-                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all bg-white cursor-pointer"
-                                    >
-                                        <option value="">Select...</option>
-                                        {US_STATES.map(state => (
-                                            <option key={state} value={state}>{state}</option>
-                                        ))}
-                                    </select>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">
@@ -297,17 +348,35 @@ const Donate = () => {
                                         value={formData.phone}
                                         onChange={e => handleInputChange('phone', e.target.value)}
                                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
-                                        placeholder="(555) 123-4567"
+                                        placeholder="+1 (555) 123-4567"
                                     />
                                 </div>
                             </div>
+
+                            {/* Administrative Division — conditional */}
+                            {selectedCountry?.admin && (
+                                <div className="mb-2">
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                        {selectedCountry.admin.label}
+                                    </label>
+                                    <select
+                                        value={formData.adminDivision}
+                                        onChange={e => handleInputChange('adminDivision', e.target.value)}
+                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all bg-white cursor-pointer"
+                                    >
+                                        <option value="">Select {selectedCountry.admin.label}…</option>
+                                        {selectedCountry.admin.divisions.map(div => (
+                                            <option key={div} value={div}>{div}</option>
+                                        ))}
+                                    </select>
+                                </div>
+                            )}
                         </div>
 
                         {/* Additional Options */}
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
                             <h3 className="text-xl font-bold text-gray-900 mb-5">Additional Options</h3>
 
-                            {/* Display Publicly */}
                             <label className="flex items-start gap-3 p-4 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer mb-3">
                                 <input
                                     type="checkbox"
@@ -321,7 +390,6 @@ const Donate = () => {
                                 </div>
                             </label>
 
-                            {/* Dedicate Donation */}
                             <label className="flex items-start gap-3 p-4 rounded-xl hover:bg-gray-50 transition-colors cursor-pointer">
                                 <input
                                     type="checkbox"
@@ -345,7 +413,7 @@ const Donate = () => {
                                         value={formData.dedicateTo}
                                         onChange={e => handleInputChange('dedicateTo', e.target.value)}
                                         className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none transition-all"
-                                        placeholder="In honor of..."
+                                        placeholder="In honor of…"
                                     />
                                 </div>
                             )}
@@ -355,9 +423,14 @@ const Donate = () => {
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8">
                             <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
                                 <span className="text-gray-600 font-medium">Your {frequency === 'monthly' ? 'monthly' : 'one-time'} gift</span>
-                                <span className="text-3xl font-bold text-green-700">
-                                    {effectiveAmount ? `$${effectiveAmount.toLocaleString()}` : '$0'}
-                                </span>
+                                <div className="text-right">
+                                    <span className="text-3xl font-bold text-green-700">
+                                        {effectiveAmount ? formatAmount(effectiveAmount, selectedCurrency) : '—'}
+                                    </span>
+                                    {effectiveAmount && (
+                                        <p className="text-xs text-gray-400 mt-0.5">{selectedCurrency}</p>
+                                    )}
+                                </div>
                             </div>
 
                             <button
@@ -369,12 +442,12 @@ const Donate = () => {
                                     }`}
                             >
                                 {submitting ? (
-                                    <><Loader2 className="w-5 h-5 animate-spin" /> Processing...</>
+                                    <><Loader2 className="w-5 h-5 animate-spin" /> Processing…</>
                                 ) : (
                                     <>
                                         <Heart className="w-5 h-5" />
                                         {effectiveAmount && effectiveAmount > 0
-                                            ? `Complete ${frequency === 'monthly' ? 'Monthly' : ''} Donation — $${effectiveAmount.toLocaleString()}`
+                                            ? `Complete ${frequency === 'monthly' ? 'Monthly ' : ''}Donation — ${formatAmount(effectiveAmount, selectedCurrency)}`
                                             : 'Choose an Amount'
                                         }
                                     </>

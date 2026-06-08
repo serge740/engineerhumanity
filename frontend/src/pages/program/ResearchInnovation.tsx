@@ -3,8 +3,9 @@ import { useLocation } from 'react-router-dom';
 import Header from '../../components/Header';
 import { FlaskConical, CheckCircle, Award, ArrowRight, Building2, Leaf, Droplets } from 'lucide-react';
 import headerBg from '../../assets/image.jpeg';
-import imgUmwana from '../../assets/home/umwana.png';
-import imgAmazi from '../../assets/home/amazi.png';
+import imgUmwana from '../../assets/home/history/image5.png';
+import imgAmazi from '../../assets/home/research.png';
+
 
 const ResearchInnovation = () => {
     const location = useLocation();

@@ -7,7 +7,7 @@ import heroImage3 from '../../assets/events/pictures vocationaltraining (1)/508D
 const slides = [
     { image: heroImage1, title: "Building Dignified", em: "Lives", desc: "Empowering refugees and underserved communities through education, engineering, and servant leadership" },
     { image: heroImage2, title: "Education Changes", em: "Everything", desc: "From refugee camps to universities — we open doors that were never meant to be closed" },
-    { image: heroImage3, title: "Creating", em: "Opportunities", desc: "Vocational training, mentorship, and social entrepreneurship transforming lives across Rwanda and beyond" },
+    { image: heroImage3, title: "Creating", em: "Opportunities", desc: "Vocational training, mentorship, and social entrepreneurship transforming lives across Rwanda" },
 ];
 
 const stats = [
@@ -41,11 +41,13 @@ function useCountUp(target: number, duration = 1800, active = false) {
 function StatItem({ target, suffix, label, active, className }: { target: number; suffix: string; label: string; active: boolean; className?: string }) {
     const count = useCountUp(target, 3500, active);
     const display = target === 2000
-        ? (!(count == 2020) && count >= 1000  ) ? `${(count / 1000).toFixed(count % 1000 === 0 ? 0 : 1).replace(/\.0$/, '')},000` : count.toString()
+        ? ( count >= 1000  ) ? `${(count / 1000).toFixed(count % 1000 === 0 ? 0 : 1).replace(/\.0$/, '')},000` : count.toString()
+        : target === 2020
+        ? count.toString()
         : count.toLocaleString();
     return (
         <div className={className}>
-            <div className="font-serif text-2xl sm:text-[32px] lg:text-[38px] font-bold text-white leading-none">
+            <div className="font-serif text-xl sm:text-[22px] xl:text-[38px] font-bold text-white leading-none">
                 {display}{suffix}
             </div>
             <div className="text-[10px] sm:text-[11px] font-semibold tracking-widest uppercase text-white/55 mt-1">{label}</div>
@@ -73,7 +75,7 @@ const Hero = () => {
     }, []);
 
     return (
-        <section className="relative min-h-[calc(110vh+50px)] overflow-hidden flex flex-col">
+        <section className="relative min-h-[calc(100dvh)] overflow-hidden flex flex-col">
             {/* Background slides */}
             {slides.map((slide, i) => (
                 <div key={i} className={`absolute inset-0 transition-opacity duration-1000 ${i === current ? 'opacity-100' : 'opacity-0'}`}>
@@ -89,7 +91,7 @@ const Hero = () => {
                         <span className="text-[7px]">◆</span>
                         Engineering for Good
                     </div>
-                    <h1 className="font-serif text-[clamp(28px,4.5vw,72px)] font-light leading-none tracking-tight text-white mb-5 sm:mb-7">
+                    <h1 className="font-serif text-[clamp(18px,3.5vw,52px)] font-light leading-none tracking-tight text-white mb-5 sm:mb-7">
                         {slides[current].title}<br />
                         <em className="italic text-sky-300">{slides[current].em}</em>
                     </h1>

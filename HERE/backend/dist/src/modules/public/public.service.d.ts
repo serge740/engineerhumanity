@@ -7,10 +7,10 @@ export declare class PublicService {
         title: string;
     }>;
     getPublicPage(slug: string): Promise<{
+        metadata: import("@prisma/client/runtime/library").JsonValue;
         slug: string;
         title: string;
         description: string | null;
         html: import("@prisma/client/runtime/library").JsonValue;
-        metadata: import("@prisma/client/runtime/library").JsonValue;
     }>;
 }

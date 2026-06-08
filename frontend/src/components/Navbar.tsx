@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = () => {
     const [mobileEventsOpen, setMobileEventsOpen] = useState(false);
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 no-underline ${isActive
+        `lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 no-underline ${isActive
             ? 'text-sky-600 bg-sky-50'
             : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
@@ -40,21 +40,21 @@ const Navbar: React.FC<NavbarProps> = () => {
 
     return (
         <nav
-            className="fixed top-0 w-full z-50 transition-all duration-400 bg-white shadow-md py-1"
+            className="sticky top-0 w-full z-50 transition-all duration-400 bg-white shadow-md py-1"
         >
-            <div className="mx-auto px-4 sm:px-6">
-                <div className="flex justify-between items-center ">
-                    {/* Logo */}
-                    <div  className=" w-[450px] -ml-20 h-[130px]">
+            <div className="relative mx-auto px-4 sm:px-6">
+                <div className="flex items-center h-[130px]">
+                    {/* Logo – absolute so it takes zero flex space */}
+                    <div className="absolute left-4 sm:left-6 -ml-14 w-[300px] h-[130px] pointer-events-none">
                         <img
                             src="/image.png"
                             alt="Engineers4Humanity Logo"
-                         className='h-[120%] w-[130%] object-cover  pb-[25px] '  
-                        /> 
+                            className="h-[120%] w-[100%] object-cover scale-160 pb-[25px]"
+                        />
                     </div>
 
-                    {/* Desktop Navigation */}
-                    <ul className="hidden lg:flex items-center gap-1 list-none m-0 p-0">
+                    {/* Desktop Navigation — flex-1 + justify-center so links sit in the middle */}
+                    <ul className="hidden lg:flex flex-1 items-center justify-center lg:gap-0 xl:gap-1 text-[10px] md:text-sm lg:text-xs xl:text-sm font-semibold list-none m-0 p-0 pl-[220px]">
                         <li>
                             <NavLink to="/" className={navLinkClasses}>
                                 Home
@@ -68,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setAboutDropdownOpen(false)}
                         >
                             <button
-                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${aboutDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${aboutDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -108,7 +108,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setProgramsDropdownOpen(false)}
                         >
                             <button
-                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${programsDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${programsDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -169,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setImpactDropdownOpen(false)}
                         >
                             <button
-                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${impactDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${impactDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -217,7 +217,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setEventsDropdownOpen(false)}
                         >
                             <button
-                                className={`px-4 py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${eventsDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${eventsDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -251,7 +251,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                         
                             <Link
                                 to="/donate"
-                                className="px-6 hidden lg:inline-block py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 no-underline "
+                                className="hidden lg:inline-block lg:px-3 lg:py-1.5 xl:px-6 xl:py-2.5 bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 no-underline"
                             >
                                 Donate Now
                             </Link>
@@ -259,7 +259,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                        className="lg:hidden p-2.5 text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer"
+                        className="lg:hidden ml-auto p-2.5 text-gray-700 hover:text-sky-600 hover:bg-gray-50 rounded-lg transition-all duration-200 border-none bg-transparent cursor-pointer"
                         aria-label="Toggle menu"
                     >
                         {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}

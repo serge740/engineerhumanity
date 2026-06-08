@@ -24,3 +24,19 @@
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }
 }
+
+/* WhatsApp button: shakes for 0.6s every 4s */
+@keyframes wa-shake {
+    0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+    72%  { transform: rotate(-14deg) scale(1.12); }
+    75%  { transform: rotate(14deg)  scale(1.12); }
+    78%  { transform: rotate(-10deg) scale(1.08); }
+    81%  { transform: rotate(10deg)  scale(1.08); }
+    84%  { transform: rotate(-6deg)  scale(1.04); }
+    87%  { transform: rotate(6deg)   scale(1.04); }
+    90%  { transform: rotate(0deg)   scale(1); }
+}
+
+.wa-btn {
+    animation: wa-shake 4s ease-in-out infinite;
+}

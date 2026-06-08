@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import image1 from '../../assets/home/program/image1.png';
-import image2 from '../../assets/home/program/image2.png';
+import image2 from '../../assets/education.png';
 import image3 from '../../assets/home/program/image3.png';
 import image4 from '../../assets/home/program/image4.png';
 

@@ -2,8 +2,10 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from "../../components/Header";
 import image from '../../assets/image6.jpg';
-import image1 from '../../assets/program/image1.png';
-import image2 from '../../assets/program/image2.png';
+import phImage1 from '../../assets/program/public-health/image1.png';
+import phImage2 from '../../assets/program/public-health/image2.png';
+import phImage3 from '../../assets/program/public-health/image3.png';
+import phImage4 from '../../assets/program/public-health/image4.png';
 
 const PublicHealthEngineering = () => {
     const location = useLocation();
@@ -39,26 +41,26 @@ const PublicHealthEngineering = () => {
                                     We focus on designing affordable water supply systems, constructing proper sanitation facilities, transforming waste into renewable energy sources, and using available natural resources to serve the community.
                                 </p>
                                 <div>
-                                    <img
-                                        src={image2}
-                                        alt="Community Water Project"
-                                        className="w-full h-[300px] object-cover rounded-lg shadow-md"
-                                    />
-                                    <p className="text-gray-700 text-center italic mt-2 text-sm">
-                                        "Eric with President of Engineers without Borders Manuel Calderon, Matthew Craig and other fellow members of North Texas -EWB during fundraising event to support community Water Supply Projects"
-                                    </p>
+                                <img
+                                    src={phImage1}
+                                    alt="Public Health Engineering"
+                                    className="w-full h-[360px] object-cover object-center rounded-lg shadow-md mb-4"
+                                />
                                 </div>
                             </div>
                             <div>
-                                <img
-                                    src={image1}
-                                    alt="Water Engineering"
-                                    className="w-full h-[700px] object-cover object-center rounded-lg shadow-md"
-                                />
-                                <p className="text-gray-700 text-center italic mt-2 text-sm">
-                                    "Eric attended International Conference and Expo on Resilient City, and disasters management, held in Houston-Texas, 2025"
-                                </p>
+                                    <img
+                                src={phImage4}
+                                alt="Public Health Engineering Field Work"
+                                className="w-full h-[660px] object-cover rounded-lg shadow-md"
+                            />
+                              
                             </div>
+                        </div>
+
+                        {/* Additional photo */}
+                        <div className="mb-8">
+                          
                         </div>
 
                         <blockquote className="border-l-4 border-blue-600 pl-4 italic text-gray-600 mb-6 text-base">

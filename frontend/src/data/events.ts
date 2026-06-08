@@ -19,6 +19,11 @@ import upcomingImg3 from '../assets/events/events upcoming/image3.png';
 import upcomingImg4 from '../assets/events/events upcoming/image4.png';
 import upcomingImg5 from '../assets/events/events upcoming/image5.png';
 import upcomingImg6 from '../assets/events/events upcoming/image6.png';
+import refugeesDayImg1 from '../assets/events/refugees day/image1.png';
+import refugeesDayImg2 from '../assets/events/refugees day/image2.png';
+import refugeesDayImg3 from '../assets/events/refugees day/image3.png';
+import refugeesDayImg4 from '../assets/events/refugees day/image4.png';
+import refugeesDayImg5 from '../assets/events/refugees day/image5.png';
 const gihembeModules = import.meta.glob(
   '../assets/events/Parent Visit in 2019 at Gihembe Refugee Camp/*.{JPG,jpg,jpeg}',
   { eager: true, query: '?url', import: 'default' }
@@ -153,7 +158,7 @@ export const pastEvents: PastEvent[] = [
   },
   {
     id: 4,
-    title: "Rwanda National Convention – Engineer4Humanity  ",
+    title: "Engineer4Humanity at the Rwanda National Convention",
     date: "July 2025",
     location: "Dallas , Texas ",
     attendees: "300+",
@@ -334,7 +339,7 @@ export const upcomingEvents: UpcomingEvent[] = [
       { label: "IANT, Richardson TX", icon: "heart" },
       { label: "Rwanda Celebration in Parallel", icon: "chart" },
     ],
-    images: [upcomingImg1, upcomingImg2],
+    images: [refugeesDayImg1, refugeesDayImg2, refugeesDayImg3, refugeesDayImg4, refugeesDayImg5],
     contacts: [
       { label: "Engineeer4Humanity Kigali Office", email: "contactkigali@engineers4humanity.org" },
       { label: "Engineeer4Humanity Texas Office", email: "Contact@engineers4humanity.org" },
