@@ -22,12 +22,18 @@ async function sendEmail(to, subject, templateName, templateData) {
     const html = loadTemplate(templateName, templateData);
     const recipients = Array.isArray(to) ? to.map(email => ({ email })) : [{ email: to }];
 
-    await brevoClient.transactionalEmails.sendTransacEmail({
-        sender: { email: senderEmail, name: senderName },
-        to: recipients,
-        subject,
-        htmlContent: html,
-    });
+    try {
+        const result = await brevoClient.transactionalEmails.sendTransacEmail({
+            sender: { email: senderEmail, name: senderName },
+            to: recipients,
+            subject,
+            htmlContent: html,
+        });
+        console.log(`✅ Email sent to ${Array.isArray(to) ? to.join(', ') : to} | Subject: "${subject}" | MessageId: ${result.messageId}`);
+    } catch (error) {
+        console.error(`❌ Failed to send email to ${Array.isArray(to) ? to.join(', ') : to} | Subject: "${subject}" | Error:`, error?.message || error);
+        throw error;
+    }
 }
 
 module.exports = { sendEmail };
