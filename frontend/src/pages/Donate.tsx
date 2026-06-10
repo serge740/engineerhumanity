@@ -1,41 +1,33 @@
 import { useState } from 'react';
-import { Heart, DollarSign, User, MapPin, Phone, Gift, Check, Loader2, Globe } from 'lucide-react';
+import { Heart, User, MapPin, Phone, Gift, Check, Loader2, Globe } from 'lucide-react';
 import Header from '../components/Header';
 import image from '../assets/image6.jpg';
 import { createDonation } from '../services/donationService';
 import {
     CURRENCIES,
     COUNTRIES,
-    POPULAR_CURRENCY_CODES,
     POPULAR_COUNTRY_CODES,
     formatAmount,
     getCurrencySymbol,
 } from '../data/donationData';
 
-const PRESET_AMOUNTS = [25, 50, 100, 200, 300, 500, 750, 1000, 1500, 3000];
+const PRESET_AMOUNTS: Record<string, number[]> = {
+    USD: [25, 50, 100, 200, 300, 500, 750, 1000, 1500, 3000],
+    RWF: [5000, 10000, 20000, 50000, 100000, 150000, 200000],
+};
 
-const PROGRAM_AREAS = [
-    { id: 'education', label: 'Education' },
-    { id: 'wash', label: 'Public Health Engineering / WASH' },
-    { id: 'leadership', label: 'Leadership & Peace Building' },
-    { id: 'environment', label: 'Environment' },
-    { id: 'general', label: 'General Fund (Greatest Need)' },
-];
-
-const popularCurrencies = CURRENCIES.filter(c => POPULAR_CURRENCY_CODES.includes(c.code));
-const otherCurrencies = CURRENCIES.filter(c => !POPULAR_CURRENCY_CODES.includes(c.code));
+const allowedCurrencies = CURRENCIES.filter(c => c.code === 'USD' || c.code === 'RWF');
 
 const popularCountries = COUNTRIES.filter(c => POPULAR_COUNTRY_CODES.includes(c.code));
 const otherCountries = COUNTRIES.filter(c => !POPULAR_COUNTRY_CODES.includes(c.code));
 
 const Donate = () => {
-    const [frequency, setFrequency] = useState<'monthly' | 'once'>('monthly');
+    const [frequency, setFrequency] = useState<'monthly' | 'once'>('once');
     const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
     const [customAmount, setCustomAmount] = useState('');
     const [selectedCurrency, setSelectedCurrency] = useState('USD');
     const [displayPublicly, setDisplayPublicly] = useState(false);
     const [dedicateDonation, setDedicateDonation] = useState(false);
-    const [selectedProgram, setSelectedProgram] = useState('general');
     const [submitting, setSubmitting] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -88,7 +80,7 @@ const Donate = () => {
                 currency: selectedCurrency,
                 amount: effectiveAmount,
                 frequency,
-                programArea: selectedProgram,
+                programArea: 'general',
                 displayPublicly,
                 dedicateTo: dedicateDonation ? formData.dedicateTo : null,
             });
@@ -175,25 +167,18 @@ const Donate = () => {
                                     <Globe className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                     <select
                                         value={selectedCurrency}
-                                        onChange={e => setSelectedCurrency(e.target.value)}
+                                        onChange={e => { setSelectedCurrency(e.target.value); setSelectedAmount(null); setCustomAmount(''); }}
                                         className="pl-2 pr-8 py-2 border-2 border-gray-200 rounded-lg text-sm font-semibold text-gray-700 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none bg-white cursor-pointer"
                                     >
-                                        <optgroup label="Popular">
-                                            {popularCurrencies.map(c => (
-                                                <option key={c.code} value={c.code}>{c.code} – {c.name}</option>
-                                            ))}
-                                        </optgroup>
-                                        <optgroup label="All currencies">
-                                            {otherCurrencies.map(c => (
-                                                <option key={c.code} value={c.code}>{c.code} – {c.name}</option>
-                                            ))}
-                                        </optgroup>
+                                        {allowedCurrencies.map(c => (
+                                            <option key={c.code} value={c.code}>{c.code} – {c.name}</option>
+                                        ))}
                                     </select>
                                 </div>
                             </div>
 
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-5">
-                                {PRESET_AMOUNTS.map(amount => (
+                                {(PRESET_AMOUNTS[selectedCurrency] ?? PRESET_AMOUNTS['USD']).map(amount => (
                                     <button
                                         key={amount}
                                         type="button"
@@ -227,30 +212,6 @@ const Donate = () => {
                                     onChange={e => handleCustomAmountChange(e.target.value)}
                                     className="flex-1 px-4 py-4 border-2 border-gray-200 rounded-r-xl text-lg font-semibold text-gray-900 focus:border-green-500 focus:ring-2 focus:ring-green-100 outline-none transition-all placeholder:text-gray-400 placeholder:font-normal"
                                 />
-                            </div>
-                        </div>
-
-                        {/* Program Designation */}
-                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
-                            <h3 className="text-xl font-bold text-gray-900 mb-2">Designate your donation</h3>
-                            <p className="text-gray-500 text-sm mb-5">Choose which program area your donation supports</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                {PROGRAM_AREAS.map(program => (
-                                    <button
-                                        key={program.id}
-                                        type="button"
-                                        onClick={() => setSelectedProgram(program.id)}
-                                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left transition-all duration-200 border-2 cursor-pointer ${selectedProgram === program.id
-                                            ? 'border-sky-600 bg-sky-50 text-sky-700'
-                                            : 'border-gray-200 bg-white text-gray-700 hover:border-sky-300'
-                                            }`}
-                                    >
-                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${selectedProgram === program.id ? 'border-sky-600 bg-sky-600' : 'border-gray-300'}`}>
-                                            {selectedProgram === program.id && <Check className="w-3 h-3 text-white" />}
-                                        </div>
-                                        <span className="font-medium text-sm">{program.label}</span>
-                                    </button>
-                                ))}
                             </div>
                         </div>
 
@@ -455,7 +416,7 @@ const Donate = () => {
                             </button>
 
                             <p className="text-center text-sm text-gray-500 mt-4">
-                                🔒 Secure payment powered by Stripe. Engineers4Humanity is a 501(c)(3) nonprofit. Your donation is tax-deductible.
+                                🔒 Secure payment powered by Stripe. E4Hinitiative is a 501(c)(3) nonprofit. Your donation is tax-deductible.
                             </p>
                         </div>
                     </form>

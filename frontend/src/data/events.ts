@@ -100,12 +100,12 @@ export const pastEvents: PastEvent[] = [
     location: "Gihembe Refugee Camp, Rwanda",
     attendees: "60+",
     description:
-      "Engineer4Humanity  's outreach team visited Gihembe Refugee Camp to meet the families of scholarship students, strengthening the bond between the organization and the communities it serves.",
+      "Engineers4Humanity  's outreach team visited Gihembe Refugee Camp to meet the families of scholarship students, strengthening the bond between the organization and the communities it serves.",
     paragraphs: [
-      "In 2019, Engineer4Humanity   organized a meaningful parent engagement visit to Gihembe Refugee Camp in Rwanda — one of the largest refugee settlements in the country. Team members and program coordinators made the journey to meet face-to-face with the parents and guardians of students supported by Engineer4Humanity  's education and engineering programs.",
-      "The visit was a cornerstone of Engineer4Humanity  's holistic approach to education: one that recognizes that a student's success is deeply intertwined with the stability and support of their family. During the visit, team members listened to parents' stories, assessed living conditions, and discussed the academic progress of their children. These conversations shaped future program decisions, ensuring Engineer4Humanity  's support remained responsive to the real needs of the community.",
-      "By investing time to understand the context in which their students live, Engineer4Humanity   reinforced its commitment not just to individual students, but to entire families and communities. The visit inspired new initiatives in family support, community engagement, and holistic welfare — all aimed at creating sustainable pathways out of displacement through education and engineering.",
-      "This kind of direct community engagement is what sets Engineer4Humanity   apart. Every visit, every conversation, and every relationship built at Gihembe has informed how the organization designs its programs — ensuring they are culturally grounded, community-centered, and truly transformative.",
+      "In 2019, Engineers4Humanity   organized a meaningful parent engagement visit to Gihembe Refugee Camp in Rwanda — one of the largest refugee settlements in the country. Team members and program coordinators made the journey to meet face-to-face with the parents and guardians of students supported by Engineers4Humanity  's education and engineering programs.",
+      "The visit was a cornerstone of Engineers4Humanity  's holistic approach to education: one that recognizes that a student's success is deeply intertwined with the stability and support of their family. During the visit, team members listened to parents' stories, assessed living conditions, and discussed the academic progress of their children. These conversations shaped future program decisions, ensuring Engineers4Humanity  's support remained responsive to the real needs of the community.",
+      "By investing time to understand the context in which their students live, Engineers4Humanity   reinforced its commitment not just to individual students, but to entire families and communities. The visit inspired new initiatives in family support, community engagement, and holistic welfare — all aimed at creating sustainable pathways out of displacement through education and engineering.",
+      "This kind of direct community engagement is what sets Engineers4Humanity   apart. Every visit, every conversation, and every relationship built at Gihembe has informed how the organization designs its programs — ensuring they are culturally grounded, community-centered, and truly transformative.",
     ],
     highlights: [
       { label: "60+ Families Visited", icon: "users" },
@@ -121,12 +121,12 @@ export const pastEvents: PastEvent[] = [
     location: "Latayole, Kigali, Rwanda",
     attendees: "200+",
     description:
-      "A milestone celebration honoring refugee students who completed their studies with Engineer4Humanity   support, bringing together families, community leaders, and sponsors for an inspiring ceremony.",
+      "A milestone celebration honoring refugee students who completed their studies with Engineers4Humanity   support, bringing together families, community leaders, and sponsors for an inspiring ceremony.",
     paragraphs: [
-      "In November 2021, Engineer4Humanity   hosted a landmark graduation ceremony at Latayole in Kigali, Rwanda, celebrating the achievements of refugee students who had successfully completed their academic programs with Engineer4Humanity  's scholarship and mentorship support. The event was a powerful testament to what becomes possible when young people are given access, opportunity, and belief.",
-      "The ceremony brought together more than 200 attendees including graduating students, their proud families, community leaders, local government representatives, and Engineer4Humanity   supporters from Rwanda and beyond. Each graduate received recognition not just for their academic achievement, but for the resilience and determination they demonstrated throughout their journey under extraordinary circumstances.",
-      "For many of the graduates, this day represented years of sacrifice and perseverance in the face of displacement, uncertainty, and hardship. Engineer4Humanity  's programs had provided them with scholarships, engineering mentorship, leadership training, and access to a network of professionals committed to their growth. The graduation was proof that with the right support, refugees are not defined by their displacement — they are defined by their potential.",
-      "The event also served as a source of inspiration for younger students in the community, demonstrating that education is a door that can never be permanently closed. Engineer4Humanity  's commitment to nurturing the next generation of African engineers, community leaders, and change-makers was powerfully on display at Latayole.",
+      "In November 2021, Engineers4Humanity   hosted a landmark graduation ceremony at Latayole in Kigali, Rwanda, celebrating the achievements of refugee students who had successfully completed their academic programs with Engineers4Humanity  's scholarship and mentorship support. The event was a powerful testament to what becomes possible when young people are given access, opportunity, and belief.",
+      "The ceremony brought together more than 200 attendees including graduating students, their proud families, community leaders, local government representatives, and Engineers4Humanity   supporters from Rwanda and beyond. Each graduate received recognition not just for their academic achievement, but for the resilience and determination they demonstrated throughout their journey under extraordinary circumstances.",
+      "For many of the graduates, this day represented years of sacrifice and perseverance in the face of displacement, uncertainty, and hardship. Engineers4Humanity  's programs had provided them with scholarships, engineering mentorship, leadership training, and access to a network of professionals committed to their growth. The graduation was proof that with the right support, refugees are not defined by their displacement — they are defined by their potential.",
+      "The event also served as a source of inspiration for younger students in the community, demonstrating that education is a door that can never be permanently closed. Engineers4Humanity  's commitment to nurturing the next generation of African engineers, community leaders, and change-makers was powerfully on display at Latayole.",
     ],
     highlights: [
       { label: "200+ Attendees", icon: "users" },
@@ -142,12 +142,12 @@ export const pastEvents: PastEvent[] = [
     location: "La Tayole, Kigali, Rwanda",
     attendees: "150+",
     description:
-      "Young refugees celebrated the completion of Engineer4Humanity  's hands-on vocational training program, marking the beginning of new careers in technical trades and entrepreneurship.",
+      "Young refugees celebrated the completion of Engineers4Humanity  's hands-on vocational training program, marking the beginning of new careers in technical trades and entrepreneurship.",
     paragraphs: [
-      "November 2021 was a month of celebration for Engineer4Humanity   and the young people it serves. At La Tayole in Kigali, Rwanda, a graduation ceremony was held to honor refugee youth who had successfully completed Engineer4Humanity  's Vocational Training Program — an intensive, hands-on curriculum designed to equip graduates with practical technical skills and entrepreneurial knowledge for sustainable livelihoods.",
-      "The vocational training program is one of Engineer4Humanity  's most impactful initiatives, targeting youth who may not have traditional pathways into higher education but whose potential is limitless. Participants trained in trades including construction, tailoring, electrical work, and basic engineering principles — skills that translate directly into income-generating opportunities and economic independence within their communities.",
-      "The graduation ceremony was attended by over 150 people, including graduates, their families, Engineer4Humanity   staff, local officials, and partner organizations. Each graduate received a certificate of completion and had the opportunity to demonstrate the practical skills they had developed — a proud moment for the individuals, their families, and the entire community that had supported them.",
-      "The 2021 cohort represented a new chapter in Engineer4Humanity  's approach to empowering refugee communities — one that combines education with practical skills to create self-sustaining livelihoods. Engineer4Humanity   continues to expand this program, with each new cohort bringing more young people closer to economic independence and a future of their own making.",
+      "November 2021 was a month of celebration for Engineers4Humanity   and the young people it serves. At La Tayole in Kigali, Rwanda, a graduation ceremony was held to honor refugee youth who had successfully completed Engineers4Humanity  's Vocational Training Program — an intensive, hands-on curriculum designed to equip graduates with practical technical skills and entrepreneurial knowledge for sustainable livelihoods.",
+      "The vocational training program is one of Engineers4Humanity  's most impactful initiatives, targeting youth who may not have traditional pathways into higher education but whose potential is limitless. Participants trained in trades including construction, tailoring, electrical work, and basic engineering principles — skills that translate directly into income-generating opportunities and economic independence within their communities.",
+      "The graduation ceremony was attended by over 150 people, including graduates, their families, Engineers4Humanity   staff, local officials, and partner organizations. Each graduate received a certificate of completion and had the opportunity to demonstrate the practical skills they had developed — a proud moment for the individuals, their families, and the entire community that had supported them.",
+      "The 2021 cohort represented a new chapter in Engineers4Humanity  's approach to empowering refugee communities — one that combines education with practical skills to create self-sustaining livelihoods. Engineers4Humanity   continues to expand this program, with each new cohort bringing more young people closer to economic independence and a future of their own making.",
     ],
     highlights: [
       { label: "150+ Graduates Celebrated", icon: "graduation" },
@@ -158,12 +158,12 @@ export const pastEvents: PastEvent[] = [
   },
   {
     id: 4,
-    title: "Engineer4Humanity at the Rwanda National Convention",
+    title: "Engineers4Humanity at the Rwanda National Convention",
     date: "July 2025",
     location: "Dallas , Texas ",
     attendees: "300+",
     description:
-      "Engineer4Humanity  's Rwanda National Convention united partners, alumni, beneficiaries, and advocates to review 17+ years of impact and chart the organization's strategic direction for the years ahead.",
+      "Engineers4Humanity  's Rwanda National Convention united partners, alumni, beneficiaries, and advocates to review 17+ years of impact and chart the organization's strategic direction for the years ahead.",
     paragraphs: [
       "From July 4 to 6, 2025, I had the honor of joining the 4th of July celebrations for both Rwanda and the United States. Attending the Rwanda Convention in Dallas was especially meaningful—creating space for connection, knowledge exchange, and thoughtful conversations about our shared histories, values, and aspirations.",
       "I was particularly privileged to meet Ambassadors and staffs. Their leadership, insights, and encouragement further strengthened our commitment at Engineers4Humanity to advancing peace, unity, and long‑term stability in the region.",

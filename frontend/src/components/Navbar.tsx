@@ -19,19 +19,19 @@ const Navbar: React.FC<NavbarProps> = () => {
     const [mobileEventsOpen, setMobileEventsOpen] = useState(false);
 
     const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 no-underline ${isActive
+        `lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-bold transition-all duration-200 rounded-lg flex items-center gap-1 no-underline ${isActive
             ? 'text-sky-600 bg-sky-50'
             : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
     const mobileNavLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `px-4 py-3 font-medium transition-all duration-200 rounded-lg block no-underline ${isActive
+        `px-4 py-3 font-bold transition-all duration-200 rounded-lg block no-underline ${isActive
             ? 'text-sky-600 bg-sky-50'
             : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
 
     const dropdownLinkClasses = ({ isActive }: { isActive: boolean }) =>
-        `px-4 py-2.5 text-sm font-medium transition-all duration-200 block no-underline rounded-lg ${isActive
+        `px-4 py-2.5 text-sm font-bold transition-all duration-200 block no-underline rounded-lg ${isActive
             ? 'text-sky-600 bg-sky-50'
             : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
         }`;
@@ -68,7 +68,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setAboutDropdownOpen(false)}
                         >
                             <button
-                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${aboutDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-bold transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${aboutDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -108,7 +108,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setProgramsDropdownOpen(false)}
                         >
                             <button
-                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${programsDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-bold transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${programsDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -169,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setImpactDropdownOpen(false)}
                         >
                             <button
-                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${impactDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-bold transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${impactDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}
@@ -217,7 +217,7 @@ const Navbar: React.FC<NavbarProps> = () => {
                             onMouseLeave={() => setEventsDropdownOpen(false)}
                         >
                             <button
-                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-medium transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${eventsDropdownOpen
+                                className={`lg:px-2 lg:py-1.5 xl:px-4 xl:py-2 font-bold transition-all duration-200 rounded-lg flex items-center gap-1 cursor-pointer outline-none border-none bg-transparent ${eventsDropdownOpen
                                     ? 'text-sky-600 bg-sky-50'
                                     : 'text-gray-700 hover:text-sky-600 hover:bg-gray-50'
                                     }`}

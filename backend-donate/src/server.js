@@ -3,14 +3,19 @@ const express = require('express');
 const cors = require('cors');
 const sequelize = require('./config/database');
 const donationRoutes = require('./routes/donations');
+const contactRoutes = require('./routes/contact');
 
 const app = express();
 const PORT = process.env.PORT || 5400;
 
 // Middleware
 app.use(cors({
-    // origin: ['http://localhost:5173', 'http://localhost:3000'],
-    origin: ['https://engineers-4-humanity.onrender.com', 'https://www.engineers-4-humanity.onrender.com',],
+    origin: [
+        'http://localhost:5173',
+        'http://localhost:3000',
+        'https://engineers4humanity.org',
+        'https://www.engineers4humanity.org',
+    ],
     methods:['POST','PUT','DELETE','GET'],
     credentials: true
 }));
@@ -18,6 +23,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/donations', donationRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

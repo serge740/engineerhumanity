@@ -1,26 +1,33 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { MapPin, Send } from 'lucide-react';
-import emailjs from '@emailjs/browser';
 import { toast, Toaster } from 'react-hot-toast';
+import { sendContactMessage } from '../services/contactService';
 
 const ContactForm = () => {
-  const form = useRef();
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email: '',
+    message: '',
+  });
+  const [loading, setLoading] = useState(false);
 
-  const sendEmail = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    emailjs.sendForm(
-      'service_kpwmm5i', 
-      'b7jOaP947bfDLqXuV', 
-      form.current, 
-      'YOUR_PUBLIC_KEY'
-    )
-    .then(() => {
+    setLoading(true);
+    try {
+      await sendContactMessage(formData);
       toast.success('Message sent successfully!');
-      form.current.reset();
-    }, () => {
+      setFormData({ first_name: '', last_name: '', email: '', message: '' });
+    } catch {
       toast.error('Failed to send message. Please try again.');
-    });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,10 +54,9 @@ const ContactForm = () => {
                 <p className="mt-2 text-white/90">KN 78 St, Kigali-Rwanda</p>
               </div>
             </div>
-            {/* Replace with your actual map embed */}
-            <iframe 
-               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15951.569763727984!2d30.06144818839922!3d-1.9447542648495376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca6e35c1e5c15%3A0xe5f2712541cb4c24!2sNorrsken%20House%20Kigali!5e0!3m2!1sen!2srw!4v1712399153274!5m2!1sen!2srw"
-               className="w-full h-full border-0 rounded-3xl"
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15951.569763727984!2d30.06144818839922!3d-1.9447542648495376!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19dca6e35c1e5c15%3A0xe5f2712541cb4c24!2sNorrsken%20House%20Kigali!5e0!3m2!1sen!2srw!4v1712399153274!5m2!1sen!2srw"
+              className="w-full h-full border-0 rounded-3xl"
               allowFullScreen
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
@@ -59,20 +65,21 @@ const ContactForm = () => {
 
           {/* Contact Form */}
           <div className="bg-white rounded-3xl shadow-2xl p-4 sm:p-10">
-            <form ref={form} onSubmit={sendEmail} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                     First Name
                   </label>
-                  <div className=" relative rounded-md shadow-sm">
+                  <div className="relative rounded-md shadow-sm">
                     <input
                       type="text"
                       name="first_name"
                       id="first-name"
                       required
-                      className=" bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    
+                      value={formData.first_name}
+                      onChange={handleChange}
+                      className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     />
                   </div>
                 </div>
@@ -85,9 +92,9 @@ const ContactForm = () => {
                       type="text"
                       name="last_name"
                       id="last-name"
-                      required
-                    className=" bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-            
+                      value={formData.last_name}
+                      onChange={handleChange}
+                      className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                     />
                   </div>
                 </div>
@@ -97,15 +104,15 @@ const ContactForm = () => {
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
-                <div className=" relative rounded-md shadow-sm">
+                <div className="relative rounded-md shadow-sm">
                   <input
                     type="email"
                     name="email"
                     id="email"
                     required
-                   
-                    className=" bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-              
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
                 </div>
               </div>
@@ -114,28 +121,29 @@ const ContactForm = () => {
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700">
                   Message
                 </label>
-                <div className="">
+                <div>
                   <textarea
                     id="message"
                     name="message"
                     rows={5}
                     required
+                    value={formData.message}
+                    onChange={handleChange}
                     className="block w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-    
-                    defaultValue={''}
                   />
                 </div>
               </div>
 
-              <div className="">
+              <div>
                 <button
                   type="submit"
-                  className="group relative w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-sm text-lg font-medium text-white   focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 bg-gradient-to-br from-sky-600 to-green-600  "
+                  disabled={loading}
+                  className="group relative w-full flex justify-center items-center py-4 px-6 border border-transparent rounded-xl shadow-sm text-lg font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-300 bg-gradient-to-br from-sky-600 to-green-600 disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <span className="absolute left-0 inset-y-0 flex items-center pl-3">
                     <Send className="h-5 w-5 text-blue-200 group-hover:text-blue-100 transition-colors duration-300" />
                   </span>
-                  Send Message
+                  {loading ? 'Sending...' : 'Send Message'}
                 </button>
               </div>
             </form>
