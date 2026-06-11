@@ -430,9 +430,7 @@ const ManagementTeamPage: React.FC = () => {
               <div className="bg-green-50 p-4 rounded-lg text-center">
                 <p className="text-sm text-gray-600 mb-1">Location</p>
                 <p className="font-semibold text-gray-900">
-                  {member.title.includes('USA') ? 'United States' :
-                    member.title.includes('Rwanda') ? 'Rwanda' :
-                      member.title.includes('Africa') ? 'Rwanda' : 'Global'}
+                  Rwanda
                 </p>
               </div>
             </div>

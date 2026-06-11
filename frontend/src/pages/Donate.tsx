@@ -16,6 +16,15 @@ const PRESET_AMOUNTS: Record<string, number[]> = {
     RWF: [5000, 10000, 20000, 50000, 100000, 150000, 200000],
 };
 
+const PROGRAM_AREAS = [
+    { id: 'education', label: 'Education' },
+    { id: 'wash', label: 'Public Health Engineering / WASH' },
+    { id: 'leadership', label: 'Leadership & Peace Building' },
+    { id: 'environment', label: 'Environment' },
+    { id: 'general', label: 'General Fund (Greatest Need)' },
+    { id: 'vocation', label: 'Vocational Training & Entrepreneurship' },
+];
+
 const allowedCurrencies = CURRENCIES.filter(c => c.code === 'USD' || c.code === 'RWF');
 
 const popularCountries = COUNTRIES.filter(c => POPULAR_COUNTRY_CODES.includes(c.code));
@@ -26,6 +35,7 @@ const Donate = () => {
     const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
     const [customAmount, setCustomAmount] = useState('');
     const [selectedCurrency, setSelectedCurrency] = useState('USD');
+    const [selectedProgram, setSelectedProgram] = useState<string>('');
     const [displayPublicly, setDisplayPublicly] = useState(false);
     const [dedicateDonation, setDedicateDonation] = useState(false);
     const [submitting, setSubmitting] = useState(false);
@@ -80,7 +90,7 @@ const Donate = () => {
                 currency: selectedCurrency,
                 amount: effectiveAmount,
                 frequency,
-                programArea: 'general',
+                programArea: selectedProgram || 'general',
                 displayPublicly,
                 dedicateTo: dedicateDonation ? formData.dedicateTo : null,
             });
@@ -164,7 +174,7 @@ const Donate = () => {
                             <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
                                 <h3 className="text-xl font-bold text-gray-900">Choose an amount</h3>
                                 <div className="flex items-center gap-2">
-                                    <Globe className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                                    <Globe className="w-4 h-4 text-gray-400 shrink-0" />
                                     <select
                                         value={selectedCurrency}
                                         onChange={e => { setSelectedCurrency(e.target.value); setSelectedAmount(null); setCustomAmount(''); }}
@@ -334,6 +344,30 @@ const Donate = () => {
                             )}
                         </div>
 
+                        {/* Program Designation */}
+                        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
+                            <h3 className="text-xl font-bold text-gray-900 mb-2">Designate your donation</h3>
+                            <p className="text-gray-500 text-sm mb-5">Choose which program area your donation supports</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                {PROGRAM_AREAS.map(program => (
+                                    <button
+                                        key={program.id}
+                                        type="button"
+                                        onClick={() => setSelectedProgram(program.id)}
+                                        className={`flex items-center gap-3 px-4 py-3.5 rounded-xl text-left transition-all duration-200 border-2 cursor-pointer ${selectedProgram === program.id
+                                            ? 'border-sky-600 bg-sky-50 text-sky-700'
+                                            : 'border-gray-200 bg-white text-gray-700 hover:border-sky-300'
+                                            }`}
+                                    >
+                                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 ${selectedProgram === program.id ? 'border-sky-600 bg-sky-600' : 'border-gray-300'}`}>
+                                            {selectedProgram === program.id && <Check className="w-3 h-3 text-white" />}
+                                        </div>
+                                        <span className="font-medium text-sm">{program.label}</span>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
                         {/* Additional Options */}
                         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mb-6">
                             <h3 className="text-xl font-bold text-gray-900 mb-5">Additional Options</h3>
@@ -416,7 +450,9 @@ const Donate = () => {
                             </button>
 
                             <p className="text-center text-sm text-gray-500 mt-4">
-                                🔒 Secure payment powered by Stripe. E4Hinitiative is a 501(c)(3) nonprofit. Your donation is tax-deductible.
+                                🔒 Secure payment powered by Stripe.Engineers4Humanity is a 501(c)(3) nonprofit. Your U.S.
+                                Dollar donation is U.S. income tax-deductible. Our nonprofit was initially listed by the U.S.
+                                IRS as “E4H Initiative,” so a U.S. Dollar contribution receipt will reflect that name. Once we receive a name correction to our Engineers4Humanity name from the U.S. IRS, we will update it.
                             </p>
                         </div>
                     </form>

@@ -18,18 +18,26 @@ function loadTemplate(templateName, data) {
     return template(data);
 }
 
-async function sendEmail(to, subject, templateName, templateData) {
+// attachments: [{ name: 'file.pdf', content: '<base64>' }]
+async function sendEmail(to, subject, templateName, templateData, attachments = []) {
     const html = loadTemplate(templateName, templateData);
     const recipients = Array.isArray(to) ? to.map(email => ({ email })) : [{ email: to }];
 
+    const payload = {
+        sender: { email: senderEmail, name: senderName },
+        to: recipients,
+        subject,
+        htmlContent: html,
+    };
+
+    if (attachments.length > 0) {
+        payload.attachment = attachments;
+    }
+
     try {
-        const result = await brevoClient.transactionalEmails.sendTransacEmail({
-            sender: { email: senderEmail, name: senderName },
-            to: recipients,
-            subject,
-            htmlContent: html,
-        });
-        console.log(`✅ Email sent to ${Array.isArray(to) ? to.join(', ') : to} | Subject: "${subject}" | MessageId: ${result.messageId}`);
+        const result = await brevoClient.transactionalEmails.sendTransacEmail(payload);
+        const hasFile = attachments.length > 0 ? ` | Attachment: ${attachments.map(a => a.name).join(', ')}` : '';
+        console.log(`✅ Email sent to ${Array.isArray(to) ? to.join(', ') : to} | Subject: "${subject}"${hasFile} | MessageId: ${result.messageId}`);
     } catch (error) {
         console.error(`❌ Failed to send email to ${Array.isArray(to) ? to.join(', ') : to} | Subject: "${subject}" | Error:`, error?.message || error);
         throw error;

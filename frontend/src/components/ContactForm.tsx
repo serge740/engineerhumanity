@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import { MapPin, Send } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { MapPin, Send, Paperclip, X } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
 import { sendContactMessage } from '../services/contactService';
+
+const ACCEPTED = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.txt,.xls,.xlsx,.ppt,.pptx';
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({
@@ -10,19 +12,38 @@ const ContactForm = () => {
     email: '',
     message: '',
   });
+  const [attachment, setAttachment] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] ?? null;
+    if (file && file.size > 10 * 1024 * 1024) {
+      toast.error('File is too large. Maximum size is 10 MB.');
+      e.target.value = '';
+      return;
+    }
+    setAttachment(file);
+  };
+
+  const removeAttachment = () => {
+    setAttachment(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
-      await sendContactMessage(formData);
+      await sendContactMessage(formData, attachment ?? undefined);
       toast.success('Message sent successfully!');
       setFormData({ first_name: '', last_name: '', email: '', message: '' });
+      setAttachment(null);
+      if (fileInputRef.current) fileInputRef.current.value = '';
     } catch {
       toast.error('Failed to send message. Please try again.');
     } finally {
@@ -71,46 +92,25 @@ const ContactForm = () => {
                   <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">
                     First Name
                   </label>
-                  <div className="relative rounded-md shadow-sm">
-                    <input
-                      type="text"
-                      name="first_name"
-                      id="first-name"
-                      required
-                      value={formData.first_name}
-                      onChange={handleChange}
-                      className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    />
-                  </div>
+                  <input
+                    type="text"
+                    name="first_name"
+                    id="first-name"
+                    required
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                  />
                 </div>
                 <div>
                   <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">
                     Last Name
                   </label>
-                  <div className="relative rounded-md shadow-sm">
-                    <input
-                      type="text"
-                      name="last_name"
-                      id="last-name"
-                      value={formData.last_name}
-                      onChange={handleChange}
-                      className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
-                </label>
-                <div className="relative rounded-md shadow-sm">
                   <input
-                    type="email"
-                    name="email"
-                    id="email"
-                    required
-                    value={formData.email}
+                    type="text"
+                    name="last_name"
+                    id="last-name"
+                    value={formData.last_name}
                     onChange={handleChange}
                     className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
                   />
@@ -118,20 +118,76 @@ const ContactForm = () => {
               </div>
 
               <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  required
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="bg-neutral-100 focus:bg-neutral-200 block w-full text-sm px-2 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                />
+              </div>
+
+              <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700">
                   Message
                 </label>
-                <div>
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    required
-                    value={formData.message}
-                    onChange={handleChange}
-                    className="block w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
-                  />
-                </div>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows={5}
+                  required
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="block w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
+                />
+              </div>
+
+              {/* Attachment */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1.5">
+                  Attachment <span className="text-gray-400 font-normal">(optional, max 10 MB)</span>
+                </label>
+
+                {attachment ? (
+                  <div className="flex items-center gap-3 px-4 py-3 bg-sky-50 border border-sky-200 rounded-xl">
+                    <Paperclip className="w-4 h-4 text-sky-600 shrink-0" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-sky-800 truncate">{attachment.name}</p>
+                      <p className="text-xs text-sky-500">{(attachment.size / 1024).toFixed(1)} KB</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={removeAttachment}
+                      className="text-sky-400 hover:text-red-500 transition-colors"
+                      aria-label="Remove attachment"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <label
+                    htmlFor="attachment"
+                    className="flex items-center gap-3 px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-sky-400 hover:bg-sky-50 transition-all duration-200"
+                  >
+                    <Paperclip className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-500">Click to attach a file</span>
+                    <span className="ml-auto text-xs text-gray-400">PDF, Word, Excel, images…</span>
+                  </label>
+                )}
+
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  id="attachment"
+                  accept={ACCEPTED}
+                  onChange={handleFileChange}
+                  className="sr-only"
+                />
               </div>
 
               <div>
