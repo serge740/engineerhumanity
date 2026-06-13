@@ -1,7 +1,7 @@
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Globe, Settings, FileText, Puzzle,
-  Image, ArrowLeft, ChevronLeft, ChevronRight, Zap,
+  LayoutDashboard, Globe, Settings, FileText,
+  ArrowLeft, ChevronLeft, ChevronRight, Zap,
 } from 'lucide-react';
 
 const globalLinks = [
@@ -11,10 +11,7 @@ const globalLinks = [
 ];
 
 const siteLinks = (id: string) => [
-  { to: `/sites/${id}`,            icon: FileText, label: 'Pages',      exact: true },
-  { to: `/sites/${id}/components`, icon: Puzzle,   label: 'Components', exact: false },
-  { to: `/sites/${id}/assets`,     icon: Image,    label: 'Assets',     exact: false },
-  { to: `/sites/${id}/settings`,   icon: Settings, label: 'Settings',   exact: false },
+  { to: `/sites/${id}`, icon: FileText, label: 'Pages', exact: true },
 ];
 
 interface SidebarProps { collapsed: boolean; onToggle: () => void; siteName?: string; }

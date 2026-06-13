@@ -1,0 +1,177 @@
+PROJECT SUMMARY — Web Builder (engineer4Humanity / HERE)
+=========================================================
+Date: 2026-06-13
+
+
+OVERVIEW
+--------
+A full-stack, browser-based visual web builder — similar in concept to Webflow or Framer.
+Admins log in, create sites, build pages visually using a drag-and-drop canvas editor,
+then export or publish the finished site as clean HTML/CSS.
+
+The project has two main parts:
+  - Backend  (HERE/backend)  — NestJS REST API + MySQL via Prisma
+  - Frontend (HERE/frontend) — React 19 SPA + Vite
+
+
+THE WEB BUILDER (FRONTEND)
+--------------------------
+Entry point: HERE/frontend/src/pages/editor/EditorPage.tsx
+
+The editor is a three-panel layout:
+
+  LEFT PANEL — Element sources
+    - Layers tab    : tree view of every element on the page; supports drag-to-reorder
+    - Insert tab    : library of HTML elements + shape primitives (Rect, Ellipse, Line, Frame)
+    - Sections tab  : one-click pre-built page sections (Hero, Navbar, Footer, FAQ, etc.)
+
+  CENTER PANEL — Visual canvas (Canvas.tsx)
+    - Infinite canvas with pan (Space+drag) and zoom (Ctrl+scroll / Ctrl+0/=/-)
+    - Figma-style tool bar: Select (V), Frame (F), Rectangle (R), Ellipse (E), Line (L), Text (T)
+    - Draw-to-create: choose a tool, click-drag on the canvas to draw the element at that size
+    - Elements default to flow (normal document flow); can be toggled to position:absolute in Inspector
+    - Flow elements can be reordered by dragging in the Layers panel
+    - Absolute elements move pixel-by-pixel when dragged directly on the canvas
+    - Right-click context menu: Duplicate, Move Up/Down, Wrap in Div, Select Parent, Delete
+    - Ancestor breadcrumb bar above canvas shows the selection path (e.g. section > div > h1)
+    - Preview mode: hides all editor chrome so the page looks exactly as it will when published
+    - Undo/Redo with up to 80 snapshots, persisted to localStorage per page
+
+  RIGHT PANEL — Inspector
+    - Tag, id, class editing
+    - Flow / Absolute position toggle
+    - Frame section (name, clip content, auto layout) for Frame elements
+    - Alignment controls (horizontal alignment via margin, alignSelf)
+    - Typography: font family (Google Fonts picker), size, weight, color, line-height, align
+    - Box model: visual margin/padding editor (click a zone to edit that side)
+    - Background: color picker + image URL
+    - Border: width, style, color, radius
+    - Layout: display, flexDirection, gap, justifyContent, alignItems
+    - Sizing: width, height, min/max width/height, overflow
+    - Raw CSS: freeform style key/value pairs
+
+  TOOLBAR (EditorTopBar.tsx)
+    - Site name + domain display
+    - Page selector dropdown
+    - Undo / Redo buttons + keyboard shortcuts
+    - Preview mode toggle (Eye icon)
+    - Keyboard shortcuts reference (? button)
+    - Save (Ctrl+S) and Publish buttons
+
+STATE MANAGEMENT
+----------------
+Library: Zustand + Immer (HERE/frontend/src/stores/editorStore.ts)
+
+Key state:
+  - elements    : PageElement[] — the full recursive element tree for the current page
+  - selectedId  : string | null
+  - toolMode    : 'select' | 'frame' | 'rect' | 'ellipse' | 'line' | 'text'
+  - zoom / pan  : canvas viewport
+  - past/future : undo/redo stacks
+
+Key actions:
+  - addChild(parentId, el)            — append element to a container
+  - insertChild(parentId, el, index)  — insert at a specific index (used by draw-to-create)
+  - moveElement(id, newParentId, idx) — tree reorder (used by layers drag and context menu)
+  - patchStyle / patchStyleLive       — style changes (live = no undo snapshot, for sliders)
+  - removeStyle                       — remove a single CSS property
+  - wrapElement(id)                   — wrap selected element in a new <div>
+  - duplicateElement(id)              — deep clone with new IDs
+  - undo / redo
+
+PAGE ELEMENT STRUCTURE
+----------------------
+Every element is a plain JSON object stored in the page's `html` column (MySQL JSON):
+
+  {
+    id:       string          // e.g. "el-101"
+    tag:      string          // HTML tag: "div", "h1", "img", ...
+    text?:    string          // text content for non-container elements
+    style?:   Record<string, string>   // camelCase CSS properties
+    class?:   string
+    children?: PageElement[]  // present only on container elements
+    // optional extra props passed through as HTML attributes:
+    src?, href?, alt?, ...
+    // internal editor-only props (stripped on export):
+    _frameType?: 'frame'
+    _frameName?: string
+  }
+
+
+BACKEND API
+-----------
+Framework: NestJS (TypeScript) + Prisma ORM + MySQL
+
+Modules:
+  admin-management — JWT auth (login, register, profile)
+  sites            — CRUD for sites (name, domain, globalCSS, globalJS)
+  pages            — CRUD for pages within a site; save/publish endpoints
+  components       — Reusable component library per site
+  assets           — File upload (images, etc.) stored in HERE/backend/Uploads/
+  public           — Unauthenticated read access for published sites
+  export           — ZIP export: renders all pages to HTML files + site.css + site.js + assets
+
+Database schema (Prisma):
+  Admin      — id, adminName, adminEmail, password
+  Site       — id, adminId, name, domain, metadata, globalCSS, globalJS, published
+  Page       — id, siteId, slug, title, description, html (JSON), published, isLanding
+  Component  — id, siteId, name, tag, html (JSON)
+  Asset      — id, siteId, type, name, url, size
+
+EXPORT
+------
+Service: HERE/backend/src/modules/export/export.service.ts
+
+Produces a .zip containing:
+  index.html (or slug.html for each page)
+  site.css   (globalCSS + any <style> elements from pages)
+  site.js    (globalJS)
+  assets/    (all uploaded images referenced in the site)
+
+The renderer walks the PageElement tree and outputs clean HTML. Internal props
+(_frameType, _frameName, id, children, text, style, assetRef) are stripped;
+/uploads/ URLs are rewritten to ./assets/<filename> for portability.
+
+
+TECH STACK SUMMARY
+------------------
+Frontend:
+  React 19, Vite, TypeScript
+  Zustand + Immer (state)
+  @dnd-kit/core + @dnd-kit/sortable (drag-and-drop in layers panel)
+  react-router-dom v6 (routing)
+  react-hook-form + zod (forms)
+  lucide-react (icons)
+  axios (HTTP client)
+  react-hot-toast (notifications)
+
+Backend:
+  NestJS, TypeScript
+  Prisma ORM (MySQL)
+  passport-jwt (authentication)
+  bcryptjs (password hashing)
+  multer (file uploads)
+  adm-zip (ZIP export)
+  helmet, throttler (security)
+
+
+KEY FILES
+---------
+HERE/frontend/src/
+  stores/editorStore.ts                  — all editor state + actions
+  pages/editor/EditorPage.tsx            — top-level editor layout
+  pages/editor/canvas/Canvas.tsx         — the visual canvas (draw, drag, select)
+  pages/editor/canvas/ElementView.tsx    — renders a single PageElement recursively
+  pages/editor/left/LayersPanel.tsx      — element tree with drag-to-reorder
+  pages/editor/left/AddElementsPanel.tsx — element + shape insert library
+  pages/editor/left/SectionsPanel.tsx    — pre-built section templates
+  pages/editor/right/Inspector.tsx       — property inspector panel
+  pages/editor/EditorTopBar.tsx          — top toolbar (save, publish, preview, undo)
+  pages/editor/BreadcrumbBar.tsx         — ancestor breadcrumb navigation
+  pages/editor/ContextMenu.tsx           — right-click context menu
+
+HERE/backend/src/
+  modules/export/export.service.ts       — ZIP export / HTML rendering
+  modules/pages/pages.service.ts         — page CRUD + save/publish
+  modules/sites/sites.service.ts         — site CRUD
+  prisma/schema.prisma                   — database schema

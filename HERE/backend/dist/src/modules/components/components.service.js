@@ -18,9 +18,7 @@ let ComponentsService = class ComponentsService {
         this.prisma = prisma;
     }
     async assertSiteOwner(siteId, adminId) {
-        const site = await this.prisma.site.findFirst({
-            where: { id: siteId, adminId },
-        });
+        const site = await this.prisma.site.findFirst({ where: { id: siteId, adminId } });
         if (!site)
             throw new common_1.NotFoundException('Site not found');
         return site;
@@ -34,9 +32,7 @@ let ComponentsService = class ComponentsService {
     }
     async findOne(siteId, id, adminId) {
         await this.assertSiteOwner(siteId, adminId);
-        const component = await this.prisma.component.findFirst({
-            where: { id, siteId },
-        });
+        const component = await this.prisma.component.findFirst({ where: { id, siteId } });
         if (!component)
             throw new common_1.NotFoundException('Component not found');
         return component;
@@ -52,15 +48,13 @@ let ComponentsService = class ComponentsService {
                 siteId,
                 name: dto.name.trim(),
                 tag: dto.tag.trim(),
-                html: dto.html ?? {},
+                html: dto.html ?? [],
             },
         });
     }
     async update(siteId, id, adminId, dto) {
         await this.assertSiteOwner(siteId, adminId);
-        const component = await this.prisma.component.findFirst({
-            where: { id, siteId },
-        });
+        const component = await this.prisma.component.findFirst({ where: { id, siteId } });
         if (!component)
             throw new common_1.NotFoundException('Component not found');
         const data = {};
@@ -74,9 +68,7 @@ let ComponentsService = class ComponentsService {
     }
     async remove(siteId, id, adminId) {
         await this.assertSiteOwner(siteId, adminId);
-        const component = await this.prisma.component.findFirst({
-            where: { id, siteId },
-        });
+        const component = await this.prisma.component.findFirst({ where: { id, siteId } });
         if (!component)
             throw new common_1.NotFoundException('Component not found');
         await this.prisma.component.delete({ where: { id } });

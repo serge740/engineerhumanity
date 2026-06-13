@@ -15,6 +15,7 @@ const pages_module_1 = require("./modules/pages/pages.module");
 const components_module_1 = require("./modules/components/components.module");
 const assets_module_1 = require("./modules/assets/assets.module");
 const public_module_1 = require("./modules/public/public.module");
+const export_module_1 = require("./modules/export/export.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -28,6 +29,7 @@ exports.AppModule = AppModule = __decorate([
             components_module_1.ComponentsModule,
             assets_module_1.AssetsModule,
             public_module_1.PublicModule,
+            export_module_1.ExportModule,
         ],
     })
 ], AppModule);

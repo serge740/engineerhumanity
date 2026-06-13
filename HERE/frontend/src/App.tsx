@@ -97,6 +97,7 @@ export default function App() {
               <Protected><EditorPage /></Protected>
             } />
 
+
             {/* Global settings */}
             <Route path="/settings" element={
               <Protected>

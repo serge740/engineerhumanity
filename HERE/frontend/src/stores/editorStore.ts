@@ -2,7 +2,6 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import type { PageElement, PageSummary, Page, UpdatePageData } from '../api/pages';
 import { updatePage, publishPage } from '../api/pages';
-
 export type { PageElement, PageSummary, Page };
 
 // ── UID ───────────────────────────────────────────────────────────────────────
@@ -81,6 +80,14 @@ function insertAt(
   });
 }
 
+function findParentId(els: PageElement[], targetId: string): string | null {
+  for (const el of els) {
+    if (el.children?.some(c => c.id === targetId)) return el.id;
+    if (el.children?.length) { const r = findParentId(el.children, targetId); if (r) return r; }
+  }
+  return null;
+}
+
 function dupInTree(els: PageElement[], id: string, copy: PageElement): PageElement[] {
   return els.flatMap(el => {
     if (el.id === id) return [el, copy];
@@ -92,6 +99,20 @@ function dupInTree(els: PageElement[], id: string, copy: PageElement): PageEleme
 export function cloneWithNewIds(el: PageElement): PageElement {
   return { ...clone(el), id: uid(), children: el.children?.map(cloneWithNewIds) };
 }
+
+// Recursively strip assetRef from a cloned element tree so a duplicated <img>
+// cannot accidentally delete the original's uploaded file when replaced.
+function stripAssetRefs(el: PageElement): PageElement {
+  const copy = { ...el } as Record<string, unknown>;
+  delete copy.assetRef;
+  if (Array.isArray(copy.children)) {
+    copy.children = (copy.children as PageElement[]).map(stripAssetRefs);
+  }
+  return copy as PageElement;
+}
+
+// ── Tool mode ─────────────────────────────────────────────────────────────────
+export type ToolMode = 'select' | 'frame' | 'rect' | 'ellipse' | 'line' | 'text';
 
 // ── Store interface ───────────────────────────────────────────────────────────
 interface EditorState {
@@ -107,7 +128,8 @@ interface EditorState {
   zoom: number;
   pan:  { x: number; y: number };
 
-  leftTab:  'layers' | 'insert';
+  leftTab:  'layers' | 'insert' | 'sections';
+  toolMode: ToolMode;
   isDirty:  boolean;
   isSaving: boolean;
 
@@ -125,7 +147,9 @@ interface EditorState {
   setZoom(z: number): void;
   setPan(x: number, y: number): void;
   zoomToFit(frameW: number, frameH: number): void;
-  setLeftTab(t: 'layers' | 'insert'): void;
+  setLeftTab(t: 'layers' | 'insert' | 'sections'): void;
+  setToolMode(t: ToolMode): void;
+  wrapElement(id: string): void;
 
   setElements(els: PageElement[], commit?: boolean): void;
   patchElement(id: string, props: Partial<Omit<PageElement, 'id'>>): void;
@@ -134,6 +158,7 @@ interface EditorState {
   removeStyle(id: string, key: string): void;
   removeElement(id: string): void;
   addChild(parentId: string | null, el: PageElement): void;
+  insertChild(parentId: string | null, el: PageElement, index: number): void;
   moveElement(id: string, newParentId: string | null, toIndex: number): void;
   duplicateElement(id: string): void;
   captureHistory(): void;
@@ -160,12 +185,24 @@ export const useEditorStore = create<EditorState>()(
       siteId: '', slug: '', pageMeta: null, pages: [],
       elements: [], selectedId: null, editingId: null,
       zoom: 0.75, pan: { x: 80, y: 60 },
-      leftTab: 'layers',
+      leftTab: 'layers', toolMode: 'select',
       isDirty: false, isSaving: false,
       past: [], future: [], canUndo: false, canRedo: false,
 
       // ── Init ────────────────────────────────────────────────────────────────
       init(siteId, slug, page, pages) {
+        // Read persisted history before entering the immer mutation (synchronous).
+        let restoredPast:   PageElement[][] = [];
+        let restoredFuture: PageElement[][] = [];
+        try {
+          const raw = localStorage.getItem(`lumen_hist_${siteId}_${slug}`);
+          if (raw) {
+            const h = JSON.parse(raw) as { past?: PageElement[][]; future?: PageElement[][] };
+            if (Array.isArray(h.past))   restoredPast   = h.past.slice(-80);
+            if (Array.isArray(h.future)) restoredFuture = h.future.slice(-80);
+          }
+        } catch { /* storage unavailable or corrupt — start with empty history */ }
+
         set(s => {
           s.siteId    = siteId;
           s.slug      = slug;
@@ -174,9 +211,6 @@ export const useEditorStore = create<EditorState>()(
 
           const raw = Array.isArray(page.html) ? page.html : [];
 
-          // Detect old flat LumenElement format (has `type` + `x`/`y`, no `tag`)
-          // and old CSS-tree format (would have `tag` but also `type` in some cases).
-          // Safe check: valid PageElement always has a non-empty `tag` string.
           const isIncompatible = raw.length > 0 && (
             typeof (raw[0] as Record<string,unknown>).tag !== 'string' ||
             !(raw[0] as Record<string,unknown>).tag
@@ -186,8 +220,10 @@ export const useEditorStore = create<EditorState>()(
           s.selectedId = null;
           s.editingId  = null;
           s.isDirty    = false;
-          s.past = []; s.future = [];
-          s.canUndo = false; s.canRedo = false;
+          s.past    = restoredPast;
+          s.future  = restoredFuture;
+          s.canUndo = restoredPast.length  > 0;
+          s.canRedo = restoredFuture.length > 0;
         });
       },
 
@@ -212,7 +248,8 @@ export const useEditorStore = create<EditorState>()(
         });
       },
 
-      setLeftTab(t) { set(s => { s.leftTab = t; }); },
+      setLeftTab(t)   { set(s => { s.leftTab   = t; }); },
+      setToolMode(t)  { set(s => { s.toolMode  = t; }); },
 
       // ── Element mutations ────────────────────────────────────────────────────
       setElements(els, commit = true) {
@@ -255,6 +292,15 @@ export const useEditorStore = create<EditorState>()(
         });
       },
 
+      insertChild(parentId, el, index) {
+        set(s => {
+          ph(s);
+          s.elements   = insertAt(s.elements, parentId, el, index);
+          s.selectedId = el.id;
+          s.isDirty    = true;
+        });
+      },
+
       moveElement(id, newParentId, toIndex) {
         set(s => {
           const found = findById(s.elements, id);
@@ -267,12 +313,28 @@ export const useEditorStore = create<EditorState>()(
         });
       },
 
+      wrapElement(id) {
+        set(s => {
+          const found = findById(s.elements, id);
+          if (!found) return;
+          ph(s);
+          const parentId = findParentId(s.elements, id);
+          const wrapper: PageElement = { id: uid(), tag: 'div', style: { padding: '8px' }, children: [clone(found.el)] };
+          const without = removeById(s.elements, id);
+          s.elements   = insertAt(without, parentId, wrapper, found.idx);
+          s.selectedId = wrapper.id;
+          s.isDirty    = true;
+        });
+      },
+
       duplicateElement(id) {
         set(s => {
           const found = findById(s.elements, id);
           if (!found) return;
           ph(s);
-          const copy   = cloneWithNewIds(found.el);
+          // stripAssetRefs so the copy doesn't share the backend asset ID with
+          // the original — replacing the copy's image must not delete the original's file.
+          const copy   = stripAssetRefs(cloneWithNewIds(found.el));
           s.elements   = dupInTree(s.elements, id, copy);
           s.selectedId = copy.id;
           s.isDirty    = true;
@@ -330,3 +392,18 @@ export const useEditorStore = create<EditorState>()(
     };
   })
 );
+
+// Persist undo/redo history to localStorage per page (up to 80 snapshots each).
+// Each page gets its own key so switching pages never mixes histories.
+useEditorStore.subscribe((s, prev) => {
+  if (s.past === prev.past && s.future === prev.future) return; // nothing changed
+  if (!s.siteId || !s.slug) return; // store not yet initialised
+  try {
+    localStorage.setItem(
+      `lumen_hist_${s.siteId}_${s.slug}`,
+      JSON.stringify({ past: s.past, future: s.future }),
+    );
+  } catch {
+    // Storage quota exceeded — silently skip; history is best-effort.
+  }
+});

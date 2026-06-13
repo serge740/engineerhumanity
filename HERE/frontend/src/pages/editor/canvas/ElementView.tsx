@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import type { PageElement } from '../../../api/pages';
+import { useEditorStore } from '../../../stores/editorStore';
 
 // ── Void elements ─────────────────────────────────────────────────────────────
 export const VOID_TAGS = new Set([
@@ -33,7 +34,6 @@ function ScriptNode({ el }: { el: PageElement }) {
     }
     document.head.appendChild(tag);
     return () => { try { document.head.removeChild(tag); } catch { /* already removed */ } };
-  // run once per element id
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [el.id]);
   return null;
@@ -46,7 +46,7 @@ export function ElementNode({
   if (!el.tag || typeof el.tag !== 'string') return null;
 
   const rec         = el as Record<string, string>;
-  const innerHTML   = rec.innerHTML;          // set by importer for mixed-content elements
+  const innerHTML   = rec.innerHTML;
   const isVoid      = VOID_TAGS.has(el.tag);
   const hasChildren = !isVoid && !innerHTML && (el.children?.length ?? 0) > 0;
   const isSelected  = selectedId === el.id;
@@ -75,14 +75,9 @@ export function ElementNode({
     onDoubleClick: (e: React.MouseEvent) => { e.stopPropagation(); onDblClick(el.id, hasChildren); },
   };
 
-  // ── <a> — handled before innerHTML check to ensure navigation is prevented ─
-  // Always prevent default so the editor click selects the element, not navigate.
+  // ── <a> ───────────────────────────────────────────────────────────────────
   if (el.tag === 'a') {
-    const aClick = (e: React.MouseEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      onSelect(el.id, e);
-    };
+    const aClick = (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); onSelect(el.id, e); };
     if (innerHTML) {
       return (
         <a {...shared as React.AnchorHTMLAttributes<HTMLAnchorElement>}
@@ -102,7 +97,7 @@ export function ElementNode({
     );
   }
 
-  // ── Void elements ──────────────────────────────────────────────────────────
+  // ── Void elements ─────────────────────────────────────────────────────────
   if (el.tag === 'img') {
     return <img {...shared as React.ImgHTMLAttributes<HTMLImageElement>}
       src={rec.src || 'https://placehold.co/600x300/eef0f4/6366f1?text=Image'}
@@ -117,19 +112,12 @@ export function ElementNode({
   if (isVoid)           return React.createElement(el.tag, shared);
 
   // ── innerHTML path ────────────────────────────────────────────────────────
-  // Used for: known inline-container tags (li, p, h1-h6, td, button, summary…)
-  // AND any element with mixed text+element content (detected in the parser).
-  // dangerouslySetInnerHTML preserves text nodes that would otherwise be dropped.
   if (innerHTML) {
     if (isEditing) {
-      // Use a ref to populate the contentEditable with the EXISTING innerHTML on mount,
-      // so the user sees current content (not an empty element) when editing.
       return React.createElement(el.tag, {
         ...shared,
         ref: (node: HTMLElement | null) => {
-          if (node && node.innerHTML !== innerHTML) {
-            node.innerHTML = innerHTML;
-          }
+          if (node && node.innerHTML !== innerHTML) node.innerHTML = innerHTML;
         },
         contentEditable: true,
         suppressContentEditableWarning: true,

@@ -8,6 +8,7 @@ import { LeftPanel }    from './left/LeftPanel';
 import { Canvas }       from './canvas/Canvas';
 import { Inspector }    from './right/Inspector';
 import { ImportModal }  from './ImportModal';
+import { BreadcrumbBar } from './BreadcrumbBar';
 
 export default function EditorPage() {
   const { siteId, slug } = useParams<{ siteId: string; slug: string }>();
@@ -29,7 +30,20 @@ export default function EditorPage() {
   const setEditingId      = useEditorStore(s => s.setEditingId);
   const setZoom           = useEditorStore(s => s.setZoom);
 
-  const [importOpen, setImportOpen] = useState(false);
+  const [importOpen,   setImportOpen]   = useState(false);
+  const [previewMode,  setPreviewMode]  = useState(false);
+  const [autoSaving,   setAutoSaving]   = useState(false);
+
+  const handleTogglePreview = () => {
+    setPreviewMode(prev => {
+      if (!prev) {
+        // entering preview — clear any selection/editing state
+        selectElement(null);
+        setEditingId(null);
+      }
+      return !prev;
+    });
+  };
 
   // ── Load page ──────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -45,14 +59,28 @@ export default function EditorPage() {
     })();
   }, [siteId, slug]);
 
-  // ── Auto-save ──────────────────────────────────────────────────────────────
-  // Watch `elements` (not just isDirty) so every edit resets the 2s debounce timer.
+  // ── Auto-save (+ auto-publish when already published) ─────────────────────
+  // Debounces 1.5 s after every change. If the page was already published,
+  // saves AND publishes so the live URL reflects edits in real time.
   useEffect(() => {
     if (!isDirty) return;
-    const t = setTimeout(() => {
-      save().catch(() => toast.error('Auto-save failed — check your connection'));
-    }, 2000);
+    const t = setTimeout(async () => {
+      setAutoSaving(true);
+      try {
+        if (pageMeta?.published) {
+          // save() is called inside publish(), so one call is enough
+          await useEditorStore.getState().publish();
+        } else {
+          await save();
+        }
+      } catch {
+        toast.error('Auto-save failed — check your connection');
+      } finally {
+        setAutoSaving(false);
+      }
+    }, 1500);
     return () => clearTimeout(t);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [elements, isDirty]);
 
   // ── Keyboard shortcuts ─────────────────────────────────────────────────────
@@ -128,12 +156,23 @@ export default function EditorPage() {
 
   return (
     <div className="l-app" style={{ height: '100vh' }}>
-      <EditorTopBar onOpenImport={() => setImportOpen(true)} siteId={siteId!} />
+      <EditorTopBar
+        onOpenImport={() => setImportOpen(true)}
+        siteId={siteId!}
+        previewMode={previewMode}
+        onTogglePreview={handleTogglePreview}
+        autoSaving={autoSaving}
+      />
 
       <div className="l-workspace">
-        <LeftPanel />
-        <Canvas />
-        <Inspector />
+        {!previewMode && <LeftPanel />}
+
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+          {!previewMode && <BreadcrumbBar />}
+          <Canvas previewMode={previewMode} />
+        </div>
+
+        {!previewMode && <Inspector />}
       </div>
 
       {importOpen && (

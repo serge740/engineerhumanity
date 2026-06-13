@@ -48,7 +48,6 @@ export function ImportModal({ onClose }: Props) {
   const handleCssChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]; if (!file) return;
     setCssName(file.name);
-    // Re-parse with new CSS if HTML already selected
     const htmlFile = htmlRef.current?.files?.[0];
     if (!htmlFile) return;
     try {

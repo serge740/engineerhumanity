@@ -18,13 +18,29 @@ let SitesService = class SitesService {
         this.prisma = prisma;
     }
     async findAll(adminId) {
-        return this.prisma.site.findMany({
+        const sites = await this.prisma.site.findMany({
             where: { adminId },
             orderBy: { createdAt: 'desc' },
             include: {
                 _count: { select: { pages: true, components: true, assets: true } },
             },
         });
+        if (sites.length > 0)
+            return sites;
+        const defaultSite = await this.prisma.site.create({
+            data: {
+                adminId,
+                name: 'My Site',
+                domain: null,
+                metadata: {},
+                globalCSS: '',
+                globalJS: '',
+            },
+            include: {
+                _count: { select: { pages: true, components: true, assets: true } },
+            },
+        });
+        return [defaultSite];
     }
     async findOne(id, adminId) {
         const site = await this.prisma.site.findFirst({

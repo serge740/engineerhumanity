@@ -6,7 +6,7 @@ import { PagesModule } from './modules/pages/pages.module';
 import { ComponentsModule } from './modules/components/components.module';
 import { AssetsModule } from './modules/assets/assets.module';
 import { PublicModule } from './modules/public/public.module';
-
+import { ExportModule } from './modules/export/export.module';
 @Module({
   imports: [
     PrismaModule,
@@ -16,6 +16,7 @@ import { PublicModule } from './modules/public/public.module';
     ComponentsModule,
     AssetsModule,
     PublicModule,
+    ExportModule,
   ],
 })
 export class AppModule {}

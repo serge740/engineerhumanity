@@ -3,6 +3,33 @@ import { useEditorStore, uid, findById } from '../../../stores/editorStore';
 import type { PageElement } from '../../../api/pages';
 import { VOID_TAGS } from '../canvas/ElementView';
 
+// ── Shapes ────────────────────────────────────────────────────────────────────
+interface ShapeItem { label: string; icon: string; make: () => PageElement; }
+
+const SHAPES: ShapeItem[] = [
+  {
+    label: 'Frame', icon: '⬜',
+    make: () => ({ id: uid(), tag: 'div', children: [],
+      style: { width: '400px', height: '300px', overflow: 'hidden', background: '#f9fafb', border: '1.5px solid #6366f1', position: 'relative' },
+      _frameType: 'frame', _frameName: 'Frame' }),
+  },
+  {
+    label: 'Rectangle', icon: '▬',
+    make: () => ({ id: uid(), tag: 'div',
+      style: { width: '200px', height: '120px', background: '#6366f1', borderRadius: '4px' } }),
+  },
+  {
+    label: 'Ellipse', icon: '●',
+    make: () => ({ id: uid(), tag: 'div',
+      style: { width: '120px', height: '120px', background: '#6366f1', borderRadius: '50%' } }),
+  },
+  {
+    label: 'Line', icon: '—',
+    make: () => ({ id: uid(), tag: 'div',
+      style: { width: '200px', height: '2px', background: '#374151' } }),
+  },
+];
+
 // ── Element library ───────────────────────────────────────────────────────────
 interface LibItem {
   label:    string;
@@ -191,6 +218,26 @@ export function AddElementsPanel() {
         />
       </div>
 
+      {/* Shapes group — always shown (not filtered, shapes are few) */}
+      {!q && (
+        <>
+          <div className="l-sect-head">Shapes</div>
+          <div className="l-lib-grid">
+            {SHAPES.map(item => (
+              <div
+                key={item.label}
+                className="l-lib-card"
+                onClick={() => handleAdd(item)}
+                title={item.label}
+              >
+                <div className="l-lib-glyph" style={{ fontSize: 16 }}>{item.icon}</div>
+                <div className="l-lib-lbl">{item.label}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+
       <div className="l-sect-head">HTML Elements</div>
 
       <div className="l-lib-grid">
@@ -210,7 +257,7 @@ export function AddElementsPanel() {
       </div>
 
       <div style={{ padding: '10px 8px 0', fontSize: 11, color: '#9ca3af', lineHeight: 1.5 }}>
-        Click to add element. Select a container first to add inside it.
+        Tip: use tool keys V·F·R·E·L·T to draw shapes directly on canvas.
       </div>
     </div>
   );

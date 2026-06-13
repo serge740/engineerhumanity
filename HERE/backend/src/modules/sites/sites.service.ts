@@ -12,13 +12,31 @@ export class SitesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async findAll(adminId: string) {
-    return this.prisma.site.findMany({
+    const sites = await this.prisma.site.findMany({
       where: { adminId },
       orderBy: { createdAt: 'desc' },
       include: {
         _count: { select: { pages: true, components: true, assets: true } },
       },
     });
+
+    if (sites.length > 0) return sites;
+
+    const defaultSite = await this.prisma.site.create({
+      data: {
+        adminId,
+        name: 'My Site',
+        domain: null,
+        metadata: {},
+        globalCSS: '',
+        globalJS: '',
+      },
+      include: {
+        _count: { select: { pages: true, components: true, assets: true } },
+      },
+    });
+
+    return [defaultSite];
   }
 
   async findOne(id: string, adminId: string) {

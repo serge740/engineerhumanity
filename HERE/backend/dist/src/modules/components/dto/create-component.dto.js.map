@@ -1,1 +1,1 @@
-{"version":3,"file":"create-component.dto.js","sourceRoot":"","sources":["../../../../../src/modules/components/dto/create-component.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,kBAAkB;IAC7B,IAAI,CAAS;IACb,GAAG,CAAS;IACZ,IAAI,CAAM;CACX;AAJD,gDAIC"}
+{"version":3,"file":"create-component.dto.js","sourceRoot":"","sources":["../../../../../src/modules/components/dto/create-component.dto.ts"],"names":[],"mappings":";;;AAAA,MAAa,kBAAkB;IAC7B,IAAI,CAAS;IACb,GAAG,CAAS;IACZ,IAAI,CAAO;CACZ;AAJD,gDAIC"}

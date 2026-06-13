@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const body_parser_1 = require("body-parser");
 const path_1 = require("path");
 const express = require("express");
+const fs = require("fs");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.use(cookieParser());
@@ -17,7 +18,10 @@ async function bootstrap() {
         credentials: true,
     });
     app.setGlobalPrefix('api');
-    app.use('/uploads', express.static((0, path_1.join)(__dirname, '..', 'Uploads'), {
+    const uploadsDir = (0, path_1.join)(process.cwd(), 'Uploads');
+    if (!fs.existsSync(uploadsDir))
+        fs.mkdirSync(uploadsDir, { recursive: true });
+    app.use('/uploads', express.static(uploadsDir, {
         setHeaders: (res) => {
             res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
             res.setHeader('Access-Control-Allow-Origin', process.env.FRONTEND_URL_ONLY || 'http://localhost:5173');

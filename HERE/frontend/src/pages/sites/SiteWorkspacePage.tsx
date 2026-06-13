@@ -1,22 +1,22 @@
-import { useEffect, useState, useRef } from 'react';
+﻿import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Plus, Pencil, Trash2, MoreVertical, Copy, Globe, Eye, EyeOff,
-  Loader2, X, FileText, Puzzle, Image, Upload, Check,
-  ExternalLink, Settings, Code, Home,
+  Loader2, X, FileText, Image, Upload, Check,
+  ExternalLink, Settings, Home, Download, Code,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/layout/AdminLayout';
 import { getSite, updateSite, type Site } from '../../api/sites';
+import { downloadSiteZip } from '../../api/export';
 import {
   getPages, createPage, updatePage, deletePage,
   duplicatePage, publishPage, unpublishPage,
   type PageSummary, type CreatePageData,
 } from '../../api/pages';
-import { getComponents, createComponent, deleteComponent, type SiteComponent } from '../../api/components';
 import { getAssets, uploadAsset, deleteAsset, formatBytes, type SiteAsset } from '../../api/assets';
 
-type Tab = 'pages' | 'components' | 'assets' | 'settings';
+type Tab = 'pages' | 'assets' | 'settings';
 
 function timeAgo(iso: string) {
   const d = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -26,7 +26,7 @@ function timeAgo(iso: string) {
   return `${Math.floor(d / 86400)}d ago`;
 }
 
-// ── Shared Modal Shell ────────────────────────────────────────────────────────
+// â”€â”€ Shared Modal Shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function Modal({ title, subtitle, onClose, children }: {
   title: string; subtitle?: string; onClose: () => void; children: React.ReactNode;
@@ -49,7 +49,7 @@ function Modal({ title, subtitle, onClose, children }: {
   );
 }
 
-// ── Create Page Modal ─────────────────────────────────────────────────────────
+// â”€â”€ Create Page Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function CreatePageModal({ onClose, onCreate }: {
   onClose: () => void;
@@ -99,7 +99,7 @@ function CreatePageModal({ onClose, onCreate }: {
   );
 }
 
-// ── Page Row ──────────────────────────────────────────────────────────────────
+// â”€â”€ Page Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function PageRow({ page, onEdit, onDuplicate, onDelete, onTogglePublish, onRename, onSetLanding }: {
   page: PageSummary; onEdit: () => void; onDuplicate: () => void;
@@ -159,7 +159,7 @@ function PageRow({ page, onEdit, onDuplicate, onDelete, onTogglePublish, onRenam
                 { icon: Pencil,  label: 'Rename',    fn: onRename },
                 { icon: page.published ? EyeOff : Eye, label: page.published ? 'Unpublish' : 'Publish', fn: onTogglePublish },
                 { icon: Copy,    label: 'Duplicate', fn: onDuplicate },
-                { icon: Home,    label: page.isLanding ? 'Landing page ✓' : 'Set as landing', fn: onSetLanding },
+                { icon: Home,    label: page.isLanding ? 'Landing page âœ“' : 'Set as landing', fn: onSetLanding },
               ].map(({ icon: Icon, label, fn }) => (
                 <button key={label} onClick={() => { fn(); setOpen(false); }}
                   className="w-full flex items-center gap-2.5 px-3.5 py-2 text-[13px] text-slate-700 hover:bg-slate-50">
@@ -179,7 +179,7 @@ function PageRow({ page, onEdit, onDuplicate, onDelete, onTogglePublish, onRenam
   );
 }
 
-// ── Pages Tab ─────────────────────────────────────────────────────────────────
+// â”€â”€ Pages Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function PagesTab({ siteId }: { siteId: string }) {
   const navigate = useNavigate();
@@ -300,100 +300,7 @@ function PagesTab({ siteId }: { siteId: string }) {
     </div>
   );
 }
-
-// ── Components Tab ────────────────────────────────────────────────────────────
-
-function ComponentsTab({ siteId }: { siteId: string }) {
-  const [items,      setItems]      = useState<SiteComponent[]>([]);
-  const [loading,    setLoading]    = useState(true);
-  const [showCreate, setShowCreate] = useState(false);
-  const [name,  setName]  = useState('');
-  const [tag,   setTag]   = useState('div');
-  const [saving, setSaving] = useState(false);
-
-  const load = async () => {
-    try { setItems(await getComponents(siteId)); } catch { toast.error('Failed to load'); } finally { setLoading(false); }
-  };
-  useEffect(() => { load(); }, [siteId]);
-
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name.trim()) return;
-    setSaving(true);
-    try {
-      await createComponent(siteId, { name: name.trim(), tag: tag || 'div' });
-      toast.success('Component created'); setShowCreate(false); setName(''); setTag('div'); load();
-    } catch (e: any) { toast.error(e?.response?.data?.message || 'Failed'); } finally { setSaving(false); }
-  };
-
-  if (loading) return <TabLoader />;
-
-  return (
-    <div>
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[13px] text-slate-500">{items.length} component{items.length !== 1 ? 's' : ''}</p>
-        <button onClick={() => setShowCreate(true)}
-          className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 text-white text-[12px] font-semibold rounded-xl hover:bg-blue-700 shadow-sm">
-          <Plus className="w-3.5 h-3.5" /> New component
-        </button>
-      </div>
-
-      {items.length === 0 ? (
-        <TabEmpty icon={Puzzle} title="No components yet" sub="Create reusable HTML components for your pages"
-          action="Create component" onAction={() => setShowCreate(true)} />
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {items.map(c => (
-            <div key={c.id} className="bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-3
-              hover:border-slate-300 hover:shadow-sm transition-all">
-              <div className="w-9 h-9 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
-                <Code className="w-4 h-4 text-violet-600" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-[13px] font-semibold text-slate-900">{c.name}</p>
-                <p className="text-[11px] text-slate-400 font-mono">&lt;{c.tag}&gt;</p>
-              </div>
-              <button onClick={async () => { await deleteComponent(siteId, c.id); toast.success('Deleted'); load(); }}
-                className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {showCreate && (
-        <Modal title="New component" subtitle="A reusable HTML element for your pages" onClose={() => setShowCreate(false)}>
-          <form onSubmit={handleCreate} className="p-6 space-y-4">
-            <div>
-              <label className="block text-[12px] font-semibold text-slate-700 mb-1.5">Name</label>
-              <input autoFocus type="text" value={name} onChange={e => setName(e.target.value)} placeholder="e.g. Navigation"
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500" />
-            </div>
-            <div>
-              <label className="block text-[12px] font-semibold text-slate-700 mb-1.5">HTML tag</label>
-              <select value={tag} onChange={e => setTag(e.target.value)}
-                className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] font-mono focus:outline-none focus:ring-2 focus:ring-blue-500">
-                {['nav','header','footer','section','aside','div','article'].map(t => (
-                  <option key={t} value={t}>&lt;{t}&gt;</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex justify-end gap-2 pt-1">
-              <button type="button" onClick={() => setShowCreate(false)} className="px-4 py-2 text-[13px] text-slate-500 hover:text-slate-800 font-medium rounded-xl hover:bg-slate-100">Cancel</button>
-              <button type="submit" disabled={!name.trim() || saving}
-                className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-[13px] font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 shadow-sm">
-                {saving ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />} Create
-              </button>
-            </div>
-          </form>
-        </Modal>
-      )}
-    </div>
-  );
-}
-
-// ── Assets Tab ────────────────────────────────────────────────────────────────
+// â”€â”€ Assets Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function AssetsTab({ siteId }: { siteId: string }) {
   const [assets,    setAssets]    = useState<SiteAsset[]>([]);
@@ -453,7 +360,7 @@ function AssetsTab({ siteId }: { siteId: string }) {
           {images.length > 0 && (
             <div>
               <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-3">
-                Images · {images.length}
+                Images Â· {images.length}
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                 {images.map(a => (
@@ -475,7 +382,7 @@ function AssetsTab({ siteId }: { siteId: string }) {
           {fonts.length > 0 && (
             <div>
               <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-3">
-                Fonts · {fonts.length}
+                Fonts Â· {fonts.length}
               </p>
               <div className="space-y-2">
                 {fonts.map(a => (
@@ -502,7 +409,7 @@ function AssetsTab({ siteId }: { siteId: string }) {
   );
 }
 
-// ── Settings Tab ──────────────────────────────────────────────────────────────
+// â”€â”€ Settings Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SettingsTab({ site, onUpdate }: { site: Site; onUpdate: (s: Site) => void }) {
   const [name,      setName]      = useState(site.name);
@@ -556,7 +463,7 @@ function SettingsTab({ site, onUpdate }: { site: Site; onUpdate: (s: Site) => vo
         </p>
         <Field label="Site title"><input type="text" value={metaTitle} onChange={e => setMetaTitle(e.target.value)} placeholder="My Site" className={input} /></Field>
         <Field label="Meta description">
-          <textarea value={metaDesc} onChange={e => setMetaDesc(e.target.value)} placeholder="Describe your site…" rows={3} className={`${input} resize-none`} />
+          <textarea value={metaDesc} onChange={e => setMetaDesc(e.target.value)} placeholder="Describe your siteâ€¦" rows={3} className={`${input} resize-none`} />
         </Field>
       </div>
 
@@ -583,7 +490,7 @@ function SettingsTab({ site, onUpdate }: { site: Site; onUpdate: (s: Site) => vo
   );
 }
 
-// ── Shared helpers ────────────────────────────────────────────────────────────
+// â”€â”€ Shared helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function TabLoader() {
   return (
@@ -609,13 +516,12 @@ function TabEmpty({ icon: Icon, title, sub, action, onAction }: {
   );
 }
 
-// ── Main ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const tabs: { id: Tab; icon: React.FC<any>; label: string }[] = [
-  { id: 'pages',      icon: FileText, label: 'Pages'      },
-  { id: 'components', icon: Puzzle,   label: 'Components' },
-  { id: 'assets',     icon: Image,    label: 'Assets'     },
-  { id: 'settings',   icon: Settings, label: 'Settings'   },
+  { id: 'pages',    icon: FileText, label: 'Pages'    },
+  { id: 'assets',   icon: Image,    label: 'Assets'   },
+  { id: 'settings', icon: Settings, label: 'Settings' },
 ];
 
 const siteGradients = [
@@ -629,9 +535,10 @@ const siteGradients = [
 export default function SiteWorkspacePage() {
   const { siteId }  = useParams<{ siteId: string }>();
   const navigate    = useNavigate();
-  const [site,      setSite]      = useState<Site | null>(null);
-  const [loading,   setLoading]   = useState(true);
-  const [activeTab, setActiveTab] = useState<Tab>('pages');
+  const [site,        setSite]        = useState<Site | null>(null);
+  const [loading,     setLoading]     = useState(true);
+  const [activeTab,   setActiveTab]   = useState<Tab>('pages');
+  const [downloading, setDownloading] = useState(false);
 
   useEffect(() => {
     if (!siteId) return;
@@ -639,7 +546,7 @@ export default function SiteWorkspacePage() {
   }, [siteId]);
 
   if (loading) return (
-    <AdminLayout title="Loading…" crumbs={[{ label: 'Workspace' }]}>
+    <AdminLayout title="Loadingâ€¦" crumbs={[{ label: 'Workspace' }]}>
       <div className="flex items-center justify-center py-24"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
     </AdminLayout>
   );
@@ -656,7 +563,7 @@ export default function SiteWorkspacePage() {
     >
       <div className="max-w-4xl mx-auto">
 
-        {/* ── Site header ───────────────────────────────── */}
+        {/* â”€â”€ Site header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
@@ -680,23 +587,49 @@ export default function SiteWorkspacePage() {
                       ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
                       : 'text-slate-500 bg-slate-100 border border-slate-200'
                   }`}>
-                    {site.published ? '● Live' : '○ Draft'}
+                    {site.published ? 'â— Live' : 'â—‹ Draft'}
                   </span>
                 </div>
               </div>
             </div>
 
-            <span className={`text-[11px] font-bold px-3 py-1.5 rounded-full border ${
-              site.published
-                ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                : 'text-slate-500 bg-slate-100 border-slate-200'
-            }`}>
-              {site.published ? '● Live' : '○ Draft'}
-            </span>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={async () => {
+                  setDownloading(true);
+                  try {
+                    await downloadSiteZip(site.id, site.name);
+                    toast.success('Download started');
+                  } catch {
+                    toast.error('Export failed â€” please try again');
+                  } finally {
+                    setDownloading(false);
+                  }
+                }}
+                disabled={downloading}
+                className="flex items-center gap-1.5 px-3.5 py-2 text-[12px] font-semibold
+                  text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl
+                  disabled:opacity-50 transition-colors border border-slate-200"
+                title="Download all pages as a self-contained ZIP"
+              >
+                {downloading
+                  ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  : <Download className="w-3.5 h-3.5" />}
+                {downloading ? 'Exportingâ€¦' : 'Download site'}
+              </button>
+
+              <span className={`text-[11px] font-bold px-3 py-1.5 rounded-full border ${
+                site.published
+                  ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                  : 'text-slate-500 bg-slate-100 border-slate-200'
+              }`}>
+                {site.published ? 'â— Live' : 'â—‹ Draft'}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* ── Tabs ──────────────────────────────────────── */}
+        {/* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
         <div className="flex items-center gap-1 bg-white rounded-xl border border-slate-200 p-1 mb-6 shadow-sm">
           {tabs.map(({ id, icon: Icon, label }) => (
             <button key={id} onClick={() => setActiveTab(id)}
@@ -710,13 +643,16 @@ export default function SiteWorkspacePage() {
             </button>
           ))}
         </div>
+        
 
-        {/* ── Tab content ───────────────────────────────── */}
-        {activeTab === 'pages'      && <PagesTab      siteId={site.id} />}
-        {activeTab === 'components' && <ComponentsTab siteId={site.id} />}
-        {activeTab === 'assets'     && <AssetsTab     siteId={site.id} />}
-        {activeTab === 'settings'   && <SettingsTab   site={site} onUpdate={setSite} />}
+        {/* â”€â”€ Tab content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
+        {activeTab === 'pages'       && <PagesTab       siteId={site.id} />}
+        {activeTab === 'components'  && <ComponentsTab  siteId={site.id} />}
+        {activeTab === 'collections' && <CollectionsTab siteId={site.id} />}
+        {activeTab === 'assets'      && <AssetsTab      siteId={site.id} />}
+        {activeTab === 'settings'    && <SettingsTab    site={site} onUpdate={setSite} />}
       </div>
     </AdminLayout>
   );
 }
+
