@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Engineers4Humanity — Home</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind config BEFORE CDN -->
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            fontFamily: {
+              serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+              sans: ['Poppins', 'sans-serif'],
+            },
+            keyframes: {
+              ticker: {
+                from: { transform: 'translateX(0)' },
+                to:   { transform: 'translateX(-50%)' }
+              },
+              'wa-shake': {
+                '0%,70%,100%': { transform: 'rotate(0deg) scale(1)' },
+                '72%': { transform: 'rotate(-14deg) scale(1.12)' },
+                '75%': { transform: 'rotate(14deg) scale(1.12)' },
+                '78%': { transform: 'rotate(-10deg) scale(1.08)' },
+                '81%': { transform: 'rotate(10deg) scale(1.08)' },
+                '84%': { transform: 'rotate(-6deg) scale(1.04)' },
+                '87%': { transform: 'rotate(6deg) scale(1.04)' },
+                '90%': { transform: 'rotate(0deg) scale(1)' }
+              }
+            },
+            animation: {
+              ticker:     'ticker 32s linear infinite',
+              'wa-shake': 'wa-shake 4s ease-in-out infinite'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    /* ─── Reset ───────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin: 0; padding: 0; }
+    h1,h2,h3,h4,h5,h6,p,ul,ol { margin: 0; padding: 0; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    a  { text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* ─── Base ────────────────────────────────────────── */
+    :root {
+      --navy:    #0A1628;
+      --light:   #F0F7FF;
+      --lighter: #E1EEF9;
+      --body:    #3A5068;
+      --sky3:    #7dd3fc;
+      --sky5:    #0ea5e9;
+      --sky6:    #0284c7;
+      --em3:     #6ee7b7;
+      --em4:     #34d399;
+      --em6:     #059669;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-size: 16px;
+      color: var(--navy);
+      background: var(--light);
+      line-height: 1.6;
+    }
+
+    h1 { font-size: 42px; font-weight: 300; line-height: 1; }
+    h2 { font-size: 48px; font-weight: 400; line-height: 1.1; }
+    h3 { font-size: 28px; font-weight: 400; line-height: 1.2; }
+    h4 { font-size: 16px; font-weight: 600; }
+    p  { font-size: 16px; line-height: 1.8; }
+
+    .font-serif { font-family: 'Cormorant Garamond', Georgia, serif !important; }
+
+    /* ─── Utilities ───────────────────────────────────── */
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ─── Animations ──────────────────────────────────── */
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .ticker-run { animation: ticker 32s linear infinite; display: inline-block; }
+
+    @keyframes wa-shake {
+      0%,70%,100% { transform: rotate(0deg) scale(1); }
+      72%  { transform: rotate(-14deg) scale(1.12); }
+      75%  { transform: rotate(14deg)  scale(1.12); }
+      78%  { transform: rotate(-10deg) scale(1.08); }
+      81%  { transform: rotate(10deg)  scale(1.08); }
+      84%  { transform: rotate(-6deg)  scale(1.04); }
+      87%  { transform: rotate(6deg)   scale(1.04); }
+      90%  { transform: rotate(0deg)   scale(1); }
+    }
+    .wa-btn { animation: wa-shake 4s ease-in-out infinite; }
+
+    @keyframes ping {
+      75%, 100% { transform: scale(2); opacity: 0; }
+    }
+    .anim-ping { animation: ping 1s cubic-bezier(0,0,.2,1) infinite; }
+
+    /* ─── Page wrapper (for absolute-positioned overlays) */
+    #pw { position: relative; overflow-x: hidden; min-height: 100%; }
+
+    /* ─── Navbar ──────────────────────────────────────── */
+    #navbar { position: sticky; top: 0; z-index: 100; background: white; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+
+    /* Dropdown panel */
+    .dd-panel {
+      position: absolute;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);
+      border: 1px solid #f3f4f6;
+      padding: 8px 0;
+      transition: opacity .3s, transform .3s, visibility .3s;
+      transform-origin: top center;
+      opacity: 0;
+      transform: scaleY(.95) translateY(-8px);
+      visibility: hidden;
+      z-index: 200;
+      top: calc(100% + 8px);
+      left: 0;
+    }
+    .dd-panel.programs-dd {
+      left: 50%;
+      transform: translateX(-50%) scaleY(.95) translateY(-8px);
+      padding: 20px;
+      width: 560px;
+    }
+    .dd-panel.visible { opacity: 1; transform: scaleY(1) translateY(0); visibility: visible; }
+    .dd-panel.programs-dd.visible { transform: translateX(-50%) scaleY(1) translateY(0); }
+
+    .chevron { transition: transform .3s; }
+    .chevron.rotated { transform: rotate(180deg); }
+
+    .dd-link {
+      display: block;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #374151;
+      border-radius: 8px;
+      transition: color .2s, background .2s;
+    }
+    .dd-link:hover { color: var(--sky6); background: #f0f9ff; }
+
+    .nav-btn {
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color .2s, background .2s;
+      white-space: nowrap;
+    }
+    .nav-btn:hover, .nav-btn.active { color: var(--sky6); background: #f0f9ff; }
+
+    .nav-link {
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #374151;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: color .2s, background .2s;
+    }
+    .nav-link:hover { color: var(--sky6); background: #f9fafb; }
+    .nav-link.active { color: var(--sky6); background: #f0f9ff; }
+
+    /* ─── Mobile overlay / sidebar ────────────────────── */
+    #mob-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.5);
+      backdrop-filter: blur(4px);
+      z-index: 40;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .3s, visibility .3s;
+    }
+    #mob-overlay.open { opacity: 1; visibility: visible; }
+
+    #mob-sidebar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 320px;
+      max-width: 85%;
+      background: white;
+      z-index: 50;
+      transform: translateX(100%);
+      transition: transform .3s ease-in-out;
+      overflow-y: auto;
+      min-height: 100%;
+    }
+    #mob-sidebar.open { transform: translateX(0); }
+
+    .mob-nav-link {
+      display: block;
+      padding: 12px 16px;
+      font-weight: 700;
+      color: #374151;
+      border-radius: 8px;
+      transition: color .2s, background .2s;
+    }
+    .mob-nav-link:hover { color: var(--sky6); background: #f0f9ff; }
+
+    .mob-accordion-content {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height .3s ease-in-out, opacity .3s ease-in-out;
+    }
+    .mob-accordion-content.open { opacity: 1; }
+
+    /* ─── Hero ────────────────────────────────────────── */
+    #hero { position: relative; min-height: 700px; overflow: hidden; display: flex; flex-direction: column; }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .hero-slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.45) saturate(1.1); }
+    .hero-slide .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(105deg, rgba(7,115,171,.72) 0%, rgba(5,150,105,.3) 60%, transparent 100%);
+    }
+
+    .hero-dot {
+      height: 3px;
+      border-radius: 9999px;
+      border: none;
+      cursor: pointer;
+      transition: all .3s;
+      background: rgba(255,255,255,.4);
+      width: 20px;
+    }
+    .hero-dot.active { background: white; width: 40px; }
+
+    /* ─── About pillars hover ─────────────────────────── */
+    .pillar { transition: background .25s; cursor: default; }
+    .pillar:hover { background: var(--sky6) !important; }
+    .pillar:hover .p-num   { color: white !important; }
+    .pillar:hover .p-title { color: white !important; }
+    .pillar:hover .p-desc  { color: white !important; }
+
+    /* ─── Gallery ─────────────────────────────────────── */
+    .gallery-card {
+      transition: box-shadow .3s, transform .3s;
+      cursor: pointer;
+    }
+    .gallery-card:hover { box-shadow: 0 20px 25px -5px rgba(0,0,0,.15); transform: translateY(-4px); }
+    .gallery-img { transition: transform .5s; }
+    .gallery-card:hover .gallery-img { transform: scale(1.1); }
+    .gallery-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2,132,199,0);
+      transition: background .3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .gallery-card:hover .gallery-overlay { background: rgba(2,132,199,.4); }
+    .zoom-btn {
+      opacity: 0;
+      transition: opacity .3s;
+      background: white;
+      border-radius: 9999px;
+      padding: 12px;
+    }
+    .gallery-card:hover .zoom-btn { opacity: 1; }
+
+    /* ─── History Modal ───────────────────────────────── */
+    #hist-modal {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      background: rgba(10,22,40,.92);
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 80px 24px;
+    }
+    #hist-modal.open { display: flex; }
+
+    /* ─── Program cards ───────────────────────────────── */
+    .prog-card {
+      position: relative;
+      border-radius: 6px;
+      overflow: hidden;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      cursor: pointer;
+      transition: transform .3s, box-shadow .3s;
+    }
+    .prog-card:hover { transform: translateY(-6px); box-shadow: 0 25px 50px -12px rgba(0,0,0,.35); }
+    .prog-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+    .prog-card:hover .prog-img { transform: scale(1.05); }
+
+    /* ─── CTA cards ───────────────────────────────────── */
+    .cta-card { transition: box-shadow .2s, transform .2s; }
+    .cta-card:hover { box-shadow: 0 10px 15px -3px rgba(0,0,0,.1); transform: translateY(-2px); }
+
+    /* ─── Footer social icons ─────────────────────────── */
+    .soc-icon {
+      width: 36px; height: 36px;
+      border-radius: 9999px;
+      background: rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(255,255,255,.65);
+      transition: background .2s, color .2s;
+    }
+    .soc-icon:hover { background: var(--sky6); color: white; }
+
+    /* ─── WhatsApp button ─────────────────────────────── */
+    #wa-wrap {
+      position: sticky;
+      bottom: 24px;
+      z-index: 50;
+      pointer-events: none;
+      display: flex;
+      justify-content: flex-end;
+      padding-right: 24px;
+      height: 0;
+      margin-top: -80px;
+    }
+    #wa-wrap a { pointer-events: auto; }
+
+    /* XL nav padding */
+    @media (min-width: 1280px) {
+      .nav-btn { padding: 8px 16px; }
+      .nav-link { padding: 8px 16px; }
+    }
+  </style>
+</head>
+<body>
+<div id="pw">
+
+<!-- ═══════════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════════════ -->
+<nav id="navbar">
+  <div class="relative mx-auto px-4 sm:px-6">
+    <div class="flex items-center" style="height:130px;">
+
+      <!-- Logo -->
+      <div class="absolute pointer-events-none" style="left:calc(1rem - 56px); width:300px; height:130px;">
+        <div class="flex items-center h-full pl-14">
+          <span class="font-serif font-bold" style="font-size:22px; color:#0A1628; letter-spacing:-0.01em; line-height:1.1;">
+            Engineers<span style="color:var(--sky6);">4</span>Humanity
+          </span>
+        </div>
+      </div>
+
+      <!-- Desktop nav -->
+      <ul class="hidden lg:flex flex-1 items-center justify-center gap-0" style="font-size:12px; padding-left:220px; list-style:none;">
+
+        <li>
+          <a href="#" class="nav-link active">Home</a>
+        </li>
+
+        <!-- About Us -->
+        <li class="relative" id="li-about">
+          <button class="nav-btn" data-dd="about">
+            About Us
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="ch-about" class="chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="dd-about" class="dd-panel" style="width:224px;">
+            <a href="#" class="dd-link">Who We Are</a>
+            <a href="#" class="dd-link">Our Story</a>
+            <a href="#" class="dd-link">Our Team</a>
+            <a href="#" class="dd-link">Board Members</a>
+            <a href="#" class="dd-link">Join Us</a>
+          </div>
+        </li>
+
+        <!-- Programs -->
+        <li class="relative" id="li-programs">
+          <button class="nav-btn" data-dd="programs">
+            Programs
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="ch-programs" class="chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="dd-programs" class="dd-panel programs-dd">
+            <div class="grid grid-cols-3 gap-4">
+              <div>
+                <h4 class="text-xs font-bold text-sky-600 uppercase tracking-wider mb-2 px-3">Education</h4>
+                <a href="#" class="dd-link">High School &amp; University scholarships</a>
+                <a href="#" class="dd-link">Leadership &amp; Peacebuilding</a>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-green-600 uppercase tracking-wider mb-2 px-3">Engineering</h4>
+                <a href="#" class="dd-link">Public Health Engineering</a>
+                <a href="#" class="dd-link">Entrepreneurship &amp; Construction Service</a>
+              </div>
+              <div>
+                <h4 class="text-xs font-bold text-purple-600 uppercase tracking-wider mb-2 px-3">Engineers4Humanity Institute</h4>
+                <a href="#" class="dd-link">Professional Skills Development</a>
+                <a href="#" class="dd-link">Research &amp; Innovation Hub</a>
+              </div>
+            </div>
+          </div>
+        </li>
+
+        <!-- Impact -->
+        <li class="relative" id="li-impact">
+          <button class="nav-btn" data-dd="impact">
+            Impact
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="ch-impact" class="chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="dd-impact" class="dd-panel" style="width:224px;">
+            <a href="#" class="dd-link">Our Impact</a>
+            <a href="#" class="dd-link">Success Story</a>
+            <a href="#" class="dd-link">Testimony</a>
+            <a href="#" class="dd-link">Documentary</a>
+            <a href="#" class="dd-link">Article and Publication</a>
+          </div>
+        </li>
+
+        <li>
+          <a href="#" class="nav-link">Get Involved</a>
+        </li>
+
+        <!-- Events -->
+        <li class="relative" id="li-events">
+          <button class="nav-btn" data-dd="events">
+            Events
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="ch-events" class="chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div id="dd-events" class="dd-panel" style="width:192px;">
+            <a href="#" class="dd-link">Upcoming Events</a>
+            <a href="#" class="dd-link">Past Events</a>
+          </div>
+        </li>
+
+        <li>
+          <a href="#" class="nav-link">Contact</a>
+        </li>
+      </ul>
+
+      <!-- Donate button (desktop) -->
+      <a href="#" class="hidden lg:inline-block text-white font-semibold rounded-lg shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5" style="background:linear-gradient(to right,#16a34a,#15803d); padding:8px 20px; font-size:14px;">Donate Now</a>
+
+      <!-- Mobile hamburger -->
+      <button id="mob-btn" class="lg:hidden ml-auto p-2.5 rounded-lg transition-all text-gray-700 border-none bg-transparent cursor-pointer" aria-label="Toggle menu">
+        <svg id="ico-menu" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        <svg id="ico-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div id="mob-overlay" onclick="closeMobile()"></div>
+
+<!-- Mobile sidebar -->
+<div id="mob-sidebar">
+  <!-- Sidebar header -->
+  <div class="sticky top-0 p-6 shadow-md" style="background:linear-gradient(to right,#0284c7,#059669);">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-xl font-bold text-white">Menu</h2>
+        <p class="text-sm mt-1" style="color:rgba(224,242,254,.85);">Engineers4Humanity</p>
+      </div>
+      <button onclick="closeMobile()" class="p-2 rounded-lg transition-colors border-none cursor-pointer" style="background:rgba(255,255,255,.15);" aria-label="Close">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Sidebar nav -->
+  <div class="p-4">
+    <div class="flex flex-col gap-1">
+      <a href="#" class="mob-nav-link">Home</a>
+
+      <!-- About accordion -->
+      <div>
+        <button class="mob-acc-btn w-full px-4 py-3 text-gray-700 font-medium rounded-lg flex items-center justify-between border-none bg-transparent cursor-pointer text-left transition-all hover:text-sky-600 hover:bg-gray-50" data-acc="mob-about">
+          <span>About Us</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron" id="mch-about"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="mob-about" class="mob-accordion-content">
+          <div class="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+            <a href="#" class="mob-nav-link">Who We Are</a>
+            <a href="#" class="mob-nav-link">Our Story</a>
+            <a href="#" class="mob-nav-link">Our Team</a>
+            <a href="#" class="mob-nav-link">Board Members</a>
+            <a href="#" class="mob-nav-link">Join Us</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Programs accordion -->
+      <div>
+        <button class="mob-acc-btn w-full px-4 py-3 text-gray-700 font-medium rounded-lg flex items-center justify-between border-none bg-transparent cursor-pointer text-left transition-all hover:text-sky-600 hover:bg-gray-50" data-acc="mob-programs">
+          <span>Programs</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron" id="mch-programs"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="mob-programs" class="mob-accordion-content">
+          <div class="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+            <p class="px-4 py-1.5 text-xs font-bold text-sky-600 uppercase tracking-wider mt-1">Education</p>
+            <a href="#" class="mob-nav-link">High School &amp; University scholarships</a>
+            <a href="#" class="mob-nav-link">Leadership &amp; Peacebuilding</a>
+            <p class="px-4 py-1.5 text-xs font-bold text-green-600 uppercase tracking-wider mt-2">Engineering</p>
+            <a href="#" class="mob-nav-link">Public Health Engineering</a>
+            <a href="#" class="mob-nav-link">Entrepreneurship &amp; Construction Service</a>
+            <p class="px-4 py-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider mt-2">Engineers4Humanity Institute</p>
+            <a href="#" class="mob-nav-link">Professional Skills Development</a>
+            <a href="#" class="mob-nav-link">Research &amp; Innovation Hub</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Impact accordion -->
+      <div>
+        <button class="mob-acc-btn w-full px-4 py-3 text-gray-700 font-medium rounded-lg flex items-center justify-between border-none bg-transparent cursor-pointer text-left transition-all hover:text-sky-600 hover:bg-gray-50" data-acc="mob-impact">
+          <span>Impact</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron" id="mch-impact"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="mob-impact" class="mob-accordion-content">
+          <div class="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+            <a href="#" class="mob-nav-link">Our Impact</a>
+            <a href="#" class="mob-nav-link">Success Story</a>
+            <a href="#" class="mob-nav-link">Testimony</a>
+            <a href="#" class="mob-nav-link">Documentary</a>
+            <a href="#" class="mob-nav-link">Article and Publication</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="#" class="mob-nav-link">Get Involved</a>
+
+      <!-- Events accordion -->
+      <div>
+        <button class="mob-acc-btn w-full px-4 py-3 text-gray-700 font-medium rounded-lg flex items-center justify-between border-none bg-transparent cursor-pointer text-left transition-all hover:text-sky-600 hover:bg-gray-50" data-acc="mob-events">
+          <span>Events</span>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="chevron" id="mch-events"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="mob-events" class="mob-accordion-content">
+          <div class="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
+            <a href="#" class="mob-nav-link">Upcoming Events</a>
+            <a href="#" class="mob-nav-link">Past Events</a>
+          </div>
+        </div>
+      </div>
+
+      <a href="#" class="mob-nav-link">Contact</a>
+
+      <a href="#" class="block px-4 py-3.5 text-white font-semibold rounded-lg text-center mt-4 transition-all" style="background:linear-gradient(to right,#16a34a,#15803d);">Donate Now</a>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     MAIN
+════════════════════════════════════════════════════════ -->
+<main style="color:#0A1628; background:#F0F7FF; font-family:'Poppins',sans-serif;">
+
+  <!-- ── HERO ──────────────────────────────────────────── -->
+  <section id="hero">
+
+    <!-- Slide 0 -->
+    <div class="hero-slide opacity-100" id="slide-0">
+      <img src="https://images.unsplash.com/photo-1594608661623-aa0bd3a69d98?w=1600&auto=format&fit=crop&q=80" alt="Vocational Training" />
+      <div class="overlay"></div>
+    </div>
+    <!-- Slide 1 -->
+    <div class="hero-slide opacity-0" id="slide-1">
+      <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1600&auto=format&fit=crop&q=80" alt="Parent Visit" />
+      <div class="overlay"></div>
+    </div>
+    <!-- Slide 2 -->
+    <div class="hero-slide opacity-0" id="slide-2">
+      <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?w=1600&auto=format&fit=crop&q=80" alt="Creating Opportunities" />
+      <div class="overlay"></div>
+    </div>
+
+    <!-- Content -->
+    <div class="relative flex-1 flex items-center" style="z-index:10; padding-bottom:120px;">
+      <div class="flex flex-col justify-center px-4 sm:px-8 lg:px-16 py-12" style="max-width:768px;">
+
+        <div class="inline-flex items-center gap-2 font-bold rounded-full mb-6 w-fit" style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#34d399; background:rgba(52,211,153,.1); border:1px solid rgba(52,211,153,.4); padding:8px 16px;">
+          <span style="font-size:7px;">◆</span>
+          Engineering for Good
+        </div>
+
+        <h1 id="hero-h1" class="font-serif text-white" style="font-size:42px; margin-bottom:20px; letter-spacing:-.02em;">
+          Building Dignified<br/>
+          <em class="italic" style="color:#7dd3fc;">Lives</em>
+        </h1>
+
+        <p id="hero-p" class="leading-[1.75]" style="font-size:15px; color:rgba(255,255,255,.75); max-width:480px; margin-bottom:32px;">
+          Empowering refugees and underserved communities through education, engineering, and servant leadership
+        </p>
+      </div>
+    </div>
+
+    <!-- Dots -->
+    <div class="absolute flex gap-3" id="hero-dots" style="bottom:120px; left:1rem; z-index:10;">
+      <button class="hero-dot active" data-slide="0" onclick="goSlide(0)"></button>
+      <button class="hero-dot" data-slide="1" onclick="goSlide(1)"></button>
+      <button class="hero-dot" data-slide="2" onclick="goSlide(2)"></button>
+    </div>
+
+    <!-- Stats strip -->
+    <div id="stats-strip" class="absolute bottom-0 left-0 right-0 grid grid-cols-2 sm:grid-cols-4" style="z-index:10; background:rgba(7,115,171,.85); backdrop-filter:blur(10px); border-top:1px solid rgba(125,211,252,.2);">
+
+      <div class="px-4 py-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6" style="border-right:1px solid rgba(125,211,252,.15);">
+        <div class="font-serif font-bold text-white" style="font-size:38px; line-height:1;"><span class="stat-num" data-target="500">0</span>+</div>
+        <div class="font-semibold mt-1" style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);">Hope School Graduates</div>
+      </div>
+
+      <div class="px-4 py-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6" style="border-right:1px solid rgba(125,211,252,.15);">
+        <div class="font-serif font-bold text-white" style="font-size:38px; line-height:1;"><span class="stat-num" data-target="2000">0</span>+</div>
+        <div class="font-semibold mt-1" style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);">Lives Transformed</div>
+      </div>
+
+      <div class="px-4 py-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6" style="border-right:1px solid rgba(125,211,252,.15);">
+        <div class="font-serif font-bold text-white" style="font-size:38px; line-height:1;"><span class="stat-num" data-target="17">0</span>+</div>
+        <div class="font-semibold mt-1" style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);">Years of Founder in Humanitarian Service</div>
+      </div>
+
+      <div class="px-4 py-4 sm:px-6 sm:py-5 lg:px-10 lg:py-6">
+        <div class="font-serif font-bold text-white" style="font-size:38px; line-height:1;"><span class="stat-num" data-target="2020" data-raw="true">0</span></div>
+        <div class="font-semibold mt-1" style="font-size:10px; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);">Year Founded</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── TICKER ─────────────────────────────────────────── -->
+  <div style="background:#059669; padding:14px 0; overflow:hidden; white-space:nowrap;">
+    <div class="ticker-run">
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Clean Water &amp; Sanitation</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Education &amp; Scholarships</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Vocational Training</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Servant Leadership</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Peacebuilding</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Social Entrepreneurship</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Engineering Consultancy</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Community Empowerment</span>
+      <!-- doubled for seamless loop -->
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Clean Water &amp; Sanitation</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Education &amp; Scholarships</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Vocational Training</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Servant Leadership</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Peacebuilding</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Social Entrepreneurship</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Engineering Consultancy</span>
+      <span class="inline-block font-bold text-white" style="font-size:11px; letter-spacing:.16em; text-transform:uppercase; margin:0 36px;"><span style="opacity:.55; margin-right:14px;">◆</span>Community Empowerment</span>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ──────────────────────────────────────────── -->
+  <section id="mission" style="background:#F0F7FF; padding:48px 16px;">
+    <div class="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 lg:gap-20 items-start" style="max-width:1400px; margin:0 auto;">
+
+      <!-- Left -->
+      <div>
+        <div class="flex items-center gap-3 font-bold mb-8" style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--sky6);">
+          <span style="width:28px; height:2px; background:var(--sky6); display:block; flex-shrink:0;"></span>
+          Who we are
+        </div>
+
+        <h2 class="font-serif" style="font-size:48px; font-weight:400; line-height:1.1; letter-spacing:-.02em; color:#0A1628; margin-bottom:28px;">
+          Engineers4Humanity's <em class="italic" style="color:var(--sky5);">Mission</em>
+        </h2>
+
+        <p style="font-size:16px; line-height:1.8; color:#3A5068; margin-bottom:20px;">
+          To build a dignified life for refugees and underserved communities in Rwanda, and promote country development by:
+        </p>
+
+        <ul style="margin-bottom:32px;">
+          <li style="display:flex; align-items:flex-start; gap:10px; font-size:16px; color:#3A5068; line-height:1.7; margin-bottom:12px;"><span style="color:var(--sky5); margin-top:6px; flex-shrink:0;">•</span>Enhancing education &amp; vocational skills development;</li>
+          <li style="display:flex; align-items:flex-start; gap:10px; font-size:16px; color:#3A5068; line-height:1.7; margin-bottom:12px;"><span style="color:var(--sky5); margin-top:6px; flex-shrink:0;">•</span>Fostering self-reliance through job creation and entrepreneurship;</li>
+          <li style="display:flex; align-items:flex-start; gap:10px; font-size:16px; color:#3A5068; line-height:1.7; margin-bottom:12px;"><span style="color:var(--sky5); margin-top:6px; flex-shrink:0;">•</span>Advancing engineering solutions for environmental protection, water, sanitation, and hygiene services; and</li>
+          <li style="display:flex; align-items:flex-start; gap:10px; font-size:16px; color:#3A5068; line-height:1.7;"><span style="color:var(--sky5); margin-top:6px; flex-shrink:0;">•</span>Encouraging servant leadership and peacebuilding</li>
+        </ul>
+
+        <div style="border-top:1px solid #bae6fd; padding-top:24px; margin-bottom:32px;">
+          <p style="font-size:16px; line-height:1.8; color:#3A5068; margin-bottom:16px;">
+            Engineers4Humanity is a registered <strong style="color:#0A1628;">501(c)(3) nonprofit organization</strong> based in Texas which guides and supports the Engineers4Humanity Consultancy social enterprise in Rwanda that fosters resilience and self-reliance in refugee camps through education, engineering, and servant leadership.
+          </p>
+          <p style="font-size:16px; line-height:1.8; color:#3A5068;">
+            Founded by <strong style="color:#0A1628;">Eric Kamanzi</strong> — civil engineer, Project Management Professional, and former refugee — the organization has positively impacted more than <strong style="color:#059669;">2,000 young refugees</strong> across Rwanda.
+          </p>
+        </div>
+
+        <a href="#" class="inline-flex items-center gap-2 font-semibold transition-colors" style="font-size:14px; letter-spacing:.04em; color:var(--sky6);">
+          Learn More About Us →
+        </a>
+      </div>
+
+      <!-- Right -->
+      <div>
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&auto=format&fit=crop&q=80" alt="Community Impact" style="width:100%; height:650px; object-fit:cover; border-radius:4px; display:block;" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 mt-4" style="gap:2px;">
+          <div class="pillar" style="background:#E1EEF9; padding:32px; border-radius:2px;">
+            <span class="p-num font-serif font-bold block" style="font-size:13px; color:#059669; margin-bottom:14px; transition:color .25s;">01</span>
+            <div class="p-title font-serif font-semibold" style="font-size:22px; color:#0A1628; margin-bottom:10px; transition:color .25s;">Connect</div>
+            <p class="p-desc" style="font-size:13px; line-height:1.7; color:#3A5068; transition:color .25s;">Matching engineers and volunteers with communities where their skills create the most impact.</p>
+          </div>
+          <div class="pillar" style="background:#E1EEF9; padding:32px; border-radius:2px;">
+            <span class="p-num font-serif font-bold block" style="font-size:13px; color:#059669; margin-bottom:14px; transition:color .25s;">02</span>
+            <div class="p-title font-serif font-semibold" style="font-size:22px; color:#0A1628; margin-bottom:10px; transition:color .25s;">Build</div>
+            <p class="p-desc" style="font-size:13px; line-height:1.7; color:#3A5068; transition:color .25s;">Designing and deploying real-world solutions in public health engineering and vocational skills development.</p>
+          </div>
+          <div class="pillar" style="background:#E1EEF9; padding:32px; border-radius:2px;">
+            <span class="p-num font-serif font-bold block" style="font-size:13px; color:#059669; margin-bottom:14px; transition:color .25s;">03</span>
+            <div class="p-title font-serif font-semibold" style="font-size:22px; color:#0A1628; margin-bottom:10px; transition:color .25s;">Sustain</div>
+            <p class="p-desc" style="font-size:13px; line-height:1.7; color:#3A5068; transition:color .25s;">Training local communities to maintain solutions and lead long after our support ends.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── HISTORY CARDS ──────────────────────────────────── -->
+  <section style="background:#F0F7FF; padding:48px 16px;">
+    <div style="max-width:1400px; margin:0 auto;">
+
+      <!-- Header -->
+      <div class="text-center" style="margin-bottom:56px;">
+        <div class="flex items-center justify-center gap-3 font-bold" style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--sky6); margin-bottom:20px;">
+          <span style="width:28px; height:2px; background:var(--sky6); display:block;"></span>
+          Our Journey
+          <span style="width:28px; height:2px; background:var(--sky6); display:block;"></span>
+        </div>
+        <h2 class="font-serif" style="font-size:48px; font-weight:400; line-height:1.1; letter-spacing:-.02em; color:#0A1628;">
+          Milestones that shaped <em class="italic" style="color:var(--sky5);">our story</em>
+        </h2>
+        <p style="margin-top:16px; font-size:16px; line-height:1.7; max-width:672px; margin-left:auto; margin-right:auto; color:#3A5068;">
+          Explore the milestones and moments that have shaped Engineers4Humanity. From our humble beginnings to transformative partnerships, each image tells a story of hope, resilience, and impact in refugee communities.
+        </p>
+      </div>
+
+      <!-- Gallery grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+        <!-- Card 1 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(0)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=800&auto=format&fit=crop&q=80" alt="Dallas Refugee Day" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">Eric joins other civil society organization members in Dallas, presenting his Refugee Life journey to the Dallas County Commissioners Court for signing the resolution recognizing June 20, 2025, as the International World Refugee Day in Dallas</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(1)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=800&auto=format&fit=crop&q=80" alt="E4H Rwanda Team 2020" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">Engineers4Humanity Rwanda Team, 2020, with Theo Karegesa, Engineers4Humanity Board Vice Chair and Eric Kamanzi, Founder &amp; CEO on the left in blue shirts.</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(2)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80" alt="Hope School 2009" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">Hope School 1st intake students of 2009</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(3)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&auto=format&fit=crop&q=80" alt="Alumni Visit" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">From Left is Mr Musuhuke, our Alum who is serving as a volunteer, and Fr. Malisaba, Engineers4Humanity Vice-Board Chair in charge of Education, in the middle during the visit of sponsored students.</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(4)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&auto=format&fit=crop&q=80" alt="Skills Center Meeting" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">Eric is in a meeting with our short-course trainees at the Engineers4Humanity Center for skills development, research, and Innovation 2020 in Gihembe Refugee camp.</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(5)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&auto=format&fit=crop&q=80" alt="Rwanda Convention" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">Meeting with Dr. Apotre Paul Gitwaza and sharing his book during the Rwanda Convention held in Dallas, July 2025</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="gallery-card rounded-[4px] bg-white shadow-sm overflow-hidden" onclick="openModal(6)">
+          <div class="relative overflow-hidden" style="height:256px;">
+            <img class="gallery-img w-full h-full object-cover object-top" src="https://images.unsplash.com/photo-1524069290683-0457abfe42c3?w=800&auto=format&fit=crop&q=80" alt="Refugee Conference" />
+            <div class="gallery-overlay">
+              <div class="zoom-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+              </div>
+            </div>
+          </div>
+          <div style="padding:24px;">
+            <p class="line-clamp-3" style="font-size:14px; line-height:1.7; color:#3A5068;">Attending the International World Refugee Conference in Dallas and sharing my book, "Breaking Boundaries," with the audience in June 2025.</p>
+            <button style="margin-top:16px; display:flex; align-items:center; gap:8px; font-size:14px; font-weight:600; color:var(--sky6); background:transparent; border:none; cursor:pointer; padding:0;">
+              View Full Image
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- History Modal -->
+  <div id="hist-modal" onclick="closeModal()">
+    <div style="position:relative; max-width:896px; width:100%;" onclick="event.stopPropagation()">
+      <button onclick="closeModal()" style="position:absolute; top:-48px; right:0; background:white; border-radius:9999px; padding:8px; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0A1628" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <img id="modal-img" src="" alt="" style="width:100%; max-height:75vh; object-fit:contain; border-radius:4px;" />
+      <div style="background:white; margin-top:12px; padding:24px; border-radius:4px;">
+        <p id="modal-desc" style="font-size:15px; line-height:1.7; color:#0A1628;"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PROGRAMS ────────────────────────────────────────── -->
+  <section id="programs" style="background:#F0F7FF; padding:0 16px 48px;">
+    <div style="max-width:1400px; margin:0 auto;">
+
+      <!-- Header -->
+      <div class="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 sm:gap-0" style="border-top:1px solid rgba(186,230,253,.6); padding-top:32px; margin-bottom:32px; padding-bottom:0;">
+        <h2 class="font-serif" style="font-size:50px; font-weight:400; line-height:1.1; letter-spacing:-.02em; color:#0A1628;">
+          Programs that<br/><em class="italic" style="color:#059669;">make a difference</em>
+        </h2>
+        <p class="sm:text-right" style="font-size:15px; line-height:1.8; color:#3A5068; max-width:300px;">
+          Each program targets a specific humanitarian challenge with measurable outcomes and a clear engineering mandate.
+        </p>
+      </div>
+
+      <!-- Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" style="margin-bottom:20px;">
+
+        <!-- Education -->
+        <div class="prog-card">
+          <img class="prog-img" src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=800&auto=format&fit=crop&q=80" alt="Education" />
+          <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(12,74,110,.9) 0%, rgba(12,74,110,.3) 50%, transparent 100%);"></div>
+          <div style="position:relative; z-index:10; padding:32px;">
+            <span style="display:block; font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#7dd3fc; margin-bottom:10px;">Education</span>
+            <div class="font-serif font-semibold text-white" style="font-size:26px; line-height:1.2; margin-bottom:16px;">Education</div>
+            <ul style="margin-bottom:16px;">
+              <li style="display:flex; align-items:flex-start; gap:8px; font-size:14px; color:rgba(255,255,255,.8); line-height:1.6; margin-bottom:8px;"><span style="color:#7dd3fc; flex-shrink:0; margin-top:6px;">•</span>High School &amp; University</li>
+              <li style="display:flex; align-items:flex-start; gap:8px; font-size:14px; color:rgba(255,255,255,.8); line-height:1.6;"><span style="color:#7dd3fc; flex-shrink:0; margin-top:6px;">•</span>Leadership &amp; Peacebuilding</li>
+            </ul>
+            <p style="font-size:12px; color:rgba(255,255,255,.6); line-height:1.6; margin-bottom:16px;">Encouraging servant leadership and peacebuilding initiatives in Rwanda for lasting impact.</p>
+            <a href="#" style="color:white; font-size:13px; font-weight:600; letter-spacing:.06em;">Learn more ↗</a>
+          </div>
+        </div>
+
+        <!-- Engineering -->
+        <div class="prog-card">
+          <img class="prog-img" src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=800&auto=format&fit=crop&q=80" alt="Engineering" />
+          <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(12,74,110,.9) 0%, rgba(12,74,110,.3) 50%, transparent 100%);"></div>
+          <div style="position:relative; z-index:10; padding:32px;">
+            <span style="display:block; font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#7dd3fc; margin-bottom:10px;">Engineering</span>
+            <div class="font-serif font-semibold text-white" style="font-size:26px; line-height:1.2; margin-bottom:16px;">Engineering</div>
+            <ul style="margin-bottom:16px;">
+              <li style="display:flex; align-items:flex-start; gap:8px; font-size:14px; color:rgba(255,255,255,.8); line-height:1.6; margin-bottom:8px;"><span style="color:#7dd3fc; flex-shrink:0; margin-top:6px;">•</span>Public Health Engineering</li>
+              <li style="display:flex; align-items:flex-start; gap:8px; font-size:14px; color:rgba(255,255,255,.8); line-height:1.6;"><span style="color:#7dd3fc; flex-shrink:0; margin-top:6px;">•</span>Social Entrepreneurship &amp; Construction Service</li>
+            </ul>
+            <p style="font-size:12px; color:rgba(255,255,255,.6); line-height:1.6; margin-bottom:16px;">Addressing Water, Sanitation, and Hygiene (WASH) challenges in Rwanda refugee camps through sustainable engineering systems.</p>
+            <a href="#" style="color:white; font-size:13px; font-weight:600; letter-spacing:.06em;">Learn more ↗</a>
+          </div>
+        </div>
+
+        <!-- Institute -->
+        <div class="prog-card">
+          <img class="prog-img" src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&auto=format&fit=crop&q=80" alt="E4H Institute" />
+          <div class="absolute inset-0" style="background:linear-gradient(to top, rgba(6,78,59,.9) 0%, rgba(6,78,59,.3) 50%, transparent 100%);"></div>
+          <div style="position:relative; z-index:10; padding:32px;">
+            <span style="display:block; font-size:10px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:#6ee7b7; margin-bottom:10px;">Institute</span>
+            <div class="font-serif font-semibold text-white" style="font-size:26px; line-height:1.2; margin-bottom:16px;">Engineers4Humanity Institute</div>
+            <ul style="margin-bottom:16px;">
+              <li style="display:flex; align-items:flex-start; gap:8px; font-size:14px; color:rgba(255,255,255,.8); line-height:1.6; margin-bottom:8px;"><span style="color:#6ee7b7; flex-shrink:0; margin-top:6px;">•</span>Professional Skills Development</li>
+              <li style="display:flex; align-items:flex-start; gap:8px; font-size:14px; color:rgba(255,255,255,.8); line-height:1.6;"><span style="color:#6ee7b7; flex-shrink:0; margin-top:6px;">•</span>Research &amp; Innovation Hub</li>
+            </ul>
+            <p style="font-size:12px; color:rgba(255,255,255,.6); line-height:1.6; margin-bottom:16px;">Equipping refugee and immigrant youth with engineering, project management, and entrepreneurship skills to build self-reliance.</p>
+            <a href="#" style="color:white; font-size:13px; font-weight:600; letter-spacing:.06em;">Learn more ↗</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Featured band -->
+      <div class="flex items-center flex-wrap gap-8 md:gap-12" style="background:#0A1628; border-radius:6px; padding:32px 24px;">
+        <div style="flex:1; min-width:260px;">
+          <div class="flex items-center gap-2.5 font-bold" style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:rgba(125,211,252,.6); margin-bottom:20px;">
+            <span style="width:24px; height:2px; background:rgba(125,211,252,.5); display:block;"></span>
+            Flagship Initiative
+          </div>
+          <h3 class="font-serif text-white" style="font-size:28px; font-weight:400; line-height:1.2;">
+            Servant Leadership &amp; Peacebuilding — <em class="italic" style="color:#7dd3fc;">empowering youth</em> across Rwanda
+          </h3>
+        </div>
+        <p style="font-size:15px; line-height:1.8; color:rgba(255,255,255,.65); flex:1; min-width:220px;">
+          Empowering youth and women affected by conflict through mentorship, creative healing, and multicultural peace-building initiatives.
+        </p>
+        <a href="#" class="font-bold text-white transition-colors" style="background:var(--sky6); padding:16px 36px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; border-radius:3px; white-space:nowrap; flex-shrink:0;">
+          See All Programs ↗
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CTA ────────────────────────────────────────────── -->
+  <section id="join" class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-start" style="background:#E1EEF9; padding:48px 16px;">
+
+    <!-- Left -->
+    <div style="max-width:600px;">
+      <div class="flex items-center gap-3 font-bold" style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--sky6); margin-bottom:24px;">
+        <span style="width:28px; height:2px; background:var(--sky6); display:block; flex-shrink:0;"></span>
+        Get Involved
+      </div>
+      <h2 class="font-serif" style="font-size:48px; font-weight:400; line-height:1.1; letter-spacing:-.02em; color:#0A1628; margin-bottom:24px;">
+        Your support<br/>can change <em class="italic" style="color:var(--sky5);">lives</em>
+      </h2>
+      <p style="font-size:16px; line-height:1.8; color:#3A5068; margin-bottom:40px;">
+        Whether through donations, volunteering, or spreading the word — you can help empower vulnerable communities and create lasting change across East Africa and beyond.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <a href="#" class="font-bold text-white transition-colors" style="background:var(--sky6); padding:16px 36px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; border-radius:3px;">Join the Movement</a>
+        <a href="#" class="font-bold text-white transition-colors" style="background:#059669; padding:16px 36px; font-size:13px; letter-spacing:.08em; text-transform:uppercase; border-radius:3px;">Donate Now</a>
+      </div>
+    </div>
+
+    <!-- Right -->
+    <div class="flex flex-col gap-4">
+
+      <div class="cta-card bg-white rounded-[8px] flex gap-5 items-start shadow-sm" style="padding:28px;">
+        <span style="font-size:30px; line-height:1; flex-shrink:0;"></span>
+        <div>
+          <div class="font-serif font-semibold" style="font-size:20px; color:#0A1628; margin-bottom:6px;">Volunteer Engineer</div>
+          <p style="font-size:14px; line-height:1.7; color:#3A5068;">Apply your technical skills to a real humanitarian project, near or far.</p>
+        </div>
+      </div>
+
+      <div class="cta-card bg-white rounded-[8px] flex gap-5 items-start shadow-sm" style="padding:28px;">
+        <span style="font-size:30px; line-height:1; flex-shrink:0;"></span>
+        <div>
+          <div class="font-serif font-semibold" style="font-size:20px; color:#0A1628; margin-bottom:6px;">Student Programs</div>
+          <p style="font-size:14px; line-height:1.7; color:#3A5068;">Chapter memberships, scholarships, and mentorship for engineering students.</p>
+        </div>
+      </div>
+
+      <div class="cta-card bg-white rounded-[8px] flex gap-5 items-start shadow-sm" style="padding:28px;">
+        <span style="font-size:30px; line-height:1; flex-shrink:0;"></span>
+        <div>
+          <div class="font-serif font-semibold" style="font-size:20px; color:#0A1628; margin-bottom:6px;">Corporate Partnership</div>
+          <p style="font-size:14px; line-height:1.7; color:#3A5068;">Partner your company's engineering talent with our on-the-ground programs.</p>
+        </div>
+      </div>
+
+      <div class="cta-card bg-white rounded-[8px] flex gap-5 items-start shadow-sm" style="padding:28px;">
+        <span style="font-size:30px; line-height:1; flex-shrink:0;"></span>
+        <div>
+          <div class="font-serif font-semibold" style="font-size:20px; color:#0A1628; margin-bottom:6px;">Donate</div>
+          <p style="font-size:14px; line-height:1.7; color:#3A5068;">Fund the tools, travel, and time that turns engineering into humanitarian relief.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- ═══════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════ -->
+<footer id="contact" style="background:#0A1628; color:rgba(255,255,255,.65);">
+
+  <!-- Top grid -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12" style="padding:48px 16px 32px; border-bottom:1px solid rgba(255,255,255,.1);">
+
+    <!-- Brand -->
+    <div>
+      <a href="#" class="font-serif font-semibold text-white inline-block" style="font-size:22px; letter-spacing:-.01em; margin-bottom:16px;">
+        Engineers<span>4</span>Humanity
+      </a>
+      <p style="font-size:14px; line-height:1.8; margin-bottom:20px;">
+        Empowering refugees and underserved communities through education, engineering solutions, and sustainable development.
+      </p>
+      <div style="background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:6px; padding:12px 16px; margin-bottom:24px;">
+        <p style="font-size:12px; color:rgba(255,255,255,.4); margin-bottom:4px;">Registered 501(c)(3) nonprofit</p>
+        <p class="font-semibold text-white" style="font-size:14px;">EIN: 99-2264956</p>
+      </div>
+      <div class="flex gap-3">
+        <!-- Facebook -->
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" class="soc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <!-- Twitter -->
+        <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="soc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </a>
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="soc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        </a>
+        <!-- Instagram -->
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="soc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <!-- YouTube -->
+        <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="soc-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.6C5.12 20 12 20 12 20s6.88 0 8.59-.4a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon fill="#0A1628" points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Programs -->
+    <div>
+      <h4 class="font-serif font-semibold text-white" style="font-size:16px; margin-bottom:20px;">Programs</h4>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">High School &amp; University scholarships</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Leadership &amp; Peacebuilding</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Public Health Engineering</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Entrepreneurship &amp; Construction Service</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Professional Skills Development</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Research &amp; Innovation Hub</a>
+    </div>
+
+    <!-- Organization -->
+    <div>
+      <h4 class="font-serif font-semibold text-white" style="font-size:16px; margin-bottom:20px;">Organization</h4>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">About Us</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Our Story</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Our Team</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Board Member</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Upcoming Events</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Past Events</a>
+      <a href="#" class="block transition-colors" style="font-size:14px; color:rgba(255,255,255,.55); margin-bottom:10px;">Gallery</a>
+    </div>
+
+    <!-- Connect -->
+    <div>
+      <h4 class="font-serif font-semibold text-white" style="font-size:16px; margin-bottom:20px;">Connect</h4>
+      <div style="font-size:14px; line-height:1.8; margin-bottom:20px;">
+        <p class="font-semibold text-white" style="margin-bottom:4px;">Texas Office</p>
+        <p style="font-size:12px; color:#38bdf8; font-weight:500; margin-bottom:4px;">Engineers4Humanity</p>
+        <p style="color:rgba(255,255,255,.55);">2012 ELM Place, Northlake, TX 76247</p>
+        <a href="tel:+14699670444" class="block transition-colors" style="color:rgba(255,255,255,.55); margin-top:6px;">+1 (469) 967-0444</a>
+        <a href="mailto:contact@engineers4humanity.org" class="block transition-colors" style="font-size:12px; color:rgba(255,255,255,.55);">contact@engineers4humanity.org</a>
+      </div>
+      <div style="font-size:14px; line-height:1.8;">
+        <p class="font-semibold text-white" style="margin-bottom:4px;">Rwanda Office</p>
+        <p style="font-size:12px; color:#38bdf8; font-weight:500; margin-bottom:4px;">Engineers4Humanity Consultancy</p>
+        <p style="font-size:12px; color:rgba(255,255,255,.4); margin-bottom:4px;">TIN#111054632</p>
+        <p style="color:rgba(255,255,255,.55);">Diamond House, 2nd Floor, Kigali City, Kicukiro Center</p>
+        <a href="tel:+250785426752" class="block transition-colors" style="color:rgba(255,255,255,.55); margin-top:6px;">+250 785 426 752</a>
+        <a href="mailto:kigalioffice@engineers4humanity.org" class="block transition-colors" style="font-size:12px; color:rgba(255,255,255,.55);">kigalioffice@engineers4humanity.org</a>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom -->
+  <div class="flex items-center justify-between flex-wrap gap-3" style="padding:24px 16px;">
+    <span style="font-size:13px;">© 2026 Engineers4Humanity. Made by <a href="http://abytechhub.com/" style="color:#38bdf8; text-decoration:underline;">Abytech Hub</a></span>
+    <div class="flex gap-6">
+      <a href="#" class="transition-colors" style="font-size:13px; color:rgba(255,255,255,.45);">Privacy</a>
+      <a href="#" class="transition-colors" style="font-size:13px; color:rgba(255,255,255,.45);">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ── WhatsApp floating button ──────────────────────── -->
+<div id="wa-wrap">
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn relative flex items-center justify-center rounded-full shadow-xl" style="width:56px; height:56px; background:#25D366;">
+    <!-- Pulsing red badge -->
+    <span class="absolute" style="top:-4px; right:-4px; width:20px; height:20px; display:flex; align-items:center; justify-content:center;">
+      <span class="anim-ping absolute w-full h-full rounded-full" style="background:#ef4444; opacity:.75;"></span>
+      <span class="relative flex items-center justify-center rounded-full text-white font-bold" style="width:16px; height:16px; background:#dc2626; font-size:9px;">1</span>
+    </span>
+    <!-- WhatsApp icon -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="30" height="30" fill="white">
+      <path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/>
+    </svg>
+  </a>
+</div>
+
+</div><!-- #pw -->
+
+<!-- ═══════════════════════════════════════════════════════
+     JAVASCRIPT
+════════════════════════════════════════════════════════ -->
+<script>
+/* ── Gallery data ────────────────────────────────────── */
+const galleryData = [
+  {
+    src: 'https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?w=1200&auto=format&fit=crop&q=80',
+    desc: 'Eric joins other civil society organization members in Dallas, presenting his Refugee Life journey to the Dallas County Commissioners Court for signing the resolution recognizing June 20, 2025, as the International World Refugee Day in Dallas'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1491438590914-bc09fcaaf77a?w=1200&auto=format&fit=crop&q=80',
+    desc: 'Engineers4Humanity Rwanda Team, 2020, with Theo Karegesa, Engineers4Humanity Board Vice Chair and Eric Kamanzi, Founder & CEO on the left in blue shirts.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=1200&auto=format&fit=crop&q=80',
+    desc: 'Hope School 1st intake students of 2009'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200&auto=format&fit=crop&q=80',
+    desc: 'From Left is Mr Musuhuke, our Alum who is serving as a volunteer, and Fr. Malisaba, Engineers4Humanity Vice-Board Chair in charge of Education, in the middle during the visit of sponsored students.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=1200&auto=format&fit=crop&q=80',
+    desc: 'Eric is in a meeting with our short-course trainees at the Engineers4Humanity Center for skills development, research, and Innovation 2020 in Gihembe Refugee camp.'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=1200&auto=format&fit=crop&q=80',
+    desc: 'Meeting with Dr. Apotre Paul Gitwaza and sharing his book during the Rwanda Convention held in Dallas, July 2025'
+  },
+  {
+    src: 'https://images.unsplash.com/photo-1524069290683-0457abfe42c3?w=1200&auto=format&fit=crop&q=80',
+    desc: 'Attending the International World Refugee Conference in Dallas and sharing my book, "Breaking Boundaries," with the audience in June 2025.'
+  }
+];
+
+/* ── Modal ───────────────────────────────────────────── */
+function openModal(idx) {
+  const modal = document.getElementById('hist-modal');
+  document.getElementById('modal-img').src  = galleryData[idx].src;
+  document.getElementById('modal-img').alt  = galleryData[idx].desc;
+  document.getElementById('modal-desc').textContent = galleryData[idx].desc;
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('hist-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── Mobile menu ─────────────────────────────────────── */
+function closeMobile() {
+  document.getElementById('mob-sidebar').classList.remove('open');
+  document.getElementById('mob-overlay').classList.remove('open');
+  document.getElementById('ico-menu').style.display  = '';
+  document.getElementById('ico-close').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+document.getElementById('mob-btn').addEventListener('click', function() {
+  const sb = document.getElementById('mob-sidebar');
+  const ov = document.getElementById('mob-overlay');
+  const isOpen = sb.classList.contains('open');
+  if (isOpen) {
+    closeMobile();
+  } else {
+    sb.classList.add('open');
+    ov.classList.add('open');
+    document.getElementById('ico-menu').style.display  = 'none';
+    document.getElementById('ico-close').style.display = '';
+    document.body.style.overflow = 'hidden';
+  }
+});
+
+/* ── Mobile accordions ───────────────────────────────── */
+document.querySelectorAll('.mob-acc-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    const targetId = btn.getAttribute('data-acc');
+    const content  = document.getElementById(targetId);
+    const chId     = 'mch-' + targetId.replace('mob-', '');
+    const ch       = document.getElementById(chId);
+    const isOpen   = content.classList.contains('open');
+
+    // close all
+    document.querySelectorAll('.mob-accordion-content').forEach(function(c) {
+      c.classList.remove('open');
+      c.style.maxHeight = '0';
+    });
+    document.querySelectorAll('[id^="mch-"]').forEach(function(c) {
+      c.classList.remove('rotated');
+    });
+
+    if (!isOpen) {
+      content.classList.add('open');
+      content.style.maxHeight = content.scrollHeight + 'px';
+      if (ch) ch.classList.add('rotated');
+    }
+  });
+});
+
+/* ── Desktop dropdowns ───────────────────────────────── */
+const ddMap = {
+  about:    { btn: document.querySelector('[data-dd="about"]'),    panel: document.getElementById('dd-about'),    chevron: document.getElementById('ch-about')    },
+  programs: { btn: document.querySelector('[data-dd="programs"]'), panel: document.getElementById('dd-programs'), chevron: document.getElementById('ch-programs') },
+  impact:   { btn: document.querySelector('[data-dd="impact"]'),   panel: document.getElementById('dd-impact'),   chevron: document.getElementById('ch-impact')   },
+  events:   { btn: document.querySelector('[data-dd="events"]'),   panel: document.getElementById('dd-events'),   chevron: document.getElementById('ch-events')   },
+};
+
+function showDD(key) {
+  const { btn, panel, chevron } = ddMap[key];
+  panel.classList.add('visible');
+  btn.classList.add('active');
+  if (chevron) chevron.classList.add('rotated');
+}
+function hideDD(key) {
+  const { btn, panel, chevron } = ddMap[key];
+  panel.classList.remove('visible');
+  btn.classList.remove('active');
+  if (chevron) chevron.classList.remove('rotated');
+}
+
+['about','programs','impact','events'].forEach(function(key) {
+  const li = document.getElementById('li-' + key);
+  if (!li) return;
+  li.addEventListener('mouseenter', function() { showDD(key); });
+  li.addEventListener('mouseleave', function() { hideDD(key); });
+});
+
+/* ── Hero slideshow ──────────────────────────────────── */
+const slidesData = [
+  { title: 'Building Dignified', em: 'Lives',         desc: 'Empowering refugees and underserved communities through education, engineering, and servant leadership' },
+  { title: 'Education Changes', em: 'Everything',     desc: 'From refugee camps to universities — we open doors that were never meant to be closed' },
+  { title: 'Creating',          em: 'Opportunities',  desc: 'Vocational training, mentorship, and social entrepreneurship transforming lives across Rwanda' },
+];
+
+let currentSlide = 0;
+
+function goSlide(n) {
+  // hide current
+  document.getElementById('slide-' + currentSlide).style.opacity = '0';
+  document.querySelectorAll('.hero-dot')[currentSlide].classList.remove('active');
+
+  currentSlide = n;
+
+  // show new
+  document.getElementById('slide-' + currentSlide).style.opacity = '1';
+  document.querySelectorAll('.hero-dot')[currentSlide].classList.add('active');
+
+  // update text
+  const s = slidesData[currentSlide];
+  document.getElementById('hero-h1').innerHTML = s.title + '<br/><em class="italic" style="color:#7dd3fc;">' + s.em + '</em>';
+  document.getElementById('hero-p').textContent = s.desc;
+}
+
+setInterval(function() {
+  goSlide((currentSlide + 1) % 3);
+}, 5000);
+
+/* ── Stats count-up ──────────────────────────────────── */
+function countUp(el, target, isRaw) {
+  const duration = 3500;
+  const steps    = 60;
+  const stepTime = duration / steps;
+  let step = 0;
+
+  const timer = setInterval(function() {
+    step++;
+    const progress = step / steps;
+    const eased    = 1 - Math.pow(1 - progress, 3);
+    const val      = Math.round(eased * target);
+
+    if (isRaw) {
+      el.textContent = val.toString();
+    } else if (target === 2000) {
+      el.textContent = val >= 1000 ? (val / 1000).toFixed(1).replace(/\.0$/, '') + ',000' : val.toString();
+    } else {
+      el.textContent = val.toLocaleString();
+    }
+
+    if (step >= steps) {
+      clearInterval(timer);
+      if (isRaw) {
+        el.textContent = target.toString();
+      } else if (target === 2000) {
+        el.textContent = '2,000';
+      } else {
+        el.textContent = target.toLocaleString();
+      }
+    }
+  }, stepTime);
+}
+
+const statsStrip = document.getElementById('stats-strip');
+let statsCounted = false;
+
+const statsObserver = new IntersectionObserver(function(entries) {
+  entries.forEach(function(entry) {
+    if (entry.isIntersecting && !statsCounted) {
+      statsCounted = true;
+      document.querySelectorAll('.stat-num').forEach(function(el) {
+        const target = parseInt(el.getAttribute('data-target'), 10);
+        const isRaw  = el.hasAttribute('data-raw');
+        countUp(el, target, isRaw);
+      });
+      statsObserver.disconnect();
+    }
+  });
+}, { threshold: 0.3 });
+
+statsObserver.observe(statsStrip);
+</script>
+
+</body>
+</html>
