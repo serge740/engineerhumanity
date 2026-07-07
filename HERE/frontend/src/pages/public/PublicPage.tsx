@@ -73,7 +73,7 @@ export default function PublicPage() {
     if (!slug) { setMissing(true); setLoading(false); return; }
     getPublicPage(slug)
       .then(data => {
-        document.title = data.title || slug;
+        // document.title = data.title || slug;
         setPage(data);
       })
       .catch(() => setMissing(true))

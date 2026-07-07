@@ -16,7 +16,7 @@ async function bootstrap() {
 
   // CORS
   app.enableCors({
-    origin: process.env.FRONTEND_URL_ONLY || 'http://localhost:5173',
+    origin:[ 'https://engineerhumanity-test.onrender.com',process.env.FRONTEND_URL_ONLY , 'http://localhost:5173'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
