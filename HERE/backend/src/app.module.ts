@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { PrismaModule } from './prisma/prisma.module';
 import { AdminModule } from './modules/admin-management/admin.module';
 import { SitesModule } from './modules/sites/sites.module';
@@ -26,5 +28,7 @@ import { StoriesModule } from './modules/stories/stories.module';
     EventsModule,
     StoriesModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
