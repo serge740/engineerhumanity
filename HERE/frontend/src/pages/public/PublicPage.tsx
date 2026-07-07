@@ -95,6 +95,7 @@ export default function PublicPage() {
           onSelect={() => {}}
           onDblClick={() => {}}
           onTextBlur={() => {}}
+          interactive
         />
       ))}
     </div>

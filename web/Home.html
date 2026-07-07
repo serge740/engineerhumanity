@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Home</title>
+
+<!-- Rule 7: Google Fonts via link — real typefaces from the source app -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   1. RESET  (rule 1 + rule 8)
+   ══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box;  }
+
+/* ══════════════════════════════════════════════════════════════
+   2. DESIGN TOKENS  (rule 10 — declared before use)
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --navy:          #0A1628;
+  --bg:            #F0F7FF;
+  --bg-alt:        #E1EEF9;
+  --muted:         #3A5068;
+
+  --sky-50:        #f0f9ff;
+  --sky-300:       #7dd3fc;
+  --sky-400:       #38bdf8;
+  --sky-500:       #0ea5e9;
+  --sky:           #0284c7; /* sky-600 */
+  --sky-dark:      #075985; /* sky-800 */
+  --sky-700:       #0369a1;
+  --sky-900:       #0c4a6e;
+
+  --emerald-300:   #6ee7b7;
+  --emerald-400:   #34d399;
+  --emerald:       #059669; /* emerald-600 */
+  --emerald-dark:  #047857; /* emerald-700 */
+  --emerald-800:   #065f46;
+  --emerald-900:   #064e3b;
+
+  --green:         #16a34a; /* green-600 */
+  --green-dark:    #15803d; /* green-700 */
+  --green-darker:  #166534; /* green-800 */
+
+  --purple:        #9333ea;
+
+  --gray-50:       #f9fafb;
+  --gray-100:      #f3f4f6;
+  --gray-700:      #374151;
+
+  --red-500:       #ef4444;
+  --red-600:       #dc2626;
+
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans:  "Poppins", sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3. BASE  (rule 2 — explicit sizes everywhere, rule 6 — img rules)
+   ══════════════════════════════════════════════════════════════ */
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--navy);
+  background: #fff;
+}
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 32px; line-height: 1.1; margin: 0; }
+h3 { font-size: 20px; line-height: 1.2; margin: 0; }
+h4 { font-size: 16px; font-weight: 600; margin: 0; }
+p  { font-size: 16px; line-height: 1.75; margin: 0; }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* Rule 4 note: .page is the position:relative anchor every absolutely-positioned
+   "fixed-like" element (mobile sidebar/overlay, WhatsApp button) is placed against,
+   since true position:fixed is disallowed by the importer (artboard, not viewport). */
+.page { position: relative; overflow: hidden; }
+
+/* ══════════════════════════════════════════════════════════════
+   4. CHROME — NAVBAR
+   ══════════════════════════════════════════════════════════════ */
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+
+.drop-menu {
+  position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px;
+  background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100);
+  padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px);
+  transition: all .25s; transform-origin: top; z-index: 60;
+}
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+
+.btn-donate {
+  display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: none;
+  color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap;
+}
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+
+.nav-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55;
+}
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.mobile-sidebar {
+  position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%;
+  background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto;
+  transition: right .3s ease-in-out;
+}
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple); }
+
+.mob-donate {
+  display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff;
+  background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+@media (min-width: 1024px) {
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: flex; }
+  .btn-donate { display: inline-block; }
+  .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; }
+}
+@media (min-width: 1280px) {
+  .nav-links { font-size: 14px; }
+  .nav-item, .drop-btn { padding: 10px 16px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4b. CHROME — FOOTER
+   ══════════════════════════════════════════════════════════════ */
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+
+@media (min-width: 640px) {
+  .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; }
+}
+@media (min-width: 1024px) {
+  .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; }
+  .footer-bottom { padding: 24px 64px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4c. CHROME — WHATSAPP FLOATING BUTTON
+   ══════════════════════════════════════════════════════════════ */
+/* Rule 4: position:absolute anchored to .page (relative), standing in for the
+   original's position:fixed bottom-right — it sits at the bottom of the page
+   content rather than pinned to the true viewport while scrolling. */
+.wa-btn {
+  position: absolute; right: 24px; bottom: 24px; z-index: 40;
+  width: 56px; height: 56px; border-radius: 50%; background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+  animation: wa-shake 4s ease-in-out infinite;
+}
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake {
+  0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+  72% { transform: rotate(-14deg) scale(1.12); }
+  75% { transform: rotate(14deg) scale(1.12); }
+  78% { transform: rotate(-10deg) scale(1.08); }
+  81% { transform: rotate(10deg) scale(1.08); }
+  84% { transform: rotate(-6deg) scale(1.04); }
+  87% { transform: rotate(6deg) scale(1.04); }
+  90% { transform: rotate(0deg) scale(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   5. HERO
+   ══════════════════════════════════════════════════════════════ */
+.hero { position: relative; min-height: 720px; overflow: hidden; display: flex; flex-direction: column; background: var(--navy); }
+/* Pure-CSS crossfade: no JS needed. Each of the 3 slides runs the same
+   15s loop, staggered by 5s via nth-child so only one is visible at a time. */
+.hero-slide { position: absolute; inset: 0; opacity: 0; animation: hero-fade 15s infinite; }
+.hero-slide:nth-child(1) { animation-delay: 0s; }
+.hero-slide:nth-child(2) { animation-delay: 5s; }
+.hero-slide:nth-child(3) { animation-delay: 10s; }
+@keyframes hero-fade {
+  0%     { opacity: 0; }
+  4%     { opacity: 1; }
+  29.33% { opacity: 1; }
+  33.33% { opacity: 0; }
+  100%   { opacity: 0; }
+}
+.hero-slide img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.45) saturate(1.1); }
+.hero-slide .overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.72) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+
+.hero-content { position: relative; z-index: 10; flex: 1; display: flex; align-items: center; padding: 48px 16px 120px; }
+.hero-text { max-width: 560px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--emerald-400); background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.4); padding: 8px 16px; border-radius: 100px; margin-bottom: 28px; }
+.hero-badge .diamond { font-size: 7px; }
+.hero-title { font-size: 34px; font-weight: 300; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 20px; }
+.hero-title em { font-style: italic; color: var(--sky-300); }
+.hero-desc { font-size: 15px; line-height: 1.75; color: rgba(255,255,255,.75); max-width: 480px; }
+
+.hero-dots { position: absolute; bottom: 96px; left: 16px; display: flex; gap: 12px; z-index: 10; }
+/* Cosmetic indicator, synced to the same 15s/5s-offset cycle as .hero-slide
+   above — no click handler needed since there's no JS driving the slider. */
+.hero-dot { height: 3px; border-radius: 3px; border: none; cursor: default; background: rgba(255,255,255,.4); width: 20px; padding: 0; animation: hero-dot-cycle 15s infinite; }
+.hero-dot:nth-child(1) { animation-delay: 0s; }
+.hero-dot:nth-child(2) { animation-delay: 5s; }
+.hero-dot:nth-child(3) { animation-delay: 10s; }
+@keyframes hero-dot-cycle {
+  0%     { background: rgba(255,255,255,.4); width: 20px; }
+  4%     { background: #fff; width: 40px; }
+  29.33% { background: #fff; width: 40px; }
+  33.33% { background: rgba(255,255,255,.4); width: 20px; }
+  100%   { background: rgba(255,255,255,.4); width: 20px; }
+}
+
+.hero-stats { position: absolute; bottom: 0; left: 0; right: 0; z-index: 10; display: grid; grid-template-columns: repeat(2, 1fr); background: rgba(7,115,171,.85); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(125,211,252,.2); }
+.hero-stat { padding: 16px; border-right: 1px solid rgba(125,211,252,.15); }
+.hero-stat:last-child { border-right: none; }
+.hero-stat-val { font-family: var(--font-serif); font-size: 20px; font-weight: 700; color: #fff; line-height: 1; }
+.hero-stat-label { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); margin-top: 4px; }
+
+@media (min-width: 640px) {
+  .hero-content { padding: 48px 32px 100px; }
+  .hero-dots { left: 32px; bottom: 84px; }
+  .hero-stats { grid-template-columns: repeat(4, 1fr); }
+  .hero-stat { padding: 20px 24px; }
+  .hero-stat-val { font-size: 22px; }
+}
+@media (min-width: 1024px) {
+  .hero-content { padding: 64px 64px 140px; }
+  .hero-dots { left: 64px; bottom: 112px; }
+  .hero-stat { padding: 24px 40px; }
+  .hero-title { font-size: 52px; }
+}
+@media (min-width: 1280px) {
+  .hero-stat-val { font-size: 38px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   6. TICKER
+   ══════════════════════════════════════════════════════════════ */
+.ticker { background: var(--emerald); padding: 14px 0; overflow: hidden; white-space: nowrap; }
+.ticker-track { display: inline-block; animation: ticker 32s linear infinite; }
+.ticker-item { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #fff; margin: 0 36px; }
+.ticker-item .diamond { opacity: .55; margin-right: 14px; }
+@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ══════════════════════════════════════════════════════════════
+   7. ABOUT
+   ══════════════════════════════════════════════════════════════ */
+.about { padding: 48px 16px; background: var(--bg); }
+.about-grid { display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
+.kicker { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--sky); margin-bottom: 32px; }
+.kicker .bar { width: 28px; height: 2px; background: var(--sky); flex-shrink: 0; }
+.about h2 { font-size: 32px; letter-spacing: -.01em; color: var(--navy); margin-bottom: 28px; }
+.about h2 em { font-style: italic; color: var(--sky-500); }
+.about p { font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 20px; }
+.about-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+.about-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 16px; color: var(--muted); line-height: 1.6; }
+.about-list li .dot { color: var(--sky-500); flex-shrink: 0; }
+.about-divider { border-top: 1px solid var(--sky-300); padding-top: 24px; margin-bottom: 32px; display: flex; flex-direction: column; gap: 16px; }
+.about-divider strong { color: var(--navy); }
+.about-divider .em-strong { color: var(--emerald); }
+.about-link { display: inline-flex; align-items: center; gap: 8px; color: var(--sky); font-weight: 600; font-size: 14px; }
+.about-link:hover { color: var(--sky-dark); }
+
+.about-img { width: 100%; height: 420px; object-fit: cover; border-radius: 4px; }
+.pillars { display: grid; grid-template-columns: 1fr; gap: 8px; margin-top: 16px; }
+.pillar { background: var(--bg-alt); padding: 32px; border-radius: 2px; cursor: default; transition: background .25s; }
+.pillar:hover { background: var(--sky); }
+.pillar-num { font-family: var(--font-serif); font-size: 13px; font-weight: 700; color: var(--emerald); margin-bottom: 14px; display: block; transition: color .25s; }
+.pillar-title { font-size: 22px; font-weight: 600; color: var(--navy); margin-bottom: 10px; transition: color .25s; }
+.pillar-desc { font-size: 13px; line-height: 1.7; color: var(--muted); transition: color .25s; }
+.pillar:hover .pillar-num, .pillar:hover .pillar-title, .pillar:hover .pillar-desc { color: #fff; }
+
+@media (min-width: 640px) {
+  .about { padding: 48px 32px; }
+  .pillars { grid-template-columns: repeat(3, 1fr); gap: 2px; }
+}
+@media (min-width: 1024px) {
+  .about { padding: 112px 64px; }
+  .about-grid { grid-template-columns: 2fr 3fr; gap: 80px; }
+  .about h2 { font-size: 48px; }
+  .about-img { height: 650px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   8. HISTORY / GALLERY
+   ══════════════════════════════════════════════════════════════ */
+.history { padding: 48px 16px; background: var(--bg); }
+.history-head { text-align: center; margin-bottom: 56px; }
+.history-head .kicker { justify-content: center; margin-bottom: 20px; }
+.history-head h2 { font-size: 32px; color: var(--navy); margin-bottom: 16px; }
+.history-head h2 em { font-style: italic; color: var(--sky-500); }
+.history-head p { max-width: 640px; margin: 0 auto; color: var(--muted); }
+
+.gallery-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.gallery-card { cursor: pointer; overflow: hidden; border-radius: 4px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.08); transition: all .3s; }
+.gallery-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,.15); transform: translateY(-4px); }
+.gallery-img-wrap { position: relative; height: 256px; overflow: hidden; }
+.gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .5s; }
+.gallery-card:hover .gallery-img-wrap img { transform: scale(1.1); }
+.gallery-overlay { position: absolute; inset: 0; background: rgba(2,132,199,0); transition: background .3s; display: flex; align-items: center; justify-content: center; }
+.gallery-card:hover .gallery-overlay { background: rgba(2,132,199,.4); }
+.gallery-zoom-icon { opacity: 0; transition: opacity .3s; background: #fff; border-radius: 50%; padding: 12px; display: flex; }
+.gallery-card:hover .gallery-zoom-icon { opacity: 1; }
+.gallery-zoom-icon svg { width: 24px; height: 24px; color: var(--sky); }
+.gallery-body { padding: 24px; }
+.gallery-body p { font-size: 14px; line-height: 1.6; color: var(--muted); }
+.gallery-view-btn { margin-top: 16px; display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--sky); background: transparent; border: none; cursor: pointer; padding: 0; }
+.gallery-view-btn:hover { color: var(--sky-dark); }
+.gallery-view-btn svg { width: 16px; height: 16px; }
+
+.modal { position: absolute; inset: 0; z-index: 70; display: none; align-items: center; justify-content: center; padding: 24px; background: rgba(10,22,40,.92); }
+.modal.open { display: flex; }
+.modal-inner { position: relative; max-width: 800px; width: 100%; }
+.modal-close { position: absolute; top: -48px; right: 0; background: #fff; border: none; border-radius: 50%; padding: 8px; cursor: pointer; }
+.modal-close:hover { background: var(--gray-100); }
+.modal-close svg { width: 24px; height: 24px; color: var(--navy); }
+.modal-img { width: 100%; max-height: 65vh; object-fit: contain; border-radius: 4px; display: block; background: #000; }
+.modal-caption { background: #fff; margin-top: 12px; padding: 24px; border-radius: 4px; }
+.modal-caption p { font-size: 15px; line-height: 1.6; color: var(--navy); }
+
+@media (min-width: 640px) { .history { padding: 48px 32px; } }
+@media (min-width: 768px) { .gallery-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) {
+  .history { padding: 96px 64px; }
+  .history-head h2 { font-size: 52px; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   9. PROGRAMS
+   ══════════════════════════════════════════════════════════════ */
+.programs { padding: 0 16px 48px; background: var(--bg); }
+.programs-head { display: flex; flex-direction: column; gap: 16px; margin-bottom: 32px; border-top: 1px solid rgba(125,211,252,.4); padding-top: 32px; }
+.programs-head h2 { font-size: 32px; color: var(--navy); }
+.programs-head h2 em { font-style: italic; color: var(--emerald); }
+.programs-head p { font-size: 15px; line-height: 1.8; color: var(--muted); }
+
+.prog-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-bottom: 20px; }
+.prog-card { position: relative; border-radius: 6px; overflow: hidden; min-height: 380px; display: flex; flex-direction: column; justify-content: flex-end; cursor: pointer; transition: all .3s; }
+.prog-card:hover { transform: translateY(-6px); box-shadow: 0 25px 50px rgba(0,0,0,.25); }
+.prog-card > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+.prog-card:hover > img { transform: scale(1.05); }
+.prog-card .prog-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,74,110,.9) 0%, rgba(7,89,133,.3) 50%, transparent 100%); }
+.prog-card.emerald .prog-overlay { background: linear-gradient(to top, rgba(6,78,59,.9) 0%, rgba(6,95,70,.3) 50%, transparent 100%); }
+.prog-body { position: relative; z-index: 2; padding: 32px; }
+.prog-tag { display: block; font-size: 10px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 10px; color: var(--sky-300); }
+.prog-card.emerald .prog-tag { color: var(--emerald-300); }
+.prog-title { font-family: var(--font-serif); font-size: 24px; font-weight: 600; line-height: 1.2; color: #fff; margin-bottom: 16px; }
+.prog-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.prog-list li { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: rgba(255,255,255,.8); line-height: 1.5; }
+.prog-list li .dot { color: var(--sky-300); flex-shrink: 0; margin-top: 2px; }
+.prog-card.emerald .prog-list li .dot { color: var(--emerald-300); }
+.prog-desc { font-size: 12px; color: rgba(255,255,255,.6); line-height: 1.6; margin-bottom: 16px; }
+.prog-more { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .02em; }
+
+.prog-band { background: var(--navy); border-radius: 6px; padding: 32px 24px; display: flex; align-items: center; gap: 32px; flex-wrap: wrap; }
+.prog-band-text { flex: 1; min-width: 260px; }
+.prog-band .kicker { color: rgba(125,211,252,.6); margin-bottom: 20px; }
+.prog-band .kicker .bar { background: rgba(125,211,252,.5); }
+.prog-band h3 { font-size: 24px; line-height: 1.2; color: #fff; }
+.prog-band h3 em { font-style: italic; color: var(--sky-300); }
+.prog-band-desc { font-size: 15px; line-height: 1.8; color: rgba(255,255,255,.65); flex: 1; min-width: 220px; }
+.prog-band-btn { background: var(--sky); color: #fff; padding: 16px 36px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-radius: 3px; white-space: nowrap; flex-shrink: 0; transition: background .2s; }
+.prog-band-btn:hover { background: var(--sky-700); }
+
+@media (min-width: 640px) {
+  .programs { padding: 0 32px 48px; }
+  .programs-head { flex-direction: row; justify-content: space-between; align-items: flex-end; }
+  .programs-head p { max-width: 300px; text-align: right; }
+}
+@media (min-width: 768px) {
+  .prog-grid { grid-template-columns: repeat(2, 1fr); }
+  .prog-band { padding: 48px 56px; gap: 48px; }
+}
+@media (min-width: 1024px) {
+  .programs { padding: 0 64px 112px; }
+  .programs-head { padding-top: 48px; margin-bottom: 48px; }
+  .programs-head h2 { font-size: 56px; }
+  .prog-grid { grid-template-columns: repeat(3, 1fr); }
+  .prog-band h3 { font-size: 32px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   10. CTA (Get Involved)
+   ══════════════════════════════════════════════════════════════ */
+.cta { padding: 48px 16px; background: var(--bg-alt); display: grid; grid-template-columns: 1fr; gap: 32px; align-items: start; }
+.cta h2 { font-size: 32px; color: var(--navy); margin-bottom: 24px; }
+.cta h2 em { font-style: italic; color: var(--sky-500); }
+.cta p { font-size: 16px; line-height: 1.8; color: var(--muted); margin-bottom: 40px; }
+.cta-buttons { display: flex; gap: 16px; flex-wrap: wrap; }
+.btn-pill { padding: 16px 36px; font-size: 13px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; border-radius: 3px; color: #fff; transition: background .2s; }
+.btn-pill.sky { background: var(--sky); }
+.btn-pill.sky:hover { background: var(--sky-700); }
+.btn-pill.emerald { background: var(--emerald); }
+.btn-pill.emerald:hover { background: var(--emerald-dark); }
+
+.cta-cards { display: flex; flex-direction: column; gap: 16px; }
+.cta-card { background: #fff; border-radius: 8px; padding: 28px; box-shadow: 0 1px 3px rgba(0,0,0,.06); transition: all .2s; }
+.cta-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,.12); transform: translateY(-2px); }
+.cta-card-title { font-family: var(--font-serif); font-size: 20px; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+.cta-card p { font-size: 14px; line-height: 1.7; color: var(--muted); margin: 0; }
+
+@media (min-width: 1024px) {
+  .cta { padding: 112px 64px; grid-template-columns: 1fr 1fr; gap: 80px; }
+  .cta h2 { font-size: 48px; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════ NAVBAR ══════════════════════════ -->
+  <main>
+
+    <!-- ══════════════════════════ HERO ══════════════════════════ -->
+    <section class="hero">
+      <div class="hero-slide active">
+        <img src="http://localhost:3001/uploads/e4h-hero-1.jpg" alt="Lives" />
+        <div class="overlay"></div>
+      </div>
+      <div class="hero-slide">
+        <img src="http://localhost:3001/uploads/e4h-hero-2.jpg" alt="Everything" />
+        <div class="overlay"></div>
+      </div>
+      <div class="hero-slide">
+        <img src="http://localhost:3001/uploads/e4h-hero-3.jpg" alt="Opportunities" />
+        <div class="overlay"></div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-text">
+          <div class="hero-badge"><span class="diamond">◆</span> Engineering for Good</div>
+          <h1 class="hero-title" id="heroTitle">Building Dignified<br /><em id="heroEm">Lives</em></h1>
+          <p class="hero-desc" id="heroDesc">Empowering refugees and underserved communities through education, engineering, and servant leadership</p>
+        </div>
+      </div>
+
+      <div class="hero-dots">
+        <button class="hero-dot active" data-idx="0" aria-label="Slide 1"></button>
+        <button class="hero-dot" data-idx="1" aria-label="Slide 2"></button>
+        <button class="hero-dot" data-idx="2" aria-label="Slide 3"></button>
+      </div>
+
+      <div class="hero-stats" id="heroStats">
+        <div class="hero-stat"><div class="hero-stat-val" id="stat0">500+</div><div class="hero-stat-label">Hope School Graduates</div></div>
+        <div class="hero-stat"><div class="hero-stat-val" id="stat1">2,000+</div><div class="hero-stat-label">Lives Transformed</div></div>
+        <div class="hero-stat"><div class="hero-stat-val" id="stat2">17+</div><div class="hero-stat-label">Years of Founder in Humanitarian Service</div></div>
+        <div class="hero-stat"><div class="hero-stat-val" id="stat3">2020</div><div class="hero-stat-label">Year Founded</div></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ TICKER ══════════════════════════ -->
+    <div class="ticker">
+      <div class="ticker-track" id="tickerTrack">
+        <span class="ticker-item"><span class="diamond">◆</span>Clean Water &amp; Sanitation</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Education &amp; Scholarships</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Vocational Training</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Servant Leadership</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Peacebuilding</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Social Entrepreneurship</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Engineering Consultancy</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Community Empowerment</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Clean Water &amp; Sanitation</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Education &amp; Scholarships</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Vocational Training</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Servant Leadership</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Peacebuilding</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Social Entrepreneurship</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Engineering Consultancy</span>
+        <span class="ticker-item"><span class="diamond">◆</span>Community Empowerment</span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════ ABOUT ══════════════════════════ -->
+    <section class="about" id="mission">
+      <div class="about-grid">
+        <div>
+          <div class="kicker"><span class="bar"></span>Who we are</div>
+          <h2>Engineers4Humanity's <em>Mission</em></h2>
+          <p>To build a dignified life for refugees and underserved communities in Rwanda, and promote country development by:</p>
+          <ul class="about-list">
+            <li><span class="dot">•</span>Enhancing education &amp; vocational skills development;</li>
+            <li><span class="dot">•</span>Fostering self-reliance through job creation and entrepreneurship;</li>
+            <li><span class="dot">•</span>Advancing engineering solutions for environmental protection, water, sanitation, and hygiene services; and</li>
+            <li><span class="dot">•</span>Encouraging servant leadership and peacebuilding</li>
+          </ul>
+          <div class="about-divider">
+            <p>Engineers4Humanity is a registered <strong>501(c)(3) nonprofit organization</strong> based in Texas which guides and supports the Engineers4Humanity Consultancy social enterprise in Rwanda that fosters resilience and self-reliance in refugee camps through education, engineering, and servant leadership.</p>
+            <p>Founded by <strong>Eric Kamanzi</strong> — civil engineer, Project Management Professional, and former refugee — the organization has positively impacted more than <strong class="em-strong">2,000 young refugees</strong> across Rwanda.</p>
+          </div>
+          <a href="WhoWeAre.html" class="about-link">Learn More About Us →</a>
+        </div>
+
+        <div>
+          <img src="http://localhost:3001/uploads/e4h-about.jpeg" alt="Community Impact" class="about-img" />
+          <div class="pillars">
+            <div class="pillar">
+              <span class="pillar-num">01</span>
+              <div class="pillar-title">Connect</div>
+              <p class="pillar-desc">Matching engineers and volunteers with communities where their skills create the most impact.</p>
+            </div>
+            <div class="pillar">
+              <span class="pillar-num">02</span>
+              <div class="pillar-title">Build</div>
+              <p class="pillar-desc">Designing and deploying real-world solutions in public health engineering and vocational skills development.</p>
+            </div>
+            <div class="pillar">
+              <span class="pillar-num">03</span>
+              <div class="pillar-title">Sustain</div>
+              <p class="pillar-desc">Training local communities to maintain solutions and lead long after our support ends.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ HISTORY / GALLERY ══════════════════════════ -->
+    <section class="history">
+      <div class="history-head">
+        <div class="kicker"><span class="bar"></span>Our Journey<span class="bar"></span></div>
+        <h2>Milestones that shaped <em>our story</em></h2>
+        <p>Explore the milestones and moments that have shaped Engineers4Humanity. From our humble beginnings to transformative partnerships, each image tells a story of hope, resilience, and impact in refugee communities.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <div class="gallery-card" data-idx="0">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-01.png" alt="Dallas Commissioners Court" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">Eric joins other civil society organization members in Dallas, presenting his Refugee Life journey to the Dallas County Commissioners Court for signing the resolution recognizing June 20, 2025, as the International World Refugee Day in Dallas</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+
+        <div class="gallery-card" data-idx="1">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-02.png" alt="Rwanda Team 2020" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">Engineers4Humanity Rwanda Team, 2020, with Theo Karegesa, Engineers4Humanity Board Vice Chair and Eric Kamanzi, Founder &amp; CEO on the left in blue shirts.</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+
+        <div class="gallery-card" data-idx="2">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-03.png" alt="Hope School 2009" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">Hope School 1st intake students of 2009</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+
+        <div class="gallery-card" data-idx="3">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-04.png" alt="Volunteer visit" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">From Left is Mr Musuhuke, our Alum who is serving as a volunteer, and Fr. Malisaba, Engineers4Humanity Vice-Board Chair in charge of Education, in the middle during the visit of sponsored students.</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+
+        <div class="gallery-card" data-idx="4">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-05.png" alt="Skills center 2020" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">Eric is in a meeting with our short-course trainees at the Engineers4Humanity Center for skills development, research, and Innovation 2020 in Gihembe Refugee camp.</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+
+        <div class="gallery-card" data-idx="5">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-06.png" alt="Rwanda Convention" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">Meeting with Dr. Apotre Paul Gitwaza and sharing his book during the Rwanda Convention held in Dallas, July 2025</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+
+        <div class="gallery-card" data-idx="6">
+          <div class="gallery-img-wrap">
+            <img src="http://localhost:3001/uploads/e4h-history-07.png" alt="World Refugee Conference" />
+            <div class="gallery-overlay"><span class="gallery-zoom-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></span></div>
+          </div>
+          <div class="gallery-body">
+            <p class="line-clamp-3">Attending the International World Refugee Conference in Dallas and sharing my book, "Breaking Boundaries," with the audience in June 2025.</p>
+            <button class="gallery-view-btn">View Full Image <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal" id="modal">
+        <div class="modal-inner">
+          <button class="modal-close" id="modalClose" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+          <img class="modal-img" id="modalImg" src="" alt="" />
+          <div class="modal-caption"><p id="modalCaption"></p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ PROGRAMS ══════════════════════════ -->
+    <section class="programs" id="programs">
+      <div class="programs-head">
+        <h2>Programs that<br /><em>make a difference</em></h2>
+        <p>Each program targets a specific humanitarian challenge with measurable outcomes and a clear engineering mandate.</p>
+      </div>
+
+      <div class="prog-grid">
+        <a href="EducationProgram.html" class="prog-card">
+          <img src="http://localhost:3001/uploads/e4h-programs-education.png" alt="Education" />
+          <div class="prog-overlay"></div>
+          <div class="prog-body">
+            <span class="prog-tag">Education</span>
+            <div class="prog-title">Education</div>
+            <ul class="prog-list">
+              <li><span class="dot">•</span>High School &amp; University</li>
+              <li><span class="dot">•</span>Leadership &amp; Peacebuilding</li>
+            </ul>
+            <p class="prog-desc">Encouraging servant leadership and peacebuilding initiatives in Rwanda for lasting impact.</p>
+            <span class="prog-more">Learn more ↗</span>
+          </div>
+        </a>
+
+        <a href="PublicHealthEngineering.html" class="prog-card">
+          <img src="http://localhost:3001/uploads/e4h-programs-engineering.png" alt="Engineering" />
+          <div class="prog-overlay"></div>
+          <div class="prog-body">
+            <span class="prog-tag">Engineering</span>
+            <div class="prog-title">Engineering</div>
+            <ul class="prog-list">
+              <li><span class="dot">•</span>Public Health Engineering</li>
+              <li><span class="dot">•</span>Social Entrepreneurship &amp; Construction Service</li>
+            </ul>
+            <p class="prog-desc">Addressing Water, Sanitation, and Hygiene (WASH) challenges in Rwanda refugee camps through sustainable engineering systems.</p>
+            <span class="prog-more">Learn more ↗</span>
+          </div>
+        </a>
+
+        <a href="Institute.html" class="prog-card emerald">
+          <img src="http://localhost:3001/uploads/e4h-programs-institute.png" alt="Engineers4Humanity Institute" />
+          <div class="prog-overlay"></div>
+          <div class="prog-body">
+            <span class="prog-tag">Institute</span>
+            <div class="prog-title">Engineers4Humanity Institute</div>
+            <ul class="prog-list">
+              <li><span class="dot">•</span>Professional Skills Development</li>
+              <li><span class="dot">•</span>Research &amp; Innovation Hub</li>
+            </ul>
+            <p class="prog-desc">Equipping refugee and immigrant youth with engineering, project management, and entrepreneurship skills to build self-reliance.</p>
+            <span class="prog-more">Learn more ↗</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="prog-band">
+        <div class="prog-band-text">
+          <div class="kicker"><span class="bar"></span>Flagship Initiative</div>
+          <h3>Servant Leadership &amp; Peacebuilding — <em>empowering youth</em> across Rwanda</h3>
+        </div>
+        <p class="prog-band-desc">Empowering youth and women affected by conflict through mentorship, creative healing, and multicultural peace-building initiatives.</p>
+        <a href="Programs.html" class="prog-band-btn">See All Programs ↗</a>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ CTA / GET INVOLVED ══════════════════════════ -->
+    <section class="cta" id="join">
+      <div>
+        <div class="kicker"><span class="bar"></span>Get Involved</div>
+        <h2>Your support<br />can change <em>lives</em></h2>
+        <p>Whether through donations, volunteering, or spreading the word — you can help empower vulnerable communities and create lasting change across Rwanda.</p>
+        <div class="cta-buttons">
+          <a href="GetInvolved.html" class="btn-pill sky">Join the Movement</a>
+          <a href="Donate.html" class="btn-pill emerald">Donate Now</a>
+        </div>
+      </div>
+
+      <div class="cta-cards">
+        <div class="cta-card">
+          <div class="cta-card-title">Volunteer Engineer</div>
+          <p>Apply your technical skills to a real humanitarian project, near or far.</p>
+        </div>
+        <div class="cta-card">
+          <div class="cta-card-title">Student Programs</div>
+          <p>Chapter memberships, scholarships, and mentorship for engineering students.</p>
+        </div>
+        <div class="cta-card">
+          <div class="cta-card-title">Corporate Partnership</div>
+          <p>Partner your company's engineering talent with our on-the-ground programs.</p>
+        </div>
+        <div class="cta-card">
+          <div class="cta-card-title">Donate</div>
+          <p>Fund the tools, travel, and time that turns engineering into humanitarian relief.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+  <!-- ══════════════════════════ WHATSAPP FLOATING BUTTON ══════════════════════════ -->
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+</div>
+
+<script>
+
+
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+
+    toggle.addEventListener('click', function () {
+      if (sidebar.classList.contains('open')) close(); else open();
+    });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+
+    var links = sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate');
+    links.forEach(function (l) { l.addEventListener('click', close); });
+  }
+
+  function initMobileAccordions() {
+    var summaries = document.querySelectorAll('.mob-summary');
+    summaries.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var targetId = btn.getAttribute('data-target');
+        var panel = document.getElementById(targetId);
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) {
+          btn.classList.remove('open');
+          panel.style.maxHeight = '0px';
+          panel.style.opacity = '0';
+        } else {
+          btn.classList.add('open');
+          panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px';
+          panel.style.opacity = '1';
+        }
+      });
+    });
+  }
+
+  function initGalleryModal() {
+    var modalData = [
+      { src: 'http://localhost:3001/uploads/e4h-history-01.png', caption: 'Eric joins other civil society organization members in Dallas, presenting his Refugee Life journey to the Dallas County Commissioners Court for signing the resolution recognizing June 20, 2025, as the International World Refugee Day in Dallas' },
+      { src: 'http://localhost:3001/uploads/e4h-history-02.png', caption: 'Engineers4Humanity Rwanda Team, 2020,  with Theo Karegesa, Engineers4Humanity Board Vice Chair and Eric Kamanzi, Founder & CEO on the left in blue shirts.' },
+      { src: 'http://localhost:3001/uploads/e4h-history-03.png', caption: 'Hope School 1st intake students of 2009 ' },
+      { src: 'http://localhost:3001/uploads/e4h-history-04.png', caption: 'From Left is Mr Musuhuke, our Alum who is serving as a volunteer, and Fr. Malisaba, Engineers4Humanity Vice-Board Chair in charge of Education, in the middle during the visit of sponsored students.' },
+      { src: 'http://localhost:3001/uploads/e4h-history-05.png', caption: 'Eric is in a meeting with our short-course trainees at the Engineers4Humanity Center for skills development, research, and Innovation 2020 in Gihembe Refugee camp.' },
+      { src: 'http://localhost:3001/uploads/e4h-history-06.png', caption: 'Meeting with Dr. Apotre Paul Gitwaza and sharing his book during the Rwanda Convention held in Dallas, July 2025' },
+      { src: 'http://localhost:3001/uploads/e4h-history-07.png', caption: 'Attending the International World Refugee Conference in Dallas and sharing my book, "Breaking Boundaries," with the audience in June 2025.' }
+    ];
+
+    var modal = document.getElementById('modal');
+    var modalImg = document.getElementById('modalImg');
+    var modalCaption = document.getElementById('modalCaption');
+    var modalInner = modal.querySelector('.modal-inner');
+
+    document.querySelectorAll('.gallery-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var idx = parseInt(card.getAttribute('data-idx'), 10);
+        modalImg.src = modalData[idx].src;
+        modalImg.alt = modalData[idx].caption;
+        modalCaption.textContent = modalData[idx].caption;
+        modal.classList.add('open');
+      });
+    });
+
+    function closeModal() { modal.classList.remove('open'); }
+    modal.addEventListener('click', closeModal);
+    modalInner.addEventListener('click', function (e) { e.stopPropagation(); });
+    document.getElementById('modalClose').addEventListener('click', closeModal);
+  }
+
+  function initFooterYear() {
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initGalleryModal();
+  });
+
+</script>
+</body>
+</html>

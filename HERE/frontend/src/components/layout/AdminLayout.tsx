@@ -13,24 +13,26 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children, title, crumbs, siteName, fullHeight }: AdminLayoutProps) {
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [collapsed, setCollapsed]       = useState(false);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
+    <div className={collapsed ? 'dash-shell app sidebar-collapsed' : 'dash-shell app'}>
+      {isMobileOpen && (
+        <div className="sidebar-overlay is-open" onClick={() => setIsMobileOpen(false)} />
+      )}
       <Sidebar
-        collapsed={sidebarCollapsed}
-        onToggle={() => setSidebarCollapsed((c) => !c)}
+        isOpen={isMobileOpen}
+        onClose={() => setIsMobileOpen(false)}
+        collapsed={collapsed}
+        onToggleCollapsed={() => setCollapsed(v => !v)}
         siteName={siteName}
       />
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        <TopBar title={title} crumbs={crumbs} />
-        <main className={
-          fullHeight
-            ? 'flex-1 flex flex-col overflow-hidden p-0'
-            : 'flex-1 overflow-y-auto p-6'
-        }>
+      <div className="main">
+        <TopBar title={title} crumbs={crumbs} onToggleSidebar={() => setIsMobileOpen(v => !v)} />
+        <div className={fullHeight ? 'content content--full' : 'content'}>
           {children}
-        </main>
+        </div>
       </div>
     </div>
   );

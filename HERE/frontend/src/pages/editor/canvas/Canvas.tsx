@@ -1,10 +1,13 @@
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { useEditorStore, findById, uid } from '../../../stores/editorStore';
 import type { ToolMode } from '../../../stores/editorStore';
 import type { PageElement } from '../../../api/pages';
 import { ElementNode, VOID_TAGS } from './ElementView';
 import { ContextMenu } from '../ContextMenu';
 import { ToolSidebar } from './ToolSidebar';
+import { getCollection, type SiteCollection } from '../../../api/collections';
+import { getComponent, type SiteComponent } from '../../../api/components';
+import { collectCollectionRefs, expandCollectionNodesForPreview } from '../utils/collectionExpansion';
 
 const DEVICE_W = { desktop: 1200, tablet: 834, mobile: 390 } as const;
 type Device = keyof typeof DEVICE_W;
@@ -64,6 +67,7 @@ function findDropParent(x: number, y: number): string | null {
     const found = findById(els, elId);
     if (!found) continue;
     if (VOID_TAGS.has(found.el.tag)) continue;
+    if ((found.el as Record<string, unknown>)._collection) continue; // derived content, not a real drop target
     if (Array.isArray(found.el.children)) return elId; // has children → is a container
   }
   return null; // fall back to root
@@ -89,6 +93,8 @@ export function Canvas({ previewMode = false }: CanvasProps) {
   const zoom          = useEditorStore(s => s.zoom);
   const pan           = useEditorStore(s => s.pan);
   const toolMode      = useEditorStore(s => s.toolMode);
+  const mode          = useEditorStore(s => s.mode);
+  const componentView = useEditorStore(s => s.componentView);
 
   const selectElement  = useEditorStore(s => s.selectElement);
   const setEditingId   = useEditorStore(s => s.setEditingId);
@@ -104,10 +110,59 @@ export function Canvas({ previewMode = false }: CanvasProps) {
 
   const [device, setDevice]         = useState<Device>('desktop');
   const [ctxMenu, setCtxMenu]       = useState<{ x: number; y: number; targetId: string } | null>(null);
+  const siteId = useEditorStore(s => s.siteId);
+
+  // ── Collection-list preview data ──────────────────────────────────────────
+  // Any element carrying a `_collection` marker gets expanded into real card
+  // instances here (client-side, preview-only) so the canvas shows actual data
+  // while editing. The real, published/exported output is generated fresh by
+  // the backend from live data — this is never written back to `elements`.
+  const [collectionsById, setCollectionsById] = useState<Map<string, SiteCollection>>(new Map());
+  const [componentsById, setComponentsById]   = useState<Map<string, SiteComponent>>(new Map());
+
+  useEffect(() => {
+    const refs = collectCollectionRefs(elements);
+    if (!refs.length || !siteId) return;
+    const missing = refs.filter(r => !collectionsById.has(r.collectionId) || !componentsById.has(r.componentId));
+    if (!missing.length) return;
+
+    let cancelled = false;
+    Promise.all(missing.map(async r => {
+      const [collection, component] = await Promise.all([
+        collectionsById.has(r.collectionId) ? null : getCollection(siteId, r.collectionId).catch(() => null),
+        componentsById.has(r.componentId)   ? null : getComponent(siteId, r.componentId).catch(() => null),
+      ]);
+      return { r, collection, component };
+    })).then(results => {
+      if (cancelled) return;
+      setCollectionsById(prev => {
+        const next = new Map(prev);
+        results.forEach(({ r, collection }) => { if (collection) next.set(r.collectionId, collection); });
+        return next;
+      });
+      setComponentsById(prev => {
+        const next = new Map(prev);
+        results.forEach(({ r, component }) => { if (component) next.set(r.componentId, component); });
+        return next;
+      });
+    });
+    return () => { cancelled = true; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elements, siteId]);
+
+  const renderElements = useMemo(
+    () => expandCollectionNodesForPreview(elements, collectionsById, componentsById, previewMode),
+    [elements, collectionsById, componentsById, previewMode],
+  );
   const [isDragging, setIsDragging] = useState(false);
   const [dropLine, setDropLine]     = useState<{ left: number; top: number; width: number } | null>(null);
   const [drawGhost, setDrawGhost]   = useState<{ left: number; top: number; width: number; height: number; mode: ToolMode } | null>(null);
-  const frameW = DEVICE_W[device];
+  // Editing a component's Modal content: the artboard itself becomes a visual
+  // stand-in for the real <dialog> shell (fixed narrow width, padding, rounded
+  // corners) instead of a full page canvas, so what's designed here matches
+  // what actually renders once wrapped by the system-managed shell at runtime.
+  const isModalView = mode === 'component' && componentView === 'modal';
+  const frameW = isModalView ? 460 : DEVICE_W[device];
 
   // ── Selection overlay rect (screen coords relative to wrap) ───────────────
   const [selRect, setSelRect] = useState<{ left:number; top:number; width:number; height:number } | null>(null);
@@ -175,7 +230,10 @@ export function Canvas({ previewMode = false }: CanvasProps) {
     window.addEventListener('pointerup', up);
   }, []);
 
-  // Zoom to fit on mount
+  // Zoom to fit on mount, and again whenever switching between the Card and
+  // Modal views — the artboard's width changes drastically (full page width
+  // vs a ~460px dialog box) so the previous zoom/pan would leave the new
+  // artboard tiny or off-screen otherwise.
   useEffect(() => {
     const wrap = wrapRef.current; if (!wrap) return;
     const r  = wrap.getBoundingClientRect();
@@ -183,7 +241,7 @@ export function Canvas({ previewMode = false }: CanvasProps) {
     setZoom(nz);
     setPan((r.width - frameW * nz) / 2, 60);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isModalView]);
 
   // ── Text editing ──────────────────────────────────────────────────────────
   const handleTextBlur = useCallback((id: string, content: string, field: 'text' | 'innerHTML') => {
@@ -491,10 +549,11 @@ export function Canvas({ previewMode = false }: CanvasProps) {
           position: 'absolute', top: -28, left: 0,
           fontSize: 11, color: '#9ca3af', fontWeight: 500, whiteSpace: 'nowrap', userSelect: 'none',
         }}>
-          {device.charAt(0).toUpperCase() + device.slice(1)} — {frameW}px
+          {isModalView ? `Modal preview — ${frameW}px` : `${device.charAt(0).toUpperCase() + device.slice(1)} — ${frameW}px`}
         </div>
 
-        {/* Device switcher */}
+        {/* Device switcher — not meaningful for a single reusable card */}
+        {mode === 'page' && (
         <div style={{ position: 'absolute', top: -28, right: 0, display: 'flex', gap: 6 }}>
           {(['desktop','tablet','mobile'] as Device[]).map(d => (
             <button key={d} onClick={e => { e.stopPropagation(); setDevice(d); }}
@@ -508,11 +567,16 @@ export function Canvas({ previewMode = false }: CanvasProps) {
             </button>
           ))}
         </div>
+        )}
 
         {/* White artboard */}
         <div
           data-artboard="1"
-          style={{
+          style={isModalView ? {
+            width: frameW, minHeight: 'auto', background: '#fff',
+            padding: '32px', borderRadius: '16px', boxSizing: 'border-box',
+            boxShadow: '0 20px 60px rgba(0,0,0,.3)', position: 'relative', overflow: 'visible',
+          } : {
             width: frameW, minHeight: 600, background: '#fff',
             boxShadow: '0 2px 40px rgba(0,0,0,.12)', position: 'relative', overflow: 'visible',
           }}
@@ -527,7 +591,7 @@ export function Canvas({ previewMode = false }: CanvasProps) {
             setCtxMenu({ x: e.clientX, y: e.clientY, targetId });
           })}
         >
-          {elements.map(el =>
+          {renderElements.map(el =>
             el.tag === 'style' || el.tag === 'link' || el.tag === 'script' || el.tag === 'meta' ? (
               <ElementNode key={el.id} el={el} depth={0}
                 selectedId={null} editingId={null}
@@ -538,7 +602,8 @@ export function Canvas({ previewMode = false }: CanvasProps) {
                 editingId={previewMode ? null : editingId}
                 onSelect={previewMode ? () => {} : handleSelect}
                 onDblClick={previewMode ? () => {} : handleDblClick}
-                onTextBlur={previewMode ? () => {} : handleTextBlur} />
+                onTextBlur={previewMode ? () => {} : handleTextBlur}
+                interactive={previewMode} />
             )
           )}
 
@@ -679,8 +744,8 @@ export function Canvas({ previewMode = false }: CanvasProps) {
           onClick={e => { e.stopPropagation(); setZoom(Math.min(4, zoom + 0.1)); }}>+</button>
       </div>
 
-      {/* Floating tool sidebar */}
-      {!previewMode && <ToolSidebar />}
+      {/* Floating tool sidebar — shape-drawing tools aren't needed to design a single reusable card */}
+      {!previewMode && mode === 'page' && <ToolSidebar />}
     </div>
   );
 }

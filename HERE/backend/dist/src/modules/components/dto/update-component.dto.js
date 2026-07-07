@@ -5,6 +5,10 @@ class UpdateComponentDto {
     name;
     tag;
     html;
+    modalHtml;
+    type;
+    schema;
+    collectionId;
 }
 exports.UpdateComponentDto = UpdateComponentDto;
 //# sourceMappingURL=update-component.dto.js.map

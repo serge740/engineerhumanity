@@ -8,8 +8,9 @@ export declare class AssetsController {
         createdAt: Date;
         name: string;
         siteId: string;
-        type: string;
         url: string;
+        type: string;
+        publicId: string | null;
         size: number;
     }[]>;
     upload(siteId: string, file: Express.Multer.File, type: "image" | "font" | undefined, req: RequestWithAdmin): Promise<{
@@ -17,8 +18,9 @@ export declare class AssetsController {
         createdAt: Date;
         name: string;
         siteId: string;
-        type: string;
         url: string;
+        type: string;
+        publicId: string | null;
         size: number;
     }>;
     remove(siteId: string, id: string, req: RequestWithAdmin): Promise<{

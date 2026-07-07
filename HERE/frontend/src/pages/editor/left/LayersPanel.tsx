@@ -221,6 +221,7 @@ function GhostRow({ el }: { el: PageElement }) {
 export function LayersPanel() {
   const elements    = useEditorStore(s => s.elements);
   const selectedId  = useEditorStore(s => s.selectedId);
+  const mode        = useEditorStore(s => s.mode);
   const pages       = useEditorStore(s => s.pages);
   const slug        = useEditorStore(s => s.slug);
   const siteId      = useEditorStore(s => s.siteId);
@@ -283,24 +284,28 @@ export function LayersPanel() {
 
   return (
     <div className="l-panel-scroll">
-      {/* Pages */}
-      <div className="l-sect-head">Pages</div>
-      {pages.map(p => (
-        <div
-          key={p.slug}
-          className={'l-page-item' + (p.slug === slug ? ' active' : '')}
-          style={{ cursor: p.slug === slug ? 'default' : 'pointer' }}
-          onClick={() => switchPage(p.slug)}
-        >
-          <span className="l-page-dot" />
-          {p.title || p.slug}
-          {p.slug === slug && (
-            <span style={{ marginLeft: 'auto', fontSize: 9, background: '#6366f1', color: '#fff', borderRadius: 3, padding: '1px 5px' }}>
-              current
-            </span>
-          )}
-        </div>
-      ))}
+      {/* Pages — only meaningful when editing a page, not a component template */}
+      {mode === 'page' && (
+        <>
+          <div className="l-sect-head">Pages</div>
+          {pages.map(p => (
+            <div
+              key={p.slug}
+              className={'l-page-item' + (p.slug === slug ? ' active' : '')}
+              style={{ cursor: p.slug === slug ? 'default' : 'pointer' }}
+              onClick={() => switchPage(p.slug)}
+            >
+              <span className="l-page-dot" />
+              {p.title || p.slug}
+              {p.slug === slug && (
+                <span style={{ marginLeft: 'auto', fontSize: 9, background: '#6366f1', color: '#fff', borderRadius: 3, padding: '1px 5px' }}>
+                  current
+                </span>
+              )}
+            </div>
+          ))}
+        </>
+      )}
 
       {/* Layers */}
       <div className="l-sect-head">Layers</div>

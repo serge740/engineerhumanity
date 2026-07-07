@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Testimonials</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --navy: #0A1628; --sky-50: #f0f9ff; --sky-300: #7dd3fc; --sky-400: #38bdf8;
+  --sky: #0284c7; --sky-700: #0369a1;
+  --emerald-400: #34d399; --emerald: #059669;
+  --green: #16a34a; --green-dark: #15803d; --green-darker: #166534;
+  --purple-600: #9333ea;
+  --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-600: #4b5563; --gray-700: #374151; --gray-900: #111827;
+  --red-500: #ef4444; --red-600: #dc2626;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: #1f2937; background: #fff; }
+h1, h2, h3 { font-family: var(--font-sans); font-weight: 700; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 30px; line-height: 1.2; margin: 0; color: var(--gray-900); }
+h3 { font-size: 18px; line-height: 1.3; margin: 0; color: var(--gray-900); }
+p  { font-size: 16px; line-height: 1.75; margin: 0; color: var(--gray-700); }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.page { position: relative; overflow: hidden; }
+
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+.drop-menu { position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100); padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px); transition: all .25s; transform-origin: top; z-index: 60; }
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple-600); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+.btn-donate { display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap; }
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+.nav-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55; }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-sidebar { position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto; transition: right .3s ease-in-out; }
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; margin: 0; color: #fff; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple-600); }
+.mob-donate { display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+@media (min-width: 1024px) { .nav-inner { padding: 0 24px; } .nav-links { display: flex; } .btn-donate { display: inline-block; } .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; } }
+@media (min-width: 1280px) { .nav-links { font-size: 14px; } .nav-item, .drop-btn { padding: 10px 16px; } }
+
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; color: rgba(255,255,255,.65); }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+@media (min-width: 640px) { .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; } }
+@media (min-width: 1024px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; } .footer-bottom { padding: 24px 64px; } }
+
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-family: var(--font-serif); font-weight: 300; font-size: 34px; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* TESTIMONY — page content */
+.tst-section { padding: 48px 16px; background: #fff; }
+.tst-head { text-align: center; margin-bottom: 48px; }
+.tst-head-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; }
+.tst-head-row svg { width: 40px; height: 40px; color: var(--sky); }
+.tst-head h2 { font-family: var(--font-serif); font-size: 30px; }
+.tst-head p { font-size: 18px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
+
+.tst-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+.tst-card { background: #fff; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,.12); overflow: hidden; border: 2px solid var(--gray-100); transition: border-color .2s; }
+.tst-card:hover { border-color: var(--sky); }
+.tst-photo-wrap { height: 220px; overflow: hidden; }
+.tst-photo-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .3s; }
+.tst-card:hover .tst-photo-wrap img { transform: scale(1.1); }
+.tst-body { padding: 18px; }
+.tst-name { font-family: var(--font-serif); font-size: 19px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; }
+.tst-role { color: var(--sky); font-weight: 600; margin-bottom: 14px; font-size: 13px; line-height: 1.4; }
+.tst-summary { font-size: 14px; margin-bottom: 18px; }
+.view-story-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 12px 16px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; font-size: 14px; transition: opacity .2s; }
+.view-story-btn:hover { opacity: .9; }
+.view-story-btn svg { width: 18px; height: 18px; }
+
+.final-cta { padding: 64px 24px; background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; }
+.final-cta h2 { font-size: 34px; color: #fff; margin-bottom: 16px; }
+.final-cta p { font-size: 18px; opacity: .95; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-btn { display: inline-block; background: #fff; color: var(--sky); padding: 16px 40px; border-radius: 8px; font-weight: 700; font-size: 17px; box-shadow: 0 15px 30px rgba(0,0,0,.2); transition: background .2s; }
+.final-cta-btn:hover { background: var(--gray-100); }
+
+.story-modal { position: absolute; inset: 0; z-index: 70; display: none; align-items: flex-start; justify-content: center; padding: 16px; background: rgba(0,0,0,.85); overflow-y: auto; }
+.story-modal.open { display: flex; }
+.story-modal-inner { position: relative; background: #fff; border-radius: 16px; max-width: 900px; width: 100%; margin: 32px 0; max-height: 90vh; overflow-y: auto; }
+.story-modal-close { position: sticky; top: 16px; float: right; margin: 16px 16px 0 0; background: var(--gray-900); color: #fff; padding: 8px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
+.story-modal-close:hover { background: #374151; }
+.story-modal-close svg { width: 24px; height: 24px; }
+.story-modal-body { padding: 32px; clear: both; }
+.story-modal-head { display: flex; align-items: center; gap: 24px; margin-bottom: 32px; }
+.story-modal-photo { width: 128px; height: 128px; border-radius: 50%; object-fit: cover; object-position: top; border: 4px solid var(--sky); flex-shrink: 0; }
+.story-modal-name { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+.story-modal-role { color: var(--sky); font-weight: 600; font-size: 18px; }
+.story-modal-intro { background: var(--gray-50); padding: 24px; border-radius: 12px; border-left: 4px solid var(--sky); margin-bottom: 32px; }
+.story-modal-intro p { white-space: pre-line; }
+.story-modal-section { margin-bottom: 32px; }
+.story-modal-section h3 { font-family: var(--font-serif); font-size: 22px; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.story-modal-section h3 svg { width: 22px; height: 22px; color: var(--sky); }
+.story-modal-section p { white-space: pre-line; }
+.story-modal-sig { margin-top: 32px; padding-top: 32px; border-top: 2px solid var(--gray-200); text-align: right; font-family: var(--font-serif); font-size: 20px; font-style: italic; color: var(--gray-600); }
+
+@media (min-width: 640px) { .tst-section { padding: 48px 32px; } .tst-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .tst-section { padding: 80px 64px; } .tst-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1280px) { .tst-grid { grid-template-columns: repeat(4, 1fr); } }
+</style>
+</head>
+<body>
+<div class="page">
+  <main>
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Testimonials" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Testimonials</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="Testimony.html" class="current">Testimonials</a></div>
+      </div>
+    </div>
+
+    <section class="tst-section" id="testimony">
+      <div class="tst-head">
+        <div class="tst-head-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+          <h2>Read Their Stories</h2>
+        </div>
+        <p>Click on any profile below to read the full testimony in their own words.</p>
+      </div>
+
+      <div class="tst-grid">
+        <div class="tst-card" data-id="1"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-01-pascal.png" alt="Pascal Ndayisaba" /></div><div class="tst-body"><div class="tst-name">Pascal Ndayisaba</div><p class="tst-role">Hope School First Intake · University of Rwanda, College of Law · USA</p><p class="tst-summary line-clamp-3">One of Hope School's first graduates, Pascal went on to study Law at the University of Rwanda. Today he is a father, a professional, and a community contributor living in the United States.</p><button class="view-story-btn" data-id="1">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="2"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-02-buhanga.png" alt="Buhanga Silas" /></div><div class="tst-body"><div class="tst-name">Buhanga Silas</div><p class="tst-role">Elders Committee Chairperson · Gihembe Refugee Camp · Kentucky, USA</p><p class="tst-summary line-clamp-3">As former Chairperson of the Elders Committee in Gihembe, Buhanga witnessed Hope School's birth firsthand — built by refugees, for refugees. Now resettled in Kentucky, his testimony carries the weight of a community's sacrifice.</p><button class="view-story-btn" data-id="2">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="3"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-03-eric.png" alt="Eric Ndayisaba" /></div><div class="tst-body"><div class="tst-name">Eric Ndayisaba</div><p class="tst-role">Director of Business Development, Engineers4Humanity · ALU Graduate · Rwanda</p><p class="tst-summary line-clamp-3">An orphan from Gihembe Refugee Camp who rose from having nothing to earning an ALU degree and leading business development at Engineers4Humanity. Eric is living proof that a chance can transform generations.</p><button class="view-story-btn" data-id="3">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="4"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-04-ntabareshya.png" alt="Ntabareshya Baudouin" /></div><div class="tst-body"><div class="tst-name">Ntabareshya Baudouin</div><p class="tst-role">Co-Founder &amp; First Headmaster of Hope School · North Carolina, USA</p><p class="tst-summary line-clamp-3">Co-founder and first Headmaster of Hope School, Baudouin helped build a school from nothing — no classrooms, no funding — and achieved 100% national exam pass rates year after year. Over 500 graduates carry his legacy.</p><button class="view-story-btn" data-id="4">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="5"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-05-bahati.png" alt="Bahati Justine" /></div><div class="tst-body"><div class="tst-name">Bahati Justine (Mama Condifa)</div><p class="tst-role">Hope School Education Fund Leader · Engineers4Humanity Volunteer · Nashville, USA</p><p class="tst-summary line-clamp-3">Known as Mama Condifa, Bahati Justine rallied refugee women to support Hope School with their own food rations when there was no money. Her lifetime of service continues through Engineers4Humanity in Nashville, Tennessee.</p><button class="view-story-btn" data-id="5">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="6"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-06-kibibi.png" alt="Kamanzi Kibibi Mutagomwa" /></div><div class="tst-body"><div class="tst-name">Kamanzi Kibibi Mutagomwa</div><p class="tst-role">Builder &amp; Site Foreman · Vocational Training Mentor · Canada</p><p class="tst-summary line-clamp-3">Trained as a builder through Jesuit Refugee Service in 2000, Kibibi grew from builder's mate to site foreman — and in 2013 personally trained 10 Hope School graduates on site in Kigali, changing their lives forever.</p><button class="view-story-btn" data-id="6">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="7"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-07-muhire.png" alt="Muhire Samuel-Claudio" /></div><div class="tst-body"><div class="tst-name">Muhire Samuel-Claudio</div><p class="tst-role">Hope School Graduate · Beneficiary of Engineers4Humanity Vocational Training · Currently Living in Finland</p><p class="tst-summary line-clamp-3">Born in DRC, raised in Gihembe Refugee Camp, Samuel's life changed twice — first when Hope School admitted him for free, then when Eng. Kamanzi took him onto a construction site. Today he lives in Finland as a translator.</p><button class="view-story-btn" data-id="7">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="8"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-08-uwimana.png" alt="Uwimana Louise" /></div><div class="tst-body"><div class="tst-name">Uwimana Louise</div><p class="tst-role">Hope School Graduate · Hairdressing &amp; Bakery Technician · Bugesera, Rwanda</p><p class="tst-summary line-clamp-3">An orphan from Gihembe who raised her little sister alone, Louise found her talent in hairdressing at Rwabuye TVET and later excelled in bakery training — becoming a trainer herself. Today she is a proud mother in Bugesera District.</p><button class="view-story-btn" data-id="8">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="9"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-09-maniraguha.png" alt="Maniraguha Chance" /></div><div class="tst-body"><div class="tst-name">Maniraguha Chance</div><p class="tst-role">Hairdressing Technician · Engineers4Humanity Vocational Training · Arizona, USA</p><p class="tst-summary line-clamp-3">After completing high school in Gihembe with no job prospects, Chance was selected for hairdressing training through Engineers4Humanity. That one opportunity gave her a career, dignity, and a future — now in Arizona, USA.</p><button class="view-story-btn" data-id="9">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="10"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-10-mukeshimana.png" alt="Mukeshimana Angelique" /></div><div class="tst-body"><div class="tst-name">Mukeshimana Angelique</div><p class="tst-role">Congolese Refugee · Nyabiheke Refugee Camp · Construction Trainee · Youth Advocate for Girls' Empowerment</p><p class="tst-summary line-clamp-3">One of the few girls in Nyabiheke to receive construction training, Angelique proved culture wrong — earning income, supporting her family, and inspiring other young women that what boys can do, girls can do too.</p><button class="view-story-btn" data-id="10">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="11"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-11-mukamutara.png" alt="Mukamutara Alvera" /></div><div class="tst-body"><div class="tst-name">Mukamutara Alvera</div><p class="tst-role">Widow · Refugee Mother · Beneficiary of Engineers4Humanity Education Support · Mahama Refugee Camp</p><p class="tst-summary line-clamp-3">A widow with no income and no education, Alvera received a life-changing call — Engineers4Humanity was looking for children with no support to continue high school. Her son completed his education and now supports the entire family.</p><button class="view-story-btn" data-id="11">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="12"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-12-nuwayo.png" alt="Nuwayo Gahindo" /></div><div class="tst-body"><div class="tst-name">Nuwayo Gahindo</div><p class="tst-role">Parent &amp; Beneficiary of Hope School · Arizona, USA · Advocate for Refugee Education &amp; Vocational Training</p><p class="tst-summary line-clamp-3">A Hope School parent who contributed food rations to keep the school alive, Nuwayo saw three children graduate and learned to read and write herself through the school's evening program. Now in Arizona, her advocacy continues.</p><button class="view-story-btn" data-id="12">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="tst-card" data-id="13"><div class="tst-photo-wrap"><img src="http://localhost:3001/uploads/e4h-testimony-13-jeandedieu.png" alt="Jean de Dieu Dusabimana" /></div><div class="tst-body"><div class="tst-name">Jean de Dieu Dusabimana</div><p class="tst-role">Congolese Refugee · Nyabiheke Refugee Camp · Plumber · Member of Refugee Technicians Association</p><p class="tst-summary line-clamp-3">Living in Nyabiheke on less than $5/month in food aid, Jean learned plumbing and changed his life. Now he earns wages on construction sites, supports his family, and advocates loudly for refugee youth to access technical jobs.</p><button class="view-story-btn" data-id="13">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <h2 style="color:#fff;">Be Part of the Story</h2>
+      <p>Your support helps us continue transforming lives through education, engineering, and peace-building.</p>
+      <a href="Donate.html" class="final-cta-btn">Donate Now</a>
+    </section>
+  </main>
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+  <div class="story-modal" id="storyModal">
+    <div class="story-modal-inner">
+      <button class="story-modal-close" id="storyModalClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div class="story-modal-body">
+        <div class="story-modal-head">
+          <img class="story-modal-photo" id="modalPhoto" src="" alt="" />
+          <div><div class="story-modal-name" id="modalName"></div><p class="story-modal-role" id="modalRole"></p></div>
+        </div>
+        <div class="story-modal-intro"><p id="modalIntro"></p></div>
+        <div id="modalSections"></div>
+        <div class="story-modal-sig">— <span id="modalSig"></span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var testimonies = {
+    1: { name:"Pascal Ndayisaba", role:"Hope School First Intake · University of Rwanda, College of Law · USA", image:"http://localhost:3001/uploads/e4h-testimony-01-pascal.png",
+      intro:"Pascal Ndayisaba is one of the earliest students to walk through the doors of Hope School in Gihembe Refugee Camp. When opportunities for refugee youth were scarce and the future felt uncertain, Hope School became the turning point that changed the trajectory of his life.",
+      sections:[
+        { title:"First Intake Graduate", content:"After graduating from the school's first intake, Pascal continued his education at the University of Rwanda, College of Law — a milestone that once felt impossible for a young refugee student. Today, he is a father, a professional, and a contributing member of society living in the United States." },
+        { title:"A Journey of Transformation", content:"Pascal's journey reflects the power of education to break cycles of poverty and displacement. His success is not his alone — it is shared by his family, his community, and everyone who believed in the vision of Hope School.\n\nPascal is one of many Hope School graduates whose lives have been transformed. Across Rwanda, the United States, Canada, and beyond, alumni are now teachers, engineers, nurses, community leaders, and professionals giving back to their families and the world." },
+        { title:"Engineers4Humanity's Legacy", content:"Engineers4Humanity is carrying forward the spirit and mission of Hope School — ensuring that refugee children continue to access education, mentorship, and opportunities that open doors to a brighter future. Pascal's story is proof of what is possible when a community invests in its youth." }
+      ]},
+    2: { name:"Buhanga Silas", role:"Elders Committee Chairperson · Gihembe Refugee Camp · Kentucky, USA", image:"http://localhost:3001/uploads/e4h-testimony-02-buhanga.png",
+      intro:"My name is Buhanga Silas, former Chairperson of the Elders Committee in Gihembe Refugee Camp. Hope School was born during one of the darkest moments in our community. In 2008, when high school support ended, our children were left with no future. Many were orphans, many were extremely poor, and none had any support.",
+      sections:[
+        { title:"How Hope School Was Born", content:"But our youth from Forum Amis de la Paix stood up with courage. They mobilized the entire refugee community. As elders — together with the camp administration — we joined them. We contributed from our own food rations, and with that little money, our youth built classrooms with their own hands. That is how Hope School was born.\n\nHope School welcomed every child without discrimination. Teachers worked without salary. Our youth advocated in Rwandan schools so refugee students could continue their studies. Every child who sat for national exams passed. Many went on to university. Hope School became a miracle." },
+        { title:"When It Closed", content:"When it closed, we felt the loss immediately — the quality of education dropped, discipline weakened, and even elders lost the reading and writing classes we depended on." },
+        { title:"The Weight of Refugee Life", content:"Being a refugee means living in persistent poverty: not enough food, no cooking energy, no land, no collateral for loans, and families breaking under pressure. Elderly people suffer the most. Girls fall into risky behavior because opportunities are limited. Poverty destroys dignity." },
+        { title:"Gratitude to Engineers4Humanity", content:"But I am grateful that Engineers4Humanity, under the leadership of Eric, continues the spirit of Hope School — refugees helping refugees. I knew Eric (Recky) as a courageous youth leader in Gihembe, advocating for children. Today, I am proud of the work he and his team continue to do." },
+        { title:"Messages", content:"My message to Hope School alumni and young generation:\nYou are the fruit of sacrifice. Now become the seeds for the next generation. Support the youth who remain in the camps.\n\nMy message to refugee parents:\nTeach your children values, patience, and culture. Even without land, they can inherit dignity." }
+      ]},
+    3: { name:"Eric Ndayisaba", role:"Director of Business Development, Engineers4Humanity · ALU Graduate · Rwanda", image:"http://localhost:3001/uploads/e4h-testimony-03-eric.png",
+      intro:"My name is Ndayisaba Eric, and I grew up as an orphan in Gihembe Refugee Camp. I had no support, no resources, and no clear future. After completing ordinary level, I had nowhere to go — no school, no job, and no hope.",
+      sections:[
+        { title:"Hope School Opens a Door", content:"Then Hope School opened its doors and changed my life. It welcomed me when I had nothing and gave me the chance to continue my education. Hope School did not just educate me — it saved my future." },
+        { title:"Scholarship to ALU", content:"After graduating, I earned a scholarship to study International Business and Trade at the African Leadership University (ALU). By God's grace, I completed my degree and returned home determined to serve my community." },
+        { title:"Journey with Engineers4Humanity", content:"My journey with Engineers4Humanity began when Eng. Kamanzi posted an opportunity for someone skilled in proposal writing and business development. I reached out immediately. He trusted me, interviewed me, and gave me the chance that transformed my life. I later served as Director of Finance and Administration, and today I continue as Director of Business Development.\n\nAt Engineers4Humanity, I contributed to major projects — schools, hospitals, roads, and youth scholarships — many funded by partners like Expertise France and the World Bank. Even when COVID-19 disrupted operations, the skills I gained opened new doors, allowing me to serve both KF Investment Ltd and Engineers4Humanity." },
+        { title:"Living Proof", content:"Today, I am a husband, a father, and a leader. I am no longer the orphan boy with no future — I am living proof that when a refugee child is given a chance, a skill, a mentor, a community, and a purpose, they can rise. Your support does not just help one child — it transforms generations." },
+        { title:"Message to Refugee Youth", content:"Do not give up. Your situation does not define your destiny. When you rise, lift others with you. If I could rise from Gihembe, you can too." }
+      ]},
+    4: { name:"Ntabareshya Baudouin", role:"Co-Founder & First Headmaster of Hope School · North Carolina, USA", image:"http://localhost:3001/uploads/e4h-testimony-04-ntabareshya.png",
+      intro:"My name is Ntabareshya Baudouin, a Congolese refugee who grew up in Gihembe Refugee Camp. Today, I live in North Carolina, USA with my wife and three children — but my heart remains with the community that shaped me and the school God allowed us to build.",
+      sections:[
+        { title:"Co-Founding Forum Amis de la Paix", content:"In 2008, I helped co-found Forum Amis de la Paix, a youth movement created to restore hope, unity, and purpose among refugee youth. One year later, when high school education for refugees suddenly stopped, Forum made a historic decision: to create our own school — founded by refugees, for refugees." },
+        { title:"Building Hope School from Nothing", content:"I was appointed as co-founder and the first Headmaster of Hope School. We had nothing — no classrooms, no materials, no funding. We started in a church building, borrowing benches and chalkboards. Teachers were university students volunteering their time. Parents later contributed from their food rations so we could buy chalk, notebooks, and give teachers a small incentive." },
+        { title:"100% Pass Rate — Year After Year", content:"Yet despite these impossible conditions, a miracle happened: Hope School achieved a 100% national exam pass rate — year after year. Students from all three refugee camps studied in overcrowded rooms, without electricity or textbooks, but they succeeded. Their discipline and courage were extraordinary.\n\nOver the years, more than 500 students graduated from Hope School. Many went on to university. Many are now teachers, engineers, leaders, and responsible citizens across Rwanda, the USA, Canada, and Europe." },
+        { title:"The Journey Was Not Easy", content:"We struggled to get exam access, school materials, and community support. I faced discouragement, including painful messages from parents that made me question why I had accepted such a heavy responsibility. But with encouragement from colleagues like Eric, I continued — because our children needed us.\n\nHope School shaped me as much as I shaped it. I learned leadership, patience, and how to manage people with compassion. Forum members became like family.\n\nToday, when I visit Gihembe and see the abandoned school buildings, I feel both sadness and pride. Sadness that the school closed — but pride that we built something unforgettable, something that changed lives forever." },
+        { title:"Messages", content:"To Forum members: We still have strength. We still have ideas. Our community still needs us. Let us keep our vision alive. Never give up. Never lose hope.\n\nTo Hope School alumni: The school may have closed, but its spirit lives in you. Lead. Serve. Give back.\n\nTo donors: Support initiatives like Engineers4Humanity. Hope School was more than a school — it was a testimony of what refugees can achieve when they refuse to give up on their children." }
+      ]},
+    5: { name:"Bahati Justine (Mama Condifa)", role:"Hope School Education Fund Leader · Engineers4Humanity Volunteer · Nashville, USA", image:"http://localhost:3001/uploads/e4h-testimony-05-bahati.png",
+      intro:"My name is Bahati Justine, known as Mama Condifa, and I was one of the women leaders who helped build Hope School in Gihembe Refugee Camp. I still remember 2009, when Hope School was only an idea carried by courageous young people who refused to give up on our community. At that time, many of our youth were falling into drugs, early pregnancy, and hopelessness because they had no school and no opportunities.",
+      sections:[
+        { title:"Women Uniting for Education", content:"We refugee women stood beside these young leaders with everything we had. We had no money, but we had faith. We had unity. We had love for our children. We supported teachers with our own food rations because we believed education was the only path to dignity and self-reliance. And Hope School became a miracle. It protected our youth, restored discipline, and gave our children a future. Every child was treated as our own." },
+        { title:"Leadership Roles", content:"As a leader of the Hope School Education Fund and the Women's Refugee Administration, I mobilized mothers, organized meetings, visited families, and later continued serving through Engineers4Humanity. Serving refugees has been my life's calling." },
+        { title:"When Hope School Closed", content:"When Hope School closed, it was a deep loss — not only for youth, but also for elderly people who were learning to read and write through evening programs. Yet we remain grateful to Impact Hope and the Government of Rwanda for helping many children continue their education.\n\nToday, Hope School graduates are teachers, engineers, leaders, and responsible citizens across Rwanda, the USA, Canada, and Europe. Their success proves that refugee-led initiatives can transform lives. But our work is not finished. Refugee women still suffer the most from poverty, unemployment, and lack of opportunities." },
+        { title:"Messages", content:"To the youth — especially girls: Believe in yourselves. Respect yourselves. Protect your future.\n\nTo the refugee community: Let us continue supporting one another. Let us be courageous.\n\nAnd to Eric, one of the courageous young founders of Forum and Hope School, now leading Engineers4Humanity — I am proud of you. Our community still needs people like you. Hope School may have closed, but its spirit lives on in every young person who chooses education, dignity, and service." }
+      ]},
+    6: { name:"Kamanzi Kibibi Mutagomwa", role:"Builder & Site Foreman · Vocational Training Mentor · Canada", image:"http://localhost:3001/uploads/e4h-testimony-06-kibibi.png",
+      intro:"My name is Kamanzi Kibibi Mutagomwa. I was born in the Democratic Republic of Congo and grew up in Gihembe Refugee Camp in Rwanda. Today, I am resettled in Canada, but my journey began in deep poverty. Before learning a skill, my life felt empty — I could not even feed or dress myself properly.",
+      sections:[
+        { title:"Construction Training Changes Everything", content:"Everything changed in 2000, when Jesuit Refugee Service trained me in construction for six months in Gihembe Refugee Camp. That training transformed my life. By 2005, I began working as a builder on different construction sites. For the first time, I could support myself — and eventually my wife and six children. My wage became the foundation of our survival. I paid school fees, bought cows, and stopped depending on aid. Instead, I began helping others." },
+        { title:"Training Hope School Graduates", content:"In 2013, while working as a foreman for Eng. Kamanzi Eric on a construction project in Kigali, he approached me with a request that changed many lives. He said, 'Our Hope School graduates are suffering. They finished high school, but they have no jobs and no college opportunity available. Can we bring them to the site and train them?'\n\nI accepted immediately — because I wanted to give back to my community. We rented a house for the students, brought 10 of them to Kigali, and I took responsibility for their training and wellbeing. We taught them the basics — bricklaying, steel fixing, carpentry, concrete work." },
+        { title:"Poverty Turned into Possibility", content:"Slowly, their confidence grew. After gaining enough skills, we helped them secure jobs across Kigali. Their lives changed. They began supporting their families back in the camp. Poverty turned into possibility.\n\nI am proud that I was part of this journey — and grateful for Eric's vision. What he started in 2013 is exactly what Engineers4Humanity continues today: empowering refugees through practical skills, mentorship, and real employment pathways.\n\nI started as a builder's mate and grew to site foreman and independent sub-contractor. And even now in Canada, the skills I learned continue to sustain me. I have trained many young refugees who are now bricklayers, iron benders, carpenters, welders, electricians, and plumbers." },
+        { title:"Messages", content:"To refugee youth: Learn a skill. Be patient. Work hard. Your situation does not define your future. I started from the lowest position and grew into a team leader. You can rise too.\n\nTo donors: Vocational training is one of the best ways for social-economic transformation. One toolkit, one training, one opportunity can lift an entire family out of poverty. This is the heart of Engineers4Humanity: Teach a skill. Build dignity. Create self-reliance." }
+      ]},
+    7: { name:"Muhire Samuel-Claudio", role:"Hope School Graduate · Beneficiary of Engineers4Humanity Vocational Training · Currently Living in Finland", image:"http://localhost:3001/uploads/e4h-testimony-07-muhire.png",
+      intro:"My name is Muhire Samuel, born in the Democratic Republic of Congo in 1996. My family fled to Rwanda due to war in DRC, and I spent my entire childhood in Gihembe Refugee Camp. Life was extremely difficult. When I finished at ordinary level, my education almost ended because my family was too poor to support me.",
+      sections:[
+        { title:"Hope School Saves His Future", content:"But God opened a door. I was admitted to Hope School, where high school education was free from Senior 4 to Senior 6. Hope School saved my future. The teachers — high school graduates and university students volunteering their time — shaped my discipline, values, and confidence. Later, they even helped me find construction jobs in Kigali so I could survive." },
+        { title:"Vocational Training in 2013", content:"In 2013, after graduating in History-Economics-Geography, Eng. Kamanzi Eric came to us with a life-changing idea: 'HEG alone will not help you. Come learn practical skills.' He took me and nine other students to his construction site for vocational training. We had no experience, but he believed in us. He trained us, supported us, and gave us a chance. That training became the turning point of my life." },
+        { title:"From 2,000 to 4,000 Francs a Day", content:"My first job paid 2,000 Rwandan francs a day. After eight months, I was promoted to technician and earned 4,000 francs a day — more than my family received in monthly food assistance. These numbers may seem small, but to a refugee youth in 2013, they meant survival, dignity, and independence. I could pay rent, support myself, and send money home to my mother in the camp." },
+        { title:"Resettlement to Finland", content:"Eighteen months of construction work changed everything. Eventually, my family and I were selected for resettlement, and today we are living in Finland. I work as a Kinyarwanda and Kiswahili translator, and I hope to finish my studies so I can continue helping my community. But I will never forget where I came from — or who helped me rise." },
+        { title:"Messages", content:"To refugee youth: Embrace education. Embrace vocational training. These skills will help you survive anywhere in the world. You do not need a master's degree to succeed. A skill can feed you, sustain you, and open doors you never imagined. Work hard. Persevere.\n\nTo Hope School alumni and the global diaspora: Give back. Support Engineers4Humanity. They are continuing the mission that changed my life. Someone invested in me — now it is our turn to invest in the next generation." }
+      ]},
+    8: { name:"Uwimana Louise", role:"Hope School Graduate · Hairdressing & Bakery Technician · Bugesera, Rwanda", image:"http://localhost:3001/uploads/e4h-testimony-08-uwimana.png",
+      intro:"My name is Uwimana Louise, and I grew up in Gihembe Refugee Camp as an orphan raising my little sister alone. After graduating from Hope School, I faced the same reality many refugee girls still face today — no job, no opportunities, and no hope. Every day was a struggle to survive.",
+      sections:[
+        { title:"Hairdressing Training at Rwabuye", content:"Everything changed when Frère Malisaba Straton and Engineers4Humanity gave me an opportunity. I was selected for a three-month vocational training program at Rwabuye Vocational Training Center in Huye. I chose hairdressing — and that is where I discovered my talent and my confidence.\n\nAfter training, I began earning small income as a casual worker. Even without a full toolkit, I managed to support myself and my younger sister." },
+        { title:"Bakery Training and Recognition", content:"Later, Engineers4Humanity gave me a second chance: bakery training at La Tayole in Kigali. I graduated with excellent performance and was hired to help train the next group of students. That moment gave me dignity. It gave me a future." },
+        { title:"A New Life", content:"Today, I am a proud mother living in Bugesera District, working with my husband to sustain our family. I am no longer the girl who had nothing — I am a skilled woman, a provider, and a role model in my community.\n\nBut many refugee girls are still where I once was — trapped in unemployment, poverty, and hopelessness. Not because they lack talent, but because they lack opportunity." },
+        { title:"Messages", content:"To donors and partners: Refugee youth need vocational training, short courses, and toolkits. A simple hairdryer, a pair of scissors, or a baking set can change a girl's life forever. This is not charity — this is sustainable transformation.\n\nTo Hope School Alumni: Let us give back. Engineers4Humanity changed our lives — now it is our turn to lift the next generation.\n\nTo young refugee girls: Do not be afraid. You are capable. Take every opportunity. Your future is bigger than the camp you live in." }
+      ]},
+    9: { name:"Maniraguha Chance", role:"Hairdressing Technician · Engineers4Humanity Vocational Training · Arizona, USA", image:"http://localhost:3001/uploads/e4h-testimony-09-maniraguha.png",
+      intro:"My name is Maniraguha Chance, and I grew up in Gihembe Refugee Camp, later relocated to Mahama. Today, I am resettled in Arizona, USA, but my journey began in deep hardship. Like many refugee youth, I completed high school with dreams — but no opportunities. After graduation, life became a cycle of unemployment, poverty, and hopelessness. You depend on your parents, yet they have nothing to give.",
+      sections:[
+        { title:"One Opportunity Changes Everything", content:"But everything changed when Frère Malisaba Straton and Engineers4Humanity gave me a chance. I was selected for vocational training in hairdressing at Rwabuye Vocational Training Center. I never imagined this path, but that opportunity transformed my life." },
+        { title:"Skill, Career, and Dignity", content:"I gained skill, a career, and dignity. Hairdressing became my daily work. I earned a living, supported myself, and helped my mother and siblings. I no longer depended on my family — I supported them in the refugee camp." },
+        { title:"From Rwanda to Arizona", content:"Even now in Arizona, the skills I learned in Rwanda continue to sustain me. They gave me confidence, independence, and a future.\n\nBut many refugee youths still face huge challenges — no toolkits, no start-up capital, no equipment, and no opportunities to grow. A simple hair clipper or dryer can change a young refugee's life forever." },
+        { title:"Messages", content:"To refugee youth: Stop drugs. Take education seriously. Believe in yourself. Work hard. Your situation does not define your ability.\n\nI am deeply grateful to Frère Malisaba and to Eric, our brother and role model, whose support and leadership continue to lift refugee youth.\n\nTo donors: Please support vocational training and toolkits. One opportunity can change a life — I am living proof.\n\nTo fellow refugees: never give up. You did not choose to be a refugee, but you can choose your future." }
+      ]},
+    10: { name:"Mukeshimana Angelique", role:"Congolese Refugee · Nyabiheke Refugee Camp · Construction Trainee · Youth Advocate for Girls' Empowerment", image:"http://localhost:3001/uploads/e4h-testimony-10-mukeshimana.png",
+      intro:"My name is Mukeshimana Angelique, a Congolese refugee living in Nyabiheke Refugee Camp. Refugee life is extremely difficult — we live in poverty, we depend on limited food assistance, and most of the time, what we receive cannot meet even our basic needs. For young people, especially girls, the challenges are even heavier.",
+      sections:[
+        { title:"The Reality for Refugee Girls", content:"In Nyabiheke, many youth finish high school, but after graduation they stay at home because there are no jobs. Without college or vocational training, we cannot compete in the job market. Refugee girls face even deeper struggles — during our monthly periods, we lack sanitary pads, clean water, and privacy. Poverty pushes some girls into dangerous situations, not because they want to — but because they have no choice." },
+        { title:"Construction Skills Break the Mold", content:"I am one of the few girls who received an opportunity. I learned construction skills, and that changed my life. Whenever there is construction work in the camp, I am hired. I earn money that helps me and my mother. I buy clothes, shoes, and food. I even pay school fees for my younger brother. My job gave me dignity and independence." },
+        { title:"Proving Culture Wrong", content:"But being a girl in construction is not easy. Many people believe girls cannot do this work — that it is 'against culture.' But I proved them wrong. What boys can do, girls can do too. We only need someone to believe in us and give us a chance.\n\nMy contribution to my family and community is big. When I work, I reduce unemployment. I support my siblings. I inspire other girls. I show them that a refugee girl can rise." },
+        { title:"Messages", content:"To refugee youth: Believe in yourselves. Work hard. Join cooperatives. Support each other. Poverty is heavy, but together we can overcome it.\n\nTo donors and partners: Please support refugee youth — especially girls. We need scholarships, vocational training, and financial support for small cooperatives. Your help can protect girls from exploitation and give them a future.\n\nThis is why the work of Engineers4Humanity is so important — they give youth skills, dignity, and real opportunities to escape poverty." }
+      ]},
+    11: { name:"Mukamutara Alvera", role:"Widow · Refugee Mother · Beneficiary of Engineers4Humanity Education Support · Mahama Refugee Camp", image:"http://localhost:3001/uploads/e4h-testimony-11-mukamutara.png",
+      intro:"My name is Mukamutara Alvera, a widow and refugee mother who lived in Gihembe and now in Mahama Refugee Camp. Life in the camp is extremely difficult — poverty follows us every day, and as a mother with no education and no job, you feel powerless to change your children's future.",
+      sections:[
+        { title:"The Miracle Call", content:"But one day, God sent me a miracle through Frère Malisaba and Engineers4Humanity. I received a call from Bahati Justine (Mama Condifa) telling me that someone was looking for children who had no support to continue high school. In that moment, hope rose inside me. I felt that God had remembered my family." },
+        { title:"A Son's Transformation", content:"Because of Engineers4Humanity, my son completed high school in Construction. Today, he is earning money as a young technician. He supports himself. He supports me. He supports his siblings.\n\nThis is what opportunity does — it transforms a family." },
+        { title:"The Reality of Camp Life", content:"Life in the refugee camp remains hard. We depend on the small monthly support from the World Food Programme, which finishes in two weeks. As refugee women, getting a job is almost impossible. We rely on group savings just to buy clothes for our children. We face poverty, overcrowding, food insecurity, and limited opportunities.\n\nThis is why the work of Engineers4Humanity is so important. Education and vocational training are the tools that break the cycle of poverty." },
+        { title:"Messages", content:"I am grateful to the Government of Rwanda, UNHCR, and all donors who support us. But until peace returns to the Democratic Republic of Congo, we need continued support to live with dignity.\n\nTo donors: Please continue supporting refugee education and vocational training. Your help does not only change one life — it transforms generations.\n\nTo refugee youth: Do not lose hope. Work hard. Be disciplined. Take every opportunity. And when you succeed, give back to your community." }
+      ]},
+    12: { name:"Nuwayo Gahindo", role:"Parent & Beneficiary of Hope School · Arizona, USA · Advocate for Refugee Education & Vocational Training", image:"http://localhost:3001/uploads/e4h-testimony-12-nuwayo.png",
+      intro:"My name is Nuwayo Gahindo, now living in Arizona, USA, and I am one of the parents and beneficiaries of Hope School in Gihembe Refugee Camp. Hope School was not just a school — it was a lifeline, created by refugees for refugees. It was built through unity, sacrifice, and the courage of our youth from the Forum.",
+      sections:[
+        { title:"Parents Giving Food Rations for Education", content:"I remember when we parents agreed to give a portion of our food rations so our children could have school materials and teachers could receive a small incentive. We gave with pride because we believed in our children — and Hope School proved us right.\n\nEvery child who sat for national exams passed. Hope School protected our youth from drug abuse, hopelessness, and idleness. It gave them purpose and a future." },
+        { title:"Three Graduates and Personal Growth", content:"Three of my own children graduated from Hope School, and today they have occupations because of the foundation they received there. Hope School even changed my life — I attended the evening literacy program and learned to read and write for the first time. That gave me dignity as a mother." },
+        { title:"Continuing Challenges", content:"Life in the refugee camp remains extremely difficult — poverty, overcrowding, lack of energy, limited water, and no access to higher education or vocational tools. Refugee youth, especially girls and women, need skills, toolkits, and start-up capital to build their future.\n\nI am grateful that one of my sons received vocational training through the support of Frère Malisaba and Engineers4Humanity. Today, he sustains himself, supports me, and has dignity. This is what vocational training can do." },
+        { title:"Messages", content:"To donors: Please continue supporting refugee education, vocational training, toolkits, and women's empowerment. This is not charity — this is empowerment.\n\nTo refugee youth: Be strong, work hard, be thankful, and give back to your community. You did not choose to be a refugee — but you can choose your future." }
+      ]},
+    13: { name:"Jean de Dieu Dusabimana", role:"Congolese Refugee · Nyabiheke Refugee Camp · Plumber · Member of Refugee Technicians Association", image:"http://localhost:3001/uploads/e4h-testimony-13-jeandedieu.png",
+      intro:"My name is Jean de Dieu Dusabimana, a Congolese refugee living in Nyabiheke Refugee Camp. Life as a refugee is extremely difficult — especially when you do not have a job. Many people here survive only on food assistance from the World Food Programme, which is now less than $5 per month per person. You cannot live on that. Poverty becomes a daily battle.",
+      sections:[
+        { title:"Plumbing Skills Change His Life", content:"Before I learned plumbing, my life was the same. I had no income and no hope. But when I gained plumbing skills, everything changed. Today, I work on different construction sites as a casual plumber. The jobs are not permanent, but they give me income. I can buy clothes, shoes, and food for my children. I support my family with dignity." },
+        { title:"Skills Speak Louder Than Status", content:"Sometimes employers hesitate when they see my refugee ID — but when they test my skills, they hire me because I am competent. Skills speak louder than status." },
+        { title:"Barriers Facing Refugee Youth", content:"But not all refugee youth are as lucky. Most remain unemployed because there are very few job opportunities in the camp, many jobs are given to Rwandan citizens, refugees struggle to obtain ID documents, and youth have no access to college or university.\n\nThis is why I call on UNHCR, the Government of Rwanda, and contractors: Give more construction and technical jobs to refugees. We are capable. We have skills. We deserve the chance to work and support our families.\n\nVocational training changed my life — and it can change thousands more. Many technicians in our camp now earn enough to invest in agriculture, rent farmland, and reduce their dependence on aid. Skills create dignity. Skills create independence. Skills create hope." },
+        { title:"Messages", content:"To refugee youth: Join vocational training. Join our technicians' association. Do not wait for donations — they will keep you in poverty forever. With skills, you can work anywhere and build a better future.\n\nTo donors: We need more organizations like Engineers4Humanity to change the life of our community." }
+      ]}
+  };
+
+  function sparkleSvg() {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>';
+  }
+
+  function initStoryModal() {
+    var modal = document.getElementById('storyModal');
+    var modalPhoto = document.getElementById('modalPhoto');
+    var modalName = document.getElementById('modalName');
+    var modalRole = document.getElementById('modalRole');
+    var modalIntro = document.getElementById('modalIntro');
+    var modalSections = document.getElementById('modalSections');
+    var modalSig = document.getElementById('modalSig');
+
+    function openStory(id) {
+      var s = testimonies[id];
+      if (!s) return;
+      modalPhoto.src = s.image;
+      modalPhoto.alt = s.name;
+      modalName.textContent = s.name;
+      modalRole.textContent = s.role;
+      modalIntro.textContent = s.intro;
+      modalSig.textContent = s.name;
+      modalSections.innerHTML = '';
+      s.sections.forEach(function (sec) {
+        var div = document.createElement('div');
+        div.className = 'story-modal-section';
+        var h3 = document.createElement('h3');
+        h3.innerHTML = sparkleSvg() + sec.title;
+        var p = document.createElement('p');
+        p.textContent = sec.content;
+        div.appendChild(h3);
+        div.appendChild(p);
+        modalSections.appendChild(div);
+      });
+      modal.classList.add('open');
+      modal.scrollTop = 0;
+    }
+
+    document.querySelectorAll('.view-story-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { openStory(btn.getAttribute('data-id')); });
+    });
+
+    function closeModal() { modal.classList.remove('open'); }
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.story-modal-inner').addEventListener('click', function (e) { e.stopPropagation(); });
+    document.getElementById('storyModalClose').addEventListener('click', closeModal);
+  }
+
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+    toggle.addEventListener('click', function () { if (sidebar.classList.contains('open')) close(); else open(); });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+    sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate').forEach(function (l) { l.addEventListener('click', close); });
+  }
+
+  function initMobileAccordions() {
+    document.querySelectorAll('.mob-summary').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) { btn.classList.remove('open'); panel.style.maxHeight = '0px'; panel.style.opacity = '0'; }
+        else { btn.classList.add('open'); panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px'; panel.style.opacity = '1'; }
+      });
+    });
+  }
+
+  function initHashScroll() {
+    if (window.location.hash) {
+      var el = document.getElementById(window.location.hash.slice(1));
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
+  }
+
+  function initFooterYear() { document.getElementById('footerYear').textContent = new Date().getFullYear(); }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initStoryModal();
+    initHashScroll();
+  });
+})();
+</script>
+</body>
+</html>

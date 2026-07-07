@@ -5,6 +5,10 @@ class CreateComponentDto {
     name;
     tag;
     html;
+    modalHtml;
+    type;
+    schema;
+    collectionId;
 }
 exports.CreateComponentDto = CreateComponentDto;
 //# sourceMappingURL=create-component.dto.js.map

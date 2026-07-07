@@ -15,6 +15,7 @@ const prisma_service_1 = require("../../prisma/prisma.service");
 const AdmZip = require("adm-zip");
 const fs = require("fs");
 const path = require("path");
+const collection_expansion_1 = require("../../common/collection-expansion");
 const VOID_TAGS = new Set([
     'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input',
     'link', 'meta', 'param', 'source', 'track', 'wbr',
@@ -29,8 +30,9 @@ function rewritePageLinks(val, slugs) {
     return val.replace(/^\/([\w-]+)$/, (_m, slug) => slugs.has(slug) ? `./${slug}.html` : _m);
 }
 function buildAttrs(el, slugs) {
-    const SKIP = new Set(['id', 'tag', 'text', 'children', 'innerHTML', 'class', 'style', 'assetRef', '_frameType', '_frameName']);
+    const SKIP = new Set(['id', 'tag', 'text', 'children', 'innerHTML', 'class', 'style', 'assetRef', '_frameType', '_frameName', '_collection', '_modalTarget', '_modalClose']);
     const parts = [];
+    parts.push(`data-el-id="${el.id}"`);
     if (el.class)
         parts.push(`class="${el.class}"`);
     if (el.style && Object.keys(el.style).length) {
@@ -38,6 +40,12 @@ function buildAttrs(el, slugs) {
             .map(([k, v]) => `${camelToKebab(k)}:${rewriteAssetUrls(String(v))}`)
             .join(';');
         parts.push(`style="${css}"`);
+    }
+    if (typeof el._modalTarget === 'string') {
+        parts.push(`onclick="event.preventDefault();var m=document.querySelector('[data-el-id=&quot;${el._modalTarget}&quot;]');if(m&&m.showModal)m.showModal();"`);
+    }
+    if (el._modalClose === true) {
+        parts.push(`onclick="var d=this.closest('dialog');if(d)d.close();"`);
     }
     for (const [k, v] of Object.entries(el)) {
         if (SKIP.has(k))
@@ -147,11 +155,37 @@ let ExportService = class ExportService {
         const uploadsDir = path.join(process.cwd(), 'Uploads');
         const safeName = (site.name || 'site').replace(/[^a-z0-9]/gi, '_');
         const slugSet = new Set(pages.map(p => p.slug));
+        const [collectionsRaw, componentsRaw] = await Promise.all([
+            this.prisma.collection.findMany({
+                where: { siteId },
+                include: { items: { orderBy: { order: 'asc' } } },
+            }),
+            this.prisma.component.findMany({ where: { siteId, type: 'dynamic' } }),
+        ]);
+        const collectionsById = new Map(collectionsRaw.map(c => [
+            c.id,
+            {
+                id: c.id,
+                fields: c.fields,
+                items: c.items.map(i => ({ data: i.data })),
+            },
+        ]));
+        const componentsById = new Map(componentsRaw.map(c => [
+            c.id,
+            {
+                id: c.id,
+                html: (Array.isArray(c.html) ? c.html : []),
+                modalHtml: (Array.isArray(c.modalHtml) ? c.modalHtml : null),
+            },
+        ]));
+        const expandedByPageId = new Map(pages.map(p => [
+            p.id,
+            (0, collection_expansion_1.expandCollectionNodes)((Array.isArray(p.html) ? p.html : []), collectionsById, componentsById),
+        ]));
         const allAssetFiles = new Set();
         const assetUrlRe = /\/uploads\/([^'") \t\n]+)/g;
         for (const page of pages) {
-            const els = (Array.isArray(page.html) ? page.html : []);
-            collectUploadedFiles(els).forEach(f => allAssetFiles.add(f));
+            collectUploadedFiles(expandedByPageId.get(page.id) ?? []).forEach(f => allAssetFiles.add(f));
         }
         for (const text of [globalCSS, globalJS]) {
             let m;
@@ -160,7 +194,7 @@ let ExportService = class ExportService {
                 allAssetFiles.add(m[1]);
         }
         const pageStyleBlocks = pages
-            .flatMap(p => (Array.isArray(p.html) ? p.html : []))
+            .flatMap(p => expandedByPageId.get(p.id) ?? [])
             .filter(el => el.tag === 'style')
             .map(el => (el.text ?? '').trim())
             .filter(Boolean)
@@ -170,7 +204,7 @@ let ExportService = class ExportService {
         for (const page of pages) {
             const isIndex = page.isLanding === true || page.slug === 'home' || page.slug === 'index';
             const filename = isIndex ? 'index.html' : `${page.slug}.html`;
-            const html = buildHtmlDoc({ title: page.title, description: page.description, html: page.html }, slugSet, globalCSS, globalJS);
+            const html = buildHtmlDoc({ title: page.title, description: page.description, html: expandedByPageId.get(page.id) ?? [] }, slugSet, globalCSS, globalJS);
             zip.addFile(filename, Buffer.from(html, 'utf8'));
         }
         if (siteCss.trim())

@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Our Team</title>
+
+<!-- Same page-scoped font override as WhoWeAre.html/OurStory.html -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --navy: #0A1628; --bg: #F0F7FF; --bg-alt: #E1EEF9; --muted: #3A5068;
+  --sky-50: #f0f9ff; --sky-300: #7dd3fc; --sky-400: #38bdf8; --sky-500: #0ea5e9;
+  --sky: #0284c7; --sky-dark: #075985; --sky-700: #0369a1; --sky-900: #0c4a6e;
+  --emerald-300: #6ee7b7; --emerald-400: #34d399; --emerald-500: #10b981;
+  --emerald: #059669; --emerald-dark: #047857; --emerald-800: #065f46; --emerald-900: #064e3b;
+  --green: #16a34a; --green-500: #22c55e; --green-50: #f0fdf4; --green-100: #dcfce7;
+  --green-dark: #15803d; --green-darker: #166534;
+  --purple: #9333ea; --purple-100: #f3e8ff;
+  --yellow-500: #eab308; --yellow-100: #fef9c3; --yellow-600: #ca8a04;
+  --blue-500: #3b82f6; --blue-100: #dbeafe; --blue-600: #2563eb;
+  --orange-500: #f97316; --orange-100: #ffedd5; --orange-600: #ea580c;
+  --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-600: #4b5563; --gray-700: #374151;
+  --gray-800: #1f2937; --gray-900: #111827; --slate-50: #f8fafc;
+  --red-100: #fee2e2; --red-500: #ef4444; --red-600: #dc2626;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: #fff; }
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 32px; line-height: 1.1; margin: 0; }
+h3 { font-size: 20px; line-height: 1.2; margin: 0; }
+h4 { font-size: 16px; font-weight: 600; margin: 0; }
+p  { font-size: 16px; line-height: 1.75; margin: 0; }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.page { position: relative; overflow: hidden; }
+
+/* CHROME — NAVBAR (copied verbatim from Home.html) */
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+.drop-menu { position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100); padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px); transition: all .25s; transform-origin: top; z-index: 60; }
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+.btn-donate { display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap; }
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+.nav-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55; }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-sidebar { position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto; transition: right .3s ease-in-out; }
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple); }
+.mob-donate { display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+@media (min-width: 1024px) { .nav-inner { padding: 0 24px; } .nav-links { display: flex; } .btn-donate { display: inline-block; } .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; } }
+@media (min-width: 1280px) { .nav-links { font-size: 14px; } .nav-item, .drop-btn { padding: 10px 16px; } }
+
+/* CHROME — FOOTER (copied verbatim) */
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+@media (min-width: 640px) { .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; } }
+@media (min-width: 1024px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; } .footer-bottom { padding: 24px 64px; } }
+
+/* CHROME — WHATSAPP BUTTON (copied verbatim) */
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+/* CHROME — PAGE HEADER BANNER (copied verbatim) */
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-size: 34px; font-weight: 300; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* ══════════════════════════════════════════════════════════════
+   TEAM GRID + MODAL
+   ══════════════════════════════════════════════════════════════ */
+.team-section { padding: 60px 24px; background: #fff; }
+.team-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+.team-card { background: #fff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.1); overflow: hidden; border: 2px solid var(--gray-100); transition: all .3s; }
+.team-card:hover { box-shadow: 0 25px 50px rgba(0,0,0,.18); border-color: var(--sky); }
+.team-photo-wrap { height: 256px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.team-photo-wrap img { width: 256px; height: 256px; border-radius: 50%; object-fit: cover; object-position: top; box-shadow: 0 10px 20px rgba(0,0,0,.15); }
+.team-info { padding: 24px; }
+.team-name { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+.team-name .cred { font-size: 18px; color: var(--sky); }
+.team-title { font-size: 14px; color: var(--gray-600); margin-bottom: 16px; }
+.team-actions { display: flex; gap: 8px; }
+.view-profile-btn { flex: 1; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 10px 16px; border-radius: 8px; font-weight: 600; font-size: 14px; border: none; cursor: pointer; transition: opacity .2s; }
+.view-profile-btn:hover { opacity: .9; }
+.linkedin-btn { background: var(--gray-100); color: var(--gray-700); padding: 10px; border-radius: 8px; transition: background .2s; display: flex; align-items: center; justify-content: center; }
+.linkedin-btn:hover { background: var(--gray-100); filter: brightness(.95); }
+.linkedin-btn svg { width: 20px; height: 20px; }
+
+@media (min-width: 768px) { .team-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .team-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1280px) { .team-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.team-modal { position: absolute; inset: 0; z-index: 70; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.75); }
+.team-modal.open { display: flex; }
+.team-modal-inner { position: relative; background: #fff; border-radius: 16px; max-width: 640px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.team-modal-close { position: absolute; top: 16px; right: 16px; background: var(--gray-900); color: #fff; padding: 8px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
+.team-modal-close:hover { background: var(--gray-700); }
+.team-modal-close svg { width: 24px; height: 24px; }
+.team-modal-body { padding: 32px; }
+.team-modal-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; margin-bottom: 32px; }
+.team-modal-photo { width: 160px; height: 160px; border-radius: 50%; object-fit: cover; object-position: top; border: 4px solid var(--sky); box-shadow: 0 15px 30px rgba(0,0,0,.2); }
+.team-modal-name { font-size: 26px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+.team-modal-name .cred { font-size: 22px; color: var(--sky); }
+.team-modal-title { font-size: 18px; color: var(--gray-600); margin-bottom: 16px; }
+.team-modal-linkedin { display: inline-flex; align-items: center; gap: 8px; background: var(--sky); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; transition: background .2s; }
+.team-modal-linkedin:hover { background: var(--sky-700); }
+.team-modal-linkedin svg { width: 20px; height: 20px; }
+.team-modal-bio { background: var(--gray-50); padding: 24px; border-radius: 12px; border-left: 4px solid var(--green); }
+.team-modal-bio h3 { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+.team-modal-bio p { color: var(--gray-700); white-space: pre-line; }
+.team-modal-meta { margin-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.team-modal-meta-box { padding: 16px; border-radius: 8px; text-align: center; }
+.team-modal-meta-box.sky { background: var(--sky-50); }
+.team-modal-meta-box.green { background: var(--green-50); }
+.team-modal-meta-label { font-size: 14px; color: var(--gray-600); margin-bottom: 4px; }
+.team-modal-meta-val { font-weight: 600; color: var(--gray-900); text-transform: capitalize; }
+
+@media (min-width: 768px) { .team-modal-head { flex-direction: row; text-align: left; align-items: flex-start; } }
+
+.final-cta { padding: 60px 24px; background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; }
+.final-cta h2 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 20px; }
+.final-cta p { font-size: 18px; opacity: .95; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-btn { display: inline-block; background: #fff; color: var(--sky); padding: 16px 40px; border-radius: 8px; font-weight: 700; font-size: 17px; box-shadow: 0 15px 30px rgba(0,0,0,.2); transition: background .2s; }
+.final-cta-btn:hover { background: var(--gray-100); }
+</style>
+</head>
+<body>
+<div class="page">
+  <main>
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Our Team" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Our Team</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="ExecutiveTeam.html" class="current">Our Team</a></div>
+      </div>
+    </div>
+
+    <section class="team-section">
+      <div class="team-grid">
+        <div class="team-card" data-id="1"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-1.png" alt="Eric Kamanzi" /></div><div class="team-info"><div class="team-name">Eric Kamanzi<span class="cred">, PMP, PE, MSc</span></div><p class="team-title line-clamp-2">Founder &amp; Chief Executive Officer</p><div class="team-actions"><button class="view-profile-btn" data-id="1">View Profile</button><a href="https://www.linkedin.com/in/eric-kamanzi-pmp/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="2"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-2.png" alt="Theophile Karegesa Kivuye" /></div><div class="team-info"><div class="team-name">Theophile Karegesa Kivuye<span class="cred">, MEng</span></div><p class="team-title line-clamp-2">Board Vice Chair | Engineering Program</p><div class="team-actions"><button class="view-profile-btn" data-id="2">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="3"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-3.png" alt="Frere Straton Malisaba" /></div><div class="team-info"><div class="team-name">Frere Straton Malisaba<span class="cred">, M.Ed</span></div><p class="team-title line-clamp-2">Board Vice Chair | Education Program</p><div class="team-actions"><button class="view-profile-btn" data-id="3">View Profile</button><a href="BoardMembers.html#gallery" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="5"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-5.png" alt="Fabrice Kayisire" /></div><div class="team-info"><div class="team-name">Fabrice Kayisire<span class="cred">, PE</span></div><p class="team-title line-clamp-2">Country Director</p><div class="team-actions"><button class="view-profile-btn" data-id="5">View Profile</button><a href="https://www.linkedin.com/in/fabrice-kayisire-94613a98/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="6"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-6.png" alt="Enock Nkurunziza" /></div><div class="team-info"><div class="team-name">Enock Nkurunziza</div><p class="team-title line-clamp-2">Chief of Operations</p><div class="team-actions"><button class="view-profile-btn" data-id="6">View Profile</button><a href="https://www.linkedin.com/in/enock-nkurunziza/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="10"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-10.jpeg" alt="Gentille Kamanzi" /></div><div class="team-info"><div class="team-name">Gentille Kamanzi</div><p class="team-title line-clamp-2">Director of Finance and Administration</p><div class="team-actions"><button class="view-profile-btn" data-id="10">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="7"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-7.png" alt="Emmanuel Sebagisha" /></div><div class="team-info"><div class="team-name">Emmanuel Sebagisha<span class="cred">, M.Ed</span></div><p class="team-title line-clamp-2">Director of Education Program</p><div class="team-actions"><button class="view-profile-btn" data-id="7">View Profile</button><a href="https://www.linkedin.com/in/emmanuel-sebagisha-352532193/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="8"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-8.jpeg" alt="Eng. Eric Cyubahiro" /></div><div class="team-info"><div class="team-name">Eng. Eric Cyubahiro</div><p class="team-title line-clamp-2">Director of Engineering Program</p><div class="team-actions"><button class="view-profile-btn" data-id="8">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="13"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-13.png" alt="Eric Ndayisaba" /></div><div class="team-info"><div class="team-name">Eric Ndayisaba</div><p class="team-title line-clamp-2">Director of Business Development</p><div class="team-actions"><button class="view-profile-btn" data-id="13">View Profile</button><a href="https://www.linkedin.com/in/eric-ndayisaba/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="20"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-20.png" alt="Eng. Alex Rukamirwa" /></div><div class="team-info"><div class="team-name">Eng. Alex Rukamirwa</div><p class="team-title line-clamp-2">Director of Public Health Engineering</p><div class="team-actions"><button class="view-profile-btn" data-id="20">View Profile</button><a href="https://www.linkedin.com/in/rukamirwa-alexis-b448b9213/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="9"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-9.png" alt="Mukaneza Jacqueline" /></div><div class="team-info"><div class="team-name">Mukaneza Jacqueline</div><p class="team-title line-clamp-2">Chief of Accounting</p><div class="team-actions"><button class="view-profile-btn" data-id="9">View Profile</button><a href="https://www.linkedin.com/in/mukaneza-jacqueline-b5778b29b/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="21"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-21.png" alt="Vianney Mutete" /></div><div class="team-info"><div class="team-name">Vianney Mutete</div><p class="team-title line-clamp-2">Director of Youth Leadership &amp; Mentorship</p><div class="team-actions"><button class="view-profile-btn" data-id="21">View Profile</button><a href="https://www.linkedin.com/in/vianney-mutete-73302b263/?skipRedirect=true" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="29"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-29.png" alt="Theoneste Habimana" /></div><div class="team-info"><div class="team-name">Theoneste Habimana<span class="cred">, PMP, QS</span></div><p class="team-title line-clamp-2">Director of Planning &amp; Monitoring Valuations</p><div class="team-actions"><button class="view-profile-btn" data-id="29">View Profile</button><a href="https://www.linkedin.com/in/habi-theo-pmp-qs-ur23/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="22"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-22.png" alt="Delice Kiracunda" /></div><div class="team-info"><div class="team-name">Delice Kiracunda</div><p class="team-title line-clamp-2">Director of Girl &amp; Women Engagement</p><div class="team-actions"><button class="view-profile-btn" data-id="22">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="30"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-30.png" alt="Bosco S. Rusine" /></div><div class="team-info"><div class="team-name">Bosco S. Rusine</div><p class="team-title line-clamp-2">Director of Research, Innovation, and University Partnership</p><div class="team-actions"><button class="view-profile-btn" data-id="30">View Profile</button><a href="https://www.linkedin.com/in/bosco-rusine-b21466171/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="23"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-23.png" alt="Kalisa Jacques" /></div><div class="team-info"><div class="team-name">Kalisa Jacques</div><p class="team-title line-clamp-2">Director of Media &amp; Marketing</p><div class="team-actions"><button class="view-profile-btn" data-id="23">View Profile</button><a href="https://www.linkedin.com/in/kalisa-j-0421b62b8/?originalSubdomain=be" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="28"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-28.png" alt="Andy Bayingana" /></div><div class="team-info"><div class="team-name">Andy Bayingana</div><p class="team-title line-clamp-2">Director of Art &amp; Storytelling</p><div class="team-actions"><button class="view-profile-btn" data-id="28">View Profile</button><a href="https://www.linkedin.com/in/bayingana-andy-0b776721a/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="27"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-27.png" alt="Mupenzi Niyomugabo" /></div><div class="team-info"><div class="team-name">Mupenzi Niyomugabo</div><p class="team-title line-clamp-2">Director of Alumni Engagement</p><div class="team-actions"><button class="view-profile-btn" data-id="27">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="11"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-11.png" alt="Eng. Octavien Rugirangoga" /></div><div class="team-info"><div class="team-name">Eng. Octavien Rugirangoga</div><p class="team-title line-clamp-2">Job opportunity &amp; Internship</p><div class="team-actions"><button class="view-profile-btn" data-id="11">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="14"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-14.png" alt="Ntwari Christian" /></div><div class="team-info"><div class="team-name">Ntwari Christian</div><p class="team-title line-clamp-2">Environmental Specialist</p><div class="team-actions"><button class="view-profile-btn" data-id="14">View Profile</button><a href="https://www.linkedin.com/in/ntwari-christian-613764229/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="16"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-16.png" alt="Bosco Izabayo" /></div><div class="team-info"><div class="team-name">Bosco Izabayo</div><p class="team-title line-clamp-2">Finance Advisor and M&amp;E</p><div class="team-actions"><button class="view-profile-btn" data-id="16">View Profile</button><a href="https://www.linkedin.com/in/bosco-izabayo-9912761b4/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="17"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-17.png" alt="Noel Rusine" /></div><div class="team-info"><div class="team-name">Noel Rusine</div><p class="team-title line-clamp-2">Media &amp; Storytelling</p><div class="team-actions"><button class="view-profile-btn" data-id="17">View Profile</button><a href="https://www.linkedin.com/in/sine-noel-3004591b3/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="18"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-18.png" alt="Jackson Dushimimana Mutega" /></div><div class="team-info"><div class="team-name">Jackson Dushimimana Mutega</div><p class="team-title line-clamp-2">Research, Innovation, and University Partnership</p><div class="team-actions"><button class="view-profile-btn" data-id="18">View Profile</button><a href="https://www.linkedin.com/in/dushimimana-mutega-a28585338/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="19"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-19.png" alt="Eng. Joel S Rusine" /></div><div class="team-info"><div class="team-name">Eng. Joel S Rusine</div><p class="team-title line-clamp-2">Construction Project</p><div class="team-actions"><button class="view-profile-btn" data-id="19">View Profile</button><a href="https://www.linkedin.com/in/joel-s-rusine-82260a259/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="12"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-12.png" alt="Eng. Samuel Ntirenganya" /></div><div class="team-info"><div class="team-name">Eng. Samuel Ntirenganya</div><p class="team-title line-clamp-2">Construction Project</p><div class="team-actions"><button class="view-profile-btn" data-id="12">View Profile</button></div></div></div>
+
+        <div class="team-card" data-id="24"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-24.png" alt="Eng. Fred Shyaka" /></div><div class="team-info"><div class="team-name">Eng. Fred Shyaka</div><p class="team-title line-clamp-2">Research, Innovation, and University Partnership</p><div class="team-actions"><button class="view-profile-btn" data-id="24">View Profile</button><a href="https://www.linkedin.com/in/shyaka-fred-1a2193260/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="25"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-25.png" alt="Hodari R. Etienne" /></div><div class="team-info"><div class="team-name">Hodari R. Etienne</div><p class="team-title line-clamp-2">Construction Project</p><div class="team-actions"><button class="view-profile-btn" data-id="25">View Profile</button><a href="https://www.linkedin.com/in/etienne-hodari-rwakibibi-0b0aa497/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="team-card" data-id="26"><div class="team-photo-wrap"><img src="http://localhost:3001/uploads/e4h-team-26.png" alt="Amani Faustin" /></div><div class="team-info"><div class="team-name">Amani Faustin<span class="cred">, MBA</span></div><p class="team-title line-clamp-2">Youth Mentorship &amp; Job Opportunity</p><div class="team-actions"><button class="view-profile-btn" data-id="26">View Profile</button></div></div></div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <h2>Your Support Can Make a World of Difference</h2>
+      <p>Whether through donations, volunteering, or spreading the word, you can help empower vulnerable communities.</p>
+      <a href="Donate.html" class="final-cta-btn">Donate Now</a>
+    </section>
+  </main>
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+  <!-- TEAM MEMBER MODAL -->
+  <div class="team-modal" id="teamModal">
+    <div class="team-modal-inner">
+      <button class="team-modal-close" id="teamModalClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div class="team-modal-body">
+        <div class="team-modal-head">
+          <img class="team-modal-photo" id="modalPhoto" src="" alt="" />
+          <div>
+            <div class="team-modal-name" id="modalName"></div>
+            <p class="team-modal-title" id="modalTitle"></p>
+            <a class="team-modal-linkedin" id="modalLinkedin" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">LinkedIn Profile<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+          </div>
+        </div>
+        <div class="team-modal-bio">
+          <h3>Role &amp; Responsibilities</h3>
+          <p id="modalBio"></p>
+        </div>
+        <div class="team-modal-meta">
+          <div class="team-modal-meta-box sky"><p class="team-modal-meta-label">Category</p><p class="team-modal-meta-val" id="modalCategory"></p></div>
+          <div class="team-modal-meta-box green"><p class="team-modal-meta-label">Location</p><p class="team-modal-meta-val" id="modalLocation"></p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var team = [
+    { id:1, name:"Eric Kamanzi", credentials:"PMP, PE, MSc", title:"Founder & Chief Executive Officer", image:"http://localhost:3001/uploads/e4h-team-1.png", linkedIn:"https://www.linkedin.com/in/eric-kamanzi-pmp/", location:"U.S.", category:"leadership" },
+    { id:2, name:"Theophile Karegesa Kivuye", credentials:"MEng", title:"Board Vice Chair | Engineering Program", image:"http://localhost:3001/uploads/e4h-team-2.png", location:"Rwanda", category:"leadership" },
+    { id:3, name:"Frere Straton Malisaba", credentials:"M.Ed", title:"Board Vice Chair | Education Program", image:"http://localhost:3001/uploads/e4h-team-3.png", linkedIn:"BoardMembers.html#gallery", location:"Rwanda", category:"leadership" },
+    { id:5, name:"Fabrice Kayisire", credentials:"PE", title:"Country Director", image:"http://localhost:3001/uploads/e4h-team-5.png", linkedIn:"https://www.linkedin.com/in/fabrice-kayisire-94613a98/", location:"Rwanda", category:"operations" },
+    { id:6, name:"Enock Nkurunziza", title:"Chief of Operations", image:"http://localhost:3001/uploads/e4h-team-6.png", linkedIn:"https://www.linkedin.com/in/enock-nkurunziza/", location:"Rwanda", category:"operations" },
+    { id:10, name:"Gentille Kamanzi", title:"Director of Finance and Administration", image:"http://localhost:3001/uploads/e4h-team-10.jpeg", bio:"Experienced woman, a mom with Christian values. Holds a bachelor's degree in finance, along with certifications in insurance, family protection, community empowerment, financial literacy, and healthcare.", location:"U.S.", category:"operations" },
+    { id:7, name:"Emmanuel Sebagisha", credentials:"M.Ed", title:"Director of Education Program", image:"http://localhost:3001/uploads/e4h-team-7.png", linkedIn:"https://www.linkedin.com/in/emmanuel-sebagisha-352532193/", location:"Finland", category:"programs" },
+    { id:8, name:"Eng. Eric Cyubahiro", title:"Director of Engineering Program", image:"http://localhost:3001/uploads/e4h-team-8.jpeg", location:"Rwanda", category:"programs" },
+    { id:13, name:"Eric Ndayisaba", title:"Director of Business Development", image:"http://localhost:3001/uploads/e4h-team-13.png", linkedIn:"https://www.linkedin.com/in/eric-ndayisaba/", location:"Rwanda", category:"operations" },
+    { id:20, name:"Eng. Alex Rukamirwa", title:"Director of Public Health Engineering", image:"http://localhost:3001/uploads/e4h-team-20.png", linkedIn:"https://www.linkedin.com/in/rukamirwa-alexis-b448b9213/", location:"Rwanda", category:"projects" },
+    { id:9, name:"Mukaneza Jacqueline", title:"Chief of Accounting", image:"http://localhost:3001/uploads/e4h-team-9.png", linkedIn:"https://www.linkedin.com/in/mukaneza-jacqueline-b5778b29b/", location:"Rwanda", category:"operations" },
+    { id:21, name:"Vianney Mutete", title:"Director of Youth Leadership & Mentorship", image:"http://localhost:3001/uploads/e4h-team-21.png", linkedIn:"https://www.linkedin.com/in/vianney-mutete-73302b263/?skipRedirect=true", location:"Rwanda", category:"programs", bio:"Vianney Mutete is the Director of the Youth Leadership and Mentorship Program at Engineers4Humanity, leading initiatives that equip young people with the skills, confidence, and character to become impactful leaders. He holds a Bachelor's degree in Education from the University of Rwanda, where he also served in key student leadership roles and mentored peers.\n\nVianney brings professional experience from IEE Rwanda as a Teaching Assistantships Mentor and Continuous Development Advisor, supporting teacher development, instructional quality, and youth empowerment. He is committed to nurturing young leaders through mentorship, academic support, and values‑driven personal growth." },
+    { id:29, name:"Theoneste Habimana", credentials:"PMP, QS", title:"Dirctor of Planning & Monitoring Valuations", image:"http://localhost:3001/uploads/e4h-team-29.png", linkedIn:"https://www.linkedin.com/in/habi-theo-pmp-qs-ur23/", location:"Rwanda", category:"projects" },
+    { id:22, name:"Delice Kiracunda", title:"Director of Girl & Women Engagement", image:"http://localhost:3001/uploads/e4h-team-22.png", location:"Rwanda", category:"programs" },
+    { id:30, name:"Bosco S. Rusine", title:"Director of Research, Innovation, and University Partnership", image:"http://localhost:3001/uploads/e4h-team-30.png", linkedIn:"https://www.linkedin.com/in/bosco-rusine-b21466171/", location:"U.S.", category:"projects" },
+    { id:23, name:"Kalisa Jacques", title:"Director of Media & Marketing", image:"http://localhost:3001/uploads/e4h-team-23.png", linkedIn:"https://www.linkedin.com/in/kalisa-j-0421b62b8/?originalSubdomain=be", location:"Belgium", category:"operations" },
+    { id:28, name:"Andy Bayingana", title:"Director of Art & Storytelling", image:"http://localhost:3001/uploads/e4h-team-28.png", linkedIn:"https://www.linkedin.com/in/bayingana-andy-0b776721a/", location:"Rwanda", category:"operations" },
+    { id:27, name:"Mupenzi Niyomugabo", title:"Director of Alumni Engagement", image:"http://localhost:3001/uploads/e4h-team-27.png", location:"Canada", category:"programs" },
+    { id:11, name:"Eng. Octavien Rugirangoga", title:"Job opportunity & Internship", image:"http://localhost:3001/uploads/e4h-team-11.png", location:"Rwanda", category:"programs" },
+    { id:14, name:"Ntwari Christian", title:"Environmental Specialist", image:"http://localhost:3001/uploads/e4h-team-14.png", linkedIn:"https://www.linkedin.com/in/ntwari-christian-613764229/", location:"Rwanda", category:"projects" },
+    { id:16, name:"Bosco Izabayo", title:"Finance Advisor and M&E", image:"http://localhost:3001/uploads/e4h-team-16.png", linkedIn:"https://www.linkedin.com/in/bosco-izabayo-9912761b4/", location:"Rwanda", category:"programs" },
+    { id:17, name:"Noel Rusine", title:"Media & Storytelling", image:"http://localhost:3001/uploads/e4h-team-17.png", linkedIn:"https://www.linkedin.com/in/sine-noel-3004591b3/", location:"U.S.", category:"operations" },
+    { id:18, name:"Jackson Dushimimana Mutega", title:"Research, Innovation, and University Partnership", image:"http://localhost:3001/uploads/e4h-team-18.png", linkedIn:"https://www.linkedin.com/in/dushimimana-mutega-a28585338/", location:"Rwanda", category:"projects" },
+    { id:19, name:"Eng. Joel S Rusine", title:"Construction Project", image:"http://localhost:3001/uploads/e4h-team-19.png", linkedIn:"https://www.linkedin.com/in/joel-s-rusine-82260a259/", location:"U.S.", category:"projects" },
+    { id:12, name:"Eng. Samuel Ntirenganya", title:"Construction Project", image:"http://localhost:3001/uploads/e4h-team-12.png", location:"Rwanda", category:"projects" },
+    { id:24, name:"Eng. Fred Shyaka", title:"Research, Innovation, and University Partnership", image:"http://localhost:3001/uploads/e4h-team-24.png", linkedIn:"https://www.linkedin.com/in/shyaka-fred-1a2193260/", location:"Norway", category:"projects" },
+    { id:25, name:"Hodari R. Etienne", title:"Construction Project", image:"http://localhost:3001/uploads/e4h-team-25.png", linkedIn:"https://www.linkedin.com/in/etienne-hodari-rwakibibi-0b0aa497/", location:"U.S.", category:"projects" },
+    { id:26, name:"Amani Faustin", credentials:"MBA", title:"Youth Mentorship & Job Opportunity", image:"http://localhost:3001/uploads/e4h-team-26.png", location:"Rwanda", category:"programs" }
+  ];
+
+  function computeBio(m) {
+    if (m.bio) return m.bio;
+    var t = m.title;
+    if (t.indexOf('Founder') !== -1) return "As Founder and Chief Executive Officer, Eric leads Engineers4Humanity's mission to empower refugees and underserved communities through education, engineering solutions, and servant leadership. With over 17 years of humanitarian service, he guides the organization's strategic vision and global operations.";
+    if (t.indexOf('Board Chair') !== -1 && t.indexOf('Vice') === -1) return "As Board Chair, provides strategic oversight and governance leadership to Engineers4Humanity, ensuring the organization remains aligned with its mission and achieves sustainable impact for refugee communities.";
+    if (t.indexOf('Vice Chair') !== -1 && t.indexOf('Education') !== -1) return "Serves as Board Vice Chair overseeing the Education Program, bringing decades of experience in refugee youth education, advocacy, and mentorship. Plays a cornerstone role in sponsoring students and financing vocational training initiatives.";
+    if (t.indexOf('Vice Chair') !== -1 && t.indexOf('Engineering') !== -1) return "Serves as Board Vice Chair responsible for the Engineering Program, providing technical leadership and strategic direction for all engineering initiatives across Rwanda and beyond.";
+    if (t.indexOf('Country Director') !== -1) return "Oversees Engineers4Humanity operations in Rwanda, coordinating program implementation, managing local partnerships, and ensuring effective delivery of engineering and educational services throughout the country.";
+    if (t.indexOf('Chief of Operations') !== -1) return "Manages operational excellence across all Engineers4Humanity programs in Rwanda, ensuring efficient coordination between teams, effective resource allocation, and successful project implementation.";
+    if (t.indexOf('Education Program Manager') !== -1) return "Leads the education program initiatives across Rwanda, managing student sponsorships, coordinating with educational institutions, and ensuring quality delivery of educational support to refugee youth.";
+    if (t.indexOf('Engineering Program Manager') !== -1) return "Directs engineering program activities in Rwanda, overseeing WASH projects, infrastructure development, and technical capacity building initiatives for underserved communities.";
+    if (t.indexOf('Finance & Accounting') !== -1) return "Manages financial operations for Engineers4Humanity in Rwanda, ensuring transparent accounting practices, budget management, and financial reporting for all organizational activities.";
+    if (t.indexOf('Youth Mentorship') !== -1) return "Provides guidance, support, and mentorship to young refugees, helping them navigate educational pathways, develop career skills, and achieve their full potential through one-on-one coaching and group programs.";
+    if (t.indexOf('Marketing') !== -1) return "Develops and implements marketing strategies to increase awareness of Engineers4Humanity's mission, manages fundraising campaigns, and builds relationships with donors and partners.";
+    if (t.indexOf('Construction Project') !== -1) return "Works on engineering infrastructure projects including WASH systems, suspended bridges, and environmental protection initiatives, applying technical expertise to improve living conditions in refugee camps and rural communities.";
+    if (t.indexOf('Environmental Project') !== -1) return "Implements environmental protection and sustainability initiatives, focusing on conservation, waste management, and eco-friendly solutions for refugee and rural communities in Rwanda.";
+    if (t.indexOf('Media') !== -1) return "Captures and shares the stories of Engineers4Humanity's impact through multimedia content, managing social media presence, and creating compelling narratives that highlight the organization's work and the journeys of those it serves.";
+    if (t.indexOf("Girl Students' Representative") !== -1) return "Advocates for and represents the needs and interests of female students in Engineers4Humanity programs, working to ensure equal access to educational opportunities and addressing challenges specific to young refugee women.";
+    if (t.indexOf('Youth Job Opportunity') !== -1) return "Connects refugee youth with employment opportunities, manages job placement programs, and builds partnerships with employers to create pathways to economic self-reliance.";
+    if (t.indexOf('Vocational Training') !== -1) return "Develops and delivers vocational training programs that equip refugee youth with practical, marketable skills in trades and technical fields, enabling economic independence.";
+    var excluded = ['Board','Country Director','Chief','Manager','Finance','Youth','Marketing','Engineering','Environmental','Media','Representative','Job','Vocational'];
+    var hit = false;
+    for (var i = 0; i < excluded.length; i++) { if (t.indexOf(excluded[i]) !== -1) { hit = true; break; } }
+    if (!hit) return "Contributes essential expertise and dedication to Engineers4Humanity's mission as part of the " + t + " team, working to empower refugees and underserved communities through sustainable development initiatives.";
+    return "";
+  }
+
+  function initTeamModal() {
+    var modal = document.getElementById('teamModal');
+    var modalPhoto = document.getElementById('modalPhoto');
+    var modalName = document.getElementById('modalName');
+    var modalTitle = document.getElementById('modalTitle');
+    var modalLinkedin = document.getElementById('modalLinkedin');
+    var modalBio = document.getElementById('modalBio');
+    var modalCategory = document.getElementById('modalCategory');
+    var modalLocation = document.getElementById('modalLocation');
+
+    function openModal(id) {
+      var m = null;
+      for (var i = 0; i < team.length; i++) { if (team[i].id === id) { m = team[i]; break; } }
+      if (!m) return;
+      modalPhoto.src = m.image;
+      modalPhoto.alt = m.name;
+      modalName.innerHTML = m.name + (m.credentials ? '<span class="cred">, ' + m.credentials + '</span>' : '');
+      modalTitle.textContent = m.title;
+      if (m.linkedIn) { modalLinkedin.href = m.linkedIn; modalLinkedin.style.display = 'inline-flex'; }
+      else { modalLinkedin.style.display = 'none'; }
+      modalBio.textContent = computeBio(m);
+      modalCategory.textContent = m.category;
+      modalLocation.textContent = m.location || 'Rwanda';
+      modal.classList.add('open');
+    }
+
+    document.querySelectorAll('.view-profile-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { openModal(parseInt(btn.getAttribute('data-id'), 10)); });
+    });
+
+    function closeModal() { modal.classList.remove('open'); }
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.team-modal-inner').addEventListener('click', function (e) { e.stopPropagation(); });
+    document.getElementById('teamModalClose').addEventListener('click', closeModal);
+  }
+
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+    toggle.addEventListener('click', function () { if (sidebar.classList.contains('open')) close(); else open(); });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+    sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate').forEach(function (l) { l.addEventListener('click', close); });
+  }
+
+  function initMobileAccordions() {
+    document.querySelectorAll('.mob-summary').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) { btn.classList.remove('open'); panel.style.maxHeight = '0px'; panel.style.opacity = '0'; }
+        else { btn.classList.add('open'); panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px'; panel.style.opacity = '1'; }
+      });
+    });
+  }
+
+  function initFooterYear() { document.getElementById('footerYear').textContent = new Date().getFullYear(); }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initTeamModal();
+  });
+})();
+</script>
+</body>
+</html>

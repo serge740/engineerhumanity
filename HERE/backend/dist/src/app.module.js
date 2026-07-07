@@ -13,9 +13,13 @@ const admin_module_1 = require("./modules/admin-management/admin.module");
 const sites_module_1 = require("./modules/sites/sites.module");
 const pages_module_1 = require("./modules/pages/pages.module");
 const components_module_1 = require("./modules/components/components.module");
+const collections_module_1 = require("./modules/collections/collections.module");
 const assets_module_1 = require("./modules/assets/assets.module");
 const public_module_1 = require("./modules/public/public.module");
 const export_module_1 = require("./modules/export/export.module");
+const team_module_1 = require("./modules/team/team.module");
+const events_module_1 = require("./modules/events/events.module");
+const stories_module_1 = require("./modules/stories/stories.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -27,9 +31,13 @@ exports.AppModule = AppModule = __decorate([
             sites_module_1.SitesModule,
             pages_module_1.PagesModule,
             components_module_1.ComponentsModule,
+            collections_module_1.CollectionsModule,
             assets_module_1.AssetsModule,
             public_module_1.PublicModule,
             export_module_1.ExportModule,
+            team_module_1.TeamModule,
+            events_module_1.EventsModule,
+            stories_module_1.StoriesModule,
         ],
     })
 ], AppModule);

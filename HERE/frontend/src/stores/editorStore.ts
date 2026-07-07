@@ -2,6 +2,9 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import type { PageElement, PageSummary, Page, UpdatePageData } from '../api/pages';
 import { updatePage, publishPage } from '../api/pages';
+import type { SiteComponent } from '../api/components';
+import { updateComponent } from '../api/components';
+import { buildDefaultModalTemplate } from '../pages/editor/data/defaultModalTemplate';
 export type { PageElement, PageSummary, Page };
 
 // ── UID ───────────────────────────────────────────────────────────────────────
@@ -116,10 +119,29 @@ export type ToolMode = 'select' | 'frame' | 'rect' | 'ellipse' | 'line' | 'text'
 
 // ── Store interface ───────────────────────────────────────────────────────────
 interface EditorState {
+  // 'page': editing a Page's html (siteId/slug/pageMeta/pages are authoritative).
+  // 'component': editing a Component's html (siteId/componentId/componentMeta are
+  // authoritative) — used by the Design tab of the Component detail page so the
+  // exact same Canvas/Inspector/panels can build a card template.
+  mode: 'page' | 'component';
+
   siteId:   string;
   slug:     string;
   pageMeta: Page | null;
   pages:    PageSummary[];
+
+  componentId:   string;
+  componentMeta: SiteComponent | null;
+  // Which of the component's two templates is currently loaded into
+  // `elements` — the repeating card ('card', backed by Component.html) or the
+  // detail-modal content ('modal', backed by Component.modalHtml). Meaningful
+  // only when mode === 'component'.
+  componentView: 'card' | 'modal';
+  // Bumped whenever a sibling panel (e.g. TemplatesPanel) mutates the linked
+  // Collection's fields, so VariablesPanel knows to refetch even though
+  // siteId/collectionId themselves didn't change.
+  fieldsVersion: number;
+  bumpFieldsVersion(): void;
 
   elements:   PageElement[];
   selectedId: string | null;
@@ -128,7 +150,7 @@ interface EditorState {
   zoom: number;
   pan:  { x: number; y: number };
 
-  leftTab:  'layers' | 'insert' | 'sections';
+  leftTab:  'layers' | 'insert' | 'sections' | 'variables' | 'templates';
   toolMode: ToolMode;
   isDirty:  boolean;
   isSaving: boolean;
@@ -139,6 +161,8 @@ interface EditorState {
   canRedo: boolean;
 
   init(siteId: string, slug: string, page: Page, pages: PageSummary[]): void;
+  initComponent(siteId: string, componentId: string, component: SiteComponent, view?: 'card' | 'modal'): void;
+  switchComponentView(view: 'card' | 'modal'): Promise<void>;
   refreshPages(pages: PageSummary[]): void;
 
   selectElement(id: string | null): void;
@@ -147,7 +171,7 @@ interface EditorState {
   setZoom(z: number): void;
   setPan(x: number, y: number): void;
   zoomToFit(frameW: number, frameH: number): void;
-  setLeftTab(t: 'layers' | 'insert' | 'sections'): void;
+  setLeftTab(t: 'layers' | 'insert' | 'sections' | 'variables' | 'templates'): void;
   setToolMode(t: ToolMode): void;
   wrapElement(id: string): void;
 
@@ -182,7 +206,9 @@ export const useEditorStore = create<EditorState>()(
     };
 
     return {
+      mode: 'page',
       siteId: '', slug: '', pageMeta: null, pages: [],
+      componentId: '', componentMeta: null, componentView: 'card', fieldsVersion: 0,
       elements: [], selectedId: null, editingId: null,
       zoom: 0.75, pan: { x: 80, y: 60 },
       leftTab: 'layers', toolMode: 'select',
@@ -204,6 +230,7 @@ export const useEditorStore = create<EditorState>()(
         } catch { /* storage unavailable or corrupt — start with empty history */ }
 
         set(s => {
+          s.mode      = 'page';
           s.siteId    = siteId;
           s.slug      = slug;
           s.pageMeta  = page;
@@ -227,7 +254,62 @@ export const useEditorStore = create<EditorState>()(
         });
       },
 
+      initComponent(siteId, componentId, component, view = 'card') {
+        let restoredPast:   PageElement[][] = [];
+        let restoredFuture: PageElement[][] = [];
+        try {
+          const raw = localStorage.getItem(`lumen_hist_component_${siteId}_${componentId}_${view}`);
+          if (raw) {
+            const h = JSON.parse(raw) as { past?: PageElement[][]; future?: PageElement[][] };
+            if (Array.isArray(h.past))   restoredPast   = h.past.slice(-80);
+            if (Array.isArray(h.future)) restoredFuture = h.future.slice(-80);
+          }
+        } catch { /* storage unavailable or corrupt — start with empty history */ }
+
+        set(s => {
+          s.mode          = 'component';
+          s.siteId        = siteId;
+          s.componentId   = componentId;
+          s.componentMeta = component;
+          s.componentView = view;
+
+          const source = view === 'modal' ? component.modalHtml : component.html;
+          const raw = Array.isArray(source) ? source : [];
+          const isIncompatible = raw.length > 0 && (
+            typeof (raw[0] as Record<string,unknown>).tag !== 'string' ||
+            !(raw[0] as Record<string,unknown>).tag
+          );
+
+          const loaded = isIncompatible ? [] : (raw as PageElement[]);
+          // Seed a good default the first time the admin opens an empty Modal
+          // view — client-side only, not yet persisted until they make/save a
+          // change. Never touches the Card view.
+          s.elements   = (view === 'modal' && loaded.length === 0)
+            ? buildDefaultModalTemplate(component.schema ?? [])
+            : loaded;
+          s.selectedId = null;
+          s.editingId  = null;
+          s.isDirty    = false;
+          s.past    = restoredPast;
+          s.future  = restoredFuture;
+          s.canUndo = restoredPast.length  > 0;
+          s.canRedo = restoredFuture.length > 0;
+        });
+      },
+
+      async switchComponentView(view) {
+        const { componentView, siteId, componentId, componentMeta, isDirty } = get();
+        if (view === componentView || !componentMeta) return;
+        if (isDirty) await get().save().catch(() => {});
+        // Re-fetch componentMeta isn't needed — save() already refreshed it
+        // with the latest persisted html/modalHtml.
+        const latest = get().componentMeta;
+        if (!latest) return;
+        get().initComponent(siteId, componentId, latest, view);
+      },
+
       refreshPages(pages) { set(s => { s.pages = pages; }); },
+      bumpFieldsVersion() { set(s => { s.fieldsVersion += 1; }); },
 
       // ── Selection ────────────────────────────────────────────────────────────
       selectElement(id) { set(s => { s.selectedId = id; s.editingId = null; }); },
@@ -370,13 +452,19 @@ export const useEditorStore = create<EditorState>()(
 
       // ── Persistence ──────────────────────────────────────────────────────────
       async save() {
-        const { siteId, slug, elements, isSaving } = get();
+        const { mode, siteId, slug, componentId, componentView, elements, isSaving } = get();
         if (isSaving) return;
         set(s => { s.isSaving = true; });
         try {
-          const data: UpdatePageData = { html: elements };
-          await updatePage(siteId, slug, data);
-          set(s => { s.isDirty = false; if (s.pageMeta) s.pageMeta.version += 1; });
+          if (mode === 'component') {
+            const patch = componentView === 'modal' ? { modalHtml: elements } : { html: elements };
+            const updated = await updateComponent(siteId, componentId, patch);
+            set(s => { s.isDirty = false; s.componentMeta = updated; });
+          } else {
+            const data: UpdatePageData = { html: elements };
+            await updatePage(siteId, slug, data);
+            set(s => { s.isDirty = false; if (s.pageMeta) s.pageMeta.version += 1; });
+          }
         } catch (err) {
           throw err; // let the caller show a toast
         } finally {
@@ -385,6 +473,7 @@ export const useEditorStore = create<EditorState>()(
       },
 
       async publish() {
+        if (get().mode !== 'page') return; // components have no publish concept
         await get().save();
         await publishPage(get().siteId, get().slug);
         set(s => { if (s.pageMeta) s.pageMeta.published = true; });
@@ -393,16 +482,17 @@ export const useEditorStore = create<EditorState>()(
   })
 );
 
-// Persist undo/redo history to localStorage per page (up to 80 snapshots each).
-// Each page gets its own key so switching pages never mixes histories.
+// Persist undo/redo history to localStorage per page/component (up to 80
+// snapshots each) so switching between them never mixes histories.
 useEditorStore.subscribe((s, prev) => {
   if (s.past === prev.past && s.future === prev.future) return; // nothing changed
-  if (!s.siteId || !s.slug) return; // store not yet initialised
+  if (!s.siteId) return; // store not yet initialised
+  const key = s.mode === 'component'
+    ? (s.componentId && `lumen_hist_component_${s.siteId}_${s.componentId}_${s.componentView}`)
+    : (s.slug && `lumen_hist_${s.siteId}_${s.slug}`);
+  if (!key) return;
   try {
-    localStorage.setItem(
-      `lumen_hist_${s.siteId}_${s.slug}`,
-      JSON.stringify({ past: s.past, future: s.future }),
-    );
+    localStorage.setItem(key, JSON.stringify({ past: s.past, future: s.future }));
   } catch {
     // Storage quota exceeded — silently skip; history is best-effort.
   }

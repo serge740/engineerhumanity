@@ -5,13 +5,25 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './routes/ProtectedRoute';
 import LoginPage from './pages/auth/LoginPage';
 import { getSites } from './api/sites';
+import MainLayout from './components/layout/MainLayout';
+import Contact from './pages/public/Contact';
+import Donate from './pages/public/Donate';
 
-const DashboardPage     = lazy(() => import('./pages/dashboard/DashboardPage'));
-const SiteWorkspacePage = lazy(() => import('./pages/sites/SiteWorkspacePage'));
-const EditorPage        = lazy(() => import('./pages/editor/EditorPage'));
+const DashboardPage       = lazy(() => import('./pages/dashboard/DashboardPage'));
+const SiteWorkspacePage   = lazy(() => import('./pages/sites/SiteWorkspacePage'));
+const EditorPage          = lazy(() => import('./pages/editor/EditorPage'));
+const ComponentDetailPage = lazy(() => import('./pages/components/ComponentDetailPage'));
 const ComingSoonPage    = lazy(() => import('./pages/placeholder/ComingSoonPage'));
 const PublicPage        = lazy(() => import('./pages/public/PublicPage'));
 const LandingRedirect   = lazy(() => import('./pages/public/LandingRedirect'));
+const BoardMembersPublicPage    = lazy(() => import('./pages/public/team/BoardMembersPublicPage'));
+const ManagementTeamPublicPage  = lazy(() => import('./pages/public/team/ManagementTeamPublicPage'));
+const UpcomingEventsPublicPage       = lazy(() => import('./pages/public/events/UpcomingEventsPublicPage'));
+const PastEventsPublicPage           = lazy(() => import('./pages/public/events/PastEventsPublicPage'));
+const UpcomingEventDetailPublicPage  = lazy(() => import('./pages/public/events/UpcomingEventDetailPublicPage'));
+const PastEventDetailPublicPage      = lazy(() => import('./pages/public/events/PastEventDetailPublicPage'));
+const SuccessStoryPublicPage         = lazy(() => import('./pages/public/stories/SuccessStoryPublicPage'));
+const TestimonyPublicPage            = lazy(() => import('./pages/public/stories/TestimonyPublicPage'));
 
 function PageLoader() {
   return (
@@ -97,6 +109,11 @@ export default function App() {
               <Protected><EditorPage /></Protected>
             } />
 
+            {/* Component detail — Data + Design tabs */}
+            <Route path="/sites/:siteId/components/:componentId" element={
+              <Protected><ComponentDetailPage /></Protected>
+            } />
+
 
             {/* Global settings */}
             <Route path="/settings" element={
@@ -105,9 +122,28 @@ export default function App() {
               </Protected>
             } />
 
-            {/* ── Public page renderer ─────────────────────────── */}
-            {/* Must be LAST so admin routes match first */}
-            <Route path="/:slug" element={<PublicPage />} />
+            {/* Public site pages — wrapped in MainLayout (Navbar + Footer) */}
+            <Route element={<MainLayout />}>
+              {/* Public team pages (data-driven, no auth) */}
+              <Route path="/board-member" element={<BoardMembersPublicPage />} />
+              <Route path="/executive-team" element={<ManagementTeamPublicPage />} />
+
+              {/* Public event pages (data-driven, no auth) */}
+              <Route path="/upcoming-event" element={<UpcomingEventsPublicPage />} />
+              <Route path="/upcoming-event/:id" element={<UpcomingEventDetailPublicPage />} />
+              <Route path="/past-event" element={<PastEventsPublicPage />} />
+              <Route path="/past-event/:id" element={<PastEventDetailPublicPage />} />
+
+              {/* Public impact/story pages (data-driven, no auth) */}
+              <Route path="/success-story" element={<SuccessStoryPublicPage />} />
+              <Route path="/testimony" element={<TestimonyPublicPage />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/donate" element={<Donate />} />
+
+              {/* ── Public page renderer ─────────────────────────── */}
+              {/* Must be LAST so admin routes match first */}
+              <Route path="/:slug" element={<PublicPage />} />
+            </Route>
           </Routes>
         </Suspense>
       </AuthProvider>

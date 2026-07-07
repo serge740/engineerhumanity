@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PublicService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const collection_expansion_1 = require("../../common/collection-expansion");
 let PublicService = class PublicService {
     prisma;
     constructor(prisma) {
@@ -26,14 +27,88 @@ let PublicService = class PublicService {
             throw new common_1.NotFoundException('No landing page set');
         return page;
     }
+    async getTeamMembers(group) {
+        if (group && !['board', 'management'].includes(group)) {
+            throw new common_1.NotFoundException('Invalid group');
+        }
+        return this.prisma.teamMember.findMany({
+            where: group ? { group } : undefined,
+            orderBy: { order: 'asc' },
+        });
+    }
+    async getEvents(status) {
+        if (status && !['upcoming', 'past'].includes(status)) {
+            throw new common_1.NotFoundException('Invalid status');
+        }
+        return this.prisma.event.findMany({
+            where: status ? { status } : undefined,
+            orderBy: { order: 'asc' },
+        });
+    }
+    async getEvent(id) {
+        const event = await this.prisma.event.findFirst({ where: { id } });
+        if (!event)
+            throw new common_1.NotFoundException('Event not found');
+        return event;
+    }
+    async getStories(group) {
+        if (group && !['success', 'success-summary', 'testimony'].includes(group)) {
+            throw new common_1.NotFoundException('Invalid group');
+        }
+        return this.prisma.story.findMany({
+            where: group ? { group } : undefined,
+            orderBy: { order: 'asc' },
+        });
+    }
     async getPublicPage(slug) {
         const page = await this.prisma.page.findFirst({
             where: { slug, published: true },
-            select: { slug: true, title: true, description: true, html: true, metadata: true },
+            select: {
+                siteId: true,
+                slug: true,
+                title: true,
+                description: true,
+                html: true,
+                metadata: true,
+            },
         });
         if (!page)
             throw new common_1.NotFoundException('Page not found or not published');
-        return page;
+        const html = await this.expandPageHtml(page.siteId, page.html);
+        return {
+            slug: page.slug,
+            title: page.title,
+            description: page.description,
+            html,
+            metadata: page.metadata,
+        };
+    }
+    async expandPageHtml(siteId, html) {
+        const tree = (Array.isArray(html) ? html : []);
+        const [collections, components] = await Promise.all([
+            this.prisma.collection.findMany({
+                where: { siteId },
+                include: { items: { orderBy: { order: 'asc' } } },
+            }),
+            this.prisma.component.findMany({ where: { siteId, type: 'dynamic' } }),
+        ]);
+        const collectionsById = new Map(collections.map(c => [
+            c.id,
+            {
+                id: c.id,
+                fields: c.fields,
+                items: c.items.map(i => ({ data: i.data })),
+            },
+        ]));
+        const componentsById = new Map(components.map(c => [
+            c.id,
+            {
+                id: c.id,
+                html: (Array.isArray(c.html) ? c.html : []),
+                modalHtml: (Array.isArray(c.modalHtml) ? c.modalHtml : null),
+            },
+        ]));
+        return (0, collection_expansion_1.expandCollectionNodes)(tree, collectionsById, componentsById);
     }
 };
 exports.PublicService = PublicService;

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Professional Skills Development</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --navy: #0A1628; --sky-50: #f0f9ff; --sky-100: #e0f2fe; --sky-300: #7dd3fc; --sky-400: #38bdf8; --sky-500: #0ea5e9;
+  --sky: #0284c7; --sky-700: #0369a1;
+  --emerald-400: #34d399; --emerald-500: #10b981; --emerald: #059669;
+  --green: #16a34a; --green-dark: #15803d; --green-darker: #166534;
+  --purple-50: #faf5ff; --purple-100: #f3e8ff; --purple-400: #c084fc; --purple-600: #9333ea;
+  --orange-50: #fff7ed; --orange-100: #ffedd5; --orange-400: #fb923c; --orange-500: #f97316;
+  --blue-50: #eff6ff; --blue-500: #3b82f6; --blue-800: #1e40af;
+  --emerald-50: #ecfdf5; --emerald-100: #d1fae5; --emerald-800: #065f46;
+  --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
+  --red-500: #ef4444; --red-600: #dc2626;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans:  "Poppins", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: var(--gray-50); }
+h1, h2, h3, h4 { font-family: var(--font-sans); font-weight: 700; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 28px; line-height: 1.2; margin: 0; color: var(--gray-900); }
+h3 { font-size: 22px; line-height: 1.3; margin: 0 0 20px; color: var(--gray-900); }
+h4 { font-size: 17px; color: var(--gray-900); }
+p  { font-size: 16px; line-height: 1.75; margin: 0 0 16px; color: var(--gray-700); }
+a  { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.page { position: relative; overflow: hidden; }
+
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+.drop-menu { position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100); padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px); transition: all .25s; transform-origin: top; z-index: 60; }
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple-600); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+.btn-donate { display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap; }
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+.nav-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55; }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-sidebar { position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto; transition: right .3s ease-in-out; }
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; margin: 0; color: #fff; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple-600); }
+.mob-donate { display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+@media (min-width: 1024px) { .nav-inner { padding: 0 24px; } .nav-links { display: flex; } .btn-donate { display: inline-block; } .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; } }
+@media (min-width: 1280px) { .nav-links { font-size: 14px; } .nav-item, .drop-btn { padding: 10px 16px; } }
+
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; color: rgba(255,255,255,.65); }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+@media (min-width: 640px) { .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; } }
+@media (min-width: 1024px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; } .footer-bottom { padding: 24px 64px; } }
+
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-family: var(--font-serif); font-weight: 300; font-size: 32px; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 44px; } }
+
+/* ══════════════════════════════════════════════════════════════
+   PROFESSIONAL SKILLS DEVELOPMENT — page content
+   ══════════════════════════════════════════════════════════════ */
+.ps-section { padding: 64px 16px; background: #fff; }
+.ps-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.ps-icon-circle { width: 48px; height: 48px; border-radius: 50%; background: var(--sky-100); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ps-icon-circle svg { width: 24px; height: 24px; color: var(--sky); }
+.ps-eyebrow { font-size: 13px; font-weight: 600; color: var(--sky); text-transform: uppercase; letter-spacing: .05em; margin-bottom: 4px; }
+.ps-bar { width: 64px; height: 4px; background: var(--sky-500); border-radius: 2px; margin-bottom: 32px; }
+
+.ps-intro-grid { display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center; margin-bottom: 40px; }
+.ps-intro-img { width: 100%; height: 288px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.15); }
+.ps-caption { font-size: 12px; color: #6b7280; font-style: italic; margin-top: 8px; text-align: center; }
+
+.ps-what-title { display: flex; align-items: center; gap: 8px; }
+.ps-what-title svg { width: 24px; height: 24px; color: var(--sky); }
+
+.ps-blocks { display: flex; flex-direction: column; gap: 40px; margin-bottom: 56px; }
+.ps-block { border-radius: 16px; border: 1px solid; padding: 28px; }
+.ps-block-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.ps-num { width: 36px; height: 36px; border-radius: 50%; color: #fff; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.ps-block-lead { color: #4b5563; margin-bottom: 16px; margin-left: 48px; }
+.ps-block-list { margin-left: 48px; display: flex; flex-direction: column; gap: 8px; }
+.ps-block-list li { display: flex; align-items: flex-start; gap: 8px; color: var(--gray-700); }
+.ps-block-list li svg { width: 20px; height: 20px; flex-shrink: 0; margin-top: 2px; }
+
+.ps-block.sky { background: var(--sky-50); border-color: var(--sky-100); }
+.ps-block.sky .ps-num { background: var(--sky); }
+.ps-block.sky .ps-block-list li svg { color: var(--sky-500); }
+.ps-block.emerald { background: var(--emerald-50); border-color: var(--emerald-100); }
+.ps-block.emerald .ps-num { background: var(--emerald); }
+.ps-block.emerald .ps-block-list li svg { color: var(--emerald-500); }
+.ps-block.orange { background: var(--orange-50); border-color: var(--orange-100); }
+.ps-block.orange .ps-num { background: var(--orange-500); }
+.ps-block.orange .ps-block-list li svg { color: var(--orange-400); }
+.ps-block.purple { background: var(--purple-50); border-color: var(--purple-100); }
+.ps-block.purple .ps-num { background: var(--purple-600); }
+.ps-block.purple .ps-block-list li svg { color: var(--purple-400); }
+
+.ps-second-img { width: 100%; height: 288px; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.15); margin-bottom: 56px; }
+
+.ps-two-col { display: grid; grid-template-columns: 1fr; gap: 32px; margin-bottom: 48px; }
+.ps-work-card { background: var(--sky); color: #fff; border-radius: 16px; padding: 32px; }
+.ps-work-card h3 { display: flex; align-items: center; gap: 8px; color: #fff; font-size: 20px; margin-bottom: 20px; }
+.ps-work-card h3 svg { width: 20px; height: 20px; }
+.ps-work-card ul { display: flex; flex-direction: column; gap: 12px; }
+.ps-work-card li { display: flex; align-items: flex-start; gap: 8px; color: rgba(255,255,255,.9); font-size: 14px; }
+.ps-work-card .dot { width: 6px; height: 6px; border-radius: 50%; background: #fff; margin-top: 8px; flex-shrink: 0; }
+
+.ps-outcomes-card { background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 16px; padding: 32px; }
+.ps-outcomes-card h3 { display: flex; align-items: center; gap: 8px; font-size: 20px; margin-bottom: 20px; }
+.ps-outcomes-card h3 svg { width: 20px; height: 20px; color: var(--sky); }
+.ps-outcomes-card ul { display: flex; flex-direction: column; gap: 12px; }
+.ps-outcomes-card li { display: flex; align-items: flex-start; gap: 8px; color: var(--gray-700); font-size: 14px; }
+.ps-outcomes-card li svg { width: 16px; height: 16px; color: var(--emerald-500); flex-shrink: 0; margin-top: 2px; }
+
+.ps-benefits { display: grid; grid-template-columns: 1fr; gap: 24px; }
+.benefit-card { border-radius: 16px; border: 1px solid; padding: 24px; }
+.benefit-card.blue { background: var(--blue-50); border-color: #dbeafe; }
+.benefit-card.blue h4 { color: var(--blue-800); }
+.benefit-card.emerald { background: var(--emerald-50); border-color: var(--emerald-100); }
+.benefit-card.emerald h4 { color: var(--emerald-800); }
+.benefit-card ul { display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: var(--gray-700); margin-top: 12px; }
+.benefit-card li { display: flex; align-items: flex-start; gap: 8px; }
+.benefit-card.blue .dot { color: var(--blue-500); }
+.benefit-card.emerald .dot { color: var(--emerald-500); }
+
+.final-cta { padding: 64px 24px; background: linear-gradient(to bottom right, var(--sky), var(--emerald)); color: #fff; text-align: center; }
+.final-cta h2 { font-size: 34px; color: #fff; margin-bottom: 16px; }
+.final-cta p { font-size: 18px; opacity: .95; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-btn { display: inline-block; background: #fff; color: var(--sky); padding: 16px 40px; border-radius: 8px; font-weight: 700; font-size: 17px; box-shadow: 0 15px 30px rgba(0,0,0,.2); transition: background .2s; }
+.final-cta-btn:hover { background: var(--gray-100); }
+
+@media (min-width: 768px) { .ps-intro-grid { grid-template-columns: 1fr 1fr; } .ps-two-col { grid-template-columns: 1fr 1fr; } .ps-benefits { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <main>
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Professional Skills Development" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Professional Skills Development</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="ProfessionalSkills.html" class="current">Professional Skills Development</a></div>
+      </div>
+    </div>
+
+    <section class="ps-section" id="professional-skills">
+      <div class="ps-head">
+        <div class="ps-icon-circle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/></svg></div>
+        <div>
+          <p class="ps-eyebrow">Engineers4Humanity Institute</p>
+          <h2>Professional Skills Development &amp; Vocational Training Department</h2>
+        </div>
+      </div>
+      <div class="ps-bar"></div>
+
+      <div class="ps-intro-grid">
+        <div>
+          <p>The Professional Skills Development &amp; Vocational Training Department is the workforce-development engine of Engineers4Humanity Institute. It equips refugee and host-community youth with market-relevant technical, vocational skills that lead directly to employment, entrepreneurship, and community resilience.</p>
+          <p>The department strengthens Rwanda's human capital, supports national development priorities, and expands opportunities for vulnerable youth through practical, competency-based training.</p>
+        </div>
+        <div>
+          <img src="http://localhost:3001/uploads/e4h-inst-whatsapp.jpeg" alt="Professional Skills Training" class="ps-intro-img" />
+        </div>
+      </div>
+
+      <h3 class="ps-what-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg> What We Do</h3>
+
+      <div class="ps-blocks">
+        <div class="ps-block sky">
+          <div class="ps-block-head"><div class="ps-num">1</div><h4>Technical &amp; Vocational Training (TVET)</h4></div>
+          <p class="ps-block-lead">We deliver hands-on, competency-based training in fields that match labor-market demand, including:</p>
+          <ul class="ps-block-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Construction trades</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Public health Engineering Technician, WASH operations &amp; maintenance,</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Irrigation, borehole installation &amp; water-system maintenance</li>
+          </ul>
+        </div>
+
+        <div class="ps-block emerald">
+          <div class="ps-block-head"><div class="ps-num">2</div><h4>Professional Skills Development</h4></div>
+          <p class="ps-block-lead">We prepare youth for the workplace through:</p>
+          <ul class="ps-block-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Employability &amp; soft-skills training</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Leadership &amp; teamwork development</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Entrepreneurship &amp; small-business incubation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Career guidance, mentorship &amp; job-readiness coaching</li>
+          </ul>
+        </div>
+
+        <div class="ps-block orange">
+          <div class="ps-block-head"><div class="ps-num">3</div><h4>Workforce Pathways &amp; Job Creation</h4></div>
+          <p class="ps-block-lead">We connect trained youth to real opportunities through:</p>
+          <ul class="ps-block-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Apprenticeships with construction private-sector companies and sub-contracting jobs;</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>On-the-job training placements</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Implement community-based service projects in Refugee camp</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Support for micro-enterprise creation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Skills certification aligned with Rwanda TVET national standards</li>
+          </ul>
+        </div>
+
+        <div class="ps-block purple">
+          <div class="ps-block-head"><div class="ps-num">4</div><h4>Education Support &amp; Academic Pathways</h4></div>
+          <p class="ps-block-lead">We strengthen long-term learning through:</p>
+          <ul class="ps-block-list">
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>High-school and university education support</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Engineering/Environment &amp; STEM clubs, innovation labs &amp; youth leadership programs</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>E-learning platforms for flexible, accessible training</li>
+          </ul>
+        </div>
+      </div>
+
+      <img src="http://localhost:3001/uploads/e4h-research-amazi.png" alt="Vocational Training Activities" class="ps-second-img" />
+
+      <div class="ps-two-col">
+        <div class="ps-work-card">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg> How We Work</h3>
+          <ul>
+            <li><span class="dot"></span>Competency-based training aligned with Rwanda TVET standards</li>
+            <li><span class="dot"></span>Partnerships with government, private sector, universities &amp; NGOs</li>
+            <li><span class="dot"></span>Community-based learning inside refugee camps, local host districts and e-learning platform</li>
+            <li><span class="dot"></span>Youth leadership and peer-to-peer training models</li>
+            <li><span class="dot"></span>Sustainability &amp; local ownership through community trainers and alumni networks</li>
+          </ul>
+        </div>
+        <div class="ps-outcomes-card">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg> Key Outcomes</h3>
+          <ul>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>A skilled workforce ready for employment and entrepreneurship</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Increased youth employment and income generation</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Improved community infrastructure through youth-led projects</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Reduced dependency and increased self-reliance among refugee families</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Scalable vocational training models for Rwanda and the region</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="ps-benefits">
+        <div class="benefit-card blue">
+          <h4>Benefits to Refugee Camps</h4>
+          <ul><li><span class="dot">•</span>Skilled youth maintaining camp infrastructure and improved WASH, energy, and construction services</li><li><span class="dot">•</span>Increased household income and reduced aid dependency</li><li><span class="dot">•</span>Youth-led innovation and community resilience</li></ul>
+        </div>
+        <div class="benefit-card emerald">
+          <h4>Benefits to Rwanda</h4>
+          <ul><li><span class="dot">•</span>Expanded technical workforce supporting NST2 priorities</li><li><span class="dot">•</span>Stronger TVET ecosystem and employer-aligned training</li><li><span class="dot">•</span>Increased productivity in construction, WASH, agriculture &amp; energy sectors</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <h2>Be Part of the Story</h2>
+      <p>Your support helps us continue transforming lives through education, engineering, and peace-building.</p>
+      <a href="Donate.html" class="final-cta-btn">Donate Now</a>
+    </section>
+  </main>
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+    toggle.addEventListener('click', function () { if (sidebar.classList.contains('open')) close(); else open(); });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+    sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate').forEach(function (l) { l.addEventListener('click', close); });
+  }
+  function initMobileAccordions() {
+    document.querySelectorAll('.mob-summary').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) { btn.classList.remove('open'); panel.style.maxHeight = '0px'; panel.style.opacity = '0'; }
+        else { btn.classList.add('open'); panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px'; panel.style.opacity = '1'; }
+      });
+    });
+  }
+  function initHashScroll() {
+    if (window.location.hash) {
+      var el = document.getElementById(window.location.hash.slice(1));
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
+  }
+  function initFooterYear() { document.getElementById('footerYear').textContent = new Date().getFullYear(); }
+  document.addEventListener('DOMContentLoaded', function () {
+    initHashScroll();
+  });
+})();
+</script>
+</body>
+</html>

@@ -12,9 +12,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname } from 'path';
-import { v4 as uuid } from 'uuid';
+import { memoryStorage } from 'multer';
 import { AssetsService } from './assets.service';
 import { AdminJwtAuthGuard } from 'src/guards/adminGuard.guard';
 import { RequestWithAdmin } from 'src/common/interfaces/admin.interface';
@@ -39,13 +37,7 @@ export class AssetsController {
   @Post('upload')
   @UseInterceptors(
     FileInterceptor('file', {
-      storage: diskStorage({
-        destination: './Uploads',
-        filename: (_req, file, cb) => {
-          const ext = extname(file.originalname);
-          cb(null, `${uuid()}${ext}`);
-        },
-      }),
+      storage: memoryStorage(),
       limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )
@@ -58,6 +50,7 @@ export class AssetsController {
     try {
       return await this.assetsService.create(siteId, req.admin.id, file, type);
     } catch (error) {
+      console.error('Asset upload failed:', error);
       throw new HttpException(error.message, error.status || 400);
     }
   }

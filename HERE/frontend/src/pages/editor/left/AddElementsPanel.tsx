@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useEditorStore, uid, findById } from '../../../stores/editorStore';
 import type { PageElement } from '../../../api/pages';
 import { VOID_TAGS } from '../canvas/ElementView';
+import { getComponents, type SiteComponent } from '../../../api/components';
 
 // ── Shapes ────────────────────────────────────────────────────────────────────
 interface ShapeItem { label: string; icon: string; make: () => PageElement; }
@@ -192,18 +193,56 @@ export function AddElementsPanel() {
   const selectedId = useEditorStore(s => s.selectedId);
   const elements   = useEditorStore(s => s.elements);
   const addChild   = useEditorStore(s => s.addChild);
+  const mode       = useEditorStore(s => s.mode);
+  const siteId     = useEditorStore(s => s.siteId);
+
+  const [dynamicComponents, setDynamicComponents] = useState<SiteComponent[]>([]);
+
+  // Data-bound components can only be placed on a real page — nesting one
+  // inside another component's own template risks unresolvable self-reference
+  // loops and isn't something the product needs yet.
+  useEffect(() => {
+    if (mode !== 'page' || !siteId) return;
+    getComponents(siteId)
+      .then(list => setDynamicComponents(list.filter(c => c.type === 'dynamic' && c.collectionId)))
+      .catch(() => {});
+  }, [mode, siteId]);
+
+  // A container is a valid insertion target if it can hold children and isn't
+  // itself a `_collection` marker (whose children are derived, never authored).
+  const canParentOf = (id: string | null): boolean => {
+    if (!id) return false;
+    const found = findById(elements, id);
+    if (!found) return false;
+    if (VOID_TAGS.has(found.el.tag)) return false;
+    if ((found.el as Record<string, unknown>)._collection) return false;
+    return true;
+  };
 
   const filtered = LIBRARY.filter(l => l.label.toLowerCase().includes(q.toLowerCase()));
 
   const handleAdd = (item: LibItem) => {
     const el = item.make();
-    // Add as child of selected element if it can have children; else at root
-    const canParent = selectedId
-      ? (() => {
-          const found = findById(elements, selectedId);
-          return found ? !VOID_TAGS.has(found.el.tag) : false;
-        })()
-      : false;
+    const canParent = canParentOf(selectedId);
+    addChild(canParent ? selectedId : null, el);
+  };
+
+  const handleAddDynamic = (c: SiteComponent) => {
+    if (!c.collectionId) return;
+    const el: PageElement = {
+      id: uid(), tag: 'div', class: 'collection-list', children: [],
+      // Defaults to a full-width, self-responsive grid (as many columns as
+      // fit, each at least 240px) — no media queries needed, it naturally
+      // reduces columns as the viewport narrows. The Inspector's Layout
+      // section (fixed 1-5 column presets / Auto-fit / custom) lets the
+      // user override this afterward.
+      style: {
+        display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '20px',
+        width: '100%', minWidth: '0', boxSizing: 'border-box',
+      },
+      _collection: { collectionId: c.collectionId, componentId: c.id },
+    };
+    const canParent = canParentOf(selectedId);
     addChild(canParent ? selectedId : null, el);
   };
 
@@ -217,6 +256,26 @@ export function AddElementsPanel() {
           onChange={e => setQ(e.target.value)}
         />
       </div>
+
+      {/* Data components — cards backed by a data table (e.g. Team) */}
+      {!q && mode === 'page' && dynamicComponents.length > 0 && (
+        <>
+          <div className="l-sect-head">Data Components</div>
+          <div className="l-lib-grid">
+            {dynamicComponents.map(c => (
+              <div
+                key={c.id}
+                className="l-lib-card"
+                onClick={() => handleAddDynamic(c)}
+                title={`Insert ${c.name} (repeats once per row of its data)`}
+              >
+                <div className="l-lib-glyph" style={{ fontSize: 16 }}>▦</div>
+                <div className="l-lib-lbl">{c.name}</div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Shapes group — always shown (not filtered, shapes are few) */}
       {!q && (

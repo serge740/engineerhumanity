@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Our Story</title>
+
+<!-- Same page-scoped font override as WhoWeAre.html: the live OurStory route also
+     injects a <style> that redefines .font-serif/.font-sans to Playfair Display/DM Sans
+     for the whole page (nav+footer included) while mounted. Replicated faithfully. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --navy:          #0A1628;
+  --bg:            #F0F7FF;
+  --bg-alt:        #E1EEF9;
+  --muted:         #3A5068;
+
+  --sky-50:        #f0f9ff;
+  --sky-300:       #7dd3fc;
+  --sky-400:       #38bdf8;
+  --sky-500:       #0ea5e9;
+  --sky:           #0284c7;
+  --sky-dark:      #075985;
+  --sky-700:       #0369a1;
+  --sky-900:       #0c4a6e;
+
+  --emerald-300:   #6ee7b7;
+  --emerald-400:   #34d399;
+  --emerald-500:   #10b981;
+  --emerald:       #059669;
+  --emerald-dark:  #047857;
+  --emerald-800:   #065f46;
+  --emerald-900:   #064e3b;
+
+  --green:         #16a34a;
+  --green-500:     #22c55e;
+  --green-50:      #f0fdf4;
+  --green-100:     #dcfce7;
+  --green-dark:    #15803d;
+  --green-darker:  #166534;
+
+  --purple:        #9333ea;
+  --purple-100:    #f3e8ff;
+
+  --yellow-500:    #eab308;
+  --yellow-100:    #fef9c3;
+  --yellow-600:    #ca8a04;
+
+  --blue-500:      #3b82f6;
+  --blue-100:      #dbeafe;
+  --blue-600:      #2563eb;
+
+  --orange-500:    #f97316;
+  --orange-100:    #ffedd5;
+  --orange-600:    #ea580c;
+
+  --gray-50:       #f9fafb;
+  --gray-100:      #f3f4f6;
+  --gray-600:      #4b5563;
+  --gray-700:      #374151;
+  --gray-800:      #1f2937;
+  --gray-900:      #111827;
+  --slate-50:      #f8fafc;
+
+  --red-100:       #fee2e2;
+  --red-500:       #ef4444;
+  --red-600:       #dc2626;
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: #fff; }
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 32px; line-height: 1.1; margin: 0; }
+h3 { font-size: 20px; line-height: 1.2; margin: 0; }
+h4 { font-size: 16px; font-weight: 600; margin: 0; }
+p  { font-size: 16px; line-height: 1.75; margin: 0; }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.page { position: relative; overflow: hidden; }
+
+/* CHROME — NAVBAR (copied verbatim from Home.html) */
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+.drop-menu { position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100); padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px); transition: all .25s; transform-origin: top; z-index: 60; }
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+.btn-donate { display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap; }
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+.nav-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55; }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-sidebar { position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto; transition: right .3s ease-in-out; }
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple); }
+.mob-donate { display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+@media (min-width: 1024px) {
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: flex; }
+  .btn-donate { display: inline-block; }
+  .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; }
+}
+@media (min-width: 1280px) {
+  .nav-links { font-size: 14px; }
+  .nav-item, .drop-btn { padding: 10px 16px; }
+}
+
+/* CHROME — FOOTER (copied verbatim from Home.html) */
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+@media (min-width: 640px) { .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; } }
+@media (min-width: 1024px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; } .footer-bottom { padding: 24px 64px; } }
+
+/* CHROME — WHATSAPP BUTTON (copied verbatim from Home.html) */
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+/* CHROME — PAGE HEADER BANNER (copied verbatim from WhoWeAre.html) */
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-size: 34px; font-weight: 300; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* ══════════════════════════════════════════════════════════════
+   OUR STORY — page content
+   ══════════════════════════════════════════════════════════════ */
+.story-section { padding: 48px 16px; }
+.story-head { text-align: center; margin-bottom: 32px; }
+.story-head h2 { font-size: 28px; font-weight: 700; color: var(--gray-900); }
+.story-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; }
+.story-col { display: flex; flex-direction: column; gap: 16px; }
+
+.story-photo { width: 100%; object-fit: cover; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.2); margin-bottom: 16px; }
+.book-card { background: #fff; padding: 16px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,.1); }
+.book-cover { width: 100%; height: 192px; object-fit: contain; border-radius: 8px; margin-bottom: 16px; }
+.buy-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: var(--sky); color: #fff; padding: 12px 16px; border-radius: 8px; font-weight: 600; transition: background .2s; }
+.buy-btn:hover { background: var(--sky-700); }
+.buy-btn svg { width: 20px; height: 20px; }
+
+.gradient-card { background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; padding: 24px; border-radius: 16px; }
+.gradient-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+.gradient-card p { opacity: .95; }
+.gradient-card .sub { opacity: .8; margin-top: 8px; font-weight: 600; }
+.gradient-card .em { opacity: .8; margin-top: 4px; font-style: italic; }
+.gradient-card .role { opacity: .9; margin-top: 4px; }
+
+.card { background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.08); display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.75; color: var(--gray-700); }
+.card.border-green { border-left: 4px solid var(--green); }
+.card.tint-sky { background: var(--sky-50); }
+.card.tint-green { background: var(--green-50); }
+.card.border-sky { border-left: 4px solid var(--sky); }
+.card .strong-line { font-weight: 600; color: var(--gray-900); }
+
+.milestone-box { background: var(--gray-50); padding: 20px; border-radius: 12px; border-left: 4px solid var(--green); display: flex; flex-direction: column; gap: 12px; }
+.milestone-title { font-weight: 600; color: var(--gray-900); }
+.milestone-list { display: flex; flex-direction: column; gap: 8px; font-size: 16px; color: var(--gray-700); }
+.milestone-list li { display: flex; align-items: flex-start; gap: 8px; }
+.milestone-list .yr { font-weight: 700; color: var(--sky); flex-shrink: 0; }
+
+.link-box { background: var(--sky-50); padding: 20px; border-radius: 12px; border: 2px solid var(--sky); display: flex; flex-direction: column; gap: 10px; }
+.link-row { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 12px 16px; border-radius: 8px; color: var(--sky); font-weight: 600; transition: background .2s; }
+.link-row:hover { background: var(--gray-50); }
+.link-row svg { width: 20px; height: 20px; }
+
+.champion-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; }
+.champion-photo { width: 100%; height: 320px; object-fit: cover; object-position: top; border-radius: 16px; box-shadow: 0 20px 40px rgba(0,0,0,.2); }
+
+.forum-head { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.forum-head svg { width: 32px; height: 32px; color: var(--sky); flex-shrink: 0; }
+.forum-head h2 { font-size: 26px; font-weight: 700; color: var(--gray-900); }
+.forum-block { margin-bottom: 40px; }
+.forum-block h3 { font-size: 22px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; }
+.forum-img-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-bottom: 24px; }
+.forum-img { width: 100%; height: 320px; object-fit: cover; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,.12); }
+.quote-box { background: var(--green-50); padding: 20px; border-radius: 12px; border-left: 4px solid var(--green); font-style: italic; color: var(--gray-800); font-weight: 500; }
+.impact-box { background: var(--green-50); padding: 20px; border-radius: 12px; border-left: 4px solid var(--green); }
+.impact-box .strong-line { font-weight: 600; color: var(--gray-900); margin-bottom: 12px; }
+.partner-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.partner-list li { display: flex; align-items: flex-start; gap: 12px; }
+.partner-list .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sky-500); flex-shrink: 0; margin-top: 8px; }
+.partner-list .name { font-weight: 600; }
+.bullet-list { display: flex; flex-direction: column; gap: 8px; }
+.bullet-list li { display: flex; align-items: flex-start; gap: 8px; }
+.bullet-list .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--sky-500); flex-shrink: 0; margin-top: 8px; }
+.cta-link { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 12px 24px; border-radius: 8px; font-weight: 600; box-shadow: 0 10px 20px rgba(0,0,0,.15); transition: opacity .2s; margin-top: 24px; width: fit-content; }
+.cta-link:hover { opacity: .9; }
+.cta-link svg { width: 20px; height: 20px; }
+
+.final-cta { background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; }
+.final-cta h2 { font-size: 30px; font-weight: 700; color: #fff; margin-bottom: 16px; }
+.final-cta p { font-size: 17px; opacity: .95; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-btn { display: inline-block; background: #fff; color: var(--sky); padding: 14px 32px; border-radius: 8px; font-weight: 700; font-size: 16px; box-shadow: 0 15px 30px rgba(0,0,0,.2); transition: background .2s; }
+.final-cta-btn:hover { background: var(--gray-100); }
+
+@media (min-width: 640px) { .story-section { padding: 48px 32px; } .forum-img-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 768px) {
+  .story-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .champion-grid { grid-template-columns: 1fr 1fr; }
+  .champion-photo { height: 420px; }
+}
+@media (min-width: 1024px) { .story-section { padding: 80px 64px; } .champion-photo { height: 500px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <main>
+
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Our Story" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Our Story</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="OurStory.html" class="current">Our Story</a></div>
+      </div>
+    </div>
+
+    <!-- FOUNDER -->
+    <section class="story-section" id="our-story" style="background:#fff;">
+      <div class="story-head"><h2>MEET OUR FOUNDER</h2></div>
+      <div class="story-grid">
+        <div>
+          <img src="http://localhost:3001/uploads/e4h-story-founder.png" alt="Eric Kamanzi" class="story-photo" />
+          <div class="book-card">
+            <img src="http://localhost:3001/uploads/e4h-story-book.png" alt="Breaking Boundaries Book" class="book-cover" />
+            <a href="https://www.amazon.com/dp/1949513467" target="_blank" rel="noopener noreferrer" class="buy-btn">
+              Buy Founder Book at Amazon
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="story-col">
+          <div class="gradient-card">
+            <h3>Eric KAMANZI, PE, PMP</h3>
+            <p>Founder &amp; CEO, Engineers4Humanity</p>
+            <p class="sub">Eric Kamanzi &amp; Engineers4Humanity</p>
+            <p class="em">A God-Given Calling Shaped by Faith, Tragedy, Purpose, and Impact</p>
+          </div>
+
+          <div class="card">
+            <p>Eric Kamanzi's life and work are rooted in a profound journey of survival, faith, and a deep commitment to restoring dignity for refugee youth. Born in 1986 in the Democratic Republic of Congo and raised as the eldest of five, his childhood was marked by responsibility and leadership. At age 10, he fled with his family to Rwanda, and one year later survived the <strong>1997 Mudende Massacre</strong>, where his father was killed while protecting him and his siblings. This tragedy became the defining moment that shaped his lifelong mission.</p>
+            <p>Growing up in the Gihembe Refugee Camp in Rwanda for 25 years, Eric developed a philosophy rooted in <strong>self-reliance, education, and God's promises</strong>. His father's wisdom and principle <em>"Teach a man to fish and you feed him for a lifetime"</em> — shaped his understanding of responsibility and dignity. Eric expanded this into his own conviction: <strong>"If you teach a child, you give him a lifetime gift."</strong> These principles became the foundation of <strong>Engineers4Humanity</strong>.</p>
+            <p>His purpose was strengthened by <strong>Nelson Mandela's belief</strong> in the power of education and by the Scriptures that shaped his identity. He held tightly to God's assurance: <strong>"Before I formed you in the womb I knew you, before you were born I set you apart."</strong> — Jeremiah 1:5 and to God's promise of hope: <strong>"For I know the plans I have for you… plans to give you hope and a future."</strong> — Jeremiah 29:11</p>
+            <p>Eric's calling was shaped not only by tragedy and resilience, but by a deep family devotion to faith. In 2007, Eric met American Pastor Rick Warren in Kigali, Rwanda at a youth meeting — a moment that spiritually confirmed his calling. Anchored in the declaration, <strong>"As for me and my house, we will serve the Lord."</strong> — Joshua 24:15, his family held firmly to God's promises through years of hardship. Eric's family's restoration — now reunited and living together in Dallas, Texas — is a living testimony of God's faithfulness. Thankfully, Eric's mother and brothers are U.S. citizens, and Eric and his wife, Gentile, have U.S. Permanent Residence (green cards).</p>
+            <p>This same faith fuels Eric's <strong>lifelong commitment to serve and advocate for refugee families</strong> who remain in camps today — families still facing the same misery, uncertainty, and daily struggle he once lived through. He carries their stories in his heart, and every initiative he leads is driven by the conviction that <strong>no child should grow up without opportunity, and no family should remain trapped in hopelessness.</strong></p>
+            <p>Today, as a father of four, Eric is intentional about raising his children with the same values of <strong>faith, service, and purpose</strong> that shaped his own life — and with a deep awareness of the responsibility to uplift those still waiting for the chance he was given.</p>
+          </div>
+
+          <div class="milestone-box">
+            <p class="milestone-title">Key milestones:</p>
+            <ul class="milestone-list">
+              <li><span class="yr">2004:</span> Served 70+ orphaned students through the Survivors' Association AERG at high school.</li>
+              <li><span class="yr">2007:</span> Met Pastor Rick Warren in Kigali — a moment that spiritually confirmed his calling.</li>
+              <li><span class="yr">2008:</span> Co-founded the Refugee Youth Club – Forum Amis de la Paix.</li>
+              <li><span class="yr">2009:</span> Helped establish Hope School, a refugee-led secondary school in Gihembe.</li>
+              <li><span class="yr">2020:</span> Launched Engineers4Humanity Consultancy in Rwanda.</li>
+              <li><span class="yr">2024:</span> Established Engineers4Humanity 501(c)(3) in Texas, USA.</li>
+            </ul>
+          </div>
+
+          <div class="link-box">
+            <a href="https://breakingboundaries.net/connect/" target="_blank" rel="noopener noreferrer" class="link-row">Visit Founder's Author Page<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+            <a href="https://www.youtube.com/watch?v=9FrxORFsE9A" target="_blank" rel="noopener noreferrer" class="link-row">Impact &amp; Videos of Testimonies<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EDUCATION CHAMPION -->
+    <section class="story-section" id="executive-team" style="background:var(--gray-50);">
+      <div class="story-head"><h2>Meet Engineers4Humanity's Education Program Champion</h2></div>
+      <div class="champion-grid">
+        <img src="http://localhost:3001/uploads/e4h-story-malisaba.png" alt="Frere Malisaba Straton" class="champion-photo" />
+        <div class="story-col">
+          <div class="gradient-card">
+            <h3>Mr. Frere Malisaba Straton</h3>
+            <p class="role">Board Vice Chair for Education Programs</p>
+          </div>
+          <div class="card border-green">
+            <p>Frère Malisaba Straton is a Catholic Marist Brother, an accomplished educator, and a humanitarian leader whose five decades of service have strengthened schools and communities across Rwanda. A former Deputy Provincial Superior of the Marist Brothers in Rwanda and a trained human-rights educator, he has championed child protection, academic excellence, and the dignity of vulnerable learners throughout his career.</p>
+            <p>We are profoundly grateful for his compassion and leadership, which have shaped refugee education for more than twenty years and continue to guide Engineers4Humanity today. After visiting Hope School in 2013 at the request of his friend Mrs. Lycie, he saw firsthand the challenges refugee students faced and immediately began advocating for mobilizing support, writing to partners, and contributing his own resources. His 2014 meeting with Eric in Kigali deepened their shared commitment to vocational training and youth empowerment.</p>
+            <p>Through partnerships with Rwabuye Vocational Center and Engineers4Humanity, he launched short-course training programs from 2015, enabling more than 200 refugee youth to gain practical skills and access scholarships from centers including Latoye in Kigali.</p>
+            <p class="strong-line">After Hope School closed in 2016, Frère Malisaba continued working closely with Eric and played a key role in establishing Engineers4Humanity, where he now serves as Board Vice Chair for Education Programs. His mentorship, advocacy, and unwavering belief in refugee youth have transformed countless lives — he remains a cornerstone of Engineers4Humanity's mission.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORUM & HOPE SCHOOL -->
+    <section class="story-section" style="background:#fff;">
+      <div class="forum-head">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10h.01"/><path d="M12 14h.01"/><path d="M12 6h.01"/><path d="M16 10h.01"/><path d="M16 14h.01"/><path d="M16 6h.01"/><path d="M8 10h.01"/><path d="M8 14h.01"/><path d="M8 6h.01"/><path d="M9 22v-3a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/><rect x="4" y="2" width="16" height="20" rx="2"/></svg>
+        <h2>Hope School Success Story &amp; Inspiration of Engineers4Humanity</h2>
+      </div>
+
+      <div class="card tint-sky" style="margin-bottom:40px;">
+        <p>Engineers4Humanity was born from the inspiration of Hope School — a journey of resilience, faith, and the belief that refugee youth can rise when given opportunity. Our founder, Eric, spent 25 years in the Gihembe Refugee Camp in Rwanda, where he learned that education, skills, and hope are the most powerful tools a young person can have.</p>
+      </div>
+
+      <div class="forum-block">
+        <h3>Where It Began: Forum Amis de la Paix (2008)</h3>
+        <div class="card">
+          <p>In 2008, Eric co-founded the Refugee Youth Club — Forum Amis de la Paix — the first youth-led movement in the camp. The Forum united young people around education, peacebuilding, and community service. But one challenge became impossible to ignore: refugee students had no access to secondary education.</p>
+          <p>This realization sparked a bold idea that changed the future of the camp.</p>
+        </div>
+      </div>
+
+      <div class="forum-block">
+        <h3>Hope School: A Seed of Hope (2009–2016)</h3>
+        <div class="forum-img-grid">
+          <img src="http://localhost:3001/uploads/e4h-story-forum.jpeg" alt="Forum Members" class="forum-img" />
+          <img src="http://localhost:3001/uploads/e4h-story-graduation.png" alt="Hope School Graduation" class="forum-img" />
+        </div>
+        <div class="card">
+          <p>With no classrooms, no funding, and no infrastructure, Forum leaders launched what would become Hope School. On January 19, 2009, Inkurunziza Church opened its doors to the first students. To encourage them, Eric wrote a message on the cover of three teacher syllabus books — History, Geography, and Economics — books he had received from Riviera High School in Kigali:</p>
+          <blockquote class="quote-box">"Never give up, never lose hope. In God we trust."</blockquote>
+          <p>A student named Shyengo was inspired to give the school its name — Hope School.</p>
+          <p>The school grew through sacrifice and unity. Teachers volunteered for a full year without pay. The community built classrooms from plastic sheeting, mud walls, and timber. Families contributed small amounts to keep the school alive.</p>
+          <div class="impact-box">
+            <p class="strong-line">Remarkable Impact:</p>
+            <p>Despite these conditions, Hope School became the top-performing school in the district. Every student passed the national exam, and one earned a perfect 100%. Over seven years, more than 500 students graduated — many now leaders in Rwanda, the USA, Canada, and Europe, and many serving today as Engineers4Humanity volunteers.</p>
+          </div>
+          <p>Hope School closed in 2016 due to infrastructure and financial challenges, but its legacy lives on.</p>
+        </div>
+      </div>
+
+      <div class="forum-block">
+        <h3>A New Challenge: Skills and Employment (2013)</h3>
+        <div class="card">
+          <p>Even before the school closed, Eric saw the next barrier: <strong>graduates had no jobs, no practical skills, no access to college or university education, and no opportunities.</strong></p>
+          <p>In 2013, he launched an on-the-job training pilot for 10 Hope School graduates. They learned masonry, steel fixing, carpentry, and construction directly on worksites. Within months, they were earning income and supporting their families.</p>
+          <p>This pilot became the <strong>first spark of Engineers4Humanity.</strong></p>
+        </div>
+      </div>
+
+      <div class="forum-block">
+        <h3>Partners Who Carried the Mission</h3>
+        <div class="card">
+          <p style="margin-bottom:8px;">Our journey has been strengthened by partners who believe in refugee potential, including:</p>
+          <ul class="partner-list">
+            <li><span class="dot"></span><span class="name">Impact Hope (Mindy Thygeson)</span></li>
+            <li><span class="dot"></span><span class="name">ADRA</span></li>
+            <li><span class="dot"></span><span class="name">World Vision</span></li>
+            <li><span class="dot"></span><span class="name">These Numbers Have Faces</span></li>
+            <li><span class="dot"></span><span class="name">Many churches, schools, and community leaders</span></li>
+          </ul>
+          <p>Their support has opened doors for thousands of refugee youth.</p>
+        </div>
+      </div>
+
+      <div class="forum-block">
+        <h3>Gratitude to Those Who Carried the Mission</h3>
+        <div class="card tint-sky border-sky">
+          <p>Eric is deeply grateful to Forum Members, school Principal Mr. Baudouin Ntabareshya, Nsengiyera Jean — former refugee leaders who are both resettled in the USA — the dedicated teachers, staff, churches, youth volunteers, and the partner schools who supported Hope School with scholarships and supplies.</p>
+          <p>He honors the students who trusted the mission and worked hard to succeed, and the entire Gihembe refugee community, whose small voluntary contributions helped make secondary education possible for more than 500 students. Their unity and sacrifice helped shape leaders now serving globally and many who continue giving back through Engineers4Humanity. Their journey proves that hope, once planted, grows across generations and continents.</p>
+        </div>
+      </div>
+
+      <div class="forum-block" style="margin-bottom:0;">
+        <h3>Engineers4Humanity Today</h3>
+        <div class="card">
+          <p>Engineers4Humanity is the natural evolution of this story:</p>
+          <ul class="bullet-list">
+            <li><span class="dot"></span>Forum awakened youth leadership.</li>
+            <li><span class="dot"></span>Hope School opened access to education.</li>
+            <li><span class="dot"></span>The 2013 pilot proved that skills create dignity and income.</li>
+          </ul>
+          <p>Today, Engineers4Humanity equips refugee youth with engineering skills, vocational training, innovation, and pathways to employment — building sustainable solutions for families who still face the hardships Eric once lived through.</p>
+          <p class="strong-line">The seed of hope planted in 2009 continues to grow — transforming lives, communities, and futures.</p>
+          <a href="SuccessStory.html" class="cta-link">Read Our Success Stories<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="story-section final-cta">
+      <h2>Your Support Can Make a World of Difference</h2>
+      <p>Whether through donations, volunteering, or spreading the word, you can help empower vulnerable communities.</p>
+      <a href="Donate.html" class="final-cta-btn">Donate Now</a>
+    </section>
+
+  </main>
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+    toggle.addEventListener('click', function () { if (sidebar.classList.contains('open')) close(); else open(); });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+    sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate').forEach(function (l) { l.addEventListener('click', close); });
+  }
+  function initMobileAccordions() {
+    document.querySelectorAll('.mob-summary').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) { btn.classList.remove('open'); panel.style.maxHeight = '0px'; panel.style.opacity = '0'; }
+        else { btn.classList.add('open'); panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px'; panel.style.opacity = '1'; }
+      });
+    });
+  }
+  function initHashScroll() {
+    if (window.location.hash) {
+      var el = document.getElementById(window.location.hash.slice(1));
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
+  }
+  function initFooterYear() { document.getElementById('footerYear').textContent = new Date().getFullYear(); }
+  document.addEventListener('DOMContentLoaded', function () {
+    initHashScroll();
+  });
+})();
+</script>
+</body>
+</html>

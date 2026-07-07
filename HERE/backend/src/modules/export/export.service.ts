@@ -4,6 +4,11 @@ import { Response } from 'express';
 import AdmZip = require('adm-zip');
 import * as fs from 'fs';
 import * as path from 'path';
+import {
+  expandCollectionNodes,
+  CollectionForExpansion,
+  ComponentForExpansion,
+} from 'src/common/collection-expansion';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -43,8 +48,13 @@ function rewritePageLinks(val: string, slugs: Set<string>): string {
 }
 
 function buildAttrs(el: PageElement, slugs: Set<string>): string {
-  const SKIP = new Set(['id','tag','text','children','innerHTML','class','style','assetRef','_frameType','_frameName']);
+  const SKIP = new Set(['id','tag','text','children','innerHTML','class','style','assetRef','_frameType','_frameName','_collection','_modalTarget','_modalClose']);
   const parts: string[] = [];
+
+  // Always emitted so a `_modalTarget` trigger elsewhere on the page can find
+  // this exact node via `document.querySelector('[data-el-id="..."]')` — the
+  // same handle the React-rendered editor/public-page paths already use.
+  parts.push(`data-el-id="${el.id}"`);
 
   if (el.class) parts.push(`class="${el.class}"`);
   if (el.style && Object.keys(el.style).length) {
@@ -52,6 +62,15 @@ function buildAttrs(el: PageElement, slugs: Set<string>): string {
       .map(([k, v]) => `${camelToKebab(k)}:${rewriteAssetUrls(String(v))}`)
       .join(';');
     parts.push(`style="${css}"`);
+  }
+  // A "more detail" modal trigger/close button (see collection-expansion.ts) —
+  // translated into a real onclick attribute since this is plain static HTML,
+  // no framework event system to hook into.
+  if (typeof el._modalTarget === 'string') {
+    parts.push(`onclick="event.preventDefault();var m=document.querySelector('[data-el-id=&quot;${el._modalTarget}&quot;]');if(m&&m.showModal)m.showModal();"`);
+  }
+  if (el._modalClose === true) {
+    parts.push(`onclick="var d=this.closest('dialog');if(d)d.close();"`);
   }
   for (const [k, v] of Object.entries(el)) {
     if (SKIP.has(k)) continue;
@@ -165,12 +184,54 @@ export class ExportService {
     const safeName   = (site.name || 'site').replace(/[^a-z0-9]/gi, '_');
     const slugSet    = new Set(pages.map(p => p.slug));
 
+    // ── Expand `_collection` marker nodes once per page, up front ───────────
+    // Every downstream pass (asset collection, page-style extraction, HTML
+    // build) must read from this expanded tree, not the raw `page.html` —
+    // otherwise images/text that only exist inside CollectionItem rows would
+    // be missing from the exported bundle even though the config was correct.
+    const [collectionsRaw, componentsRaw] = await Promise.all([
+      this.prisma.collection.findMany({
+        where: { siteId },
+        include: { items: { orderBy: { order: 'asc' } } },
+      }),
+      this.prisma.component.findMany({ where: { siteId, type: 'dynamic' } }),
+    ]);
+    const collectionsById = new Map<string, CollectionForExpansion>(
+      collectionsRaw.map(c => [
+        c.id,
+        {
+          id: c.id,
+          fields: c.fields as any,
+          items: c.items.map(i => ({ data: i.data as Record<string, unknown> })),
+        },
+      ]),
+    );
+    const componentsById = new Map<string, ComponentForExpansion>(
+      componentsRaw.map(c => [
+        c.id,
+        {
+          id: c.id,
+          html: (Array.isArray(c.html) ? c.html : []) as PageElement[],
+          modalHtml: (Array.isArray(c.modalHtml) ? c.modalHtml : null) as PageElement[] | null,
+        },
+      ]),
+    );
+    const expandedByPageId = new Map<string, PageElement[]>(
+      pages.map(p => [
+        p.id,
+        expandCollectionNodes(
+          (Array.isArray(p.html) ? p.html : []) as PageElement[],
+          collectionsById,
+          componentsById,
+        ) as PageElement[],
+      ]),
+    );
+
     // ── Collect asset filenames ──────────────────────────────────────────────
     const allAssetFiles = new Set<string>();
     const assetUrlRe    = /\/uploads\/([^'") \t\n]+)/g;
     for (const page of pages) {
-      const els = (Array.isArray(page.html) ? page.html : []) as PageElement[];
-      collectUploadedFiles(els).forEach(f => allAssetFiles.add(f));
+      collectUploadedFiles(expandedByPageId.get(page.id) ?? []).forEach(f => allAssetFiles.add(f));
     }
     for (const text of [globalCSS, globalJS]) {
       let m: RegExpExecArray | null;
@@ -180,7 +241,7 @@ export class ExportService {
 
     // ── site.css ─────────────────────────────────────────────────────────────
     const pageStyleBlocks = pages
-      .flatMap(p => (Array.isArray(p.html) ? p.html : []) as PageElement[])
+      .flatMap(p => expandedByPageId.get(p.id) ?? [])
       .filter(el => el.tag === 'style')
       .map(el => (el.text ?? '').trim())
       .filter(Boolean)
@@ -195,7 +256,7 @@ export class ExportService {
       const isIndex = (page as Record<string, unknown>).isLanding === true || page.slug === 'home' || page.slug === 'index';
       const filename = isIndex ? 'index.html' : `${page.slug}.html`;
       const html     = buildHtmlDoc(
-        { title: page.title, description: page.description, html: page.html },
+        { title: page.title, description: page.description, html: expandedByPageId.get(page.id) ?? [] },
         slugSet, globalCSS, globalJS,
       );
       zip.addFile(filename, Buffer.from(html, 'utf8'));

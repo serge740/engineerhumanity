@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Eye, EyeOff, Lock, Mail, Loader2 } from 'lucide-react';
+import { Eye, EyeOff, Lock, Mail, Loader2, LayoutTemplate, Boxes, Database } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { loginAdmin } from '../../api/auth';
 import { useAuth } from '../../context/AuthContext';
@@ -43,105 +43,99 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        {/* Logo / Brand */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-blue-600 mb-4 shadow-lg shadow-blue-600/30">
-            <Lock className="w-8 h-8 text-white" />
+    <div className="dash-shell login">
+      {/* ── Brand panel ─────────────────────────────────────── */}
+      <div className="login__brand">
+        <div className="login__brand-bg" />
+        <div className="login__grid" />
+
+        <div className="login__brand-content">
+          <div className="login__logo">
+            <div className="brand-mark"><span>S</span></div>
+            <div>
+              <div className="brand-name">SiteBuilder</div>
+              <div className="brand-meta">Pro</div>
+            </div>
           </div>
-          <h1 className="text-2xl font-bold text-white">Admin Panel</h1>
-          <p className="text-slate-400 text-sm mt-1">Website Builder — Secure Access</p>
         </div>
 
-        {/* Card */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8">
-          <h2 className="text-xl font-semibold text-gray-900 mb-1">Sign in</h2>
-          <p className="text-sm text-gray-500 mb-6">Enter your credentials to access the dashboard</p>
+        <div className="login__brand-content">
+          <div className="login__chip"><span className="pulse" /> Secure admin access</div>
+          <h1 className="login__tag">
+            Build and publish sites <em>without touching a line of code.</em>
+          </h1>
+          <div className="login__features">
+            <div className="login__feature"><LayoutTemplate size={15} /> Drag-and-drop page builder</div>
+            <div className="login__feature"><Boxes size={15} /> Reusable, data-driven components</div>
+            <div className="login__feature"><Database size={15} /> Your own content, your own data tables</div>
+          </div>
+        </div>
+      </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
-            {/* Email */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Email address
-              </label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+      {/* ── Form panel ──────────────────────────────────────── */}
+      <div className="login__form-side">
+        <div className="login__form">
+          <h2>Sign in</h2>
+          <p className="login__form-sub">Enter your credentials to access the dashboard</p>
+
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <div className="field">
+              <label className="field__label">Email address</label>
+              <div style={{ position: 'relative' }}>
+                <Mail size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--fg-subtle)' }} />
                 <input
                   {...register('adminEmail')}
                   type="email"
                   autoComplete="email"
                   placeholder="admin@example.com"
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-lg border text-sm transition-colors
-                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                    ${errors.adminEmail
-                      ? 'border-red-400 bg-red-50'
-                      : 'border-gray-300 bg-white hover:border-gray-400'
-                    }`}
+                  className="input"
+                  style={{ paddingLeft: 32, borderColor: errors.adminEmail ? 'var(--danger)' : undefined }}
                 />
               </div>
               {errors.adminEmail && (
-                <p className="mt-1.5 text-xs text-red-600">{errors.adminEmail.message}</p>
+                <p style={{ fontSize: 11, color: 'var(--danger)', margin: '2px 0 0' }}>{errors.adminEmail.message}</p>
               )}
             </div>
 
-            {/* Password */}
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">
-                Password
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="field">
+              <label className="field__label">Password</label>
+              <div style={{ position: 'relative' }}>
+                <Lock size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--fg-subtle)' }} />
                 <input
                   {...register('password')}
                   type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   placeholder="Enter your password"
-                  className={`w-full pl-10 pr-10 py-2.5 rounded-lg border text-sm transition-colors
-                    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                    ${errors.password
-                      ? 'border-red-400 bg-red-50'
-                      : 'border-gray-300 bg-white hover:border-gray-400'
-                    }`}
+                  className="input"
+                  style={{ paddingLeft: 32, paddingRight: 32, borderColor: errors.password ? 'var(--danger)' : undefined }}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: 'var(--fg-subtle)', cursor: 'pointer', display: 'flex' }}
                   tabIndex={-1}
                 >
-                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  {showPassword ? <EyeOff size={14} /> : <Eye size={14} />}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1.5 text-xs text-red-600">{errors.password.message}</p>
+                <p style={{ fontSize: 11, color: 'var(--danger)', margin: '2px 0 0' }}>{errors.password.message}</p>
               )}
             </div>
 
-            {/* Submit */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700
-                disabled:bg-blue-400 disabled:cursor-not-allowed
-                text-white font-medium py-2.5 rounded-lg text-sm transition-colors
-                shadow-sm hover:shadow-md"
-            >
+            <button type="submit" disabled={isLoading} className="btn btn--primary btn--block" style={{ height: 38, marginTop: 4 }}>
               {isLoading ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Signing in...
-                </>
+                <><Loader2 size={14} className="animate-spin" /> Signing in…</>
               ) : (
                 'Sign in'
               )}
             </button>
           </form>
-        </div>
 
-        <p className="text-center text-slate-500 text-xs mt-6">
-          Access restricted to authorized administrators only.
-        </p>
+          <p style={{ textAlign: 'center', fontSize: 11, color: 'var(--fg-subtle)', marginTop: 22 }}>
+            Access restricted to authorized administrators only.
+          </p>
+        </div>
       </div>
     </div>
   );

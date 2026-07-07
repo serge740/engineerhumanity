@@ -34,9 +34,13 @@ model Site {
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
 
-  pages      Page[]
-  components Component[]
-  assets     Asset[]
+  pages       Page[]
+  components  Component[]
+  collections Collection[]
+  assets      Asset[]
+  teamMembers TeamMember[]
+  events      Event[]
+  stories     Story[]
 
   @@index([adminId])
   @@map("sites")
@@ -63,17 +67,54 @@ model Page {
 }
 
 model Component {
-  id        String   @id @default(cuid())
-  siteId    String
-  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
-  name      String
-  tag       String
-  html      Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id           String      @id @default(cuid())
+  siteId       String
+  site         Site        @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  name         String
+  tag          String
+  html         Json
+  modalHtml    Json?
+  type         String      @default("static")
+  schema       Json?
+  collectionId String?
+  collection   Collection? @relation(fields: [collectionId], references: [id], onDelete: SetNull)
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   @@index([siteId])
+  @@index([collectionId])
   @@map("components")
+}
+
+model Collection {
+  id         String   @id @default(cuid())
+  siteId     String
+  site       Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  name       String
+  slug       String
+  fields     Json
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  items      CollectionItem[]
+  components Component[]
+
+  @@unique([siteId, slug])
+  @@index([siteId])
+  @@map("collections")
+}
+
+model CollectionItem {
+  id           String     @id @default(cuid())
+  collectionId String
+  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
+  data         Json
+  order        Int        @default(0)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@index([collectionId, order])
+  @@map("collection_items")
 }
 
 model Asset {
@@ -83,9 +124,74 @@ model Asset {
   type      String
   name      String
   url       String
+  publicId  String?
   size      Int
   createdAt DateTime @default(now())
 
   @@index([siteId])
   @@map("assets")
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  siteId      String
+  site        Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  group       String   // 'board' | 'management'
+  name        String
+  title       String
+  credentials String?
+  image       String?
+  linkedIn    String?
+  bio         String?  @db.Text
+  role        String?  // board only: 'chair' | 'vice-chair' | 'executive' | 'member'
+  category    String?  // management only: 'leadership' | 'operations' | 'programs' | 'projects'
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([siteId, group, order])
+  @@map("team_members")
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  siteId      String
+  site        Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  status      String   // 'upcoming' | 'past'
+  title       String
+  date        String
+  time        String?  // upcoming only
+  location    String
+  attendees   String?  // past only
+  description String   @db.Text
+  paragraphs  Json     // string[] (HTML)
+  highlights  Json     // { label: string; icon: string }[]
+  images      Json     // string[]
+  contacts    Json?    // { label: string; email: string }[] — upcoming only
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([siteId, status, order])
+  @@map("events")
+}
+
+model Story {
+  id        String   @id @default(cuid())
+  siteId    String
+  site      Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  group     String   // 'success' | 'success-summary' | 'testimony'
+  name      String
+  role      String?  // success / testimony only
+  image     String?  // success / testimony only
+  summary   String?  @db.Text // card preview text — success / testimony only
+  story     String?  @db.Text // short quote text — success-summary only
+  intro     String?  @db.Text // modal intro paragraph — success / testimony only
+  sections  Json?    // { title: string; content: string }[] — success / testimony only
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([siteId, group, order])
+  @@map("stories")
 }

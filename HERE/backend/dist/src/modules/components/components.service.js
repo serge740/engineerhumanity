@@ -12,6 +12,67 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ComponentsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const component_field_interface_1 = require("../../common/component-field.interface");
+const TOKEN_RE = /\{\{\s*(\w+)\s*\}\}/g;
+function guessFieldType(attrKey, tag) {
+    if (attrKey === 'src' || (tag === 'img' && attrKey !== 'alt'))
+        return 'image';
+    if (attrKey === 'href')
+        return 'url';
+    return 'text';
+}
+function titleCase(key) {
+    const spaced = key.replace(/([A-Z])/g, ' $1').replace(/[_-]+/g, ' ').trim();
+    return spaced.charAt(0).toUpperCase() + spaced.slice(1);
+}
+function scanTemplateTokens(nodes) {
+    const found = new Map();
+    function visit(el) {
+        if (!el || typeof el !== 'object')
+            return;
+        const rec = el;
+        for (const [k, v] of Object.entries(rec)) {
+            if (k === 'children')
+                continue;
+            if (typeof v === 'string') {
+                let m;
+                TOKEN_RE.lastIndex = 0;
+                while ((m = TOKEN_RE.exec(v)) !== null) {
+                    const key = m[1];
+                    const guessed = guessFieldType(k, rec.tag);
+                    const existing = found.get(key);
+                    if (!existing || existing === 'text')
+                        found.set(key, guessed);
+                }
+            }
+        }
+        if (Array.isArray(rec.children))
+            rec.children.forEach(visit);
+    }
+    if (Array.isArray(nodes))
+        nodes.forEach(visit);
+    return found;
+}
+function mergeTokenMaps(...maps) {
+    const merged = new Map();
+    for (const m of maps) {
+        for (const [key, guessed] of m) {
+            const existing = merged.get(key);
+            if (!existing || existing === 'text')
+                merged.set(key, guessed);
+        }
+    }
+    return merged;
+}
+function syncSchema(detected, previous) {
+    const prevByKey = new Map(previous.map(f => [f.key, f]));
+    return Array.from(detected.keys()).map(key => {
+        const prev = prevByKey.get(key);
+        if (prev)
+            return prev;
+        return { key, label: titleCase(key), type: detected.get(key) };
+    });
+}
 let ComponentsService = class ComponentsService {
     prisma;
     constructor(prisma) {
@@ -23,16 +84,30 @@ let ComponentsService = class ComponentsService {
             throw new common_1.NotFoundException('Site not found');
         return site;
     }
+    async assertCollectionInSite(siteId, collectionId) {
+        const collection = await this.prisma.collection.findFirst({ where: { id: collectionId, siteId } });
+        if (!collection)
+            throw new common_1.BadRequestException('collectionId does not belong to this site');
+    }
+    validateType(type) {
+        if (type !== undefined && type !== 'static' && type !== 'dynamic') {
+            throw new common_1.BadRequestException('type must be "static" or "dynamic"');
+        }
+    }
     async findAll(siteId, adminId) {
         await this.assertSiteOwner(siteId, adminId);
         return this.prisma.component.findMany({
             where: { siteId },
             orderBy: { createdAt: 'asc' },
+            include: { collection: { select: { id: true, name: true, slug: true } } },
         });
     }
     async findOne(siteId, id, adminId) {
         await this.assertSiteOwner(siteId, adminId);
-        const component = await this.prisma.component.findFirst({ where: { id, siteId } });
+        const component = await this.prisma.component.findFirst({
+            where: { id, siteId },
+            include: { collection: { select: { id: true, name: true, slug: true } } },
+        });
         if (!component)
             throw new common_1.NotFoundException('Component not found');
         return component;
@@ -43,12 +118,33 @@ let ComponentsService = class ComponentsService {
             throw new common_1.BadRequestException('Name is required');
         if (!dto.tag?.trim())
             throw new common_1.BadRequestException('Tag is required');
+        this.validateType(dto.type);
+        if (dto.schema !== undefined) {
+            try {
+                (0, component_field_interface_1.assertValidFields)(dto.schema, 'schema');
+            }
+            catch (e) {
+                throw new common_1.BadRequestException(e.message);
+            }
+        }
+        if (dto.collectionId)
+            await this.assertCollectionInSite(siteId, dto.collectionId);
+        const html = dto.html ?? [];
+        const modalHtml = dto.modalHtml ?? null;
+        const type = dto.type ?? 'static';
+        const schema = type === 'dynamic'
+            ? syncSchema(mergeTokenMaps(scanTemplateTokens(html), scanTemplateTokens(modalHtml)), dto.schema ?? [])
+            : null;
         return this.prisma.component.create({
             data: {
                 siteId,
                 name: dto.name.trim(),
                 tag: dto.tag.trim(),
-                html: dto.html ?? [],
+                html,
+                modalHtml: (modalHtml ?? undefined),
+                type,
+                schema: (schema ?? undefined),
+                collectionId: dto.collectionId ?? null,
             },
         });
     }
@@ -57,6 +153,17 @@ let ComponentsService = class ComponentsService {
         const component = await this.prisma.component.findFirst({ where: { id, siteId } });
         if (!component)
             throw new common_1.NotFoundException('Component not found');
+        this.validateType(dto.type);
+        if (dto.schema !== undefined) {
+            try {
+                (0, component_field_interface_1.assertValidFields)(dto.schema, 'schema');
+            }
+            catch (e) {
+                throw new common_1.BadRequestException(e.message);
+            }
+        }
+        if (dto.collectionId)
+            await this.assertCollectionInSite(siteId, dto.collectionId);
         const data = {};
         if (dto.name !== undefined)
             data.name = dto.name.trim();
@@ -64,6 +171,22 @@ let ComponentsService = class ComponentsService {
             data.tag = dto.tag.trim();
         if (dto.html !== undefined)
             data.html = dto.html;
+        if (dto.modalHtml !== undefined)
+            data.modalHtml = dto.modalHtml;
+        if (dto.type !== undefined)
+            data.type = dto.type;
+        if (dto.collectionId !== undefined)
+            data.collectionId = dto.collectionId;
+        const nextType = dto.type ?? component.type;
+        const nextHtml = dto.html !== undefined ? dto.html : component.html;
+        const nextModalHtml = dto.modalHtml !== undefined ? dto.modalHtml : component.modalHtml;
+        if (nextType === 'dynamic') {
+            const previousSchema = dto.schema ?? (component.schema ?? []);
+            data.schema = syncSchema(mergeTokenMaps(scanTemplateTokens(nextHtml), scanTemplateTokens(nextModalHtml)), previousSchema);
+        }
+        else if (dto.type === 'static') {
+            data.schema = null;
+        }
         return this.prisma.component.update({ where: { id }, data });
     }
     async remove(siteId, id, adminId) {

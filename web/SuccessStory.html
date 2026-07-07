@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Success Stories</title>
+
+<!-- Page-scoped font override (like WhoWeAre/OurStory/Team pages) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --navy: #0A1628; --sky-50: #f0f9ff; --sky-300: #7dd3fc; --sky-400: #38bdf8;
+  --sky: #0284c7; --sky-700: #0369a1;
+  --emerald-400: #34d399; --emerald: #059669;
+  --green: #16a34a; --green-100: #dcfce7; --green-600: #16a34a; --green-700: #15803d;
+  --green-dark: #15803d; --green-darker: #166534;
+  --purple-600: #9333ea;
+  --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-200: #e5e7eb; --gray-600: #4b5563; --gray-700: #374151; --gray-800: #1f2937; --gray-900: #111827;
+  --red-500: #ef4444; --red-600: #dc2626;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: #fff; }
+h1, h2, h3 { font-family: var(--font-sans); font-weight: 700; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 30px; line-height: 1.2; margin: 0; color: var(--gray-900); }
+h3 { font-size: 18px; line-height: 1.3; margin: 0; color: var(--gray-900); }
+p  { font-size: 16px; line-height: 1.75; margin: 0; color: var(--gray-700); }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.font-serif-heading { font-family: var(--font-serif); font-weight: 700; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.page { position: relative; overflow: hidden; }
+
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+.drop-menu { position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100); padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px); transition: all .25s; transform-origin: top; z-index: 60; }
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple-600); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+.btn-donate { display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap; }
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+.nav-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55; }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-sidebar { position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto; transition: right .3s ease-in-out; }
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; margin: 0; color: #fff; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple-600); }
+.mob-donate { display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+@media (min-width: 1024px) { .nav-inner { padding: 0 24px; } .nav-links { display: flex; } .btn-donate { display: inline-block; } .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; } }
+@media (min-width: 1280px) { .nav-links { font-size: 14px; } .nav-item, .drop-btn { padding: 10px 16px; } }
+
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; color: rgba(255,255,255,.65); }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+@media (min-width: 640px) { .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; } }
+@media (min-width: 1024px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; } .footer-bottom { padding: 24px 64px; } }
+
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-family: var(--font-serif); font-weight: 300; font-size: 34px; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* SUCCESS STORY — page content */
+.ss-section { padding: 64px 16px; }
+.ss-head { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.ss-head svg { width: 40px; height: 40px; flex-shrink: 0; }
+.ss-lead { font-size: 18px; color: var(--gray-700); max-width: 760px; margin-bottom: 40px; }
+
+.summary-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+.summary-card { background: #fff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.1); border: 1px solid var(--gray-100); padding: 24px; }
+.summary-card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.summary-num { width: 32px; height: 32px; border-radius: 50%; background: var(--green-100); color: var(--green-700); font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.summary-card h3 { font-size: 17px; }
+
+.full-head { text-align: center; margin-bottom: 48px; }
+.full-head-row { display: flex; align-items: center; justify-content: center; gap: 12px; margin-bottom: 16px; }
+.full-head-row svg { width: 40px; height: 40px; color: var(--sky); }
+.full-head h2 { font-family: var(--font-serif); font-size: 30px; }
+.full-head p { font-size: 18px; color: var(--gray-600); max-width: 640px; margin: 0 auto; }
+
+.story-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+.story-card { background: #fff; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,.12); overflow: hidden; border: 2px solid var(--gray-100); transition: border-color .2s; }
+.story-card:hover { border-color: var(--sky); }
+.story-photo-wrap { height: 220px; overflow: hidden; background: var(--gray-50); }
+.story-photo-wrap img { width: 100%; height: 100%; object-fit: contain; transition: transform .3s; }
+.story-card:hover .story-photo-wrap img { transform: scale(1.1); }
+.story-body { padding: 20px; }
+.story-name { font-family: var(--font-serif); font-size: 21px; font-weight: 700; color: var(--gray-900); margin-bottom: 6px; }
+.story-role { color: var(--sky); font-weight: 600; margin-bottom: 16px; font-size: 14px; }
+.story-summary { font-size: 14px; margin-bottom: 20px; }
+.view-story-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 12px 16px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; font-size: 14px; transition: opacity .2s; }
+.view-story-btn:hover { opacity: .9; }
+.view-story-btn svg { width: 18px; height: 18px; }
+
+.final-cta { padding: 64px 24px; background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; }
+.final-cta h2 { font-size: 34px; color: #fff; margin-bottom: 16px; }
+.final-cta p { font-size: 18px; opacity: .95; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-btn { display: inline-block; background: #fff; color: var(--sky); padding: 16px 40px; border-radius: 8px; font-weight: 700; font-size: 17px; box-shadow: 0 15px 30px rgba(0,0,0,.2); transition: background .2s; }
+.final-cta-btn:hover { background: var(--gray-100); }
+
+.story-modal { position: absolute; inset: 0; z-index: 70; display: none; align-items: flex-start; justify-content: center; padding: 16px; background: rgba(0,0,0,.85); overflow-y: auto; }
+.story-modal.open { display: flex; }
+.story-modal-inner { position: relative; background: #fff; border-radius: 16px; max-width: 900px; width: 100%; margin: 32px 0; max-height: 90vh; overflow-y: auto; }
+.story-modal-close { position: sticky; top: 16px; float: right; margin: 16px 16px 0 0; background: var(--gray-900); color: #fff; padding: 8px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
+.story-modal-close:hover { background: #374151; }
+.story-modal-close svg { width: 24px; height: 24px; }
+.story-modal-body { padding: 32px; clear: both; }
+.story-modal-head { display: flex; align-items: center; gap: 24px; margin-bottom: 32px; }
+.story-modal-photo { width: 128px; height: 128px; border-radius: 50%; object-fit: cover; border: 4px solid var(--sky); flex-shrink: 0; }
+.story-modal-name { font-family: var(--font-serif); font-size: 28px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+.story-modal-role { color: var(--sky); font-weight: 600; font-size: 18px; }
+.story-modal-intro { background: var(--gray-50); padding: 24px; border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 32px; }
+.story-modal-intro p { white-space: pre-line; }
+.story-modal-section { margin-bottom: 32px; }
+.story-modal-section h3 { font-family: var(--font-serif); font-size: 22px; display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.story-modal-section h3 svg { width: 22px; height: 22px; color: var(--sky); }
+.story-modal-section p { white-space: pre-line; }
+.story-modal-sig { margin-top: 32px; padding-top: 32px; border-top: 2px solid var(--gray-200); text-align: right; font-family: var(--font-serif); font-size: 20px; font-style: italic; color: var(--gray-600); }
+
+@media (min-width: 768px) { .summary-grid { grid-template-columns: 1fr 1fr; } .story-grid { grid-template-columns: 1fr 1fr 1fr; } }
+@media (min-width: 640px) { .ss-section { padding: 64px 32px; } }
+@media (min-width: 1024px) { .ss-section { padding: 96px 64px; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <main>
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Success Stories" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Success Stories</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="SuccessStory.html" class="current">Success Story</a></div>
+      </div>
+    </div>
+
+    <!-- Summary cards -->
+    <section class="ss-section" id="success-story" style="background:var(--gray-50);">
+      <div class="ss-head">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--green-600)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green-600)"><path d="M11.525 2.295a.53.53 0 0 1 .95 0l2.31 4.679a2.123 2.123 0 0 0 1.595 1.16l5.166.756a.53.53 0 0 1 .294.904l-3.736 3.638a2.123 2.123 0 0 0-.611 1.878l.882 5.14a.53.53 0 0 1-.771.56l-4.618-2.428a2.122 2.122 0 0 0-1.973 0L6.396 21.01a.53.53 0 0 1-.77-.56l.881-5.139a2.122 2.122 0 0 0-.611-1.879L2.16 9.795a.53.53 0 0 1 .294-.906l5.165-.755a2.122 2.122 0 0 0 1.597-1.16z"/></svg>
+        <h2>Success Stories</h2>
+      </div>
+      <p class="ss-lead">The refugee education program has hundreds of success stories, and beneficiaries' testimonials highlight its positive impacts. Let's share a few of them.</p>
+
+      <div class="summary-grid">
+        <div class="summary-card"><div class="summary-card-head"><span class="summary-num">1</span><h3>Bosco Izabayo — From Refugee Camp to Professional Accountant</h3></div><p>Born in Gihembe Refugee Camp and raised by his aunt, Bosco faced poverty and limited schooling. Through Hope School and the mentorship of Eric Kamanzi and Impact Hope, he returned to school, graduated with 100%, earned a Business Administration degree from AUCA University, and became a professional accountant — now employed by Impact Hope itself. He married in June 2024 and credits faith and community for his transformation.</p></div>
+        <div class="summary-card"><div class="summary-card-head"><span class="summary-num">2</span><h3>Bernard Ndizeye — Top Graduate Inspiring the Next Generation</h3></div><p>A Hope School alumnus who studied in difficult conditions, Bernard graduated with an A+ grade and 100% marks at the Rwandan National exam — inspiring the entire Gihembe Refugee Camp. Sponsored by These Numbers Have Faces, he earned a Bachelor's degree in Education from AUCA University as the top student. Today he is a high school teacher in Rwanda and an active Engineers4Humanity volunteer, mentoring young refugee students.</p></div>
+        <div class="summary-card"><div class="summary-card-head"><span class="summary-num">3</span><h3>Delice Kiracunda — Empowering Women Through Vocational Skills</h3></div><p>A Congolese refugee from Gihembe, Delice was selected for sponsorship when hope seemed out of reach. She completed tailoring at Rwabuye TVET School and is now proudly pursuing Leisure, Tourism, and Hotel Management at Eastern Africa University in Rwanda. She credits Frère Marisaba and the Engineers4Humanity team for instilling in her the belief that education is the key to reshaping her family's future.</p></div>
+        <div class="summary-card"><div class="summary-card-head"><span class="summary-num">4</span><h3>Bahati Musuhuke — Global Youth Advisor at UNHCR</h3></div><p>Born in Gihembe Refugee Camp in 1998, Bahati excelled academically despite financial barriers. Supported by Brother Malisaba, Forum Amis de la Paix, and Engineers4Humanity, he completed high school and earned a Management degree from Kepler University. He went on to serve as a Global Youth Advisor at UNHCR and a Global Financial Compliance Officer at One Acre Fund, while pursuing an MBA. He continues to support Engineers4Humanity's mission.</p></div>
+        <div class="summary-card"><div class="summary-card-head"><span class="summary-num">5</span><h3>Emmanuel Sebagisha — From Gihembe Camp to African Leadership University</h3></div><p>Despite ranking 3rd in his class at Gihembe Secondary School, Emmanuel could barely afford the $5 registration fee to continue. Thanks to Frere Malisaba Straton and the Engineers4Humanity team, he was admitted to TTC Save where he discovered his passion for teaching. He later worked at One Acre Fund, Kepler College, and now African Leadership University — and volunteers with Engineers4Humanity to ensure young refugees access quality education.</p></div>
+        <div class="summary-card"><div class="summary-card-head"><span class="summary-num">6</span><h3>Emmy Kagiraneza Bukayire — Kepler University Graduate in Management</h3></div><p>Born in Gihembe Refugee Camp, Emmy faced the closure of Hope School in 2016, just as she was close to finishing secondary school. Malisaba Straton intervened, sponsoring her through TTC Save. She later earned a Management in Logistics and Operations degree from Kepler University and is committed to postgraduate studies in 2025. She runs her own business, works in logistics, and champions refugee education — proving that anything is achievable.</p></div>
+      </div>
+    </section>
+
+    <!-- Full stories -->
+    <section class="ss-section" id="full-stories" style="background:#fff;">
+      <div class="full-head">
+        <div class="full-head-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>
+          <h2>Read Their Full Stories</h2>
+        </div>
+        <p>Click on any profile below to read the full testimony in their own words.</p>
+      </div>
+
+      <div class="story-grid">
+        <div class="story-card" data-id="1"><div class="story-photo-wrap"><img src="http://localhost:3001/uploads/e4h-success-1.png" alt="Bosco Izabayo" /></div><div class="story-body"><div class="story-name">Bosco Izabayo</div><p class="story-role">Alum / Beneficiary</p><p class="story-summary line-clamp-3">From refugee camp to professional accountant, Bosco's journey shows the transformative power of education and mentorship.</p><button class="view-story-btn" data-id="1">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="story-card" data-id="2"><div class="story-photo-wrap"><img src="http://localhost:3001/uploads/e4h-success-2.png" alt="Bernard Ndizeye" /></div><div class="story-body"><div class="story-name">Bernard Ndizeye</div><p class="story-role">Alum / Beneficiary</p><p class="story-summary line-clamp-3">Graduated with A+ and 100% marks despite studying in difficult conditions. Now a top education graduate inspiring others.</p><button class="view-story-btn" data-id="2">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="story-card" data-id="3"><div class="story-photo-wrap"><img src="http://localhost:3001/uploads/e4h-success-3.png" alt="Delice Kiracunda" /></div><div class="story-body"><div class="story-name">Delice Kiracunda</div><p class="story-role">Alum / Beneficiary</p><p class="story-summary line-clamp-3">From Gihembe camp to studying Leisure, Tourism, and Hotel Management, Delice's journey shows determination and the power of support.</p><button class="view-story-btn" data-id="3">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="story-card" data-id="4"><div class="story-photo-wrap"><img src="http://localhost:3001/uploads/e4h-success-4.png" alt="Bahati Musuhuke" /></div><div class="story-body"><div class="story-name">Bahati Musuhuke</div><p class="story-role">Alum / Beneficiary</p><p class="story-summary line-clamp-3">From refugee camp to Global Youth Advisor at UNHCR and pursuing an MBA, Bahati's story exemplifies resilience and determination.</p><button class="view-story-btn" data-id="4">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="story-card" data-id="5"><div class="story-photo-wrap"><img src="http://localhost:3001/uploads/e4h-success-5.png" alt="Emmanuel Sebagisha" /></div><div class="story-body"><div class="story-name">Emmanuel Sebagisha</div><p class="story-role">Alum / Beneficiary</p><p class="story-summary line-clamp-3">From Gihembe Refugee Camp to African Leadership University, Emmanuel's story showcases the power of education and mentorship.</p><button class="view-story-btn" data-id="5">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+
+        <div class="story-card" data-id="6"><div class="story-photo-wrap"><img src="http://localhost:3001/uploads/e4h-success-6.png" alt="Emmy Kagiraneza Bukayire" /></div><div class="story-body"><div class="story-name">Emmy Kagiraneza Bukayire</div><p class="story-role">Alum / Beneficiary</p><p class="story-summary line-clamp-3">From Hope School to Kepler University graduate in Management, Emmy's journey proves refugees can excel when given opportunities.</p><button class="view-story-btn" data-id="6">View Full Story<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button></div></div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <h2 style="color:#fff;">Be Part of the Story</h2>
+      <p>Your support helps us continue transforming lives through education, engineering, and peace-building.</p>
+      <a href="Donate.html" class="final-cta-btn">Donate Now</a>
+    </section>
+  </main>
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+  <div class="story-modal" id="storyModal">
+    <div class="story-modal-inner">
+      <button class="story-modal-close" id="storyModalClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div class="story-modal-body">
+        <div class="story-modal-head">
+          <img class="story-modal-photo" id="modalPhoto" src="" alt="" />
+          <div><div class="story-modal-name" id="modalName"></div><p class="story-modal-role" id="modalRole"></p></div>
+        </div>
+        <div class="story-modal-intro"><p id="modalIntro"></p></div>
+        <div id="modalSections"></div>
+        <div class="story-modal-sig">- <span id="modalSig"></span></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var stories = {
+    1: { name:"Bosco Izabayo", role:"Alum / Beneficiary", image:"http://localhost:3001/uploads/e4h-success-1.png",
+      intro:"I am Bosco Izabayo, born in 1996 in Rwanda's Rubavu District, at Mudende Refugee Camp, but raised in Gihembe Refugee Camp as a Congolese refugee. My life began in adversity, and like many in the camp, I faced a childhood marked by hardship. My biological parents were not there to guide me, but my aunt and her husband took me in and raised me with love, treating me as their own.\n\nLife in the camp was difficult; poverty was a constant companion, and basic needs like food, clothing, and education were often out of reach. Attending school hungry and in an environment where the classrooms were built from mud and dust was far from ideal, yet we persevered. However, our school only offered education up to grade nine, so continuing to higher grades was a near-impossible dream.",
+      sections: [
+        { title:"Education path and Resilience", content:"I began my primary school journey in 2003, reaching grade nine in 2012, only to find no opportunities to continue to upper secondary. For refugees like me, the only option was Hope School—a humble institution created by refugees for refugees. The Forum for Congolese Refugee Students was founded in 2009 by resilient university students.\n\nHope School was not government-accredited, but was built to support students with nowhere else to turn and help them achieve their high school dreams. By 2015, I had reached grade 12 at Hope School, fully prepared to sit for national exams, only to receive the devastating news that we were not eligible to take them. It was a blow I'll never forget, as I tried to imagine what lay ahead with no path forward in education.\n\nIn 2016, by what felt like a miracle, Impact Hope, a U.S.-based NGO, arrived with the promise to support refugee students in boarding schools. I could return to grade ten and begin again at Gahogo Adventist Academy, where I studied until I graduated from upper secondary in 2018 with an A grade or 100%. Impact Hope's support was a lifeline, as was the mentorship from the Engineers4humanity team, Members of Forum Amis de la Paix, Hope school Alumnae, and other peers who visited us at school and encouraged us to pursue our dreams. I am deeply grateful for their unwavering support.\n\nAfter graduation, Impact Hope generously offered to support me through university. I joined the Adventist University of Central Africa, studying Business Administration with a focus on Finance. In his mentorship and career guidance program, Engineer Eric Kamanzi encouraged me to pursue CPA certification studies, which I embraced wholeheartedly to grow as a professional accountant. In 2023, I graduated as one of the top students in my university, fulfilling a dream that once seemed impossible." },
+        { title:"A New Career and Life", content:"In an incredible turn of events, Impact Hope contacted me with a job offer—not because I had received their support, but because the university had recommended me as one of its best students. I accepted the position and began my career at the head office. This year, in June 2024, I married a wonderful woman who has brought even more happiness and strength into my life. Today, the bright future I once could only imagine is becoming my reality." },
+        { title:"Gratitude", content:"I am profoundly thankful to everyone who has contributed to my journey. My most profound appreciation goes to my aunt and her family for the love and sacrifices they made for me. To Eric Kamanzi, Hope School Head Master Mr Baudouin and his colleagues at the Forum for Congolese Refugee Students, thank you for founding Hope School and for your mentorship, which was invaluable. My heartfelt thanks to Impact Hope for supporting my education and career. And to my dear wife, who has brought so much joy and encouragement into my life. I am also grateful to my friends, family, and church community, who have been there for me every step of the way." },
+        { title:"Calling message", content:"Reflecting on my journey, it's remarkable how a child once devoid of hope can grow into a self-reliant adult, capable of making decisions and supporting family and community. My story is a testament to the potential within every refugee; with mentorship and support, we can transform lives. I urge organizations and individuals alike to reach out to refugees, for in doing so, they may help to uncover talents and possibilities the world may not yet have seen." }
+      ]},
+    2: { name:"Bernard Ndizeye", role:"Alum / Beneficiary", image:"http://localhost:3001/uploads/e4h-success-2.png",
+      intro:"One of Hope School's alumni, Bernard, inspires others with his academic achievement. Even though he studied in miserable conditions, he graduated with an A+ grade and 100% marks at the Rwandan National exam.\n\nThis inspired the Gihembe Refugee camp and motivated the volunteer teachers and school administration under Mr Baudouin, who dedicated their time and money to refugee kids.",
+      sections: [
+        { title:"Academic Excellence", content:"Thank God for the American non-profit organization, These Numbers Have Faces, which has sponsored Mr. Bernard and many other Hope School alumni to complete their university studies. Bernard holds a Bachelor's degree in Education from AUCA University, graduating as the top student with an A+ grade. He is an inspiration, and I urge you to support his pursuit of a Master's and potentially a PhD, as he can significantly contribute to our country's development." },
+        { title:"Current Impact", content:"Bernard is a father, a high school teacher in Rwanda, and a volunteer with Engineers4Humanity. He mentors and follows up with young refugee students. His story demonstrates that refugee youth can thrive when given the opportunity. Let's continue to provide them with opportunities in education and jobs, as they can achieve remarkable achievements.\n\nTogether, let's champion refugee and immigrant inclusion programs." }
+      ]},
+    3: { name:"Delice Kiracunda", role:"Alum / Beneficiary", image:"http://localhost:3001/uploads/e4h-success-3.png",
+      intro:"I am a Congolese refugee living in the Mahama camp, and I am proudly pursuing my studies in Leisure, Tourism, and Hotel Management at Eastern Africa University in Rwanda.\n\nMy educational journey began at Gihembe camp, where I studied from primary school through my third year of high school. While facing the challenge of limited funding, I witnessed many talented students struggle to continue their education because they were refugees.",
+      sections: [
+        { title:"Finding Hope", content:"Many young girls become teen mothers because of the lack of educational support. While I was confused and hopeless, God sent an angel informing me that a benevolent person was helping young refugees pursue high school.\n\nI was selected from a limited number of sponsored students. I felt joy and was inspired to believe in my own potential. Motivated by this hope, I took a bold step and was determined to use skills from RWABUYE TVET School to create a brighter future for myself and my community." },
+        { title:"Skills and Education", content:"I studied tailoring at Rwabuye TVET School, where I gained valuable knowledge that can transform society and humanity. I cherish the support from Frère Marisaba, the Engineers4humanity team led by Eric Kamanzi, and our fellow students who completed their studies.\n\nFrère Marisaba instilled in us the belief that those with the opportunity to learn must strive for knowledge, opening doors to growth and change. We can reshape our families' futures and uplift our community." },
+        { title:"Philosophy", content:"A saying that often inspires me is, \"If you give a fish to a child, you will feed him for a day; if you teach him to fish, you will feed him for a lifetime.\" This wisdom continues to guide my journey.\n\nI believe in serving others, using my financial resources, advice, and skills to uplift those around me. I embrace this calling, knowing I am here to make a positive impact. In conclusion, let us strive to be a unique force for good." }
+      ]},
+    4: { name:"Bahati Musuhuke", role:"Alum / Beneficiary", image:"http://localhost:3001/uploads/e4h-success-4.png",
+      intro:"My journey is a remarkable testament to resilience, ambition, and the power of support in the face of adversity. Born in 1998 in Gihembe Refugee Camp, my early years were shaped by the realities of life there, where educational and economic opportunities were limited. Nonetheless, my dedication to my studies shone through, beginning at Gihembe Primary School and later Gihembe Secondary School, where I completed Ordinary Level studies in 2015 with outstanding performance.",
+      sections: [
+        { title:"Educational Journey", content:"My academic achievements earned me a placement to study Mathematics, Computer, and Economics at a prestigious school in the Gicumbi District. However, financial barriers presented a significant challenge. Undeterred, I enrolled at Muhondo Secondary School, a school known for accepting students facing academic or economic difficulties. It was a school under a 12-year basic education program.\n\nMy life-changing journey took a transformative turn thanks to the support of Brother Malisaba, a compassionate mentor who extended a helping hand to young refugees.\n\nIn partnership with the Forum-Amis de la Paix and Engineers4humanity, Brother Malisaba covered my tuition and expenses for three years of high school at the Teacher Training Center Save in Gisagara District. He provided essential guidance, mentorship, and counseling. Under this mentorship, I thrived, graduating with distinction and a renewed sense of purpose in 2017." },
+        { title:"Skills Development", content:"Post-high school, I aspired to become a primary school teacher and improve his living standards. While preparing for the next steps, I was offered an opportunity to acquire technical skills, expanding my potential. I joined a short-course program in culinary arts at Rwabuye TVET School, where I learned technical skills with the support of Brother Malisaba, Forum-Amis de la Paix, and Engineers4Humanity, a humanitarian organization founded by Eric Kamanzi. This support system shaped my drive to pursue my dreams and develop a versatile skill set across multiple disciplines." },
+        { title:"University and Career", content:"In 2018, my determination led to my competing for a scholarship at Kepler University, where I earned a spot in their esteemed program. I studied Management with a concentration in Logistics and Operations, embarking on a new academic and professional chapter.\n\nAlongside my studies, I was a Teaching and Learning Assistant for first-year students in a course called \"Methods of Thinking for Business.\" Through this role, I began cultivating teaching and mentoring skills, laying the groundwork for a career devoted to education and support for others.\n\nUpon graduating from Kepler in 2020, my professional journey took a remarkable leap; I secured two pivotal roles: serving as a Global Youth Advisor at the United Nations High Commissioner for Refugees (UNHCR) and as a Global Financial Compliance Officer with One Acre Fund." },
+        { title:"Continued Growth", content:"Driven by a passion for continuous growth, I began an MBA at the University of Kigali, specializing in Finance and Accounting. By August 2022, I took on a new role as an Academic Reviewer with the Global Education Movement in partnership with Southern New Hampshire University, supporting students from various countries enrolled in SNHU's online program." },
+        { title:"Personal Life and Giving Back", content:"In July 2024, I married, bringing together two individuals committed to positively impacting their community. I continue to support Engineers4Humanity and Brother Malisaba's efforts to extend aid to refugees and vulnerable individuals facing educational and financial challenges." },
+        { title:"Future Aspirations", content:"After completing my MBA in 2024, I am determined to continue with a Doctorate in Education. My journey is a story of resilience, gratitude, and community-centered ambition — devoted to fostering opportunities for others who seek a path forward amidst challenging circumstances." }
+      ]},
+    5: { name:"Emmanuel Sebagisha", role:"Alum / Beneficiary", image:"http://localhost:3001/uploads/e4h-success-5.png",
+      intro:"I grew up in Gihembe Refugee Camp as a Congolese refugee in Rwanda, where my mother primarily raised me. Despite the many challenges, I excelled academically, achieving 3rd place in my senior year at Gihembe Secondary School. This accomplishment opened the door for me to pursue further education at Inyange High School, even though finding Rwf 5000, approximately $5 for registration, was a struggle.\n\nUltimately, my hard work and determination led to a transformative opportunity, thanks to Frere Malisaba Straton in partnership with the Engineers4humanity team and Forum Amis de la Paix, who helped my peers and me secure admission to the Teacher Training College of Save (TTC Save).",
+      sections: [
+        { title:"Discovery of Teaching Passion", content:"At TTC Save, I uncovered my passion for teaching. Initially, I helped my colleagues who struggled with various subjects, which sparked my interest in education. After graduation, I gained valuable experience working briefly as an elementary school teacher before receiving a scholarship to attend Kepler.\n\nThis opportunity led me to positions at One Acre Fund, Kepler College, and now at African Leadership University.\n\n\"Education is one of the most impactful gifts you can give, especially to individuals from marginalized communities.\" As Frere Malisaba wisely stated, \"I support you because you will support others.\"" },
+        { title:"Strength in Identity", content:"The invaluable advice we received from our mentors at Engineers4Humanity has greatly influenced our lives, reminding us that our humanity goes beyond any labels. Being a refugee can be a source of strength; it inspires us to pursue excellence in all areas." },
+        { title:"Giving Back", content:"I actively volunteer with Engineers4Humanity to ensure young refugees access quality education. I am dedicated to helping these young individuals expand their perspectives beyond the confines of their refugee camps and strongly encourage others to join this essential initiative." },
+        { title:"Calling Message", content:"The only viable long-term solution for young refugees is education. I urge all who desire to contribute to a better world to support providing quality education for young refugees." }
+      ]},
+    6: { name:"Emmy Kagiraneza Bukayire", role:"Alum / Beneficiary", image:"http://localhost:3001/uploads/e4h-success-6.png",
+      intro:"My name is Kagiraneza Bukayire Emmy, and I proudly share my story as someone born in Gihembe Refugee Camp in the Gicumbi district of northern Rwanda. As the firstborn in my family, I carry the legacy of my parents, who sought refuge in Rwanda after fleeing the DRC in 1996 due to political instability and ethnic conflict.",
+      sections: [
+        { title:"Educational Barriers", content:"Education was the foremost issue among the many challenges my parents faced. Fortunately, in 2009, Hope School provided a unique opportunity for further studies from Grade 10 to Grade 12. Tragically, in 2016, the government refused to give Hope School official accreditation, forcing me to drop out just as my education was within reach." },
+        { title:"A Second Chance", content:"During that agony and confusion, Malisaba Straton intervened and I got a scholarship to pursue high school at TTC Save. My experience there made it clear that refugees possess immense capabilities. I wholeheartedly believe that anything is achievable." },
+        { title:"University Success", content:"After graduating from TTC Save, I continued to university thanks to a Kepler University scholarship, earning my Management in Logistics and Operations degree. I am committed to pursuing postgraduate studies in 2025, proving that refugees can excel when given the opportunity. I also run my own business and work in logistics." },
+        { title:"Calling Message", content:"Investing in refugees' education empowers them to discover their potential. Together, we can play a crucial role in supporting their educational journey, ultimately enriching our community. Let's take action now!" }
+      ]}
+  };
+
+  function initStoryModal() {
+    var modal = document.getElementById('storyModal');
+    var modalPhoto = document.getElementById('modalPhoto');
+    var modalName = document.getElementById('modalName');
+    var modalRole = document.getElementById('modalRole');
+    var modalIntro = document.getElementById('modalIntro');
+    var modalSections = document.getElementById('modalSections');
+    var modalSig = document.getElementById('modalSig');
+
+    function sparkleSvg() {
+      return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>';
+    }
+
+    function openStory(id) {
+      var s = stories[id];
+      if (!s) return;
+      modalPhoto.src = s.image;
+      modalPhoto.alt = s.name;
+      modalName.textContent = s.name;
+      modalRole.textContent = s.role;
+      modalIntro.textContent = s.intro;
+      modalSig.textContent = s.name;
+      modalSections.innerHTML = '';
+      s.sections.forEach(function (sec) {
+        var div = document.createElement('div');
+        div.className = 'story-modal-section';
+        var h3 = document.createElement('h3');
+        h3.innerHTML = sparkleSvg() + sec.title;
+        var p = document.createElement('p');
+        p.textContent = sec.content;
+        div.appendChild(h3);
+        div.appendChild(p);
+        modalSections.appendChild(div);
+      });
+      modal.classList.add('open');
+      modal.scrollTop = 0;
+    }
+
+    document.querySelectorAll('.view-story-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { openStory(btn.getAttribute('data-id')); });
+    });
+
+    function closeModal() { modal.classList.remove('open'); }
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.story-modal-inner').addEventListener('click', function (e) { e.stopPropagation(); });
+    document.getElementById('storyModalClose').addEventListener('click', closeModal);
+  }
+
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+    toggle.addEventListener('click', function () { if (sidebar.classList.contains('open')) close(); else open(); });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+    sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate').forEach(function (l) { l.addEventListener('click', close); });
+  }
+
+  function initMobileAccordions() {
+    document.querySelectorAll('.mob-summary').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) { btn.classList.remove('open'); panel.style.maxHeight = '0px'; panel.style.opacity = '0'; }
+        else { btn.classList.add('open'); panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px'; panel.style.opacity = '1'; }
+      });
+    });
+  }
+
+  function initHashScroll() {
+    if (window.location.hash) {
+      var el = document.getElementById(window.location.hash.slice(1));
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
+  }
+
+  function initFooterYear() { document.getElementById('footerYear').textContent = new Date().getFullYear(); }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initStoryModal();
+    initHashScroll();
+  });
+})();
+</script>
+</body>
+</html>

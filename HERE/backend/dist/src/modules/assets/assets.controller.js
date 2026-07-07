@@ -16,8 +16,6 @@ exports.AssetsController = void 0;
 const common_1 = require("@nestjs/common");
 const platform_express_1 = require("@nestjs/platform-express");
 const multer_1 = require("multer");
-const path_1 = require("path");
-const uuid_1 = require("uuid");
 const assets_service_1 = require("./assets.service");
 const adminGuard_guard_1 = require("../../guards/adminGuard.guard");
 let AssetsController = class AssetsController {
@@ -38,6 +36,7 @@ let AssetsController = class AssetsController {
             return await this.assetsService.create(siteId, req.admin.id, file, type);
         }
         catch (error) {
+            console.error('Asset upload failed:', error);
             throw new common_1.HttpException(error.message, error.status || 400);
         }
     }
@@ -62,13 +61,7 @@ __decorate([
 __decorate([
     (0, common_1.Post)('upload'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
-        storage: (0, multer_1.diskStorage)({
-            destination: './Uploads',
-            filename: (_req, file, cb) => {
-                const ext = (0, path_1.extname)(file.originalname);
-                cb(null, `${(0, uuid_1.v4)()}${ext}`);
-            },
-        }),
+        storage: (0, multer_1.memoryStorage)(),
         limits: { fileSize: 10 * 1024 * 1024 },
     })),
     __param(0, (0, common_1.Param)('siteId')),

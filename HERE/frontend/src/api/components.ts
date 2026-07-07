@@ -1,11 +1,14 @@
 import api from './axios';
+import { createCollection } from './collections';
 
 // ── Field definition (shared by static component schema + collection schema) ─
+
+export type ComponentFieldType = 'text' | 'textarea' | 'image' | 'url' | 'color' | 'number';
 
 export interface ComponentField {
   key:          string;
   label:        string;
-  type:         'text' | 'textarea' | 'image' | 'url' | 'color' | 'number';
+  type:         ComponentFieldType;
   placeholder?: string;
   required?:    boolean;
 }
@@ -19,6 +22,7 @@ export interface SiteComponent {
   tag:          string;
   type:         'static' | 'dynamic';
   html:         any;          // PageElement[] — the template tree
+  modalHtml:    any;          // PageElement[] | null — the detail-modal template tree (dynamic only)
   schema:       ComponentField[];  // fields for static components
   collectionId: string | null;
   collection:   { id: string; name: string; slug: string } | null;
@@ -31,6 +35,7 @@ export interface CreateComponentData {
   tag:           string;
   type?:         'static' | 'dynamic';
   html?:         any;
+  modalHtml?:    any;
   schema?:       ComponentField[];
   collectionId?: string | null;
 }
@@ -40,6 +45,7 @@ export interface UpdateComponentData {
   tag?:          string;
   type?:         'static' | 'dynamic';
   html?:         any;
+  modalHtml?:    any;
   schema?:       ComponentField[];
   collectionId?: string | null;
 }
@@ -60,3 +66,11 @@ export const updateComponent = (siteId: string, id: string, data: UpdateComponen
 
 export const deleteComponent = (siteId: string, id: string) =>
   api.delete(`${base(siteId)}/${id}`).then(r => r.data);
+
+// Creates a dynamic component with its own private, 1:1-linked data collection.
+// The Collection/Component split is an implementation detail — the UI only
+// ever presents this as one thing with a Data tab and a Design tab.
+export const createDynamicComponent = async (siteId: string, name: string): Promise<SiteComponent> => {
+  const collection = await createCollection(siteId, { name });
+  return createComponent(siteId, { name, tag: 'div', type: 'dynamic', collectionId: collection.id, html: [] });
+};

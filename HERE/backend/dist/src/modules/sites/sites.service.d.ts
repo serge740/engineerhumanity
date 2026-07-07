@@ -40,14 +40,19 @@ export declare class SitesService {
             siteId: string;
             html: import("@prisma/client/runtime/library").JsonValue;
             tag: string;
+            modalHtml: import("@prisma/client/runtime/library").JsonValue | null;
+            type: string;
+            schema: import("@prisma/client/runtime/library").JsonValue | null;
+            collectionId: string | null;
         }[];
         assets: {
             id: string;
             createdAt: Date;
             name: string;
             siteId: string;
-            type: string;
             url: string;
+            type: string;
+            publicId: string | null;
             size: number;
         }[];
     } & {

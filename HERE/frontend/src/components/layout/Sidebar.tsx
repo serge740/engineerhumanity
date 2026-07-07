@@ -1,119 +1,103 @@
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import {
   LayoutDashboard, Globe, Settings, FileText,
-  ArrowLeft, ChevronLeft, ChevronRight, Zap,
+  ArrowLeft, ChevronLeft, ChevronRight,
 } from 'lucide-react';
+import { useAuth } from '../../context/AuthContext';
 
-const globalLinks = [
+interface NavLinkItem { to: string; icon: React.FC<any>; label: string; exact?: boolean; }
+
+const globalLinks: NavLinkItem[] = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/sites',     icon: Globe,            label: 'Workspace' },
   { to: '/settings',  icon: Settings,         label: 'Settings'  },
 ];
 
-const siteLinks = (id: string) => [
+const siteLinks = (id: string): NavLinkItem[] => [
   { to: `/sites/${id}`, icon: FileText, label: 'Pages', exact: true },
 ];
 
-interface SidebarProps { collapsed: boolean; onToggle: () => void; siteName?: string; }
+interface SidebarProps {
+  isOpen: boolean;
+  onClose: () => void;
+  collapsed: boolean;
+  onToggleCollapsed: () => void;
+  siteName?: string;
+}
 
-export default function Sidebar({ collapsed, onToggle, siteName }: SidebarProps) {
+export default function Sidebar({ isOpen, onClose, collapsed, onToggleCollapsed, siteName }: SidebarProps) {
   const { siteId } = useParams<{ siteId?: string }>();
-  const navigate   = useNavigate();
-  const inSite     = Boolean(siteId);
-  const links      = inSite ? siteLinks(siteId!) : globalLinks;
+  const navigate    = useNavigate();
+  const { admin }   = useAuth();
+  const inSite      = Boolean(siteId);
+  const links       = inSite ? siteLinks(siteId!) : globalLinks;
+
+  const initials = admin?.adminName?.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2) ?? '?';
 
   return (
-    <aside
-      style={{ background: 'linear-gradient(180deg, #0f172a 0%, #0c1424 100%)' }}
-      className={`
-        h-screen flex flex-col sticky top-0 shrink-0 text-slate-300
-        transition-all duration-200 ease-in-out z-10
-        ${collapsed ? 'w-[60px]' : 'w-[220px]'}
-      `}
-    >
-      {/* ── Brand ─────────────────────────────────────────── */}
-      <div className={`h-14 flex items-center shrink-0 border-b border-white/[0.06]
-        ${collapsed ? 'justify-center px-0' : 'px-4 gap-3'}`}>
-        <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700
-          flex items-center justify-center shrink-0 shadow-lg shadow-blue-900/50">
-          <Zap className="w-4 h-4 text-white" />
-        </div>
+    <aside className={`sidebar${isOpen ? ' is-open' : ''}${collapsed ? ' is-collapsed' : ''}`}>
+      <div className="sidebar__brand">
+        <div className="brand-mark"><span>S</span></div>
         {!collapsed && (
-          <div className="min-w-0">
-            <p className="text-[13px] font-bold text-white tracking-tight truncate leading-none">
-              SiteBuilder
-            </p>
-            <p className="text-[10px] text-slate-500 mt-0.5 leading-none">Pro</p>
+          <div>
+            <div className="brand-name">SiteBuilder</div>
+            <div className="brand-meta">Pro</div>
           </div>
         )}
       </div>
 
-      {/* ── Site context chip ──────────────────────────────── */}
       {inSite && !collapsed && (
-        <div className="mx-3 mt-3">
+        <div style={{ padding: '10px 12px 0' }}>
           <button
             onClick={() => navigate('/sites')}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg
-              bg-white/5 hover:bg-white/10 transition-colors text-left"
+            className="nav__item"
+            style={{ background: 'var(--bg-sunk)', border: '1px solid var(--border)' }}
           >
-            <div className="w-5 h-5 rounded bg-blue-600 flex items-center justify-center
-              text-[10px] font-bold text-white shrink-0">
-              {siteName?.charAt(0).toUpperCase() ?? 'S'}
-            </div>
-            <span className="text-[12px] font-medium text-slate-300 truncate flex-1">
-              {siteName ?? 'Site'}
+            <ArrowLeft className="nav__icon" strokeWidth={1.75} />
+            <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+              {siteName ?? 'All sites'}
             </span>
-            <ArrowLeft className="w-3 h-3 text-slate-500 shrink-0" />
           </button>
         </div>
       )}
 
-      {inSite && collapsed && (
-        <button onClick={() => navigate('/sites')}
-          className="mx-2 mt-3 p-2 rounded-lg hover:bg-white/10 flex items-center justify-center transition-colors"
-          title="All sites">
-          <ArrowLeft className="w-4 h-4 text-slate-500" />
-        </button>
-      )}
-
-      {/* ── Section label ──────────────────────────────────── */}
-      {!collapsed && (
-        <p className="px-4 mt-5 mb-1.5 text-[10px] font-semibold tracking-widest uppercase text-slate-600">
-          {inSite ? 'Site' : 'Navigation'}
-        </p>
-      )}
-
-      {/* ── Nav ───────────────────────────────────────────── */}
-      <nav className="flex-1 px-2 space-y-0.5 pt-1 overflow-y-auto">
-        {links.map(({ to, icon: Icon, label, exact }: any) => (
+      <div className="sidebar__section-label">{inSite ? 'Site' : 'Navigation'}</div>
+      <nav className="nav">
+        {links.map(({ to, icon: Icon, label, exact }) => (
           <NavLink
             key={to}
             to={to}
             end={exact ?? false}
             title={collapsed ? label : undefined}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg text-[13px] font-medium transition-all
-               ${collapsed ? 'justify-center' : ''}
-               ${isActive
-                 ? 'bg-blue-600 text-white shadow-sm'
-                 : 'text-slate-400 hover:bg-white/[0.06] hover:text-slate-100'
-               }`
-            }
+            className={({ isActive }) => `nav__item${isActive ? ' is-active' : ''}`}
+            onClick={() => { if (window.innerWidth < 768) onClose(); }}
           >
-            <Icon className="w-4 h-4 shrink-0" />
-            {!collapsed && <span className="truncate">{label}</span>}
+            <Icon className="nav__icon" strokeWidth={1.75} />
+            <span>{label}</span>
           </NavLink>
         ))}
       </nav>
 
-      {/* ── Collapse toggle ────────────────────────────────── */}
+      <div className="sidebar__footer">
+        <div className="user-card">
+          <div className="avatar">{initials}</div>
+          {!collapsed && (
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div className="user-card__name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {admin?.adminName || '—'}
+              </div>
+              <div className="user-card__role">Admin</div>
+            </div>
+          )}
+        </div>
+      </div>
+
       <button
-        onClick={onToggle}
-        className="h-11 flex items-center justify-center border-t border-white/[0.06]
-          text-slate-600 hover:text-slate-300 hover:bg-white/[0.04] transition-colors shrink-0"
+        className="sidebar-collapse-btn"
+        onClick={onToggleCollapsed}
         title={collapsed ? 'Expand' : 'Collapse'}
       >
-        {collapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+        {collapsed ? <ChevronRight size={14} /> : <ChevronLeft size={14} />}
       </button>
     </aside>
   );

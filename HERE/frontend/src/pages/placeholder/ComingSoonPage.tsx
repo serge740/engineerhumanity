@@ -1,3 +1,4 @@
+import { Wrench } from 'lucide-react';
 import AdminLayout from '../../components/layout/AdminLayout';
 
 interface ComingSoonPageProps {
@@ -8,14 +9,19 @@ interface ComingSoonPageProps {
 export default function ComingSoonPage({ title, description }: ComingSoonPageProps) {
   return (
     <AdminLayout title={title}>
-      <div className="flex flex-col items-center justify-center py-24 text-center">
-        <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-4">
-          <span className="text-2xl">🔧</span>
+      <div className="panel">
+        <div className="empty">
+          <div style={{
+            width: 56, height: 56, borderRadius: 'var(--r-md)', background: 'var(--bg-sunk)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 14px',
+          }}>
+            <Wrench size={22} style={{ color: 'var(--fg-subtle)' }} />
+          </div>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--fg)', marginBottom: 6 }}>{title} — Coming Soon</p>
+          <p style={{ maxWidth: 320, margin: '0 auto' }}>
+            {description ?? 'This section is being built. Check back soon.'}
+          </p>
         </div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-2">{title} — Coming Soon</h2>
-        <p className="text-sm text-gray-500 max-w-sm">
-          {description ?? 'This section is being built. Check back soon.'}
-        </p>
       </div>
     </AdminLayout>
   );

@@ -298,7 +298,7 @@ export function ImagePicker({ elId, tag, src, assetRef, style }: ImagePickerProp
     try {
       if (assetRef) tryDeleteOld(assetRef);
       const asset   = await uploadAsset(siteId, file, 'image');
-      const fullUrl = `${BACKEND_URL}${asset.url}`;
+      const fullUrl = asset.url.startsWith('http') ? asset.url : `${BACKEND_URL}${asset.url}`;
       captureHistory();
       applyUrl(fullUrl, asset.id);
       setUrlDraft(fullUrl);

@@ -75,6 +75,105 @@ const INLINE_CONTAINERS = new Set([
   'button','summary','option','title',
 ]);
 
+// ── Defensive script rewriting ────────────────────────────────────────────────
+// Real-world exported scripts often run several independent init routines
+// (mobile menu, slideshow, stats, gallery, footer year…) back-to-back inside
+// one `DOMContentLoaded` handler with no error isolation between them. If the
+// admin later trims markup one routine depends on (e.g. removing a nav after
+// import), that routine's `document.getElementById(...).addEventListener(...)`
+// throws on `null` — and an uncaught exception halts every *unrelated*
+// statement still queued after it in that same handler. So each top-level
+// "just call this init function" statement inside a `DOMContentLoaded`
+// handler gets wrapped in its own try/catch. Declarations, control-flow, and
+// anything more complex than a bare call expression are left completely
+// untouched — this never changes a script's actual behavior, it only stops
+// one broken routine from taking down unrelated ones. Fails safe: if the
+// scan hits anything unexpected, the original script is returned unchanged.
+
+function findMatchingBrace(src: string, openIdx: number): number {
+  let depth = 0;
+  let inStr: '"' | "'" | '`' | null = null;
+  let inLineComment = false;
+  let inBlockComment = false;
+  for (let i = openIdx; i < src.length; i++) {
+    const c = src[i];
+    const prev = src[i - 1];
+    if (inLineComment) { if (c === '\n') inLineComment = false; continue; }
+    if (inBlockComment) { if (prev === '*' && c === '/') inBlockComment = false; continue; }
+    if (inStr) { if (c === '\\') { i++; continue; } if (c === inStr) inStr = null; continue; }
+    if (c === '/' && src[i + 1] === '/') { inLineComment = true; continue; }
+    if (c === '/' && src[i + 1] === '*') { inBlockComment = true; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = c; continue; }
+    if (c === '{') depth++;
+    else if (c === '}') { depth--; if (depth === 0) return i; }
+  }
+  return -1;
+}
+
+function splitTopLevelStatements(code: string): string[] {
+  const stmts: string[] = [];
+  let depth = 0;
+  let start = 0;
+  let inStr: '"' | "'" | '`' | null = null;
+  let inLineComment = false;
+  let inBlockComment = false;
+  for (let i = 0; i < code.length; i++) {
+    const c = code[i];
+    const prev = code[i - 1];
+    if (inLineComment) { if (c === '\n') inLineComment = false; continue; }
+    if (inBlockComment) { if (prev === '*' && c === '/') inBlockComment = false; continue; }
+    if (inStr) { if (c === '\\') { i++; continue; } if (c === inStr) inStr = null; continue; }
+    if (c === '/' && code[i + 1] === '/') { inLineComment = true; continue; }
+    if (c === '/' && code[i + 1] === '*') { inBlockComment = true; continue; }
+    if (c === '"' || c === "'" || c === '`') { inStr = c; continue; }
+    if (c === '(' || c === '{' || c === '[') depth++;
+    else if (c === ')' || c === '}' || c === ']') depth--;
+    else if (c === ';' && depth === 0) { stmts.push(code.slice(start, i + 1)); start = i + 1; }
+  }
+  const rest = code.slice(start);
+  if (rest.trim()) stmts.push(rest);
+  return stmts;
+}
+
+// Only bare call-expression statements (`foo();`, `a.b.c(1,2);`) get wrapped —
+// never declarations or control-flow, since wrapping e.g. a `const` in its
+// own try/catch would break its scope for sibling statements that use it.
+const SIMPLE_CALL_RE = /^[A-Za-z_$][\w$]*(?:\.[A-Za-z_$][\w$]*|\[[^[\]]*\])*\s*\([\s\S]*\)\s*;?\s*$/;
+const RESERVED_START_RE = /^(var|let|const|function|if|for|while|switch|try|return|class|do|else)\b/;
+
+function wrapTopLevelCalls(body: string): string {
+  return splitTopLevelStatements(body).map(raw => {
+    const trimmed = raw.trim();
+    if (!trimmed || RESERVED_START_RE.test(trimmed) || !SIMPLE_CALL_RE.test(trimmed)) return raw;
+    const stmt = trimmed.replace(/;\s*$/, '');
+    return `try { ${stmt}; } catch (e) { console.error('[import]', e); }`;
+  }).join('\n');
+}
+
+const DOM_READY_RE = /addEventListener\s*\(\s*(['"])DOMContentLoaded\1\s*,\s*(?:function\s*\([^)]*\)|\([^)]*\)\s*=>|[A-Za-z_$][\w$]*\s*=>)\s*\{/g;
+
+function wrapDomContentLoadedCalls(src: string): string {
+  try {
+    let result = '';
+    let lastIndex = 0;
+    let m: RegExpExecArray | null;
+    DOM_READY_RE.lastIndex = 0;
+    while ((m = DOM_READY_RE.exec(src)) !== null) {
+      const openBraceIdx  = m.index + m[0].length - 1;
+      const closeBraceIdx = findMatchingBrace(src, openBraceIdx);
+      if (closeBraceIdx === -1) continue;
+      const wrapped = wrapTopLevelCalls(src.slice(openBraceIdx + 1, closeBraceIdx));
+      result += src.slice(lastIndex, openBraceIdx + 1) + wrapped;
+      lastIndex = closeBraceIdx;
+      DOM_READY_RE.lastIndex = closeBraceIdx;
+    }
+    result += src.slice(lastIndex);
+    return result;
+  } catch {
+    return src; // never let a rewriting bug corrupt the script
+  }
+}
+
 // ── DOM Element → PageElement (recursive) ────────────────────────────────────
 function domToEl(node: Element, depth: number): PageElement | null {
   if (depth > 14) return null;
@@ -96,12 +195,34 @@ function domToEl(node: Element, depth: number): PageElement | null {
     if (v !== null) (el as Record<string, string>)[attr] = v;
   }
 
+  // Preserve the original `id`/`onclick` under internal marker keys instead of
+  // real attributes — the builder never renders a real `id` (it uses its own
+  // `data-el-id` so duplicated cards/components can't collide), and `onclick`
+  // strings can't be wired into React's event system. Only the static export
+  // path (export.service.ts) reads these back out and emits them verbatim,
+  // since that produces a real standalone HTML file where the imported page's
+  // original vanilla-JS can actually run as originally authored. They're
+  // inert everywhere else (editor canvas, live in-app page).
+  const importedId = node.getAttribute('id');
+  if (importedId) (el as Record<string, string>)._htmlId = importedId;
+  const importedOnClick = node.getAttribute('onclick');
+  if (importedOnClick) (el as Record<string, string>)._onClick = importedOnClick;
+
+  // `data-*` attributes are plain data, not identity/behavior hooks — no
+  // collision risk with the builder's own internals, so these are kept under
+  // their real name and flow straight through export.service.ts's generic
+  // attribute loop (no special-casing needed there, unlike id/onclick above).
+  // Scripts commonly key off these (e.g. `el.getAttribute('data-idx')`).
+  for (const attr of Array.from(node.attributes)) {
+    if (attr.name.startsWith('data-')) (el as Record<string, string>)[attr.name] = attr.value;
+  }
+
   // ── Void elements ──────────────────────────────────────────────────────────
   if (VOID.has(tag)) return el;
 
   // ── <script> ──────────────────────────────────────────────────────────────
   if (tag === 'script') {
-    el.text = node.textContent ?? '';
+    el.text = wrapDomContentLoadedCalls(node.textContent ?? '');
     return el;
   }
 
@@ -233,7 +354,7 @@ export function parseHTML(htmlString: string, extraCSS?: string): PageElement[] 
     const src = s.getAttribute('src');
     result.push({
       id: uid(), tag: 'script',
-      ...(src ? { src } : { text: s.textContent ?? '' }),
+      ...(src ? { src } : { text: wrapDomContentLoadedCalls(s.textContent ?? '') }),
     } as PageElement);
   });
 

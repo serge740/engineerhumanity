@@ -12,12 +12,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AssetsService = void 0;
 const common_1 = require("@nestjs/common");
 const prisma_service_1 = require("../../prisma/prisma.service");
+const cloudinary_service_1 = require("../cloudinary/cloudinary.service");
 const fs = require("fs");
 const path = require("path");
+const path_1 = require("path");
+const uuid_1 = require("uuid");
 let AssetsService = class AssetsService {
     prisma;
-    constructor(prisma) {
+    cloudinary;
+    constructor(prisma, cloudinary) {
         this.prisma = prisma;
+        this.cloudinary = cloudinary;
     }
     async assertSiteOwner(siteId, adminId) {
         const site = await this.prisma.site.findFirst({
@@ -36,13 +41,30 @@ let AssetsService = class AssetsService {
     }
     async create(siteId, adminId, file, type) {
         await this.assertSiteOwner(siteId, adminId);
-        const url = `/uploads/${file.filename}`;
+        if (type === 'image') {
+            const result = await this.cloudinary.uploadImageFromBuffer(file.buffer, `sites/${siteId}/assets`);
+            return this.prisma.asset.create({
+                data: {
+                    siteId,
+                    type,
+                    name: file.originalname,
+                    url: result.secure_url,
+                    publicId: result.public_id,
+                    size: file.size,
+                },
+            });
+        }
+        const uploadsDir = path.join(process.cwd(), 'Uploads');
+        if (!fs.existsSync(uploadsDir))
+            fs.mkdirSync(uploadsDir, { recursive: true });
+        const filename = `${(0, uuid_1.v4)()}${(0, path_1.extname)(file.originalname)}`;
+        fs.writeFileSync(path.join(uploadsDir, filename), file.buffer);
         return this.prisma.asset.create({
             data: {
                 siteId,
                 type,
                 name: file.originalname,
-                url,
+                url: `/uploads/${filename}`,
                 size: file.size,
             },
         });
@@ -54,7 +76,10 @@ let AssetsService = class AssetsService {
         });
         if (!asset)
             throw new common_1.NotFoundException('Asset not found');
-        if (asset.url.startsWith('/uploads/')) {
+        if (asset.publicId) {
+            await this.cloudinary.deleteImage(asset.publicId);
+        }
+        else if (asset.url.startsWith('/uploads/')) {
             const filename = asset.url.replace('/uploads/', '');
             const filePath = path.join(process.cwd(), 'Uploads', filename);
             if (fs.existsSync(filePath)) {
@@ -68,6 +93,7 @@ let AssetsService = class AssetsService {
 exports.AssetsService = AssetsService;
 exports.AssetsService = AssetsService = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        cloudinary_service_1.CloudinaryService])
 ], AssetsService);
 //# sourceMappingURL=assets.service.js.map

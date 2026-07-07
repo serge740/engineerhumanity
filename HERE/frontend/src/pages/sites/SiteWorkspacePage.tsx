@@ -1,9 +1,10 @@
-﻿import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
   Plus, Pencil, Trash2, MoreVertical, Copy, Globe, Eye, EyeOff,
   Loader2, X, FileText, Image, Upload, Check,
-  ExternalLink, Settings, Home, Download, Code,
+  ExternalLink, Settings, Home, Download, Code, Boxes, Users, Calendar, BookOpen,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/layout/AdminLayout';
@@ -15,8 +16,13 @@ import {
   type PageSummary, type CreatePageData,
 } from '../../api/pages';
 import { getAssets, uploadAsset, deleteAsset, formatBytes, type SiteAsset } from '../../api/assets';
+import { getComponents, createDynamicComponent, deleteComponent, type SiteComponent } from '../../api/components';
+import { Modal } from '../../components/ui/Modal';
+import TeamManagementTab from '../team/TeamManagementTab';
+import EventsManagementTab from '../events/EventsManagementTab';
+import StoriesManagementTab from '../stories/StoriesManagementTab';
 
-type Tab = 'pages' | 'assets' | 'settings';
+type Tab = 'pages' | 'components' | 'team' | 'events' | 'stories' | 'assets' | 'settings';
 
 function timeAgo(iso: string) {
   const d = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -26,30 +32,84 @@ function timeAgo(iso: string) {
   return `${Math.floor(d / 86400)}d ago`;
 }
 
-// â”€â”€ Shared Modal Shell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Dropdown menu (small floating menu, styled inline like the reference's own) ─
 
-function Modal({ title, subtitle, onClose, children }: {
-  title: string; subtitle?: string; onClose: () => void; children: React.ReactNode;
+function DropdownMenu({ items, danger, onDangerClick, dangerLabel }: {
+  items: { icon: React.FC<any>; label: string; fn: () => void }[];
+  danger?: boolean; dangerLabel?: string; onDangerClick?: () => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const [pos, setPos]   = useState<{ top: number; right: number } | null>(null);
+  const btnRef  = useRef<HTMLButtonElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  // Rendered in a portal (see below) so a clipping ancestor — e.g. the
+  // `.panel` list this row lives in, which uses `overflow: hidden` for its
+  // rounded corners — can never hide the menu. Position is computed from the
+  // trigger button's real screen coordinates instead of relying on CSS
+  // `position: absolute` inside that (clipped) container.
+  const openMenu = () => {
+    const r = btnRef.current?.getBoundingClientRect();
+    if (r) setPos({ top: r.bottom + 4, right: window.innerWidth - r.right });
+    setOpen(true);
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const h = (e: MouseEvent) => {
+      const t = e.target as Node;
+      if (btnRef.current?.contains(t) || menuRef.current?.contains(t)) return;
+      setOpen(false);
+    };
+    const close = () => setOpen(false);
+    document.addEventListener('mousedown', h);
+    window.addEventListener('scroll', close, true);
+    window.addEventListener('resize', close);
+    return () => {
+      document.removeEventListener('mousedown', h);
+      window.removeEventListener('scroll', close, true);
+      window.removeEventListener('resize', close);
+    };
+  }, [open]);
+
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
-        <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-slate-100">
-          <div>
-            <h2 className="text-[15px] font-semibold text-slate-900">{title}</h2>
-            {subtitle && <p className="text-[12px] text-slate-400 mt-0.5">{subtitle}</p>}
-          </div>
-          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg">
-            <X className="w-4 h-4" />
-          </button>
-        </div>
-        {children}
-      </div>
-    </div>
+    <>
+      <button ref={btnRef} onClick={() => (open ? setOpen(false) : openMenu())} className="icon-btn" style={{ border: 'none' }}>
+        <MoreVertical size={15} />
+      </button>
+      {open && pos && createPortal(
+        <div ref={menuRef} style={{
+          position: 'fixed', top: pos.top, right: pos.right, width: 180,
+          background: 'var(--bg-elev)', border: '1px solid var(--border)',
+          borderRadius: 'var(--r-md)', boxShadow: 'var(--shadow-lg)', overflow: 'hidden', zIndex: 1000,
+        }}>
+          {items.map(({ icon: Icon, label, fn }) => (
+            <button key={label} onClick={() => { fn(); setOpen(false); }}
+              style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 12px', background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'var(--fg-muted)', textAlign: 'left' }}
+              onMouseEnter={e => (e.currentTarget.style.background = 'var(--bg-sunk)')}
+              onMouseLeave={e => (e.currentTarget.style.background = 'none')}
+            >
+              <Icon size={13} /> {label}
+            </button>
+          ))}
+          {danger && (
+            <>
+              <div style={{ borderTop: '1px solid var(--border)' }} />
+              <button onClick={() => { onDangerClick?.(); setOpen(false); }}
+                style={{ display: 'flex', alignItems: 'center', gap: 8, width: '100%', padding: '8px 12px', background: 'none', border: 'none', cursor: 'pointer', fontSize: 12, color: 'var(--danger)', textAlign: 'left' }}
+              >
+                <Trash2 size={13} /> {dangerLabel ?? 'Delete'}
+              </button>
+            </>
+          )}
+        </div>,
+        document.body,
+      )}
+    </>
   );
 }
 
-// â”€â”€ Create Page Modal â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Create Page Modal ────────────────────────────────────────────────────────
 
 function CreatePageModal({ onClose, onCreate }: {
   onClose: () => void;
@@ -68,29 +128,23 @@ function CreatePageModal({ onClose, onCreate }: {
 
   return (
     <Modal title="New page" subtitle="Give your page a name to get started" onClose={onClose}>
-      <form onSubmit={handle} className="p-6 space-y-4">
-        <div>
-          <label className="block text-[12px] font-semibold text-slate-700 mb-1.5">Page title</label>
-          <input autoFocus type="text" value={title} onChange={(e) => setTitle(e.target.value)}
-            placeholder="e.g. About Us"
-            className="w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px]
-              focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-              placeholder:text-slate-300" />
-          {slug && (
-            <p className="mt-1.5 text-[11px] text-slate-400 font-mono">
-              URL: <span className="text-slate-600">/{slug}</span>
-            </p>
-          )}
+      <form onSubmit={handle}>
+        <div className="modal__body">
+          <div className="field">
+            <label className="field__label">Page title</label>
+            <input autoFocus type="text" value={title} onChange={(e) => setTitle(e.target.value)}
+              placeholder="e.g. About Us" className="input" />
+            {slug && (
+              <p style={{ marginTop: 6, fontSize: 11, color: 'var(--fg-subtle)', fontFamily: 'var(--font-mono)' }}>
+                URL: <span style={{ color: 'var(--fg-muted)' }}>/{slug}</span>
+              </p>
+            )}
+          </div>
         </div>
-        <div className="flex justify-end gap-2 pt-1">
-          <button type="button" onClick={onClose}
-            className="px-4 py-2 text-[13px] text-slate-500 hover:text-slate-800 font-medium rounded-xl hover:bg-slate-100 transition-colors">
-            Cancel
-          </button>
-          <button type="submit" disabled={!title.trim() || loading}
-            className="flex items-center gap-2 px-5 py-2 bg-blue-600 text-white text-[13px]
-              font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 transition-colors shadow-sm">
-            {loading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
+        <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+          <button type="button" onClick={onClose} className="btn btn--ghost">Cancel</button>
+          <button type="submit" disabled={!title.trim() || loading} className="btn btn--primary">
+            {loading ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
             Create page
           </button>
         </div>
@@ -99,87 +153,52 @@ function CreatePageModal({ onClose, onCreate }: {
   );
 }
 
-// â”€â”€ Page Row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Page Row ──────────────────────────────────────────────────────────────────
 
 function PageRow({ page, onEdit, onDuplicate, onDelete, onTogglePublish, onRename, onSetLanding }: {
   page: PageSummary; onEdit: () => void; onDuplicate: () => void;
   onDelete: () => void; onTogglePublish: () => void; onRename: () => void;
   onSetLanding: () => void;
 }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    const h = (e: MouseEvent) => { if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false); };
-    if (open) document.addEventListener('mousedown', h);
-    return () => document.removeEventListener('mousedown', h);
-  }, [open]);
-
   return (
-    <div className="group flex items-center gap-3 bg-white border border-slate-200 rounded-xl
-      px-4 py-3 hover:border-slate-300 hover:shadow-sm transition-all">
-      <div className={`w-2 h-2 rounded-full shrink-0 ${page.published ? 'bg-emerald-500' : 'bg-amber-400'}`} />
+    <div className="activity-row" style={{ cursor: 'pointer' }} onClick={onEdit}>
+      <div className="activity-icon" data-kind={page.published ? 'in' : undefined}>
+        <FileText size={13} />
+      </div>
 
-      <div className="flex-1 min-w-0 cursor-pointer" onClick={onEdit}>
-        <div className="flex items-center gap-2">
-          <p className="text-[13px] font-semibold text-slate-900 truncate">{page.title}</p>
-          {page.isLanding && (
-            <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-700 border border-indigo-200 shrink-0">
-              Landing
-            </span>
-          )}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="activity-row__title" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          {page.title}
+          {page.isLanding && <span className="badge badge--accent">Landing</span>}
         </div>
-        <p className="text-[11px] text-slate-400 font-mono mt-0.5">/{page.slug}</p>
+        <div className="activity-row__meta" style={{ fontFamily: 'var(--font-mono)' }}>
+          /{page.slug} · v{page.version} · {timeAgo(page.updatedAt)}
+        </div>
       </div>
 
-      <div className="hidden sm:flex items-center gap-3 shrink-0 text-[11px] text-slate-400">
-        <span>v{page.version}</span>
-        <span>{timeAgo(page.updatedAt)}</span>
-        <span className={`font-semibold px-2 py-0.5 rounded-md ${
-          page.published ? 'text-emerald-700 bg-emerald-50' : 'text-amber-700 bg-amber-50'
-        }`}>
-          {page.published ? 'Published' : 'Draft'}
-        </span>
-      </div>
+      <span className={page.published ? 'badge badge--success' : 'badge'}>
+        {page.published ? 'Published' : 'Draft'}
+      </span>
 
-      <div className="flex items-center gap-1 shrink-0">
-        <button onClick={onEdit}
-          className="flex items-center gap-1.5 text-[12px] font-semibold text-blue-600
-            bg-blue-50 hover:bg-blue-100 px-3 py-1.5 rounded-lg transition-colors">
-          <Pencil className="w-3 h-3" /> Edit
+      <div className="btn-group" onClick={e => e.stopPropagation()}>
+        <button onClick={onEdit} className="btn btn--ghost btn--sm">
+          <Pencil size={12} /> Edit
         </button>
-        <div className="relative" ref={ref}>
-          <button onClick={() => setOpen(o => !o)}
-            className="p-1.5 text-slate-400 hover:text-slate-700 hover:bg-slate-100 rounded-lg transition-colors">
-            <MoreVertical className="w-4 h-4" />
-          </button>
-          {open && (
-            <div className="absolute right-0 top-9 w-44 bg-white border border-slate-200
-              rounded-xl shadow-xl z-20 py-1 overflow-hidden">
-              {[
-                { icon: Pencil,  label: 'Rename',    fn: onRename },
-                { icon: page.published ? EyeOff : Eye, label: page.published ? 'Unpublish' : 'Publish', fn: onTogglePublish },
-                { icon: Copy,    label: 'Duplicate', fn: onDuplicate },
-                { icon: Home,    label: page.isLanding ? 'Landing page âœ“' : 'Set as landing', fn: onSetLanding },
-              ].map(({ icon: Icon, label, fn }) => (
-                <button key={label} onClick={() => { fn(); setOpen(false); }}
-                  className="w-full flex items-center gap-2.5 px-3.5 py-2 text-[13px] text-slate-700 hover:bg-slate-50">
-                  <Icon className="w-3.5 h-3.5" /> {label}
-                </button>
-              ))}
-              <div className="border-t border-slate-100 my-1" />
-              <button onClick={() => { onDelete(); setOpen(false); }}
-                className="w-full flex items-center gap-2.5 px-3.5 py-2 text-[13px] text-red-600 hover:bg-red-50">
-                <Trash2 className="w-3.5 h-3.5" /> Delete
-              </button>
-            </div>
-          )}
-        </div>
+        <DropdownMenu
+          items={[
+            { icon: Pencil, label: 'Rename', fn: onRename },
+            { icon: page.published ? EyeOff : Eye, label: page.published ? 'Unpublish' : 'Publish', fn: onTogglePublish },
+            { icon: Copy, label: 'Duplicate', fn: onDuplicate },
+            { icon: Home, label: page.isLanding ? 'Landing page ✓' : 'Set as landing', fn: onSetLanding },
+          ]}
+          danger dangerLabel="Delete" onDangerClick={onDelete}
+        />
       </div>
     </div>
   );
 }
 
-// â”€â”€ Pages Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Pages Tab ─────────────────────────────────────────────────────────────────
 
 function PagesTab({ siteId }: { siteId: string }) {
   const navigate = useNavigate();
@@ -237,15 +256,13 @@ function PagesTab({ siteId }: { siteId: string }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[13px] text-slate-500">
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <p style={{ fontSize: 12, color: 'var(--fg-subtle)' }}>
           {pages.length} page{pages.length !== 1 ? 's' : ''}
-          {published > 0 && <span className="text-emerald-600 ml-2 font-medium">{published} published</span>}
+          {published > 0 && <span style={{ color: 'var(--success)', marginLeft: 8, fontWeight: 600 }}>{published} published</span>}
         </p>
-        <button onClick={() => setShowCreate(true)}
-          className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 text-white text-[12px]
-            font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-sm">
-          <Plus className="w-3.5 h-3.5" /> New page
+        <button onClick={() => setShowCreate(true)} className="btn btn--primary btn--sm">
+          <Plus size={13} /> New page
         </button>
       </div>
 
@@ -253,15 +270,15 @@ function PagesTab({ siteId }: { siteId: string }) {
         <TabEmpty icon={FileText} title="No pages yet" sub="Create your first page to start building"
           action="Create page" onAction={() => setShowCreate(true)} />
       ) : (
-        <div className="space-y-2">
+        <div className="panel">
           {pages.map(p =>
             renaming?.id === p.id ? (
-              <div key={p.id} className="flex items-center gap-2 bg-white border border-blue-400 rounded-xl px-4 py-3">
+              <div key={p.id} className="activity-row">
                 <input autoFocus value={renameVal} onChange={e => setRenameVal(e.target.value)}
                   onKeyDown={e => { if (e.key === 'Enter') handleRename(p, renameVal); if (e.key === 'Escape') setRenaming(null); }}
-                  className="flex-1 text-[13px] font-semibold outline-none bg-transparent" />
-                <button onClick={() => handleRename(p, renameVal)} className="text-emerald-500 hover:text-emerald-600 p-1"><Check className="w-4 h-4" /></button>
-                <button onClick={() => setRenaming(null)} className="text-slate-400 hover:text-slate-600 p-1"><X className="w-4 h-4" /></button>
+                  className="input" style={{ flex: 1, fontWeight: 600 }} />
+                <button onClick={() => handleRename(p, renameVal)} className="icon-btn" style={{ color: 'var(--success)', border: 'none' }}><Check size={15} /></button>
+                <button onClick={() => setRenaming(null)} className="icon-btn" style={{ border: 'none' }}><X size={15} /></button>
               </div>
             ) : (
               <PageRow key={p.id} page={p}
@@ -280,27 +297,147 @@ function PagesTab({ siteId }: { siteId: string }) {
       {showCreate && <CreatePageModal onClose={() => setShowCreate(false)} onCreate={handleCreate} />}
 
       {deleteTarget && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-sm p-6">
-            <div className="w-11 h-11 rounded-full bg-red-100 flex items-center justify-center mb-4">
-              <Trash2 className="w-5 h-5 text-red-600" />
-            </div>
-            <h2 className="text-[15px] font-semibold text-slate-900 mb-1">Delete "{deleteTarget.title}"?</h2>
-            <p className="text-[13px] text-slate-500 mb-6">This permanently deletes the page and all its content.</p>
-            <div className="flex justify-end gap-3">
-              <button onClick={() => setDeleteTarget(null)} className="px-4 py-2 text-[13px] text-slate-500 hover:text-slate-800 font-medium rounded-xl hover:bg-slate-100">Cancel</button>
-              <button onClick={() => handleDelete(deleteTarget)}
-                className="px-4 py-2 bg-red-600 text-white text-[13px] font-semibold rounded-xl hover:bg-red-700 transition-colors">
-                Delete page
-              </button>
-            </div>
+        <Modal title={`Delete "${deleteTarget.title}"?`} onClose={() => setDeleteTarget(null)}>
+          <div className="modal__body">
+            <p style={{ fontSize: 12, color: 'var(--fg-muted)' }}>This permanently deletes the page and all its content.</p>
           </div>
-        </div>
+          <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+            <button onClick={() => setDeleteTarget(null)} className="btn btn--ghost">Cancel</button>
+            <button onClick={() => handleDelete(deleteTarget)} className="btn" style={{ background: 'var(--danger)', color: 'white', borderColor: 'transparent' }}>
+              Delete page
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   );
 }
-// â”€â”€ Assets Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+// ── Create Component Modal ───────────────────────────────────────────────────
+
+function CreateComponentModal({ onClose, onCreate }: {
+  onClose: () => void;
+  onCreate: (name: string) => Promise<void>;
+}) {
+  const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) return;
+    setLoading(true);
+    try { await onCreate(name.trim()); } finally { setLoading(false); }
+  };
+
+  return (
+    <Modal title="New component" subtitle="A reusable card with its own data table (e.g. Team, Testimonials)" onClose={onClose}>
+      <form onSubmit={handle}>
+        <div className="modal__body">
+          <div className="field">
+            <label className="field__label">Component name</label>
+            <input autoFocus type="text" value={name} onChange={(e) => setName(e.target.value)}
+              placeholder="e.g. Team" className="input" />
+          </div>
+        </div>
+        <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+          <button type="button" onClick={onClose} className="btn btn--ghost">Cancel</button>
+          <button type="submit" disabled={!name.trim() || loading} className="btn btn--primary">
+            {loading ? <Loader2 size={13} className="animate-spin" /> : <Plus size={13} />}
+            Create component
+          </button>
+        </div>
+      </form>
+    </Modal>
+  );
+}
+
+// ── Components Tab ───────────────────────────────────────────────────────────
+
+function ComponentsTab({ siteId }: { siteId: string }) {
+  const navigate = useNavigate();
+  const [components,   setComponents]   = useState<SiteComponent[]>([]);
+  const [loading,       setLoading]       = useState(true);
+  const [showCreate,    setShowCreate]    = useState(false);
+  const [deleteTarget,  setDeleteTarget]  = useState<SiteComponent | null>(null);
+
+  const load = async () => {
+    try { setComponents(await getComponents(siteId)); } catch { toast.error('Failed to load components'); } finally { setLoading(false); }
+  };
+  useEffect(() => { load(); }, [siteId]);
+
+  const handleCreate = async (name: string) => {
+    try {
+      const c = await createDynamicComponent(siteId, name);
+      toast.success('Component created');
+      setShowCreate(false);
+      navigate(`/sites/${siteId}/components/${c.id}`);
+    } catch (e: any) { toast.error(e?.response?.data?.message || 'Failed to create component'); }
+  };
+
+  const handleDelete = async (c: SiteComponent) => {
+    try { await deleteComponent(siteId, c.id); toast.success(`"${c.name}" deleted`); setDeleteTarget(null); load(); }
+    catch (e: any) { toast.error(e?.response?.data?.message || 'Failed'); }
+  };
+
+  if (loading) return <TabLoader />;
+
+  return (
+    <div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <p style={{ fontSize: 12, color: 'var(--fg-subtle)' }}>
+          {components.length} component{components.length !== 1 ? 's' : ''}
+        </p>
+        <button onClick={() => setShowCreate(true)} className="btn btn--primary btn--sm">
+          <Plus size={13} /> New component
+        </button>
+      </div>
+
+      {components.length === 0 ? (
+        <TabEmpty icon={Boxes} title="No components yet"
+          sub="Build a reusable card (e.g. a Team member) backed by its own data table"
+          action="Create component" onAction={() => setShowCreate(true)} />
+      ) : (
+        <div className="panel">
+          {components.map(c => (
+            <div key={c.id} className="activity-row" style={{ cursor: 'pointer' }} onClick={() => navigate(`/sites/${siteId}/components/${c.id}`)}>
+              <div className="activity-icon"><Boxes size={13} /></div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div className="activity-row__title">{c.name}</div>
+                <div className="activity-row__meta">{c.type === 'dynamic' ? 'Data-driven card' : 'Static component'}</div>
+              </div>
+              <div className="btn-group" onClick={e => e.stopPropagation()}>
+                <button onClick={() => navigate(`/sites/${siteId}/components/${c.id}`)} className="btn btn--ghost btn--sm">
+                  <Pencil size={12} /> Open
+                </button>
+                <button onClick={() => setDeleteTarget(c)} className="icon-btn" style={{ border: 'none', color: 'var(--fg-subtle)' }}>
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {showCreate && <CreateComponentModal onClose={() => setShowCreate(false)} onCreate={handleCreate} />}
+
+      {deleteTarget && (
+        <Modal title={`Delete "${deleteTarget.name}"?`} onClose={() => setDeleteTarget(null)}>
+          <div className="modal__body">
+            <p style={{ fontSize: 12, color: 'var(--fg-muted)' }}>This permanently deletes the component and its data table.</p>
+          </div>
+          <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+            <button onClick={() => setDeleteTarget(null)} className="btn btn--ghost">Cancel</button>
+            <button onClick={() => handleDelete(deleteTarget)} className="btn" style={{ background: 'var(--danger)', color: 'white', borderColor: 'transparent' }}>
+              Delete component
+            </button>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+// ── Assets Tab ─────────────────────────────────────────────────────────────────
 
 function AssetsTab({ siteId }: { siteId: string }) {
   const [assets,    setAssets]    = useState<SiteAsset[]>([]);
@@ -335,44 +472,45 @@ function AssetsTab({ siteId }: { siteId: string }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-4">
-        <p className="text-[13px] text-slate-500">{assets.length} asset{assets.length !== 1 ? 's' : ''}</p>
-        <button onClick={() => fileRef.current?.click()} disabled={uploading}
-          className="flex items-center gap-1.5 px-3.5 py-2 bg-blue-600 text-white text-[12px]
-            font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 shadow-sm">
-          {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Upload className="w-3.5 h-3.5" />}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+        <p style={{ fontSize: 12, color: 'var(--fg-subtle)' }}>{assets.length} asset{assets.length !== 1 ? 's' : ''}</p>
+        <button onClick={() => fileRef.current?.click()} disabled={uploading} className="btn btn--primary btn--sm">
+          {uploading ? <Loader2 size={13} className="animate-spin" /> : <Upload size={13} />}
           Upload
         </button>
-        <input ref={fileRef} type="file" multiple accept="image/*,.woff,.woff2,.ttf,.otf" className="hidden" onChange={handleUpload} />
+        <input ref={fileRef} type="file" multiple accept="image/*,.woff,.woff2,.ttf,.otf" style={{ display: 'none' }} onChange={handleUpload} />
       </div>
 
       {assets.length === 0 ? (
-        <div onClick={() => fileRef.current?.click()}
-          className="flex flex-col items-center justify-center py-16 bg-slate-50 rounded-2xl
-            border-2 border-dashed border-slate-200 cursor-pointer
-            hover:border-blue-400 hover:bg-blue-50/30 transition-all">
-          <Upload className="w-10 h-10 text-slate-300 mb-3" />
-          <p className="text-[14px] font-semibold text-slate-500">Drop files or click to upload</p>
-          <p className="text-[12px] text-slate-400 mt-1">Images (PNG, JPG, SVG, WebP) and fonts</p>
+        <div onClick={() => fileRef.current?.click()} className="empty"
+          style={{ border: '2px dashed var(--border)', borderRadius: 'var(--r-md)', cursor: 'pointer' }}>
+          <Upload size={30} style={{ color: 'var(--fg-subtle)', marginBottom: 10 }} />
+          <p style={{ fontWeight: 600, color: 'var(--fg)' }}>Drop files or click to upload</p>
+          <p>Images (PNG, JPG, SVG, WebP) and fonts</p>
         </div>
       ) : (
-        <div className="space-y-6">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 22 }}>
           {images.length > 0 && (
             <div>
-              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-3">
-                Images Â· {images.length}
+              <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--fg-subtle)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+                Images · {images.length}
               </p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 10 }}>
                 {images.map(a => (
-                  <div key={a.id} className="group relative bg-slate-100 rounded-xl overflow-hidden aspect-square border border-slate-200">
-                    <img src={`${apiBase}${a.url}`} alt={a.name} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/50 transition-all
-                      flex flex-col items-end justify-end p-2 gap-1 opacity-0 group-hover:opacity-100">
+                  <div key={a.id} style={{ position: 'relative', background: 'var(--bg-sunk)', borderRadius: 'var(--r-md)', overflow: 'hidden', aspectRatio: '1', border: '1px solid var(--border)' }}>
+                    <img src={a.url.startsWith('http') ? a.url : `${apiBase}${a.url}`} alt={a.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div style={{
+                      position: 'absolute', inset: 0, background: 'rgba(0,0,0,0)', opacity: 0, transition: 'opacity .15s, background .15s',
+                      display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'flex-end', padding: 6, gap: 4,
+                    }}
+                      onMouseEnter={e => { e.currentTarget.style.opacity = '1'; e.currentTarget.style.background = 'rgba(0,0,0,.5)'; }}
+                      onMouseLeave={e => { e.currentTarget.style.opacity = '0'; e.currentTarget.style.background = 'rgba(0,0,0,0)'; }}
+                    >
                       <button onClick={() => { deleteAsset(siteId, a.id).then(() => { toast.success('Deleted'); load(); }); }}
-                        className="p-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700">
-                        <Trash2 className="w-3 h-3" />
+                        style={{ padding: 6, background: 'var(--danger)', color: '#fff', border: 'none', borderRadius: 'var(--r-sm)', cursor: 'pointer' }}>
+                        <Trash2 size={12} />
                       </button>
-                      <p className="text-white text-[10px] truncate w-full text-right leading-tight">{a.name}</p>
+                      <p style={{ color: '#fff', fontSize: 10, margin: 0, textAlign: 'right', width: '100%', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{a.name}</p>
                     </div>
                   </div>
                 ))}
@@ -381,22 +519,19 @@ function AssetsTab({ siteId }: { siteId: string }) {
           )}
           {fonts.length > 0 && (
             <div>
-              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-3">
-                Fonts Â· {fonts.length}
+              <p style={{ fontSize: 10, fontWeight: 700, color: 'var(--fg-subtle)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 10 }}>
+                Fonts · {fonts.length}
               </p>
-              <div className="space-y-2">
+              <div className="panel">
                 {fonts.map(a => (
-                  <div key={a.id} className="flex items-center gap-3 bg-white border border-slate-200 rounded-xl px-4 py-3">
-                    <div className="w-9 h-9 rounded-lg bg-violet-50 flex items-center justify-center shrink-0">
-                      <span className="text-[13px] font-bold text-violet-600">Aa</span>
+                  <div key={a.id} className="activity-row">
+                    <div className="activity-icon" style={{ fontWeight: 700, fontSize: 12 }}>Aa</div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="activity-row__title">{a.name}</div>
+                      <div className="activity-row__meta">{formatBytes(a.size)}</div>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-[13px] font-semibold text-slate-900 truncate">{a.name}</p>
-                      <p className="text-[11px] text-slate-400">{formatBytes(a.size)}</p>
-                    </div>
-                    <button onClick={() => { deleteAsset(siteId, a.id).then(() => { toast.success('Deleted'); load(); }); }}
-                      className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg">
-                      <Trash2 className="w-3.5 h-3.5" />
+                    <button onClick={() => { deleteAsset(siteId, a.id).then(() => { toast.success('Deleted'); load(); }); }} className="icon-btn" style={{ border: 'none' }}>
+                      <Trash2 size={14} />
                     </button>
                   </div>
                 ))}
@@ -409,7 +544,7 @@ function AssetsTab({ siteId }: { siteId: string }) {
   );
 }
 
-// â”€â”€ Settings Tab â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Settings Tab ──────────────────────────────────────────────────────────────
 
 function SettingsTab({ site, onUpdate }: { site: Site; onUpdate: (s: Site) => void }) {
   const [name,      setName]      = useState(site.name);
@@ -433,56 +568,54 @@ function SettingsTab({ site, onUpdate }: { site: Site; onUpdate: (s: Site) => vo
   };
 
   const Field = ({ label, children }: { label: string; children: React.ReactNode }) => (
-    <div>
-      <label className="block text-[12px] font-semibold text-slate-700 mb-1.5">{label}</label>
+    <div className="field">
+      <label className="field__label">{label}</label>
       {children}
     </div>
   );
 
-  const input = "w-full border border-slate-200 rounded-xl px-3.5 py-2.5 text-[13px] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent";
-
   return (
-    <form onSubmit={handle} className="max-w-lg space-y-5">
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-        <p className="text-[12px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-          <Settings className="w-3.5 h-3.5" /> General
+    <form onSubmit={handle} style={{ maxWidth: 520, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="panel" style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--fg-subtle)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Settings size={13} /> General
         </p>
-        <Field label="Site name"><input type="text" value={name} onChange={e => setName(e.target.value)} className={input} /></Field>
+        <Field label="Site name"><input type="text" value={name} onChange={e => setName(e.target.value)} className="input" /></Field>
         <Field label="Domain (optional)">
-          <div className="relative">
-            <Globe className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+          <div style={{ position: 'relative' }}>
+            <Globe size={14} style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', color: 'var(--fg-subtle)' }} />
             <input type="text" value={domain} onChange={e => setDomain(e.target.value)} placeholder="example.com"
-              className={`${input} pl-10 font-mono`} />
+              className="input" style={{ paddingLeft: 30, fontFamily: 'var(--font-mono)' }} />
           </div>
         </Field>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-4">
-        <p className="text-[12px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-          <Globe className="w-3.5 h-3.5" /> SEO
+      <div className="panel" style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--fg-subtle)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Globe size={13} /> SEO
         </p>
-        <Field label="Site title"><input type="text" value={metaTitle} onChange={e => setMetaTitle(e.target.value)} placeholder="My Site" className={input} /></Field>
+        <Field label="Site title"><input type="text" value={metaTitle} onChange={e => setMetaTitle(e.target.value)} placeholder="My Site" className="input" /></Field>
         <Field label="Meta description">
-          <textarea value={metaDesc} onChange={e => setMetaDesc(e.target.value)} placeholder="Describe your siteâ€¦" rows={3} className={`${input} resize-none`} />
+          <textarea value={metaDesc} onChange={e => setMetaDesc(e.target.value)} placeholder="Describe your site…" rows={3}
+            className="input" style={{ height: 'auto', padding: '8px 10px', resize: 'none' }} />
         </Field>
       </div>
 
-      <div className="bg-white rounded-2xl border border-slate-200 p-5 space-y-3">
-        <p className="text-[12px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-          <Code className="w-3.5 h-3.5" /> Global CSS
+      <div className="panel" style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--fg-subtle)', textTransform: 'uppercase', letterSpacing: '0.08em', display: 'flex', alignItems: 'center', gap: 8 }}>
+          <Code size={13} /> Global CSS
         </p>
         <textarea value={css} onChange={e => setCss(e.target.value)}
           placeholder=":root { --primary: #3b82f6; }" rows={7}
-          className="w-full rounded-xl px-3.5 py-3 text-[12px] font-mono resize-y
-            focus:outline-none focus:ring-2 focus:ring-blue-500
-            bg-[#0f172a] text-emerald-400 border-0" />
+          style={{
+            width: '100%', borderRadius: 'var(--r-sm)', padding: '10px 12px', fontSize: 12,
+            fontFamily: 'var(--font-mono)', resize: 'vertical', background: '#0f172a', color: '#34d399', border: 0,
+          }} />
       </div>
 
-      <div className="flex justify-end">
-        <button type="submit" disabled={saving}
-          className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white text-[13px]
-            font-semibold rounded-xl hover:bg-blue-700 disabled:opacity-50 shadow-sm">
-          {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Check className="w-4 h-4" />}
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+        <button type="submit" disabled={saving} className="btn btn--primary">
+          {saving ? <Loader2 size={14} className="animate-spin" /> : <Check size={14} />}
           Save settings
         </button>
       </div>
@@ -490,12 +623,12 @@ function SettingsTab({ site, onUpdate }: { site: Site; onUpdate: (s: Site) => vo
   );
 }
 
-// â”€â”€ Shared helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Shared helpers ────────────────────────────────────────────────────────────
 
 function TabLoader() {
   return (
-    <div className="flex items-center justify-center py-16 text-slate-400">
-      <Loader2 className="w-5 h-5 animate-spin" />
+    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '60px 0' }}>
+      <Loader2 size={20} className="animate-spin" style={{ color: 'var(--fg-subtle)' }} />
     </div>
   );
 }
@@ -504,32 +637,27 @@ function TabEmpty({ icon: Icon, title, sub, action, onAction }: {
   icon: React.FC<any>; title: string; sub: string; action: string; onAction: () => void;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center py-16 bg-slate-50/70 rounded-2xl border-2 border-dashed border-slate-200 text-center">
-      <Icon className="w-10 h-10 text-slate-300 mb-3" strokeWidth={1.5} />
-      <p className="text-[14px] font-semibold text-slate-600 mb-1">{title}</p>
-      <p className="text-[12px] text-slate-400 mb-4 max-w-xs">{sub}</p>
-      <button onClick={onAction}
-        className="flex items-center gap-1.5 px-4 py-2 bg-blue-600 text-white text-[12px] font-semibold rounded-xl hover:bg-blue-700 shadow-sm">
-        <Plus className="w-3.5 h-3.5" /> {action}
+    <div className="empty" style={{ border: '2px dashed var(--border)', borderRadius: 'var(--r-md)' }}>
+      <Icon size={30} style={{ color: 'var(--fg-subtle)', marginBottom: 10 }} strokeWidth={1.5} />
+      <p style={{ fontWeight: 600, color: 'var(--fg)', marginBottom: 4 }}>{title}</p>
+      <p style={{ maxWidth: 280, margin: '0 auto 16px' }}>{sub}</p>
+      <button onClick={onAction} className="btn btn--primary btn--sm" style={{ margin: '0 auto' }}>
+        <Plus size={13} /> {action}
       </button>
     </div>
   );
 }
 
-// â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// ── Main ──────────────────────────────────────────────────────────────────────
 
 const tabs: { id: Tab; icon: React.FC<any>; label: string }[] = [
-  { id: 'pages',    icon: FileText, label: 'Pages'    },
-  { id: 'assets',   icon: Image,    label: 'Assets'   },
-  { id: 'settings', icon: Settings, label: 'Settings' },
-];
-
-const siteGradients = [
-  'from-blue-500 to-blue-700',
-  'from-violet-500 to-violet-700',
-  'from-emerald-500 to-emerald-700',
-  'from-rose-500 to-rose-700',
-  'from-amber-500 to-amber-600',
+  { id: 'pages',      icon: FileText, label: 'Pages'      },
+  // { id: 'components', icon: Boxes,    label: 'Components' },
+  { id: 'team',       icon: Users,    label: 'Team'       },
+  { id: 'events',     icon: Calendar, label: 'Events'     },
+  { id: 'stories',    icon: BookOpen, label: 'Stories'    },
+  { id: 'assets',     icon: Image,    label: 'Assets'     },
+  // { id: 'settings',   icon: Settings, label: 'Settings'   },
 ];
 
 export default function SiteWorkspacePage() {
@@ -546,14 +674,14 @@ export default function SiteWorkspacePage() {
   }, [siteId]);
 
   if (loading) return (
-    <AdminLayout title="Loadingâ€¦" crumbs={[{ label: 'Workspace' }]}>
-      <div className="flex items-center justify-center py-24"><Loader2 className="w-6 h-6 animate-spin text-slate-400" /></div>
+    <AdminLayout title="Loading…" crumbs={[{ label: 'Workspace' }]}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '80px 0' }}>
+        <Loader2 size={22} className="animate-spin" style={{ color: 'var(--fg-subtle)' }} />
+      </div>
     </AdminLayout>
   );
 
   if (!site) return null;
-
-  const gradient = siteGradients[site.name.charCodeAt(0) % siteGradients.length];
 
   return (
     <AdminLayout
@@ -561,98 +689,63 @@ export default function SiteWorkspacePage() {
       siteName={site.name}
       crumbs={[{ label: 'Workspace' }]}
     >
-      <div className="max-w-4xl mx-auto">
-
-        {/* â”€â”€ Site header â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-        <div className="bg-white rounded-2xl border border-slate-200 p-5 mb-6 shadow-sm">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradient}
-                flex items-center justify-center text-white font-bold text-lg shadow-md`}>
-                {site.name.charAt(0).toUpperCase()}
-              </div>
-              <div>
-                <h1 className="text-[16px] font-bold text-slate-900 leading-tight">{site.name}</h1>
-                <div className="flex items-center gap-2 mt-1">
-                  {site.domain ? (
-                    <a href={`https://${site.domain}`} target="_blank" rel="noreferrer"
-                      className="text-[12px] text-slate-400 font-mono hover:text-blue-600 flex items-center gap-1 transition-colors">
-                      {site.domain} <ExternalLink className="w-3 h-3" />
-                    </a>
-                  ) : (
-                    <span className="text-[12px] text-slate-400">No domain configured</span>
-                  )}
-                  <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                    site.published
-                      ? 'text-emerald-700 bg-emerald-50 border border-emerald-200'
-                      : 'text-slate-500 bg-slate-100 border border-slate-200'
-                  }`}>
-                    {site.published ? 'â— Live' : 'â—‹ Draft'}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <button
-                onClick={async () => {
-                  setDownloading(true);
-                  try {
-                    await downloadSiteZip(site.id, site.name);
-                    toast.success('Download started');
-                  } catch {
-                    toast.error('Export failed â€” please try again');
-                  } finally {
-                    setDownloading(false);
-                  }
-                }}
-                disabled={downloading}
-                className="flex items-center gap-1.5 px-3.5 py-2 text-[12px] font-semibold
-                  text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-xl
-                  disabled:opacity-50 transition-colors border border-slate-200"
-                title="Download all pages as a self-contained ZIP"
-              >
-                {downloading
-                  ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                  : <Download className="w-3.5 h-3.5" />}
-                {downloading ? 'Exportingâ€¦' : 'Download site'}
-              </button>
-
-              <span className={`text-[11px] font-bold px-3 py-1.5 rounded-full border ${
-                site.published
-                  ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
-                  : 'text-slate-500 bg-slate-100 border-slate-200'
-              }`}>
-                {site.published ? 'â— Live' : 'â—‹ Draft'}
-              </span>
-            </div>
+      <div className="page-head">
+        <div>
+          <h1>{site.name}</h1>
+          <div className="page-head__sub" style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            {site.domain ? (
+              <a href={`https://${site.domain}`} target="_blank" rel="noreferrer"
+                style={{ color: 'var(--fg-subtle)', fontFamily: 'var(--font-mono)', display: 'flex', alignItems: 'center', gap: 4, textDecoration: 'none' }}>
+                {site.domain} <ExternalLink size={11} />
+              </a>
+            ) : (
+              <span>No domain configured</span>
+            )}
+            <span className={site.published ? 'badge badge--success' : 'badge'}>
+              {site.published ? 'Live' : 'Draft'}
+            </span>
           </div>
         </div>
-
-        {/* â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-        <div className="flex items-center gap-1 bg-white rounded-xl border border-slate-200 p-1 mb-6 shadow-sm">
-          {tabs.map(({ id, icon: Icon, label }) => (
-            <button key={id} onClick={() => setActiveTab(id)}
-              className={`flex items-center gap-2 flex-1 justify-center px-4 py-2 text-[13px] font-semibold rounded-lg transition-all ${
-                activeTab === id
-                  ? 'bg-blue-600 text-white shadow-sm'
-                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
-              }`}
-            >
-              <Icon className="w-4 h-4" /> <span className="hidden sm:inline">{label}</span>
-            </button>
-          ))}
+        <div className="page-head__actions">
+          <button
+            onClick={async () => {
+              setDownloading(true);
+              try {
+                await downloadSiteZip(site.id, site.name);
+                toast.success('Download started');
+              } catch {
+                toast.error('Export failed — please try again');
+              } finally {
+                setDownloading(false);
+              }
+            }}
+            disabled={downloading}
+            className="btn"
+            title="Download all pages as a self-contained ZIP"
+          >
+            {downloading ? <Loader2 size={13} className="animate-spin" /> : <Download size={13} />}
+            {downloading ? 'Exporting…' : 'Download site'}
+          </button>
         </div>
-        
-
-        {/* â”€â”€ Tab content â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-        {activeTab === 'pages'       && <PagesTab       siteId={site.id} />}
-        {activeTab === 'components'  && <ComponentsTab  siteId={site.id} />}
-        {activeTab === 'collections' && <CollectionsTab siteId={site.id} />}
-        {activeTab === 'assets'      && <AssetsTab      siteId={site.id} />}
-        {activeTab === 'settings'    && <SettingsTab    site={site} onUpdate={setSite} />}
       </div>
+
+      <div className="tabs">
+        {tabs.map(({ id, icon: Icon, label }) => (
+          <button key={id} onClick={() => setActiveTab(id)}
+            className="tab" data-active={activeTab === id}
+          >
+            <Icon size={14} /> {label}
+          </button>
+        ))}
+      </div>
+
+      {activeTab === 'pages'       && <PagesTab       siteId={site.id} />}
+      {activeTab === 'components'  && <ComponentsTab  siteId={site.id} />}
+      {activeTab === 'team'        && <TeamManagementTab siteId={site.id} />}
+      {activeTab === 'events'      && <EventsManagementTab siteId={site.id} />}
+      {activeTab === 'stories'     && <StoriesManagementTab siteId={site.id} />}
+      {activeTab === 'assets'      && <AssetsTab      siteId={site.id} />}
+      {activeTab === 'settings'    && <SettingsTab    site={site} onUpdate={setSite} />}
     </AdminLayout>
   );
 }
-

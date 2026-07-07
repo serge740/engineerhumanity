@@ -13,6 +13,7 @@ const assets_controller_1 = require("./assets.controller");
 const assets_service_1 = require("./assets.service");
 const prisma_module_1 = require("../../prisma/prisma.module");
 const admin_module_1 = require("../admin-management/admin.module");
+const cloudinary_module_1 = require("../cloudinary/cloudinary.module");
 let AssetsModule = class AssetsModule {
 };
 exports.AssetsModule = AssetsModule;
@@ -21,7 +22,8 @@ exports.AssetsModule = AssetsModule = __decorate([
         imports: [
             prisma_module_1.PrismaModule,
             admin_module_1.AdminModule,
-            platform_express_1.MulterModule.register({ dest: './Uploads' }),
+            cloudinary_module_1.CloudinaryModule,
+            platform_express_1.MulterModule.register({}),
         ],
         controllers: [assets_controller_1.AssetsController],
         providers: [assets_service_1.AssetsService],

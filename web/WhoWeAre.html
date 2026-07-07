@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Who We Are</title>
+
+<!-- Note: the live React WhoWeAre page injects a page-scoped <style jsx> that redefines the
+     global .font-serif/.font-sans classes to Playfair Display/DM Sans (instead of the site's
+     usual Cormorant Garamond/Poppins). Because styled-jsx isn't actually wired up in this Vite
+     app, that style tag renders unscoped and wins the cascade for the WHOLE page (nav+footer
+     included) while this route is mounted. Replicated faithfully here rather than "fixed". -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+/* ══════════════════════════════════════════════════════════════
+   1. RESET  (rule 1 + rule 8)
+   ══════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ══════════════════════════════════════════════════════════════
+   2. DESIGN TOKENS  (rule 10 — declared before use)
+   ══════════════════════════════════════════════════════════════ */
+:root {
+  --navy:          #0A1628;
+  --bg:            #F0F7FF;
+  --bg-alt:        #E1EEF9;
+  --muted:         #3A5068;
+
+  --sky-50:        #f0f9ff;
+  --sky-300:       #7dd3fc;
+  --sky-400:       #38bdf8;
+  --sky-500:       #0ea5e9;
+  --sky:           #0284c7; /* sky-600 */
+  --sky-dark:      #075985; /* sky-800 */
+  --sky-700:       #0369a1;
+  --sky-900:       #0c4a6e;
+
+  --emerald-300:   #6ee7b7;
+  --emerald-400:   #34d399;
+  --emerald-500:   #10b981;
+  --emerald:       #059669; /* emerald-600 */
+  --emerald-dark:  #047857; /* emerald-700 */
+  --emerald-800:   #065f46;
+  --emerald-900:   #064e3b;
+
+  --green:         #16a34a; /* green-600 */
+  --green-500:     #22c55e;
+  --green-100:     #dcfce7;
+  --green-dark:    #15803d; /* green-700 */
+  --green-darker:  #166534; /* green-800 */
+
+  --purple:        #9333ea; /* purple-600 */
+  --purple-100:    #f3e8ff;
+
+  --yellow-500:    #eab308;
+  --yellow-100:    #fef9c3;
+  --yellow-600:    #ca8a04;
+
+  --blue-500:      #3b82f6;
+  --blue-100:      #dbeafe;
+  --blue-600:      #2563eb;
+
+  --orange-500:    #f97316;
+  --orange-100:    #ffedd5;
+  --orange-600:    #ea580c;
+
+  --gray-50:       #f9fafb;
+  --gray-100:      #f3f4f6;
+  --gray-600:      #4b5563;
+  --gray-700:      #374151;
+  --gray-800:      #1f2937;
+  --gray-900:      #111827;
+  --slate-50:      #f8fafc;
+
+  --red-100:       #fee2e2;
+  --red-500:       #ef4444;
+  --red-600:       #dc2626;
+
+  /* This page's own font override (see note above) — replaces the site default
+     Cormorant Garamond / Poppins for the entire page while this route is active. */
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", sans-serif;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   3. BASE  (rule 2 — explicit sizes everywhere, rule 6 — img rules)
+   ══════════════════════════════════════════════════════════════ */
+body {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gray-800);
+  background: #fff;
+}
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 32px; line-height: 1.1; margin: 0; }
+h3 { font-size: 20px; line-height: 1.2; margin: 0; }
+h4 { font-size: 16px; font-weight: 600; margin: 0; }
+p  { font-size: 16px; line-height: 1.75; margin: 0; }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.page { position: relative; overflow: hidden; }
+
+/* ══════════════════════════════════════════════════════════════
+   4. CHROME — NAVBAR  (copied verbatim from Home.html)
+   ══════════════════════════════════════════════════════════════ */
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+
+.drop-menu {
+  position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px;
+  background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100);
+  padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px);
+  transition: all .25s; transform-origin: top; z-index: 60;
+}
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+
+.btn-donate {
+  display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; text-transform: none;
+  color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap;
+}
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+
+.nav-overlay {
+  position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+  opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55;
+}
+.nav-overlay.open { opacity: 1; visibility: visible; }
+
+.mobile-sidebar {
+  position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%;
+  background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto;
+  transition: right .3s ease-in-out;
+}
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple); }
+
+.mob-donate {
+  display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff;
+  background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15);
+}
+
+@media (min-width: 1024px) {
+  .nav-inner { padding: 0 24px; }
+  .nav-links { display: flex; }
+  .btn-donate { display: inline-block; }
+  .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; }
+}
+@media (min-width: 1280px) {
+  .nav-links { font-size: 14px; }
+  .nav-item, .drop-btn { padding: 10px 16px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4b. CHROME — FOOTER  (copied verbatim from Home.html)
+   ══════════════════════════════════════════════════════════════ */
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+
+@media (min-width: 640px) {
+  .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; }
+}
+@media (min-width: 1024px) {
+  .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; }
+  .footer-bottom { padding: 24px 64px; }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4c. CHROME — WHATSAPP FLOATING BUTTON  (copied verbatim from Home.html)
+   ══════════════════════════════════════════════════════════════ */
+.wa-btn {
+  position: absolute; right: 24px; bottom: 24px; z-index: 40;
+  width: 56px; height: 56px; border-radius: 50%; background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,.25);
+  animation: wa-shake 4s ease-in-out infinite;
+}
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake {
+  0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+  72% { transform: rotate(-14deg) scale(1.12); }
+  75% { transform: rotate(14deg) scale(1.12); }
+  78% { transform: rotate(-10deg) scale(1.08); }
+  81% { transform: rotate(10deg) scale(1.08); }
+  84% { transform: rotate(-6deg) scale(1.04); }
+  87% { transform: rotate(6deg) scale(1.04); }
+  90% { transform: rotate(0deg) scale(1); }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   4d. CHROME — PAGE HEADER BANNER (shared across inner pages, from Header.tsx)
+   ══════════════════════════════════════════════════════════════ */
+/* Note: Header.tsx destructures a backgroundImage prop but never uses it — `const bg = defaultBackground`
+   always renders the same fixed vocational-training photo regardless of which page renders it.
+   Replicated faithfully: every inner page's header banner uses this same image. */
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--emerald-400); background: rgba(52,211,153,.1); border: 1px solid rgba(52,211,153,.4); padding: 8px 16px; border-radius: 100px; margin-bottom: 24px; }
+.page-header h1 { font-size: 34px; font-weight: 300; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header h1 em { font-style: italic; color: var(--sky-300); }
+.page-header-subtitle { font-size: 18px; color: rgba(255,255,255,.75); max-width: 480px; line-height: 1.6; margin-bottom: 24px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* ══════════════════════════════════════════════════════════════
+   5. WHO WE ARE — page content
+   ══════════════════════════════════════════════════════════════ */
+.wwa-section { padding: 48px 16px; }
+.wwa-head { display: flex; align-items: center; gap: 10px; margin-bottom: 32px; }
+.wwa-head svg { width: 32px; height: 32px; color: var(--sky); flex-shrink: 0; }
+.wwa-head h2 { font-size: 30px; font-weight: 700; color: var(--gray-900); }
+
+.wwa-grid { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: center; margin-bottom: 32px; }
+.wwa-text { display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.75; color: var(--gray-700); }
+.wwa-img { width: 100%; height: 256px; object-fit: cover; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,.2); }
+
+.wwa-box { background: var(--gray-50); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; gap: 16px; font-size: 16px; line-height: 1.75; color: var(--gray-700); }
+.wwa-box .strong-line { font-weight: 600; color: var(--gray-900); }
+.wwa-amazon-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--sky); color: #fff; font-weight: 600; padding: 12px 24px; border-radius: 8px; transition: background .2s; width: fit-content; }
+.wwa-amazon-btn:hover { background: var(--sky-700); }
+.wwa-amazon-btn svg { width: 20px; height: 20px; }
+
+@media (min-width: 768px) {
+  .wwa-grid { grid-template-columns: 1fr 1fr; gap: 48px; }
+  .wwa-img { height: 400px; }
+}
+@media (min-width: 640px) { .wwa-section { padding: 48px 32px; } }
+@media (min-width: 1024px) { .wwa-section { padding: 80px 64px; } }
+
+/* Vision & Mission */
+.wwa-vm { background: var(--sky-50); }
+.vm-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+.vm-card { background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.08); border-top: 4px solid var(--sky); }
+.vm-card.emerald { border-top-color: var(--emerald); }
+.vm-head { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+.vm-head svg { width: 32px; height: 32px; color: var(--sky); }
+.vm-card.emerald .vm-head svg { color: var(--emerald); }
+.vm-head h2 { font-size: 24px; font-weight: 700; color: var(--gray-900); }
+.vm-quote { font-size: 18px; line-height: 1.7; color: var(--gray-700); font-style: italic; border-left: 4px solid var(--sky-400); padding-left: 24px; }
+.vm-list { display: flex; flex-direction: column; gap: 12px; font-size: 16px; color: var(--gray-700); }
+.vm-list li { display: flex; align-items: flex-start; gap: 12px; }
+.vm-list li .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--emerald-500); flex-shrink: 0; margin-top: 8px; }
+
+@media (min-width: 768px) { .vm-grid { grid-template-columns: 1fr 1fr; } }
+
+/* Values & Culture */
+.wwa-values { background: var(--slate-50); }
+.values-head { text-align: center; margin-bottom: 48px; }
+.values-head-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+.values-head-row svg { width: 40px; height: 40px; color: var(--sky); }
+.values-head-row h2 { font-size: 30px; font-weight: 700; color: var(--gray-900); }
+.values-head h3 { font-size: 24px; font-weight: 700; color: var(--sky); margin-bottom: 24px; }
+.identity-card { max-width: 860px; margin: 0 auto 48px; background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,.08); border-top: 4px solid var(--sky); text-align: left; }
+.identity-card h4 { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 16px; }
+.identity-card p { font-size: 18px; line-height: 1.75; color: var(--gray-700); }
+.identity-card .hl { font-weight: 600; color: var(--sky); }
+
+.values-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
+.value-card { background: #fff; padding: 24px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,.06); border-left: 4px solid; transition: box-shadow .2s; }
+.value-card:hover { box-shadow: 0 15px 30px rgba(0,0,0,.12); }
+.value-icon { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; transition: transform .2s; }
+.value-card:hover .value-icon { transform: scale(1.1); }
+.value-icon svg { width: 24px; height: 24px; }
+.value-card h4 { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 8px; }
+.value-tagline { color: var(--sky); font-weight: 600; margin-bottom: 16px; font-size: 14px; }
+.value-desc { color: var(--gray-600); line-height: 1.75; font-size: 15px; }
+
+.value-card.yellow { border-left-color: var(--yellow-500); }
+.value-card.yellow .value-icon { background: var(--yellow-100); color: var(--yellow-600); }
+.value-card.red { border-left-color: var(--red-500); }
+.value-card.red .value-icon { background: var(--red-100); color: var(--red-600); }
+.value-card.green { border-left-color: var(--green-500); }
+.value-card.green .value-icon { background: var(--green-100); color: var(--green); }
+.value-card.blue { border-left-color: var(--blue-500); }
+.value-card.blue .value-icon { background: var(--blue-100); color: var(--blue-600); }
+.value-card.purple { border-left-color: var(--purple); }
+.value-card.purple .value-icon { background: var(--purple-100); color: var(--purple); }
+.value-card.orange { border-left-color: var(--orange-500); }
+.value-card.orange .value-icon { background: var(--orange-100); color: var(--orange-600); }
+
+@media (min-width: 640px) { .wwa-values .wwa-section, .wwa-vm .wwa-section { padding: 48px 32px; } }
+@media (min-width: 768px) { .values-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) {
+  .wwa-values .wwa-section, .wwa-vm .wwa-section { padding: 80px 64px; }
+  .values-grid { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══════════════════════════ NAVBAR ══════════════════════════ -->
+  <main>
+
+    <!-- ══════════════════════════ PAGE HEADER BANNER ══════════════════════════ -->
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Who We Are" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Who We Are</h1>
+        <div class="page-header-crumb">
+          <a href="Home.html">Home</a>
+          <span class="sep">›</span>
+          <a href="WhoWeAre.html" class="current">Who We Are</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════ ABOUT US / HISTORY ══════════════════════════ -->
+    <section class="wwa-section" id="who-we-are" style="background:#fff;">
+      <div class="wwa-head">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+        <h2>About Us</h2>
+      </div>
+
+      <div class="wwa-grid">
+        <div class="wwa-text">
+          <p>Founded by philanthropist Eric Kamanzi, Engineers4Humanity is a refugee-founded nonprofit organization with a U.S. 501(c)(3) organization registration in Dallas, Texas, in 2024 with the EIN: 99-2264956.</p>
+          <p>It was inspired by Eric's experience as a refugee and founder of the Engineers4Humanity Consultancy, a social enterprise with TIN#111054632 operating in Rwanda since 2020.</p>
+          <p>For more than 2 decades, Eric witnessed firsthand the struggles of refugees and displaced communities — mainly challenges in public health engineering, youth unemployment, education, and limited vocational pathways — and became determined to develop a sustainable engineering solution to foster long-term resilience and self-reliance among refugees and to play a key role in sustainable peacebuilding in the region, leading him to establish the social enterprise Engineers4Humanity Consultancy in Rwanda in 2020.</p>
+          <p>In 2024, as a refugee, Eric pursued his humanitarian mission by establishing the nonprofit Engineers4Humanity in the USA — a 501(c)(3) — to guide and support its social enterprise in Rwanda.</p>
+        </div>
+        <div>
+          <img src="http://localhost:3001/uploads/e4h-whoweare-about.png" alt="Community gathering" class="wwa-img" />
+        </div>
+      </div>
+
+      <div class="wwa-box">
+        <p>Since then, Engineers4Humanity has been transforming lives across Rwanda. Through education scholarships, vocational training, environmental stewardship, and peacebuilding programs, the organization empowers refugees and underserved communities to build self-reliant, dignified, and resilient futures.</p>
+        <p>Eric's humanitarian journey began in 2008, when he gathered other young refugee students to explore how they could find lasting solutions to their daily challenges. They founded the youth club — Forum Amis de la Paix. Eric served as the organization's first president and later as board chair. One notable achievement of the Forum is the establishment of Hope School in 2009, a refugee initiative school in the Gihembe refugee camp in Rwanda. Nonprofit organizations, including UNHCR, stopped offering free high school education programs, due to a funding shortage.</p>
+        <p>Eric, along with his refugee friends, founded the Hope School that offered education grades <strong>from grade 10 to 12</strong>. More than 500 students graduated from the school. Their lives and opportunities have remarkably improved. In 2016, nonprofit organizations stopped offering free high school education programs, which also impacted the Hope School, due to a funding shortage.</p>
+        <p>After graduating from the University of Rwanda as a civil engineer, Eric found that engineering could fulfill his mission. In 2020 in Rwanda, he launched the Engineers4Humanity Consultancy, a social enterprise that provides public health engineering, STEM education, and vocational training services for young refugees.</p>
+        <p>In 2024, Eric pursued his humanitarian mission by establishing the nonprofit Engineers4Humanity in the U.S. to guide and support its social enterprise in Rwanda.</p>
+        <p class="strong-line">For more about our story, check out our founder's book, <em>Breaking Boundaries</em>, and Hope School Alum's Testimony at the link below.</p>
+        <a href="https://www.amazon.com/dp/1949513467" target="_blank" rel="noopener noreferrer" class="wwa-amazon-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+          Read <em>Breaking Boundaries</em> on Amazon
+        </a>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ VISION & MISSION ══════════════════════════ -->
+    <section class="wwa-vm" id="vision-mission">
+      <div class="wwa-section">
+        <div class="vm-grid">
+          <div class="vm-card">
+            <div class="vm-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+              <h2>Organization Vision</h2>
+            </div>
+            <blockquote class="vm-quote">"We envision a brighter future for all, where refugees and underserved communities thrive through empowerment, advocacy, and sustainable engineering solutions."</blockquote>
+          </div>
+
+          <div class="vm-card emerald">
+            <div class="vm-head">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg>
+              <h2>Organization Mission</h2>
+            </div>
+            <p style="margin-bottom:16px;">To build a dignified life for refugees and underserved communities in Rwanda, and promote country development by:</p>
+            <ul class="vm-list">
+              <li><span class="dot"></span>Enhancing education &amp; vocational skills development;</li>
+              <li><span class="dot"></span>Fostering self-reliance through job creation and entrepreneurship;</li>
+              <li><span class="dot"></span>Advancing engineering solutions for environmental protection, water, sanitation, and hygiene services; and</li>
+              <li><span class="dot"></span>Inspiring servant leadership and elevating youth and women's participation to drive sustainable peacebuilding initiatives in the region.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════ VALUES & CULTURE ══════════════════════════ -->
+    <section class="wwa-values" id="values-culture">
+      <div class="wwa-section">
+        <div class="values-head">
+          <div class="values-head-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+            <h2>Values &amp; Culture</h2>
+          </div>
+          <h3>Engineers4Humanity's RUSINE Principles</h3>
+          <div class="identity-card">
+            <h4>Our Identity</h4>
+            <p>Our organization is built on a simple conviction: every person carries dignity, potential, and the capacity to transform their own future when given opportunity, support, and community. Engineers4Humanity's Principles—<span class="hl">Resilience, Ubuntu, Self-Reliance, Integrity, Nonviolence, and Excellence</span>—anchor who we are, how we lead, and how we serve. These values guide our decisions, shape our partnerships, and define the culture we cultivate across teams, communities, and countries.</p>
+          </div>
+        </div>
+
+        <div class="values-grid">
+          <div class="value-card yellow">
+            <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></div>
+            <h4>Resilience</h4>
+            <p class="value-tagline">Strength that rises, adapts, and transforms.</p>
+            <p class="value-desc">We stand with communities facing displacement, poverty, and systemic barriers, helping them rebuild with courage and dignity. Resilience shapes how we design programs, respond to challenges, and empower individuals to turn adversity into opportunity. Our culture celebrates perseverance, innovation under pressure, and the belief that every setback can spark new growth.</p>
+          </div>
+
+          <div class="value-card red">
+            <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <h4>Ubuntu</h4>
+            <p class="value-tagline">I am because we are.</p>
+            <p class="value-desc">Ubuntu grounds our identity in shared humanity. We honor the dignity, wisdom, and lived experience of every person we serve. Collaboration, compassion, and community-centered leadership guide our decisions. We build relationships that uplift everyone—because true progress is collective.</p>
+          </div>
+
+          <div class="value-card green">
+            <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 7h6v6"/><path d="m22 7-8.5 8.5-5-5L2 17"/></svg></div>
+            <h4>Self Reliance</h4>
+            <p class="value-tagline">Empowerment that lasts.</p>
+            <p class="value-desc">We equip individuals and communities with the skills, tools, and opportunities to stand on their own. Our programs prioritize capacity-building, economic mobility, and leadership development. Self reliance is our commitment to sustainable change—ensuring people can shape their own futures long after our work is done.</p>
+          </div>
+
+          <div class="value-card blue">
+            <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+            <h4>Integrity</h4>
+            <p class="value-tagline">Do the right thing, always.</p>
+            <p class="value-desc">Integrity is the foundation of trust. We lead with honesty, transparency, and accountability in every action—from resource stewardship to community engagement to donor reporting. Our culture demands ethical decision-making and responsible leadership at every level of the organization.</p>
+          </div>
+
+          <div class="value-card purple">
+            <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg></div>
+            <h4>Nonviolence</h4>
+            <p class="value-tagline">Peace as a practice, not an ideal.</p>
+            <p class="value-desc">We promote healing, reconciliation, and safety in all our work. Nonviolence means rejecting harm and embracing empathy, dialogue, and restorative approaches. We create trauma-sensitive environments where dignity is protected, and communities can rebuild relationships rooted in respect.</p>
+          </div>
+
+          <div class="value-card orange">
+            <div class="value-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></div>
+            <h4>Excellence</h4>
+            <p class="value-tagline">Quality that honors the people we serve.</p>
+            <p class="value-desc">Excellence is our standard in engineering, leadership, and service. We pursue innovation, technical rigor, and measurable impact. Our teams strive to deliver work that is safe, effective, and transformative—because communities deserve the highest level of care and professionalism.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+  <!-- ══════════════════════════ WHATSAPP FLOATING BUTTON ══════════════════════════ -->
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+
+    toggle.addEventListener('click', function () {
+      if (sidebar.classList.contains('open')) close(); else open();
+    });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+
+    var links = sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate');
+    links.forEach(function (l) { l.addEventListener('click', close); });
+  }
+
+  function initMobileAccordions() {
+    var summaries = document.querySelectorAll('.mob-summary');
+    summaries.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var targetId = btn.getAttribute('data-target');
+        var panel = document.getElementById(targetId);
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) {
+          btn.classList.remove('open');
+          panel.style.maxHeight = '0px';
+          panel.style.opacity = '0';
+        } else {
+          btn.classList.add('open');
+          panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px';
+          panel.style.opacity = '1';
+        }
+      });
+    });
+  }
+
+  function initHashScroll() {
+    if (window.location.hash) {
+      var el = document.getElementById(window.location.hash.slice(1));
+      if (el) setTimeout(function () { el.scrollIntoView({ behavior: 'smooth' }); }, 100);
+    }
+  }
+
+  function initFooterYear() {
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initHashScroll();
+  });
+})();
+</script>
+</body>
+</html>

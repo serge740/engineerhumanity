@@ -28,6 +28,38 @@ let PublicController = class PublicController {
             throw new common_1.HttpException(error.message, error.status || 404);
         }
     }
+    async getTeamMembers(group) {
+        try {
+            return await this.publicService.getTeamMembers(group);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, error.status || 400);
+        }
+    }
+    async getEvents(status) {
+        try {
+            return await this.publicService.getEvents(status);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, error.status || 400);
+        }
+    }
+    async getEvent(id) {
+        try {
+            return await this.publicService.getEvent(id);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, error.status || 404);
+        }
+    }
+    async getStories(group) {
+        try {
+            return await this.publicService.getStories(group);
+        }
+        catch (error) {
+            throw new common_1.HttpException(error.message, error.status || 400);
+        }
+    }
     async getPage(slug) {
         try {
             return await this.publicService.getPublicPage(slug);
@@ -44,6 +76,34 @@ __decorate([
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)
 ], PublicController.prototype, "getLanding", null);
+__decorate([
+    (0, common_1.Get)('team-members'),
+    __param(0, (0, common_1.Query)('group')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PublicController.prototype, "getTeamMembers", null);
+__decorate([
+    (0, common_1.Get)('events'),
+    __param(0, (0, common_1.Query)('status')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PublicController.prototype, "getEvents", null);
+__decorate([
+    (0, common_1.Get)('events/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], PublicController.prototype, "getEvent", null);
+__decorate([
+    (0, common_1.Get)('stories'),
+    __param(0, (0, common_1.Query)('group')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], PublicController.prototype, "getStories", null);
 __decorate([
     (0, common_1.Get)(':slug'),
     __param(0, (0, common_1.Param)('slug')),

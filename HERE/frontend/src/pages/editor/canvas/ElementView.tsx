@@ -17,6 +17,13 @@ export interface NodeProps {
   onSelect:   (id: string, e: React.MouseEvent) => void;
   onDblClick: (id: string, hasChildren: boolean) => void;
   onTextBlur: (id: string, content: string, field: 'text' | 'innerHTML') => void;
+  /**
+   * True on the live public page and in the editor's Preview mode: real click
+   * behavior applies (detail-modal triggers open a <dialog>, plain links
+   * navigate) instead of the normal edit-mode "click selects this element"
+   * behavior. Defaults to false so all existing editing behavior is unchanged.
+   */
+  interactive?: boolean;
 }
 
 // ── <script> — execute via useEffect so JS actually runs ─────────────────────
@@ -41,7 +48,7 @@ function ScriptNode({ el }: { el: PageElement }) {
 
 // ── Recursive element node ────────────────────────────────────────────────────
 export function ElementNode({
-  el, depth, selectedId, editingId, onSelect, onDblClick, onTextBlur,
+  el, depth, selectedId, editingId, onSelect, onDblClick, onTextBlur, interactive = false,
 }: NodeProps): React.ReactElement | null {
   if (!el.tag || typeof el.tag !== 'string') return null;
 
@@ -67,31 +74,57 @@ export function ElementNode({
       : {}),
   };
 
+  // A "more detail" modal trigger/close button (see collectionExpansion.ts),
+  // only actually wired up when `interactive` — i.e. Preview mode or the live
+  // public page — so normal editing (click-to-select) is completely unaffected.
+  const isModalTrigger = interactive && typeof rec._modalTarget === 'string';
+  const isModalClose   = interactive && !!rec._modalClose;
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isModalTrigger) {
+      e.preventDefault();
+      const modal = document.querySelector(`[data-el-id="${rec._modalTarget}"]`) as (HTMLDialogElement | null);
+      modal?.showModal?.();
+      return;
+    }
+    if (isModalClose) {
+      e.preventDefault();
+      (e.currentTarget as HTMLElement).closest('dialog')?.close();
+      return;
+    }
+    if (interactive) return; // real behavior (e.g. <a> navigation) proceeds natively
+    onSelect(el.id, e);
+  };
+
   const shared: Record<string, unknown> = {
     'data-el-id':  el.id,
     className:     el.class || undefined,
     style,
-    onClick:       (e: React.MouseEvent) => { e.stopPropagation(); onSelect(el.id, e); },
+    onClick:       handleClick,
     onDoubleClick: (e: React.MouseEvent) => { e.stopPropagation(); onDblClick(el.id, hasChildren); },
   };
 
   // ── <a> ───────────────────────────────────────────────────────────────────
   if (el.tag === 'a') {
-    const aClick = (e: React.MouseEvent) => { e.preventDefault(); e.stopPropagation(); onSelect(el.id, e); };
+    // Interactive (Preview mode / live page): use the real href so normal
+    // links actually navigate. Editing mode keeps href="#" so nothing ever
+    // navigates away while building the page.
+    const hrefVal = interactive ? (rec.href || '#') : '#';
     if (innerHTML) {
       return (
         <a {...shared as React.AnchorHTMLAttributes<HTMLAnchorElement>}
-          href="#" onClick={aClick}
+          href={hrefVal}
           dangerouslySetInnerHTML={{ __html: innerHTML }} />
       );
     }
     return (
       <a {...shared as React.AnchorHTMLAttributes<HTMLAnchorElement>}
-        href="#" onClick={aClick}>
+        href={hrefVal}>
         {hasChildren
           ? el.children!.map(c => <ElementNode key={c.id} el={c} depth={depth + 1}
               selectedId={selectedId} editingId={editingId}
-              onSelect={onSelect} onDblClick={onDblClick} onTextBlur={onTextBlur} />)
+              onSelect={onSelect} onDblClick={onDblClick} onTextBlur={onTextBlur} interactive={interactive} />)
           : (el.text ?? null)}
       </a>
     );
@@ -150,7 +183,7 @@ export function ElementNode({
     ? el.children!.map(c => (
         <ElementNode key={c.id} el={c} depth={depth + 1}
           selectedId={selectedId} editingId={editingId}
-          onSelect={onSelect} onDblClick={onDblClick} onTextBlur={onTextBlur} />
+          onSelect={onSelect} onDblClick={onDblClick} onTextBlur={onTextBlur} interactive={interactive} />
       ))
     : (el.text ?? null);
 

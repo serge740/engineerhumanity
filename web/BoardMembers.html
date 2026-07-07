@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Board Members</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+
+:root {
+  --navy: #0A1628; --bg: #F0F7FF; --bg-alt: #E1EEF9; --muted: #3A5068;
+  --sky-50: #f0f9ff; --sky-100: #e0f2fe; --sky-300: #7dd3fc; --sky-400: #38bdf8; --sky-500: #0ea5e9;
+  --sky: #0284c7; --sky-700: #0369a1; --sky-900: #0c4a6e;
+  --emerald-400: #34d399; --emerald: #059669; --emerald-dark: #047857;
+  --green: #16a34a; --green-50: #f0fdf4; --green-100: #dcfce7; --green-700: #15803d;
+  --green-dark: #15803d; --green-darker: #166534;
+  --purple: #9333ea;
+  --gray-50: #f9fafb; --gray-100: #f3f4f6; --gray-600: #4b5563; --gray-700: #374151;
+  --gray-800: #1f2937; --gray-900: #111827;
+  --red-500: #ef4444; --red-600: #dc2626;
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans:  "DM Sans", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: #fff; }
+h1, h2, h3, h4 { font-family: var(--font-serif); font-weight: 400; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 32px; line-height: 1.1; margin: 0; }
+h3 { font-size: 20px; line-height: 1.2; margin: 0; }
+h4 { font-size: 16px; font-weight: 600; margin: 0; }
+p  { font-size: 16px; line-height: 1.75; margin: 0; }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+ul  { list-style: none; }
+.page { position: relative; overflow: hidden; }
+
+/* CHROME — NAVBAR (copied verbatim) */
+.navbar { position: sticky; top: 0; z-index: 50; width: 100%; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,.08); padding: 4px 0; }
+.nav-inner { position: relative; display: flex; align-items: center; height: 90px; padding: 0 16px; }
+.nav-logo { position: absolute; left: 16px; display: flex; align-items: center; height: 100%; }
+.nav-logo img { height: 76px; width: auto; }
+.nav-links { display: none; flex: 1; align-items: center; justify-content: center; gap: 2px; font-size: 13px; font-weight: 600; padding-left: 210px; }
+.nav-item { padding: 8px 14px; border-radius: 8px; font-weight: 700; color: var(--gray-700); transition: all .2s; }
+.nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.nav-item.active { color: var(--sky); background: var(--sky-50); }
+.nav-drop { position: relative; }
+.drop-btn { display: inline-flex; align-items: center; gap: 4px; padding: 8px 14px; border-radius: 8px; font-weight: 700; font-size: 13px; color: var(--gray-700); background: transparent; border: none; cursor: pointer; transition: all .2s; }
+.nav-drop:hover .drop-btn { color: var(--sky); background: var(--gray-50); }
+.drop-btn .chevron { width: 16px; height: 16px; transition: transform .3s; }
+.nav-drop:hover .drop-btn .chevron { transform: rotate(180deg); }
+.drop-menu { position: absolute; left: 0; top: 100%; margin-top: 8px; width: 224px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,.15); border: 1px solid var(--gray-100); padding: 8px 0; opacity: 0; visibility: hidden; transform: scale(.95) translateY(-8px); transition: all .25s; transform-origin: top; z-index: 60; }
+.nav-drop:hover .drop-menu { opacity: 1; visibility: visible; transform: scale(1) translateY(0); }
+.drop-link { display: block; padding: 10px 16px; font-size: 14px; font-weight: 700; color: var(--gray-700); border-radius: 8px; margin: 0 8px; transition: all .2s; }
+.drop-link:hover { color: var(--sky); background: var(--sky-50); }
+.drop-link.active { color: var(--sky); background: var(--sky-50); }
+.drop-menu.mega { width: 560px; padding: 20px; left: 50%; transform: translateX(-50%) scale(.95) translateY(-8px); }
+.nav-drop:hover .drop-menu.mega { transform: translateX(-50%) scale(1) translateY(0); }
+.mega-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.mega-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; padding: 0 12px; }
+.mega-col-title.sky { color: var(--sky); }
+.mega-col-title.grn { color: var(--green); }
+.mega-col-title.pur { color: var(--purple); }
+.drop-menu.mega .drop-link { margin: 0; padding: 8px 12px; }
+.btn-donate { display: none; padding: 10px 24px; font-size: 13px; font-weight: 700; letter-spacing: .04em; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); transition: all .3s; white-space: nowrap; }
+.btn-donate:hover { background: linear-gradient(to right, var(--green-dark), var(--green-darker)); transform: translateY(-1px); }
+.mobile-btn { margin-left: auto; padding: 8px; border: none; background: transparent; color: var(--gray-700); border-radius: 8px; cursor: pointer; }
+.mobile-btn svg { width: 26px; height: 26px; }
+.mobile-btn:hover { background: var(--gray-50); color: var(--sky); }
+.nav-overlay { position: absolute; inset: 0; background: rgba(0,0,0,.5); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: opacity .3s; z-index: 55; }
+.nav-overlay.open { opacity: 1; visibility: visible; }
+.mobile-sidebar { position: absolute; top: 0; right: -340px; width: 320px; max-width: 85%; height: 100%; background: #fff; box-shadow: -8px 0 30px rgba(0,0,0,.2); z-index: 60; overflow-y: auto; transition: right .3s ease-in-out; }
+.mobile-sidebar.open { right: 0; }
+.sidebar-header { position: sticky; top: 0; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.1); z-index: 2; }
+.sidebar-header-row { display: flex; align-items: center; justify-content: space-between; }
+.sidebar-header h3 { font-family: var(--font-sans); font-size: 20px; font-weight: 700; }
+.sidebar-header p { font-size: 13px; color: rgba(255,255,255,.85); margin-top: 4px; }
+.sidebar-close { background: rgba(255,255,255,.15); border: none; color: #fff; padding: 8px; border-radius: 8px; cursor: pointer; }
+.sidebar-close svg { width: 22px; height: 22px; }
+.mobile-nav-body { padding: 16px; display: flex; flex-direction: column; gap: 4px; }
+.mobile-nav-item { padding: 12px 16px; font-weight: 700; color: var(--gray-700); border-radius: 8px; }
+.mobile-nav-item:hover { color: var(--sky); background: var(--gray-50); }
+.mobile-nav-item.active { color: var(--sky); background: var(--sky-50); }
+.mob-accordion { margin: 4px 0; }
+.mob-summary { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; font-weight: 600; color: var(--gray-700); background: transparent; border: none; text-align: left; cursor: pointer; border-radius: 8px; }
+.mob-summary:hover { color: var(--sky); background: var(--gray-50); }
+.mob-summary .chevron { width: 20px; height: 20px; transition: transform .3s; }
+.mob-summary.open .chevron { transform: rotate(180deg); }
+.mob-sub { overflow: hidden; max-height: 0; opacity: 0; transition: all .3s ease-in-out; }
+.mob-sub-inner { padding-left: 16px; margin-top: 4px; margin-left: 16px; border-left: 2px solid var(--sky-300); display: flex; flex-direction: column; gap: 4px; padding-bottom: 4px; }
+.mob-sub-title { padding: 6px 16px 2px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.mob-sub-title.sky { color: var(--sky); }
+.mob-sub-title.grn { color: var(--green); }
+.mob-sub-title.pur { color: var(--purple); }
+.mob-donate { display: block; text-align: center; margin-top: 16px; padding: 14px; font-weight: 700; color: #fff; background: linear-gradient(to right, var(--green), var(--green-dark)); border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); }
+@media (min-width: 1024px) { .nav-inner { padding: 0 24px; } .nav-links { display: flex; } .btn-donate { display: inline-block; } .mobile-btn, .nav-overlay, .mobile-sidebar { display: none; } }
+@media (min-width: 1280px) { .nav-links { font-size: 14px; } .nav-item, .drop-btn { padding: 10px 16px; } }
+
+/* CHROME — FOOTER (copied verbatim) */
+.footer { background: var(--navy); color: rgba(255,255,255,.65); }
+.footer-top { display: grid; grid-template-columns: 1fr; gap: 32px; padding: 48px 16px 32px; border-bottom: 1px solid rgba(255,255,255,.1); }
+.footer-logo { font-family: var(--font-serif); font-size: 22px; font-weight: 600; color: #fff; display: inline-block; margin-bottom: 16px; }
+.footer-tagline { font-size: 14px; line-height: 1.8; margin-bottom: 20px; }
+.footer-ein { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; padding: 12px 16px; margin-bottom: 24px; }
+.footer-ein-label { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-ein-val { font-size: 14px; font-weight: 600; color: #fff; }
+.footer-social { display: flex; gap: 12px; }
+.footer-social a { width: 36px; height: 36px; border-radius: 999px; background: rgba(255,255,255,.08); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.65); transition: all .2s; }
+.footer-social a:hover { background: var(--sky); color: #fff; }
+.footer-social svg { width: 16px; height: 16px; }
+.footer-col-title { font-family: var(--font-serif); font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 20px; }
+.footer-link { display: block; font-size: 14px; color: rgba(255,255,255,.55); margin-bottom: 10px; transition: color .2s; }
+.footer-link:hover { color: #fff; }
+.footer-office-name { color: #fff; font-weight: 600; margin-bottom: 4px; font-size: 14px; }
+.footer-office-sub { font-size: 12px; color: var(--sky-400); font-weight: 500; margin-bottom: 4px; }
+.footer-office-tin { font-size: 12px; color: rgba(255,255,255,.4); margin-bottom: 4px; }
+.footer-office-addr { color: rgba(255,255,255,.55); font-size: 14px; }
+.footer-contact { display: block; color: rgba(255,255,255,.55); margin-top: 6px; font-size: 14px; }
+.footer-contact:hover { color: #fff; }
+.footer-office-space { margin-top: 20px; }
+.footer-bottom { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 24px 16px; }
+.footer-copy { font-size: 13px; }
+.footer-copy a { color: var(--sky-400); text-decoration: underline; }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 13px; color: rgba(255,255,255,.45); }
+.footer-legal a:hover { color: #fff; }
+@media (min-width: 640px) { .footer-top { grid-template-columns: 1fr 1fr; padding-left: 32px; padding-right: 32px; } }
+@media (min-width: 1024px) { .footer-top { grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; padding: 72px 64px 48px; } .footer-bottom { padding: 24px 64px; } }
+
+/* CHROME — WHATSAPP BUTTON (copied verbatim) */
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn svg { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+/* CHROME — PAGE HEADER BANNER (copied verbatim) */
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-size: 34px; font-weight: 300; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* ══════════════════════════════════════════════════════════════
+   BOARD MEMBERS — page content
+   ══════════════════════════════════════════════════════════════ */
+.board-section { padding: 60px 24px; background: #fff; }
+.board-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+.board-card { background: #fff; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,.12); overflow: hidden; border: 2px solid var(--gray-100); transition: all .3s; }
+.board-card:hover { box-shadow: 0 25px 50px rgba(0,0,0,.2); border-color: var(--sky); }
+.board-photo-wrap { height: 320px; overflow: hidden; }
+.board-photo-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; transition: transform .3s; }
+.board-card:hover .board-photo-wrap img { transform: scale(1.1); }
+.board-info { padding: 24px; }
+.board-name { font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+.board-cred { font-size: 18px; color: var(--sky); font-weight: 600; margin-bottom: 12px; }
+.board-title { color: var(--gray-600); margin-bottom: 24px; }
+.board-actions { display: flex; gap: 8px; }
+.view-profile-btn { flex: 1; background: linear-gradient(to right, var(--sky), var(--green)); color: #fff; padding: 12px 16px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: opacity .2s; }
+.view-profile-btn:hover { opacity: .9; }
+.linkedin-btn { background: var(--gray-100); color: var(--gray-700); padding: 12px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+.linkedin-btn:hover { filter: brightness(.95); }
+.linkedin-btn svg { width: 24px; height: 24px; }
+
+@media (min-width: 768px) { .board-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 1024px) { .board-grid { grid-template-columns: repeat(3, 1fr); } }
+
+.gov-section { padding: 60px 24px; background: var(--gray-50); }
+.gov-card { max-width: 1100px; margin: 0 auto; background: #fff; padding: 32px 24px; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,.12); }
+.gov-card h2 { font-size: 26px; font-weight: 700; color: var(--gray-900); text-align: center; margin-bottom: 24px; }
+.gov-grid { display: grid; grid-template-columns: 1fr; gap: 32px; text-align: center; }
+.gov-item { padding: 16px; }
+.gov-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+.gov-icon.sky { background: var(--sky-100); }
+.gov-icon.green { background: var(--green-100); }
+.gov-icon svg { width: 32px; height: 32px; }
+.gov-icon.sky svg { color: var(--sky); }
+.gov-icon.green svg { color: var(--green); }
+.gov-item h3 { font-size: 20px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+.gov-item p { color: var(--gray-600); }
+@media (min-width: 768px) { .gov-grid { grid-template-columns: repeat(3, 1fr); } .gov-card { padding: 40px; } }
+
+.final-cta { padding: 60px 24px; background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; }
+.final-cta h2 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 20px; }
+.final-cta p { font-size: 18px; opacity: .95; margin-bottom: 32px; max-width: 640px; margin-left: auto; margin-right: auto; }
+.final-cta-btn { display: inline-block; background: #fff; color: var(--sky); padding: 16px 40px; border-radius: 8px; font-weight: 700; font-size: 17px; box-shadow: 0 15px 30px rgba(0,0,0,.2); transition: background .2s; }
+.final-cta-btn:hover { background: var(--gray-100); }
+
+/* Modal */
+.board-modal { position: absolute; inset: 0; z-index: 70; display: none; align-items: flex-start; justify-content: center; padding: 32px 16px; background: rgba(0,0,0,.75); overflow-y: auto; }
+.board-modal.open { display: flex; }
+.board-modal-inner { position: relative; background: #fff; border-radius: 16px; max-width: 760px; width: 100%; max-height: 88vh; overflow-y: auto; }
+.board-modal-close { position: sticky; top: 16px; float: right; margin: 16px 16px 0 0; background: var(--gray-900); color: #fff; padding: 8px; border-radius: 50%; border: none; cursor: pointer; z-index: 2; }
+.board-modal-close:hover { background: var(--gray-700); }
+.board-modal-close svg { width: 20px; height: 20px; }
+.board-modal-body { padding: 24px; clear: both; }
+.board-modal-head { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; margin-bottom: 24px; }
+.board-modal-photo { width: 128px; height: 128px; border-radius: 50%; object-fit: cover; object-position: top; border: 4px solid var(--sky); box-shadow: 0 15px 30px rgba(0,0,0,.15); }
+.board-modal-name { font-size: 24px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+.board-modal-name .cred { font-size: 20px; color: var(--sky); }
+.board-modal-title { font-size: 18px; color: var(--gray-600); margin-bottom: 16px; }
+.board-modal-badges { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 16px; }
+.badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; font-size: 14px; font-weight: 600; text-transform: capitalize; }
+.badge.sky { background: var(--sky-100); color: var(--sky-700); }
+.badge.green { background: var(--green-100); color: var(--green-700); }
+.badge svg { width: 16px; height: 16px; }
+.board-modal-linkedin { display: inline-flex; align-items: center; gap: 8px; background: var(--sky); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: background .2s; }
+.board-modal-linkedin:hover { background: var(--sky-700); }
+.board-modal-linkedin svg { width: 16px; height: 16px; }
+.board-modal-bio { background: linear-gradient(to right, var(--sky-50), var(--green-50)); padding: 20px; border-radius: 12px; border-left: 4px solid var(--sky); }
+.board-modal-bio h3 { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; color: var(--gray-900); margin-bottom: 12px; }
+.board-modal-bio h3 svg { width: 20px; height: 20px; color: var(--sky); }
+.board-modal-bio p { color: var(--gray-700); font-size: 14px; white-space: pre-line; }
+
+@media (min-width: 768px) { .board-modal-head { flex-direction: row; text-align: left; align-items: flex-start; } .board-modal-badges { justify-content: flex-start; } }
+</style>
+</head>
+<body>
+<div class="page">
+  <main>
+    <div class="page-header">
+      <img src="http://localhost:3001/uploads/e4h-header-bg.jpg" alt="Board Members" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Board Members</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="BoardMembers.html" class="current">Board Members</a></div>
+      </div>
+    </div>
+
+    <section class="board-section">
+      <div class="board-grid">
+        <div class="board-card" data-id="1"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-1.png" alt="Vin Hoey" /></div><div class="board-info"><div class="board-name">Vin Hoey</div><p class="board-cred">MBA</p><p class="board-title">Board Chair</p><div class="board-actions"><button class="view-profile-btn" data-id="1">View Full Profile</button><a href="https://www.linkedin.com/in/vinhoey/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="board-card" data-id="2"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-2.png" alt="Eric Kamanzi" /></div><div class="board-info"><div class="board-name">Eric Kamanzi</div><p class="board-cred">PMP, PE, MSc</p><p class="board-title">Founder &amp; Chief Executive Officer</p><div class="board-actions"><button class="view-profile-btn" data-id="2">View Full Profile</button><a href="https://www.linkedin.com/in/eric-kamanzi-pmp/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="board-card" data-id="3"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-3.png" alt="Brother Malisaba Straton" /></div><div class="board-info"><div class="board-name">Brother Malisaba Straton</div><p class="board-cred">M.Ed</p><p class="board-title">Board Vice Chair | Education Program</p><div class="board-actions"><button class="view-profile-btn" data-id="3">View Full Profile</button></div></div></div>
+
+        <div class="board-card" data-id="4"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-4.jpeg" alt="Theo Karegesa Kivuye" /></div><div class="board-info"><div class="board-name">Theo Karegesa Kivuye</div><p class="board-cred">MEng</p><p class="board-title">Board Vice Chair | Engineering Program</p><div class="board-actions"><button class="view-profile-btn" data-id="4">View Full Profile</button></div></div></div>
+
+        <div class="board-card" data-id="5"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-5.png" alt="Japhet Habinshuti" /></div><div class="board-info"><div class="board-name">Japhet Habinshuti</div><p class="board-cred">PEng, MSc</p><p class="board-title">Board Member</p><div class="board-actions"><button class="view-profile-btn" data-id="5">View Full Profile</button><a href="https://www.linkedin.com/in/japheth-habinshuti-n-430a54100/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="board-card" data-id="8"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-8.png" alt="Steven Malecek" /></div><div class="board-info"><div class="board-name">Steven Malecek</div><p class="board-cred">PhD</p><p class="board-title">Board Member | Engineering &amp; Entrepreneurship Committee</p><div class="board-actions"><button class="view-profile-btn" data-id="8">View Full Profile</button><a href="https://www.linkedin.com/in/stevemalecek/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="board-card" data-id="6"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-6.png" alt="Joseph Mboneza Masengesho" /></div><div class="board-info"><div class="board-name">Joseph Mboneza Masengesho</div><p class="board-cred">MBA</p><p class="board-title">Board Member</p><div class="board-actions"><button class="view-profile-btn" data-id="6">View Full Profile</button><a href="https://www.linkedin.com/in/joseph-mboneza-masengesho-45373842/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+
+        <div class="board-card" data-id="7"><div class="board-photo-wrap"><img src="http://localhost:3001/uploads/e4h-board-7.png" alt="J. Baptist Ndahiriwe" /></div><div class="board-info"><div class="board-name">J. Baptist Ndahiriwe</div><p class="board-cred">MPH</p><p class="board-title">Board Member</p><div class="board-actions"><button class="view-profile-btn" data-id="7">View Full Profile</button><a href="https://www.linkedin.com/in/j-baptist-ndahiriwe-5691096a/" target="_blank" rel="noopener noreferrer" class="linkedin-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a></div></div></div>
+      </div>
+    </section>
+
+    <section class="gov-section">
+      <div class="gov-card">
+        <h2>Board Governance &amp; Advisory Role</h2>
+        <div class="gov-grid">
+          <div class="gov-item">
+            <div class="gov-icon sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></div>
+            <h3>Governance</h3>
+            <p>Providing strategic oversight and ensuring accountability to stakeholders and the communities we serve</p>
+          </div>
+          <div class="gov-item">
+            <div class="gov-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></div>
+            <h3>Advisory</h3>
+            <p>Offering expert guidance on programs, strategy, and operations to maximize impact for refugee communities</p>
+          </div>
+          <div class="gov-item">
+            <div class="gov-icon sky"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <h3>Networking</h3>
+            <p>Leveraging connections and partnerships to expand opportunities and resources for the organization's mission</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final-cta">
+      <h2>Your Support Can Make a World of Difference</h2>
+      <p>Whether through donations, volunteering, or spreading the word, you can help empower vulnerable communities.</p>
+      <a href="Donate.html" class="final-cta-btn">Donate Now</a>
+    </section>
+  </main>
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="white"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.822.736 5.47 2.027 7.77L0 32l8.437-2.01A15.93 15.93 0 0 0 16 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm0 29.333a13.27 13.27 0 0 1-6.771-1.854l-.486-.29-5.01 1.194 1.218-4.874-.317-.5A13.268 13.268 0 0 1 2.667 16C2.667 8.636 8.636 2.667 16 2.667S29.333 8.636 29.333 16 23.364 29.333 16 29.333zm7.27-9.878c-.398-.199-2.353-1.161-2.718-1.294-.365-.133-.63-.199-.896.199-.265.398-1.029 1.294-1.261 1.56-.232.265-.465.298-.863.1-.398-.2-1.681-.62-3.202-1.977-1.183-1.056-1.982-2.36-2.214-2.758-.232-.398-.025-.613.174-.811.179-.178.398-.465.597-.697.2-.232.266-.398.399-.663.132-.265.066-.497-.033-.696-.1-.2-.896-2.161-1.228-2.96-.323-.777-.651-.672-.896-.684l-.763-.013c-.265 0-.696.1-1.061.497-.365.398-1.394 1.362-1.394 3.323s1.427 3.855 1.626 4.12c.199.265 2.808 4.287 6.803 6.016.951.41 1.693.655 2.272.839.954.304 1.823.261 2.51.158.765-.114 2.353-.962 2.685-1.891.332-.929.332-1.726.232-1.891-.099-.166-.364-.265-.763-.464z"/></svg>
+  </a>
+
+  <div class="board-modal" id="boardModal">
+    <div class="board-modal-inner">
+      <button class="board-modal-close" id="boardModalClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div class="board-modal-body">
+        <div class="board-modal-head">
+          <img class="board-modal-photo" id="modalPhoto" src="" alt="" />
+          <div>
+            <div class="board-modal-name" id="modalName"></div>
+            <p class="board-modal-title" id="modalTitle"></p>
+            <div class="board-modal-badges">
+              <span class="badge sky" id="modalRoleBadge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg><span id="modalRoleText"></span></span>
+              <span class="badge green" id="modalChairBadge" style="display:none;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>Leadership</span>
+            </div>
+            <a class="board-modal-linkedin" id="modalLinkedin" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">LinkedIn Profile<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></a>
+          </div>
+        </div>
+        <div class="board-modal-bio">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg>Role &amp; Impact</h3>
+          <p id="modalBio"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var members = [
+    { id:1, name:"Vin Hoey", credentials:"MBA", title:"Board Chair", image:"http://localhost:3001/uploads/e4h-board-1.png", linkedIn:"https://www.linkedin.com/in/vinhoey/", role:"chair", bio:"Vin Hoey serves as the Engineers4Humanity Board Chair. A senior executive with extensive business and nonprofit leadership experience, he is passionate about serving nonprofits and teaching/mentoring the next generation of leaders. He brings nonprofit board and senior staff experience perspectives to fuel success for causes.\n\nHe is Managing Director of Strategic4sight, which provides leading-edge nonprofit strategic planning, marketing, leadership coaching, and governance consulting services. Throughout his career, Vin has provided significant volunteer leadership on the boards of directors of 25 different local, national, and international nonprofit organizations in various cities. He has served as board chair for 10 nonprofits and co-founded four nonprofits. He is committed to serving refugees and vulnerable youth and currently serves on the Leadership Advisory Councils of Heart House and Project Transformation - North Texas in Dallas.\n\nVin's servant leadership aligns directly with Engineers4Humanity's mission to restore dignity, expand opportunity, and build pathways to self-reliance for displaced and underserved communities. He supports Engineers4Humanity's ability to build partnerships and mobilize resources for refugee self-reliance, job creation, and vocational training programs in Rwanda.\n\nHis long career at ExxonMobil included serving as  Marketing Communications Manager for ExxonMobil Chemical and earlier leading Corporate & Marketing Communications across Europe, Africa, and the Middle East from Brussels. He found, late in life, that he loves teaching and has taught the Nonprofit Marketing Strategies course at the SMU Cox Graduate School of Business in Dallas, and undergraduate courses at SMU and DePauw University in Indiana.\n\nAs Board Chair of Engineers4Humanity, Vin plays a pivotal role in developing strategic partnerships, donor engagement, and helping programs across Rwanda. His leadership strengthens board governance and supports the organization's mission." },
+    { id:2, name:"Eric Kamanzi", credentials:"PMP, PE, MSc", title:"Founder & Chief Executive Officer", image:"http://localhost:3001/uploads/e4h-board-2.png", linkedIn:"https://www.linkedin.com/in/eric-kamanzi-pmp/", role:"executive", bio:"Eric Kamanzi is the Founder & CEO of Engineers4Humanity — a civil engineer, humanitarian leader, and a father, whose journey from surviving violence in the DRC to growing up in a refugee camp in Rwanda has shaped a lifelong mission to restore dignity, hope, and opportunity for displaced communities. His story is captured in his book \"Breaking Boundaries\" available at Amazon, which chronicles his path from hardship to purpose-driven leadership.\n\nEric's values were formed by his father, a courageous social entrepreneur who taught self-reliance, generosity, and service. During the 1997 Mudende Refugee Camp massacre, his father sacrificed his life to save Eric and his siblings — an event that became the defining anchor of Eric's faith and calling. Guided by Scripture, by meeting Pastor Rick Warren in 2007, and by human-rights advocates, Eric embraced a life of impact rooted in the declaration: \"As for me and my house, we will serve the Lord.\" His purpose remains clear: to live a happy and impactful life.\n\nFor 17 years, Eric has led transformative initiatives for refugees in Rwanda, co-founding Forum Amis de la Paix (2008) and establishing Hope School (2009), which enabled more than 500 high school graduates and 100 university students. In 2020, he launched Engineers4Humanity Consultancy and the Engineers4Humanity Technical & Innovation Hub, advancing vocational training, climate-smart engineering, WASH solutions, and youth employment.\n\nA Civil Engineer and PMP-certified professional, Eric has led more than 100 construction projects and serves as a Special Inspector at DFW International Airport. He is an active member of NSPE, PMI, Engineers Without Borders–USA, UNAUSA, the Institute of Engineers Rwanda, and RAPEP. Through Engineers4Humanity, he has impacted thousands of refugees and more than 2,000 youth — championing dignity, self-reliance, and community-driven development." },
+    { id:3, name:"Brother Malisaba Straton", credentials:"M.Ed", title:"Board Vice Chair | Education Program", image:"http://localhost:3001/uploads/e4h-board-3.png", role:"vice-chair", bio:"Brother Malisaba Straton is a Marist brother, experienced educator and humanitarian leader whose five decades of service have strengthened schools and communities across East Africa (Rwanda, the DRC, Tanzania and Kenya) and with network in education in the USA and Europe. As Engineers4Humanity Board Vice Chair for Education, he guides the organization's strategy for refugee education, school partnerships, and youth empowerment.\n\nBrother Straton has led and transformed numerous institutions, including Byimana School of Science—where he introduced Rwanda's first wireless internet in a public school—and Rwabuye Technical School, which he revitalized from 90 to 300 students within three years. His leadership has consistently combined academic excellence, financial discipline, and a deep commitment to student well-being.\n\nHe served as Deputy Provincial Superior of the Marist Brothers in Central and East Africa, supervised major school infrastructure projects, and held governance roles in national companies. A trained human rights educator, he has participated in international workshops in Geneva and has been a strong advocate for child protection and refugee learners.\n\nThrough a partnership with Engineers4Humanity, Brother Straton has helped refugee students access quality boarding schools, vocational training, mentorship, and long-term academic support. His lifelong dedication to education and human dignity continues to shape the next generation of leaders across East and Central Africa." },
+    { id:4, name:"Theo Karegesa Kivuye", credentials:"MEng", title:"Board Vice Chair | Engineering Program", image:"http://localhost:3001/uploads/e4h-board-4.jpeg", role:"vice-chair", bio:"Karegesa Muyango is an engineering leader, entrepreneur, and former refugee whose lived experience fuels his commitment to building pathways of dignity and opportunity for displaced youth. As Managing Director of VBN General Ventures Ltd in Kigali and Engineers4Humanity's Board Vice Chair for Engineering Programs, he provides strategic leadership across WASH, environmental protection, infrastructure development, and workforce-creation initiatives that equip refugee engineers to thrive.\n\nWith a BSc in Chemistry and Mechanical Engineering training from the American University in Cairo, Karegesa brings more than three decades of technical and managerial experience. His engineering portfolio spans logistics, mining, hydropower subcontracting, industrial installations, wastewater and effluent management, dumpsite stabilization, and large-scale environmental restoration — alongside landmark landscaping projects such as Epic Hotel and Kivu Marina Bay Hotel.\n\nA champion of refugee-to-leader transformation, he mentors young engineers, supports internship and job placement through Engineers4Humanity, and advocates for STEM as a tool for equitable development. His humanitarian service includes rehabilitation support for war-injured veterans, facilitating artificial limb procurement, and training Rwanda National Police after specialized fire-engine instruction in Japan.\n\nAs a founder and director of multiple companies — including SAMBAMBA Freight Forwarders, TwoK Enterprises, and VBN General Ventures — he has played a pivotal role in Rwanda's post-genocide reconstruction, from linking the country to Mombasa Port to advancing housing, energy, and industrial development.\n\nKaregesa embodies engineering leadership rooted in resilience, service, and community-centered innovation — demonstrating the capacity to guide transformative engineering programs that advance dignity, self-reliance, and sustainable peace." },
+    { id:5, name:"Japhet Habinshuti", credentials:"PEng, MSc", title:"Board Member", image:"http://localhost:3001/uploads/e4h-board-5.png", linkedIn:"https://www.linkedin.com/in/japheth-habinshuti-n-430a54100/", role:"member", bio:"Japhet is a leading Urban Planning and Climate Resilience expert with more than 13 years of experience delivering high-impact, community-centered solutions across Sub-Saharan Africa. He has mobilized tens of millions of dollars in climate adaptation, gender equity, and urban resilience investments — directly improving the lives of informal settlement residents, women, youth, and climate-exposed households.\n\nHe currently serves in Rwanda with the World Resources Institute (WRI) as a key implementer of the Africa Climate Resilient Cities Program, where he leads the US $22 million SUNCASA initiative, reducing flood risk for over 2 million people across Rwanda, Ethiopia, and South Africa. His leadership has shaped Kigali's first Urban Resilience Roadmap, secured major climate-finance commitments through the World Bank's Gap Fund, and advanced gender-responsive mobility, digital inclusion, and post-COVID recovery programs.\n\nJaphet's career includes influential roles with the World Bank, the Covenant of Mayors, the Resilient Cities Network, UNESCO, and Rwanda's Natural Resources Authority. Across these institutions, he has built a reputation for turning policy into practice — strengthening local government capacity and designing nature-based, GESI-responsive solutions that deliver measurable and scalable impact.\n\nAs an Engineers4Humanity Board Member, Japhet brings strategic leadership in climate adaptation, urban resilience, inclusive planning, and climate-finance mobilization. His expertise directly strengthens the organization's mission to equip refugees and host communities with engineering skills, resilient infrastructure, and dignified economic opportunities — ensuring they can thrive amid growing climate and economic shocks." },
+    { id:8, name:"Steven Malecek", credentials:"PhD", title:"Board Member | Engineering & Entrepreneurship Committee", image:"http://localhost:3001/uploads/e4h-board-8.png", linkedIn:"https://www.linkedin.com/in/stevemalecek/", role:"member", bio:"As Engineers4Humanity Board Member, committed to strengthening refugee self-reliance and wellbeing through innovative public health engineering and entrepreneurial pathways.\n\nEngineer Steven is a water and energy development specialist; the Founder and Principal of Water Pathways, LLC. He brings together technical, business, and legal expertise to serve international development through geoscience applications, project coordination, and collaboration with companies, nonprofits, and local organizations across water, solar power, smallholder agriculture, and market access. Growing up on a farm instilled an appreciation of agriculture, weather, and markets that affect farmers in developing countries.\n\nSteve's current work is rooted in firsthand experience. Site visits to rural communities in Kenya, Zambia, and Zimbabwe revealed the profound human toll of water insecurity — on health, economic opportunity, and the daily burden on women and girls who travel long distances to reach often-contaminated sources. In response, he has focused on groundwater development through regional hydrogeological assessments, pre-drill geophysical surveys, and drilling operations. Results have demonstrated how a successful water well, combined with solar pumping and drip irrigation, can transform smallholder farming yields and open market access — directly advancing UN Sustainable Development Goals #2 and 6.\n\nProfessionally, Steven is a Licensed Geophysicist in Texas with more than 30 years of experience in the oil and gas industry, having worked with Mobil Oil, Saudi Aramco, PetroTel Consulting, and Kosmos Energy across Europe, the Middle East, Southeast Asia, and West Africa. His graduate degrees include a MSc in Geophysics (University of British Columbia), MSc in Engineering Management (Missouri S&T), an MBA (UT Dallas), an LLM in Energy Law and Policy, and a PhD in Water Law and Policy (University of Dundee, Scotland).\n\nIn his role as a Board Member on the Engineering & Entrepreneurship Committee, he provides strategic technical guidance across Public Health Engineering, WASH (Water, Sanitation and Hygiene), renewable energy, environmental protection, and irrigation initiatives.\n\nHe further enhances refugee and host community long term resilience and self reliance by supporting smallholder farming entrepreneurship and equipping rural communities with advanced, sustainable, and affordable irrigation practices." },
+    { id:6, name:"Joseph Mboneza Masengesho", credentials:"MBA", title:"Board Member", image:"http://localhost:3001/uploads/e4h-board-6.png", linkedIn:"https://www.linkedin.com/in/joseph-mboneza-masengesho-45373842/", role:"member", bio:"Joseph Masengesho is an experienced project management professional with an MBA and 14 years of experience advancing youth employment, entrepreneurship, and vocational skills development across Rwanda. His work with leading international development agencies—including AFD/Expertise France, APEFE, and DOT Rwanda—has focused on empowering vulnerable youth, women, and people with disabilities through TVET training, dual apprenticeship systems, and private-sector–driven job creation.\n\nJoseph has coordinated multi-stakeholder programs that strengthen TVET–industry collaboration, build the capacity of trainers and SMEs, and expand access to skills training and workplace integration for disadvantaged groups. He has led teams, managed project resources, and delivered large-scale training initiatives that have equipped thousands of young people with practical skills for employment and entrepreneurship.\n\nCurrently serving in Rwanda as Manager for Entrepreneurship, Employment, and Private Sector Engagement under the AFD/Expertise France AFTER I & II Projects, Joseph oversees the design and implementation of workforce development interventions, employer engagement strategies, and capacity-building programs for national TVET institutions.\n\nAs an Engineers4Humanity Board Member, Joseph brings deep expertise in vocational training systems, youth workforce development, and inclusive job creation. His leadership strengthens Engineers4Humanity's mission to equip refugees and host communities with market-relevant skills, expand pathways to dignified employment, and build resilient livelihoods through engineering and technical education." },
+    { id:7, name:"J. Baptist Ndahiriwe", credentials:"MPH", title:"Board Member", image:"http://localhost:3001/uploads/e4h-board-7.png", linkedIn:"https://www.linkedin.com/in/j-baptist-ndahiriwe-5691096a/", role:"member", bio:"Ndahiriwe is a senior health systems consultant with over 20 years of experience across clinical practice, academia, regulation, and health policy in Rwanda and the East African region. He has led major national and regional initiatives focused on strengthening health workforce standards, accreditation systems, institutional governance, and quality assurance expertise that directly support Engineers4Humanity's Public Health Engineering mission.\n\nWith deep experience in developing scopes of practice, training standards, accreditation frameworks, and compliance audits, he brings a strong foundation for improving the quality and safety of community-level health and WASH services. His leadership in curriculum development, education harmonization, and higher education quality assurance aligns with Engineers4Humanity's commitment to delivering high-quality vocational training and expanding job-creation pathways for refugee and host communities.\n\nNdahiriwe has served on high-level Ministry of Health technical committees, regulatory councils, and university governance structures, and has contributed to major health systems strengthening projects, including serving as Technical Lead for the HSS NEXT project. He currently consults with Building Systems for Health on a Gates Foundation–funded Primary Health Care Performance Management initiative in Rwanda and Ghana.\n\nHe holds bachelor's degrees in Diagnostic Imaging and Pharmaceutical Sciences, a master's degree in medical Imaging, and a Master of Public Health in Health. Fluent in English and French, he brings strong strategic, analytical, and governance expertise to the Board of Engineers4Humanity." }
+  ];
+
+  function initBoardModal() {
+    var modal = document.getElementById('boardModal');
+    var modalPhoto = document.getElementById('modalPhoto');
+    var modalName = document.getElementById('modalName');
+    var modalTitle = document.getElementById('modalTitle');
+    var modalRoleText = document.getElementById('modalRoleText');
+    var modalChairBadge = document.getElementById('modalChairBadge');
+    var modalLinkedin = document.getElementById('modalLinkedin');
+    var modalBio = document.getElementById('modalBio');
+
+    function openModal(id) {
+      var m = null;
+      for (var i = 0; i < members.length; i++) { if (members[i].id === id) { m = members[i]; break; } }
+      if (!m) return;
+      modalPhoto.src = m.image;
+      modalPhoto.alt = m.name;
+      modalName.innerHTML = m.name + (m.credentials ? '<span class="cred">, ' + m.credentials + '</span>' : '');
+      modalTitle.textContent = m.title;
+      modalRoleText.textContent = m.role.replace('-', ' ');
+      modalChairBadge.style.display = (m.role === 'chair') ? 'inline-flex' : 'none';
+      if (m.linkedIn) { modalLinkedin.href = m.linkedIn; modalLinkedin.style.display = 'inline-flex'; }
+      else { modalLinkedin.style.display = 'none'; }
+      modalBio.textContent = m.bio;
+      modal.classList.add('open');
+    }
+
+    document.querySelectorAll('.view-profile-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () { openModal(parseInt(btn.getAttribute('data-id'), 10)); });
+    });
+
+    function closeModal() { modal.classList.remove('open'); }
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.board-modal-inner').addEventListener('click', function (e) { e.stopPropagation(); });
+    document.getElementById('boardModalClose').addEventListener('click', closeModal);
+  }
+
+  function initMobileMenu() {
+    var toggle = document.getElementById('mobileToggle');
+    var overlay = document.getElementById('navOverlay');
+    var sidebar = document.getElementById('mobileSidebar');
+    var closeBtn = document.getElementById('sidebarClose');
+    function open() { overlay.classList.add('open'); sidebar.classList.add('open'); }
+    function close() { overlay.classList.remove('open'); sidebar.classList.remove('open'); }
+    toggle.addEventListener('click', function () { if (sidebar.classList.contains('open')) close(); else open(); });
+    overlay.addEventListener('click', close);
+    closeBtn.addEventListener('click', close);
+    sidebar.querySelectorAll('a.mobile-nav-item, a.mob-donate').forEach(function (l) { l.addEventListener('click', close); });
+  }
+
+  function initMobileAccordions() {
+    document.querySelectorAll('.mob-summary').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var panel = document.getElementById(btn.getAttribute('data-target'));
+        var isOpen = btn.classList.contains('open');
+        if (isOpen) { btn.classList.remove('open'); panel.style.maxHeight = '0px'; panel.style.opacity = '0'; }
+        else { btn.classList.add('open'); panel.style.maxHeight = panel.getAttribute('data-maxheight') + 'px'; panel.style.opacity = '1'; }
+      });
+    });
+  }
+
+  function initFooterYear() { document.getElementById('footerYear').textContent = new Date().getFullYear(); }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initBoardModal();
+  });
+})();
+</script>
+</body>
+</html>

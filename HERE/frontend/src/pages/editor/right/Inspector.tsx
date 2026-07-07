@@ -1,10 +1,12 @@
-import React, { useState, createContext, useContext, useMemo } from 'react';
+import React, { useState, useEffect, createContext, useContext, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useEditorStore, findById, cloneWithNewIds } from '../../../stores/editorStore';
 import type { PageElement } from '../../../api/pages';
 import { BoxModelControl } from './controls/BoxModelControl';
 import { FontPicker } from './controls/FontPicker';
 import { ImagePicker } from './controls/ImagePicker';
 import { computeEffectiveStyles } from '../utils/cssCompute';
+import { getComponents, type SiteComponent } from '../../../api/components';
 
 // ── Computed-styles context ───────────────────────────────────────────────────
 // Holds CSS properties resolved from <style> blocks (class / tag / id rules).
@@ -76,60 +78,59 @@ function CSSField({ label, propKey, elId, value, placeholder, type = 'text', uni
     color:      inputColor(isFromComputed),
     fontStyle:  isFromComputed ? 'italic' : 'normal',
     borderRadius: 5,
-    padding: '3px 6px',
+    padding: '4px 6px',
     fontSize: 11,
+    width: '100%',
+    minWidth: 0,
+    boxSizing: 'border-box',
   };
 
+  // Label sits above the input (rather than beside it) so the input always
+  // gets the field's full width — critical when several fields share a row
+  // in a 2-column grid, where a fixed-width side label left almost no room
+  // for the input itself.
   return (
-    <div className="l-field" style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 0' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '3px 0', minWidth: 0 }}>
+      <span style={{ fontSize: 10, color: '#9ca3af', fontWeight: 600 }}>{label}</span>
       {type === 'color' ? (
-        <>
-          <span className="l-field-k" style={{ flex: '0 0 80px', fontSize: 11, color: '#6b7280' }}>{label}</span>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1 }}>
-            <input
-              type="color"
-              value={value || (isFromComputed ? computedVal! : '#000000')}
-              style={{ width: 22, height: 22, padding: 0, border: inputBorderColor(isFromComputed), borderRadius: 4, cursor: 'pointer' }}
-              onFocus={() => capture()}
-              onChange={e => handleChange(e.target.value)}
-            />
-            <input
-              type="text"
-              value={displayVal}
-              placeholder={placeholder ?? '#000000'}
-              style={{ ...baseInput, flex: 1, fontFamily: 'monospace' }}
-              onFocus={handleFocus}
-              onChange={e => handleChange(e.target.value)}
-            />
-          </div>
-        </>
-      ) : type === 'number' ? (
-        <>
-          <span className="l-field-k" style={{ flex: '0 0 80px', fontSize: 11, color: '#6b7280' }}>{label}</span>
-          <div style={{ display: 'flex', alignItems: 'center', flex: 1, border: inputBorderColor(isFromComputed), borderRadius: 5, overflow: 'hidden', background: inputBg(isFromComputed) }}>
-            <input
-              type="number"
-              value={displayVal}
-              placeholder={placeholder ?? ''}
-              style={{ flex: 1, border: 'none', padding: '3px 6px', fontSize: 11, minWidth: 0, background: 'transparent', color: inputColor(isFromComputed), fontStyle: isFromComputed ? 'italic' : 'normal' }}
-              onFocus={handleFocus}
-              onChange={e => handleChange(e.target.value)}
-            />
-            {unit && <span style={{ padding: '0 5px', fontSize: 10, color: '#9ca3af', borderLeft: '1px solid #e9e9ee', background: '#fafafa' }}>{unit}</span>}
-          </div>
-        </>
-      ) : (
-        <>
-          <span className="l-field-k" style={{ flex: '0 0 80px', fontSize: 11, color: '#6b7280' }}>{label}</span>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6, minWidth: 0 }}>
+          <input
+            type="color"
+            value={value || (isFromComputed ? computedVal! : '#000000')}
+            style={{ width: 26, height: 26, flexShrink: 0, padding: 0, border: inputBorderColor(isFromComputed), borderRadius: 4, cursor: 'pointer' }}
+            onFocus={() => capture()}
+            onChange={e => handleChange(e.target.value)}
+          />
           <input
             type="text"
             value={displayVal}
-            placeholder={!isFromComputed ? (placeholder ?? '') : ''}
-            style={{ ...baseInput, flex: 1 }}
+            placeholder={placeholder ?? '#000000'}
+            style={{ ...baseInput, flex: 1, fontFamily: 'monospace' }}
             onFocus={handleFocus}
             onChange={e => handleChange(e.target.value)}
           />
-        </>
+        </div>
+      ) : type === 'number' ? (
+        <div style={{ display: 'flex', alignItems: 'center', minWidth: 0, border: inputBorderColor(isFromComputed), borderRadius: 5, overflow: 'hidden', background: inputBg(isFromComputed) }}>
+          <input
+            type="number"
+            value={displayVal}
+            placeholder={placeholder ?? ''}
+            style={{ flex: 1, border: 'none', padding: '4px 6px', fontSize: 11, minWidth: 0, width: '100%', boxSizing: 'border-box', background: 'transparent', color: inputColor(isFromComputed), fontStyle: isFromComputed ? 'italic' : 'normal' }}
+            onFocus={handleFocus}
+            onChange={e => handleChange(e.target.value)}
+          />
+          {unit && <span style={{ padding: '0 6px', fontSize: 10, color: '#9ca3af', borderLeft: '1px solid #e9e9ee', background: '#fafafa', flexShrink: 0 }}>{unit}</span>}
+        </div>
+      ) : (
+        <input
+          type="text"
+          value={displayVal}
+          placeholder={!isFromComputed ? (placeholder ?? '') : ''}
+          style={baseInput}
+          onFocus={handleFocus}
+          onChange={e => handleChange(e.target.value)}
+        />
       )}
     </div>
   );
@@ -152,15 +153,17 @@ function SelectField({ label, propKey, elId, value, options }: {
   const selectValue = isInline ? value : (isFromComputed && options.includes(computedVal!) ? computedVal : '');
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '3px 0' }}>
-      <span style={{ flex: '0 0 80px', fontSize: 11, color: '#6b7280' }}>{label}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '3px 0', minWidth: 0 }}>
+      <span style={{ fontSize: 10, color: '#9ca3af', fontWeight: 600 }}>{label}</span>
       <select
         value={selectValue ?? ''}
         style={{
-          flex: 1,
+          width: '100%',
+          minWidth: 0,
+          boxSizing: 'border-box',
           border: inputBorderColor(isFromComputed),
           borderRadius: 5,
-          padding: '3px 6px',
+          padding: '4px 6px',
           fontSize: 11,
           background: inputBg(isFromComputed),
           color: inputColor(isFromComputed),
@@ -246,6 +249,99 @@ function ComputedStylesSection({ elId, computed, inlineStyle }: {
             </div>
           );
         })}
+      </div>
+    </Sect>
+  );
+}
+
+// ── Data Component binding (only shown for a `_collection` marker node) ───────
+interface CollectionRef { collectionId: string; componentId: string; limit?: number; detailModal?: boolean }
+
+function CollectionBindingSection({ el }: { el: PageElement }) {
+  const siteId          = useEditorStore(s => s.siteId);
+  const patchElement    = useEditorStore(s => s.patchElement);
+  const captureHistory  = useEditorStore(s => s.captureHistory);
+  const navigate         = useNavigate();
+
+  const [components, setComponents] = useState<SiteComponent[]>([]);
+
+  useEffect(() => {
+    if (!siteId) return;
+    getComponents(siteId)
+      .then(list => setComponents(list.filter(c => c.type === 'dynamic' && c.collectionId)))
+      .catch(() => {});
+  }, [siteId]);
+
+  const ref = ((el as Record<string, unknown>)._collection ?? {}) as CollectionRef;
+  const current = components.find(c => c.id === ref.componentId);
+
+  const handlePick = (componentId: string) => {
+    const c = components.find(x => x.id === componentId);
+    if (!c?.collectionId) return;
+    captureHistory();
+    patchElement(el.id, { _collection: { collectionId: c.collectionId, componentId: c.id, limit: ref.limit } } as Partial<PageElement>);
+  };
+
+  const handleLimit = (v: string) => {
+    captureHistory();
+    const limit = v.trim() === '' ? undefined : Math.max(0, parseInt(v, 10) || 0);
+    patchElement(el.id, { _collection: { ...ref, limit } } as Partial<PageElement>);
+  };
+
+  const handleToggleModal = (checked: boolean) => {
+    captureHistory();
+    patchElement(el.id, { _collection: { ...ref, detailModal: checked } } as Partial<PageElement>);
+  };
+
+  return (
+    <Sect title="Data Component">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ flex: '0 0 80px', fontSize: 11, color: '#6b7280' }}>Source</span>
+          <select
+            value={ref.componentId ?? ''}
+            onChange={e => handlePick(e.target.value)}
+            style={{ flex: 1, border: '1px solid #e9e9ee', borderRadius: 5, padding: '3px 6px', fontSize: 11 }}
+          >
+            {!current && <option value="" disabled>Select a component…</option>}
+            {components.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+          </select>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <span style={{ flex: '0 0 80px', fontSize: 11, color: '#6b7280' }}>Limit</span>
+          <input
+            type="number" min={0}
+            value={ref.limit ?? ''}
+            placeholder="All rows"
+            onFocus={() => captureHistory()}
+            onChange={e => handleLimit(e.target.value)}
+            style={{ flex: 1, border: '1px solid #e9e9ee', borderRadius: 5, padding: '3px 6px', fontSize: 11 }}
+          />
+        </div>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 11, color: '#374151', cursor: 'pointer' }}>
+          <input
+            type="checkbox"
+            checked={!!ref.detailModal}
+            onChange={e => handleToggleModal(e.target.checked)}
+          />
+          Open item details in a modal when the card's button is clicked
+        </label>
+        {ref.detailModal && (
+          <p style={{ fontSize: 10, color: '#9ca3af', margin: 0 }}>
+            Toggle Preview (top bar) to test the modal right here in the editor.
+          </p>
+        )}
+        {ref.componentId && current && (
+          <button
+            onClick={() => navigate(`/sites/${siteId}/components/${ref.componentId}`)}
+            style={{ marginTop: 2, padding: '6px 10px', fontSize: 11, fontWeight: 600, border: '1px solid #6366f1', color: '#4f46e5', background: '#eef2ff', borderRadius: 6, cursor: 'pointer' }}
+          >
+            Edit card design / data →
+          </button>
+        )}
+        {ref.componentId && !current && (
+          <p style={{ fontSize: 10, color: '#dc2626' }}>This component reference could not be found (deleted?).</p>
+        )}
       </div>
     </Sect>
   );
@@ -425,6 +521,11 @@ export function Inspector() {
             </Sect>
           )}
 
+          {/* ── Data Component binding (only for a `_collection` marker) ──── */}
+          {!!(el as Record<string, unknown>)._collection && (
+            <CollectionBindingSection el={el} />
+          )}
+
           {/* ── Align ────────────────────────────────────────────────────────── */}
           <Sect title="Align" defaultOpen={false}>
             <div style={{ fontSize: 10, color: '#9ca3af', marginBottom: 6 }}>
@@ -466,7 +567,7 @@ export function Inspector() {
           </Sect>
 
           {/* ── Content ─────────────────────────────────────────────────────── */}
-          {(el.tag !== 'img' && el.tag !== 'input' && !el.children?.length) && (() => {
+          {(el.tag !== 'img' && el.tag !== 'input' && !el.children?.length && !(el as Record<string, unknown>)._collection) && (() => {
             const hasInnerHTML = (el as Record<string, unknown>).innerHTML !== undefined;
             const contentValue = hasInnerHTML
               ? ((el as Record<string, unknown>).innerHTML as string) ?? ''
@@ -538,7 +639,53 @@ export function Inspector() {
                 <SelectField label="Wrap"        propKey="flexWrap"       elId={el.id} value={style.flexWrap}       options={['nowrap','wrap','wrap-reverse']} />
                 <SelectField label="Justify"     propKey="justifyContent" elId={el.id} value={style.justifyContent} options={['flex-start','center','flex-end','space-between','space-around','space-evenly']} />
                 <SelectField label="Align items" propKey="alignItems"     elId={el.id} value={style.alignItems}     options={['flex-start','center','flex-end','stretch','baseline']} />
-                <CSSField    label="Gap"         propKey="gap"            elId={el.id} value={style.gap}            placeholder="0" />
+                <CSSField    label="Gap"         propKey="gap"            elId={el.id} value={style.gap}            placeholder="0" type="number" unit="px" />
+              </>
+            )}
+            {/* Show grid sub-fields when display is grid — this is what controls
+                "3-column grid / 4-column grid" for a repeating Data Component list */}
+            {(style.display ?? computed.display ?? '') === 'grid' && (
+              <>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '3px 0', minWidth: 0 }}>
+                  <span style={{ fontSize: 10, color: '#9ca3af', fontWeight: 600 }}>Columns</span>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, minWidth: 0 }}>
+                    {[1, 2, 3, 4, 5].map(n => {
+                      const target = `repeat(${n}, 1fr)`;
+                      const active = (style.gridTemplateColumns ?? computed.gridTemplateColumns) === target;
+                      return (
+                        <button key={n}
+                          onClick={() => { captureHistory(); patchStyleLive(el.id, 'gridTemplateColumns', target); }}
+                          style={{
+                            flex: '1 1 32px', minWidth: 28, padding: '4px 0', fontSize: 11, fontWeight: 600,
+                            border: '1px solid #e9e9ee', borderRadius: 5, cursor: 'pointer',
+                            background: active ? '#6366f1' : '#fff',
+                            color: active ? '#fff' : '#374151',
+                          }}>
+                          {n}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 3, padding: '3px 0', minWidth: 0 }}>
+                  <span style={{ fontSize: 10, color: '#9ca3af', fontWeight: 600 }}>Auto-fit</span>
+                  <button
+                    onClick={() => { captureHistory(); patchStyleLive(el.id, 'gridTemplateColumns', 'repeat(auto-fit, minmax(240px, 1fr))'); }}
+                    style={{
+                      width: '100%', boxSizing: 'border-box', padding: '4px 0', fontSize: 11, fontWeight: 600,
+                      border: '1px solid #e9e9ee', borderRadius: 5, cursor: 'pointer',
+                      background: (style.gridTemplateColumns ?? computed.gridTemplateColumns) === 'repeat(auto-fit, minmax(240px, 1fr))' ? '#6366f1' : '#fff',
+                      color: (style.gridTemplateColumns ?? computed.gridTemplateColumns) === 'repeat(auto-fit, minmax(240px, 1fr))' ? '#fff' : '#374151',
+                    }}
+                    title="Automatically wraps as many columns as fit, each at least 240px wide"
+                  >
+                    Wrap to fit
+                  </button>
+                </div>
+                <CSSField label="Columns (custom)" propKey="gridTemplateColumns" elId={el.id} value={style.gridTemplateColumns} placeholder="repeat(3, 1fr)" />
+                <CSSField label="Gap"              propKey="gap"                elId={el.id} value={style.gap}                placeholder="16" type="number" unit="px" />
+                <SelectField label="Place items" propKey="placeItems" elId={el.id} value={style.placeItems}
+                  options={['stretch', 'center', 'start', 'end']} />
               </>
             )}
             <SelectField label="Position" propKey="position" elId={el.id} value={style.position}
