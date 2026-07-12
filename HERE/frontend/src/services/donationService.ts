@@ -6,10 +6,24 @@ import api from '../api/api';
  */
 
 /**
- * Create a new donation record
+ * Create a new donation record and Stripe Checkout session.
+ * Returns { checkoutUrl, donationId } — redirect the browser to checkoutUrl.
  */
 export const createDonation = async (donationData) => {
     const response = await api.post('/api/donations', donationData);
+    return response.data;
+};
+
+/**
+ * Verify a completed/abandoned Stripe Checkout session against the backend,
+ * which checks the live status with Stripe and updates the donation record.
+ * Pass `cancelled: true` from the /donate/failed page so the backend force-closes
+ * a still-open session immediately instead of leaving it pending.
+ */
+export const verifyDonationSession = async (sessionId, { cancelled = false } = {}) => {
+    const response = await api.get(`/api/donations/verify/${sessionId}`, {
+        params: cancelled ? { cancelled: '1' } : undefined,
+    });
     return response.data;
 };
 

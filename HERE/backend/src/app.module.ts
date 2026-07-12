@@ -13,6 +13,9 @@ import { ExportModule } from './modules/export/export.module';
 import { TeamModule } from './modules/team/team.module';
 import { EventsModule } from './modules/events/events.module';
 import { StoriesModule } from './modules/stories/stories.module';
+import { EmailModule } from './modules/email/email.module';
+import { DonationsModule } from './modules/donations/donations.module';
+import { ContactModule } from './modules/contact/contact.module';
 @Module({
   imports: [
     PrismaModule,
@@ -27,6 +30,9 @@ import { StoriesModule } from './modules/stories/stories.module';
     TeamModule,
     EventsModule,
     StoriesModule,
+    EmailModule,
+    DonationsModule,
+    ContactModule,
   ],
   controllers: [AppController],
   providers: [AppService],

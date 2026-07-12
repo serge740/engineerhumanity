@@ -8,8 +8,12 @@ import { getSites } from './api/sites';
 import MainLayout from './components/layout/MainLayout';
 import Contact from './pages/public/Contact';
 import Donate from './pages/public/Donate';
+import DonationSuccess from './pages/public/DonationSuccess';
+import DonationFailed from './pages/public/DonationFailed';
 
 const DashboardPage       = lazy(() => import('./pages/dashboard/DashboardPage'));
+const DonationsPage       = lazy(() => import('./pages/dashboard/DonationsPage'));
+const DonationDetailPage  = lazy(() => import('./pages/dashboard/DonationDetailPage'));
 const SiteWorkspacePage   = lazy(() => import('./pages/sites/SiteWorkspacePage'));
 const EditorPage          = lazy(() => import('./pages/editor/EditorPage'));
 const ComponentDetailPage = lazy(() => import('./pages/components/ComponentDetailPage'));
@@ -94,6 +98,14 @@ export default function App() {
               <Protected><DashboardPage /></Protected>
             } />
 
+            {/* Donations tracking */}
+            <Route path="/donations" element={
+              <Protected><DonationsPage /></Protected>
+            } />
+            <Route path="/donations/:id" element={
+              <Protected><DonationDetailPage /></Protected>
+            } />
+
             {/* /sites → auto-redirect to the one site's workspace */}
             <Route path="/sites" element={
               <Protected><SiteRedirect /></Protected>
@@ -139,6 +151,8 @@ export default function App() {
               <Route path="/testimony" element={<TestimonyPublicPage />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/donate" element={<Donate />} />
+              <Route path="/donate/success" element={<DonationSuccess />} />
+              <Route path="/donate/failed" element={<DonationFailed />} />
 
               {/* ── Public page renderer ─────────────────────────── */}
               {/* Must be LAST so admin routes match first */}

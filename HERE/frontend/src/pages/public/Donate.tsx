@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Heart, User, MapPin, Phone, Gift, Check, Loader2, Globe } from 'lucide-react';
+import toast from 'react-hot-toast';
+import { Heart, User, MapPin, Phone, Gift, Check, Loader2, Globe, Mail } from 'lucide-react';
 
 
 import { createDonation } from '../../services/donationService';
@@ -43,6 +44,7 @@ const Donate = () => {
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
+        email: '',
         country: '',
         street: '',
         city: '',
@@ -50,10 +52,31 @@ const Donate = () => {
         phone: '',
         dedicateTo: '',
     });
+    const [errors, setErrors] = useState<Record<string, string>>({});
+    const [touched, setTouched] = useState<Record<string, boolean>>({});
 
     const effectiveAmount = customAmount ? parseFloat(customAmount) : selectedAmount;
     const currencySymbol = getCurrencySymbol(selectedCurrency);
     const selectedCountry = COUNTRIES.find(c => c.code === formData.country);
+
+    const REQUIRED_FIELDS = ['firstName', 'lastName', 'country', 'street', 'city'] as const;
+
+    const validateField = (field: string, value: string): string => {
+        if ((REQUIRED_FIELDS as readonly string[]).includes(field) && !value.trim()) {
+            const labels: Record<string, string> = {
+                firstName: 'First name',
+                lastName: 'Last name',
+                country: 'Country',
+                street: 'Street address',
+                city: 'City',
+            };
+            return `${labels[field] ?? 'This field'} is required`;
+        }
+        if (field === 'email' && value.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) {
+            return 'Enter a valid email address';
+        }
+        return '';
+    };
 
     const handleAmountClick = (amount: number) => {
         setSelectedAmount(amount);
@@ -67,21 +90,48 @@ const Donate = () => {
 
     const handleInputChange = (field: string, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+        if (touched[field]) {
+            setErrors(prev => ({ ...prev, [field]: validateField(field, value) }));
+        }
+    };
+
+    const handleInputBlur = (field: string) => {
+        setTouched(prev => ({ ...prev, [field]: true }));
+        setErrors(prev => ({ ...prev, [field]: validateField(field, formData[field as keyof typeof formData]) }));
     };
 
     const handleCountryChange = (countryCode: string) => {
         setFormData(prev => ({ ...prev, country: countryCode, adminDivision: '' }));
+        if (touched.country) {
+            setErrors(prev => ({ ...prev, country: validateField('country', countryCode) }));
+        }
     };
+
+    const fieldError = (field: string) => (touched[field] ? errors[field] : undefined);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         if (!effectiveAmount || effectiveAmount <= 0) return;
 
+        const fieldsToValidate = [...REQUIRED_FIELDS, 'email'];
+        const nextErrors: Record<string, string> = {};
+        fieldsToValidate.forEach(field => {
+            nextErrors[field] = validateField(field, formData[field as keyof typeof formData]);
+        });
+        setErrors(nextErrors);
+        setTouched(prev => ({ ...prev, ...Object.fromEntries(fieldsToValidate.map(f => [f, true])) }));
+
+        if (Object.values(nextErrors).some(Boolean)) {
+            toast.error('Please fix the highlighted fields before continuing.');
+            return;
+        }
+
         setSubmitting(true);
         try {
-            await createDonation({
-                firstName: formData.firstName || 'Anonymous',
-                lastName: formData.lastName || 'Donor',
+            const { checkoutUrl } = await createDonation({
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email || undefined,
                 country: formData.country,
                 street: formData.street,
                 city: formData.city,
@@ -95,12 +145,12 @@ const Donate = () => {
                 displayPublicly,
                 dedicateTo: dedicateDonation ? formData.dedicateTo : null,
             });
+            window.location.href = checkoutUrl;
         } catch (err) {
-            console.error('Failed to save donation record:', err);
+            console.error('Failed to start donation checkout:', err);
+            toast.error('Something went wrong starting your donation. Please try again.');
+            setSubmitting(false);
         }
-
-        window.location.href = 'https://buy.stripe.com/3cIfZi6Jj4BfcNm6QPbAs02';
-        setSubmitting(false);
     };
 
     return (
@@ -236,25 +286,50 @@ const Donate = () => {
                             {/* Name */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">First Name</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                        First Name <span className="text-red-500">*</span>
+                                    </label>
                                     <input
                                         type="text"
                                         value={formData.firstName}
                                         onChange={e => handleInputChange('firstName', e.target.value)}
-                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+                                        onBlur={() => handleInputBlur('firstName')}
+                                        className={`w-full px-4 py-3 border-2 rounded-xl text-gray-900 focus:ring-2 outline-none transition-all ${fieldError('firstName') ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-gray-200 focus:border-sky-500 focus:ring-sky-100'}`}
                                         placeholder="John"
                                     />
+                                    {fieldError('firstName') && <p className="text-red-500 text-sm mt-1">{fieldError('firstName')}</p>}
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">Last Name</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                        Last Name <span className="text-red-500">*</span>
+                                    </label>
                                     <input
                                         type="text"
                                         value={formData.lastName}
                                         onChange={e => handleInputChange('lastName', e.target.value)}
-                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+                                        onBlur={() => handleInputBlur('lastName')}
+                                        className={`w-full px-4 py-3 border-2 rounded-xl text-gray-900 focus:ring-2 outline-none transition-all ${fieldError('lastName') ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-gray-200 focus:border-sky-500 focus:ring-sky-100'}`}
                                         placeholder="Doe"
                                     />
+                                    {fieldError('lastName') && <p className="text-red-500 text-sm mt-1">{fieldError('lastName')}</p>}
                                 </div>
+                            </div>
+
+                            {/* Email */}
+                            <div className="mb-4">
+                                <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                    <Mail className="w-4 h-4 inline mr-1 text-gray-400" />
+                                    Email <span className="text-gray-400 font-normal"></span>
+                                </label>
+                                <input
+                                    type="email"
+                                    value={formData.email}
+                                    onChange={e => handleInputChange('email', e.target.value)}
+                                    onBlur={() => handleInputBlur('email')}
+                                    className={`w-full px-4 py-3 border-2 rounded-xl text-gray-900 focus:ring-2 outline-none transition-all ${fieldError('email') ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-gray-200 focus:border-sky-500 focus:ring-sky-100'}`}
+                                    placeholder="you@example.com"
+                                />
+                                {fieldError('email') && <p className="text-red-500 text-sm mt-1">{fieldError('email')}</p>}
                             </div>
 
                             {/* Country */}
@@ -266,8 +341,9 @@ const Donate = () => {
                                 <select
                                     value={formData.country}
                                     onChange={e => handleCountryChange(e.target.value)}
+                                    onBlur={() => handleInputBlur('country')}
                                     required
-                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all bg-white cursor-pointer"
+                                    className={`w-full px-4 py-3 border-2 rounded-xl text-gray-900 focus:ring-2 outline-none transition-all bg-white cursor-pointer ${fieldError('country') ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-gray-200 focus:border-sky-500 focus:ring-sky-100'}`}
                                 >
                                     <option value="">Select your country…</option>
                                     <optgroup label="Popular">
@@ -281,34 +357,41 @@ const Donate = () => {
                                         ))}
                                     </optgroup>
                                 </select>
+                                {fieldError('country') && <p className="text-red-500 text-sm mt-1">{fieldError('country')}</p>}
                             </div>
 
                             {/* Street */}
                             <div className="mb-4">
                                 <label className="block text-sm font-semibold text-gray-700 mb-1.5">
                                     <MapPin className="w-4 h-4 inline mr-1 text-gray-400" />
-                                    Street Address
+                                    Street Address <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     value={formData.street}
                                     onChange={e => handleInputChange('street', e.target.value)}
-                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+                                    onBlur={() => handleInputBlur('street')}
+                                    className={`w-full px-4 py-3 border-2 rounded-xl text-gray-900 focus:ring-2 outline-none transition-all ${fieldError('street') ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-gray-200 focus:border-sky-500 focus:ring-sky-100'}`}
                                     placeholder="123 Main St"
                                 />
+                                {fieldError('street') && <p className="text-red-500 text-sm mt-1">{fieldError('street')}</p>}
                             </div>
 
                             {/* City + Phone */}
                             <div className={`grid gap-4 mb-4 ${selectedCountry?.admin ? 'grid-cols-1 sm:grid-cols-2' : 'grid-cols-1 sm:grid-cols-2'}`}>
                                 <div>
-                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">City</label>
+                                    <label className="block text-sm font-semibold text-gray-700 mb-1.5">
+                                        City <span className="text-red-500">*</span>
+                                    </label>
                                     <input
                                         type="text"
                                         value={formData.city}
                                         onChange={e => handleInputChange('city', e.target.value)}
-                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl text-gray-900 focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition-all"
+                                        onBlur={() => handleInputBlur('city')}
+                                        className={`w-full px-4 py-3 border-2 rounded-xl text-gray-900 focus:ring-2 outline-none transition-all ${fieldError('city') ? 'border-red-400 focus:border-red-500 focus:ring-red-100' : 'border-gray-200 focus:border-sky-500 focus:ring-sky-100'}`}
                                         placeholder="City"
                                     />
+                                    {fieldError('city') && <p className="text-red-500 text-sm mt-1">{fieldError('city')}</p>}
                                 </div>
                                 <div>
                                     <label className="block text-sm font-semibold text-gray-700 mb-1.5">

@@ -176,6 +176,39 @@ model Event {
   @@map("events")
 }
 
+model Donation {
+  id              String    @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String?
+  country         String
+  street          String
+  city            String
+  adminDivision   String?
+  phone           String?
+  currency        String
+  amount          Float
+  frequency       String    // 'once' | 'monthly'
+  programArea     String
+  displayPublicly Boolean   @default(false)
+  dedicateTo      String?
+  status          String    @default("pending") // 'pending' | 'succeeded' | 'failed'
+
+  stripeCheckoutSessionId String? @unique
+  stripeCustomerId        String?
+  stripeSubscriptionId    String?
+  stripePaymentIntentId   String?
+  stripeInvoiceId         String? @unique
+
+  emailSentAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([status, createdAt])
+  @@index([stripeSubscriptionId])
+  @@map("donations")
+}
+
 model Story {
   id        String   @id @default(cuid())
   siteId    String

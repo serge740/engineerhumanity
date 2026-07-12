@@ -1,6 +1,6 @@
 import { NavLink, useParams, useNavigate } from 'react-router-dom';
 import {
-  LayoutDashboard, Globe, Settings, FileText,
+  LayoutDashboard, Globe, Settings, FileText, DollarSign,
   ArrowLeft, ChevronLeft, ChevronRight,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
@@ -10,11 +10,14 @@ interface NavLinkItem { to: string; icon: React.FC<any>; label: string; exact?: 
 const globalLinks: NavLinkItem[] = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/sites',     icon: Globe,            label: 'Workspace' },
+  { to: '/donations', icon: DollarSign,       label: 'Donations' },
   { to: '/settings',  icon: Settings,         label: 'Settings'  },
 ];
 
 const siteLinks = (id: string): NavLinkItem[] => [
-  { to: `/sites/${id}`, icon: FileText, label: 'Pages', exact: true },
+  { to: `/sites/${id}`, icon: FileText,        label: 'Pages',     exact: true },
+  { to: '/dashboard',   icon: LayoutDashboard, label: 'Dashboard' },
+  { to: '/donations',   icon: DollarSign,      label: 'Donations' },
 ];
 
 interface SidebarProps {

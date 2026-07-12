@@ -1,0 +1,33 @@
+-- CreateTable
+CREATE TABLE `donations` (
+    `id` VARCHAR(191) NOT NULL,
+    `firstName` VARCHAR(191) NOT NULL,
+    `lastName` VARCHAR(191) NOT NULL,
+    `email` VARCHAR(191) NULL,
+    `country` VARCHAR(191) NOT NULL,
+    `street` VARCHAR(191) NOT NULL,
+    `city` VARCHAR(191) NOT NULL,
+    `adminDivision` VARCHAR(191) NULL,
+    `phone` VARCHAR(191) NULL,
+    `currency` VARCHAR(191) NOT NULL,
+    `amount` DOUBLE NOT NULL,
+    `frequency` VARCHAR(191) NOT NULL,
+    `programArea` VARCHAR(191) NOT NULL,
+    `displayPublicly` BOOLEAN NOT NULL DEFAULT false,
+    `dedicateTo` VARCHAR(191) NULL,
+    `status` VARCHAR(191) NOT NULL DEFAULT 'pending',
+    `stripeCheckoutSessionId` VARCHAR(191) NULL,
+    `stripeCustomerId` VARCHAR(191) NULL,
+    `stripeSubscriptionId` VARCHAR(191) NULL,
+    `stripePaymentIntentId` VARCHAR(191) NULL,
+    `stripeInvoiceId` VARCHAR(191) NULL,
+    `emailSentAt` DATETIME(3) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `donations_stripeCheckoutSessionId_key`(`stripeCheckoutSessionId`),
+    UNIQUE INDEX `donations_stripeInvoiceId_key`(`stripeInvoiceId`),
+    INDEX `donations_status_createdAt_idx`(`status`, `createdAt`),
+    INDEX `donations_stripeSubscriptionId_idx`(`stripeSubscriptionId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
