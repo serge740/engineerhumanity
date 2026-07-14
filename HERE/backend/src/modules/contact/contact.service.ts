@@ -15,7 +15,7 @@ export class ContactService {
     }
 
     const name = `${dto.first_name} ${dto.last_name || ''}`.trim();
-    const recipient = process.env.CONTACT_RECIPIENT_EMAIL || 'ishimweserge0160@gmail.com';
+    const recipient = process.env.CONTACT_RECIPIENT_EMAIL || 'contact@engineers4humanity.org';
 
     // Sending the notification IS the point of this request (nothing is
     // persisted), so unlike the donation emails a failure here must propagate
