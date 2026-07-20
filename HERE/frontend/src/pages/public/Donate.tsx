@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Heart, User, MapPin, Phone, Gift, Check, Loader2, Globe, Mail } from 'lucide-react';
-
+import founderBookImage from '../assets/gift-box of book.png';
 
 import { createDonation } from '../../services/donationService';
 import {
@@ -540,6 +540,44 @@ const Donate = () => {
                             </p>
                         </div>
                     </form>
+                        {/* Founder's Book */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mt-6 text-center">
+                        <a
+                            href="https://a.co/d/0hEmgmwC"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block"
+                        >
+                            <img
+                                src={founderBookImage}
+                                alt="Buy Founder's Book at Amazon"
+                                className="w-44 sm:w-52 mx-auto hover:scale-105 transition-transform duration-300"
+                            />
+                        </a>
+                        <p className="text-gray-700 font-semibold mb-4">
+                            Support our cause by buying Founder&rsquo;s Book at Amazon
+                        </p>
+                    </div>
+
+                    {/* Zelle */}
+                    <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 md:p-8 mt-6">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1 text-center">Another way to give</h3>
+                        <p className="text-gray-500 text-sm mb-5 text-center">Send your gift directly via Zelle</p>
+                        <div className="flex items-center gap-4 bg-purple-50 border-2 border-purple-200 rounded-xl px-6 py-5 max-w-md mx-auto">
+                            <div className="w-12 h-12 rounded-full bg-[#6D1ED4] flex items-center justify-center shrink-0">
+                                <svg viewBox="0 0 24 24" className="w-6 h-6" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                    <title>Zelle</title>
+                                    <path d="M13.559 24h-2.841a.483.483 0 0 1-.483-.483v-2.765H5.638a.667.667 0 0 1-.666-.666v-2.234a.67.67 0 0 1 .142-.412l8.139-10.382h-7.25a.667.667 0 0 1-.667-.667V3.914c0-.367.299-.666.666-.666h4.23V.483c0-.266.217-.483.483-.483h2.841c.266 0 .483.217.483.483v2.765h4.323c.367 0 .666.299.666.666v2.137a.67.67 0 0 1-.141.41l-8.19 10.481h7.665c.367 0 .666.299.666.666v2.477a.667.667 0 0 1-.666.667h-4.32v2.765a.483.483 0 0 1-.483.483Z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p className="font-bold text-purple-700 text-lg leading-tight">Zelle</p>
+                                <p className="text-gray-900 font-semibold break-all">engineers4humanity35@gmail.com</p>
+                                <p className="text-gray-500 text-sm">[E4H Initiative]</p>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </section>
 

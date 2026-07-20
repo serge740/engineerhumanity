@@ -17,8 +17,40 @@ const Youtube = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.5s-.23-1.64-.94-2.36c-.9-.94-1.9-.95-2.36-1C16.9 2.8 12 2.8 12 2.8h-.01s-4.9 0-8.2.34c-.46.05-1.46.06-2.36 1C.72 4.86.5 6.5.5 6.5S.27 8.42.27 10.34v1.8c0 1.92.23 3.84.23 3.84s.23 1.64.93 2.36c.9.95 2.08.92 2.6 1.02 1.9.18 8 .24 8 .24s4.9-.01 8.2-.34c.46-.06 1.46-.06 2.36-1.02.71-.72.94-2.36.94-2.36s.23-1.92.23-3.84v-1.8c0-1.92-.23-3.84-.23-3.84zM9.6 15.02V8.3l6.44 3.37-6.44 3.35z"/></svg>
 );
 
+import image1 from '../assets/partners/image1.png'
+import image2 from '../assets/partners/image2.png'
+const partners = [
+    { img: image1, link: 'https://www.minema.gov.rw/' },
+    { img: image2, link: 'https://www.unhcr.org/rw/' },
+];
+
 const Footer = () => (
     <footer className="bg-[#0A1628] text-white/65" id="contact">
+        {/* Partners - static, each takes 50% of the width */}
+        <div className="border-b border-white/10 py-8">
+            <h4 className="text-center font-serif text-sm font-semibold text-white/40 tracking-[0.15em] uppercase mb-6">
+                Our Partners
+            </h4>
+
+            <div className="flex w-full">
+                {partners.map((p, i) => (
+                    <a
+                        key={i}
+                        href={p.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-1/2 flex items-center justify-center px-4"
+                    >
+                        <img
+                            src={p.img}
+                            alt={`Partner ${i + 1}`}
+                            className="h-40 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
+                        />
+                    </a>
+                ))}
+            </div>
+        </div>
+
         {/* Top */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 px-4 sm:px-8 lg:px-16 pt-12 lg:pt-18 pb-8 lg:pb-12 border-b border-white/10">
             {/* Brand */}
@@ -35,11 +67,11 @@ const Footer = () => (
                 </div>
                 <div className="flex gap-3">
                     {[
-                        { href: 'https://facebook.com', icon: <Facebook /> },
-                        { href: 'https://twitter.com', icon: <Twitter /> },
-                        { href: 'https://linkedin.com', icon: <Linkedin /> },
-                        { href: 'https://instagram.com', icon: <Instagram /> },
-                        { href: 'https://youtube.com', icon: <Youtube /> },
+                        { href: 'https://facebook.com', icon: <Facebook  /> },
+                        { href: 'https://twitter.com', icon: <Twitter  /> },
+                        { href: 'https://linkedin.com', icon: <Linkedin  /> },
+                        { href: 'https://instagram.com', icon: <Instagram  /> },
+                        { href: 'https://youtube.com', icon: <Youtube  /> },
                     ].map((s, i) => (
                         <a key={i} href={s.href} target="_blank" rel="noopener noreferrer"
                             className="w-9 h-9 rounded-full bg-white/8 hover:bg-sky-600 flex items-center justify-center text-white/65 hover:text-white transition-all">
@@ -54,7 +86,7 @@ const Footer = () => (
                 <h4 className="font-serif text-base font-semibold text-white mb-5">Programs</h4>
                 {[
                     { label: 'High School & University scholarships', to: '/programs/education-program' },
-{ label: 'Leadership & Peacebuilding', to: '/programs/leadership-and-peace' },
+                    { label: 'Leadership & Peacebuilding', to: '/programs/leadership-and-peace' },
                     { label: 'Public Health Engineering', to: '/programs/public-health-engineering' },
                     { label: 'Entrepreneurship & Construction Service', to: '/programs/entrepreneurship' },
                     { label: 'Professional Skills Development', to: '/programs/professional-skills' },
