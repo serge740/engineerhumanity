@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { Heart, User, MapPin, Phone, Gift, Check, Loader2, Globe, Mail } from 'lucide-react';
-import founderBookImage from '../assets/gift-box of book.png';
+import founderBookImage from '../../assets/gift-box of book.png';
 
 import { createDonation } from '../../services/donationService';
 import {
