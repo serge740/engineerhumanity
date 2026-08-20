@@ -120,10 +120,20 @@ export default function EmbedPage() {
   // Report this document's real content height to the parent whenever it
   // changes (initial render, images/fonts loading in, responsive reflow on
   // parent resize) so the host iframe can size itself with no inner scrollbar.
+  //
+  // The message is tagged with this page's own slug. `iframe.contentWindow`
+  // is a stable reference across navigations — it does NOT change when the
+  // iframe's src changes to a new page — so the host's `event.source` check
+  // alone can't tell a message from the page just navigated away from apart
+  // from one from the page just navigated to. A ResizeObserver callback
+  // queued right as navigation begins can still fire and post a stale height
+  // from the outgoing document after the new one already reported its real,
+  // correct height, silently overwriting it. Tagging by slug lets the host
+  // reject anything that isn't for the page it currently expects.
   useEffect(() => {
     const reportHeight = () => {
       const height = document.documentElement.scrollHeight;
-      window.parent.postMessage({ type: EMBED_HEIGHT_MESSAGE, height }, window.location.origin);
+      window.parent.postMessage({ type: EMBED_HEIGHT_MESSAGE, slug, height }, window.location.origin);
     };
 
     reportHeight();
@@ -135,7 +145,7 @@ export default function EmbedPage() {
       observer.disconnect();
       window.removeEventListener('load', reportHeight);
     };
-  }, [loading, missing, page]);
+  }, [loading, missing, page, slug]);
 
   if (loading) return <Loader />;
   if (missing || !page) return <NotFound />;

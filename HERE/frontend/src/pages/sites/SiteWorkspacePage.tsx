@@ -39,7 +39,7 @@ function DropdownMenu({ items, danger, onDangerClick, dangerLabel }: {
   danger?: boolean; dangerLabel?: string; onDangerClick?: () => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [pos, setPos]   = useState<{ top: number; right: number } | null>(null);
+  const [pos, setPos]   = useState<{ top?: number; bottom?: number; right: number } | null>(null);
   const btnRef  = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -50,7 +50,18 @@ function DropdownMenu({ items, danger, onDangerClick, dangerLabel }: {
   // `position: absolute` inside that (clipped) container.
   const openMenu = () => {
     const r = btnRef.current?.getBoundingClientRect();
-    if (r) setPos({ top: r.bottom + 4, right: window.innerWidth - r.right });
+    if (r) {
+      // Estimate the menu's height (item rows + optional danger divider) so
+      // a button near the bottom of the viewport opens the menu *upward*
+      // instead of rendering it partially below the screen — position:fixed
+      // content there is never reachable by scrolling, unlike normal flow.
+      const estimatedHeight = items.length * 33 + (danger ? 34 : 0) + 8;
+      const openUpward = r.bottom + estimatedHeight > window.innerHeight;
+      setPos({
+        ...(openUpward ? { bottom: window.innerHeight - r.top + 4 } : { top: r.bottom + 4 }),
+        right: window.innerWidth - r.right,
+      });
+    }
     setOpen(true);
   };
 
@@ -79,7 +90,7 @@ function DropdownMenu({ items, danger, onDangerClick, dangerLabel }: {
       </button>
       {open && pos && createPortal(
         <div ref={menuRef} style={{
-          position: 'fixed', top: pos.top, right: pos.right, width: 180,
+          position: 'fixed', top: pos.top, bottom: pos.bottom, right: pos.right, width: 180,
           background: 'var(--bg-elev)', border: '1px solid var(--border)',
           borderRadius: 'var(--r-md)', boxShadow: 'var(--shadow-lg)', overflow: 'hidden', zIndex: 1000,
         }}>
@@ -103,7 +114,14 @@ function DropdownMenu({ items, danger, onDangerClick, dangerLabel }: {
             </>
           )}
         </div>,
-        document.body,
+        // Portal into `.dash-shell` rather than document.body — the latter
+        // sits outside the theme's CSS-variable scope (--bg-elev, --border,
+        // etc. are all declared under `.dash-shell`), so a document.body
+        // portal rendered with no resolvable background/border/shadow,
+        // letting the table rows behind it show through. .dash-shell has no
+        // transform/filter of its own, so position:fixed inside it still
+        // escapes any inner panel's overflow:hidden exactly as intended.
+        btnRef.current?.closest('.dash-shell') ?? document.body,
       )}
     </>
   );

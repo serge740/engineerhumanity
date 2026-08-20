@@ -25,12 +25,21 @@ export default function PublicPage() {
       if (event.origin !== window.location.origin) return;
       if (event.source !== iframeRef.current?.contentWindow) return;
       if (event.data?.type !== EMBED_HEIGHT_MESSAGE) return;
+      // iframe.contentWindow is a stable reference across navigations — it
+      // doesn't change when the iframe's src changes to a new page — so the
+      // source check above can't tell a message from the page just
+      // navigated away from apart from the page just navigated to. A
+      // ResizeObserver callback queued in the outgoing document right as
+      // navigation begins can still fire and report a stale height after
+      // the new page already reported its real one. Only accept a message
+      // that's actually for the page currently expected.
+      if (event.data?.slug !== slug) return;
       const nextHeight = Number(event.data.height);
       if (Number.isFinite(nextHeight) && nextHeight > 0) setHeight(nextHeight);
     };
     window.addEventListener('message', handleMessage);
     return () => window.removeEventListener('message', handleMessage);
-  }, []);
+  }, [slug]);
 
   if (!slug) return null;
 
