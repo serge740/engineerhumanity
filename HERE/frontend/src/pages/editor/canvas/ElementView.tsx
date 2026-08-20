@@ -99,6 +99,12 @@ export function ElementNode({
       return;
     }
     if (interactive) return; // real behavior (e.g. <a> navigation) proceeds natively
+    // Editing mode: selecting an element must never trigger its own native
+    // browser action. Without this, clicking an <a> (href="#" while editing,
+    // see below) still fires the browser's default anchor click behavior —
+    // jumping the scroll position / appending "#" to the editor's own URL —
+    // alongside selecting it.
+    e.preventDefault();
     onSelect(el.id, e);
   };
 

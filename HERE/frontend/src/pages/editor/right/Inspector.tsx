@@ -592,6 +592,20 @@ export function Inspector() {
             );
           })()}
 
+          {/* ── Link ────────────────────────────────────────────────────────── */}
+          {el.tag === 'a' && (
+            <Sect title="Link">
+              <div style={{ fontSize: 11, color: '#6b7280', marginBottom: 2 }}>href</div>
+              <input
+                value={(el as Record<string, string>).href ?? ''}
+                placeholder="https://example.com or /page"
+                style={{ width: '100%', border: '1px solid #e9e9ee', borderRadius: 5, padding: '4px 8px', fontSize: 11, boxSizing: 'border-box' }}
+                onFocus={() => captureHistory()}
+                onChange={e => patchElement(el.id, { href: e.target.value })}
+              />
+            </Sect>
+          )}
+
           {el.tag === 'img' && (
             <Sect title="Image">
               {/* key=el.id remounts when the selected element changes, resetting internal mode/draft state */}
