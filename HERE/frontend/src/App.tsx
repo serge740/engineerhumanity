@@ -19,6 +19,7 @@ const EditorPage          = lazy(() => import('./pages/editor/EditorPage'));
 const ComponentDetailPage = lazy(() => import('./pages/components/ComponentDetailPage'));
 const ComingSoonPage    = lazy(() => import('./pages/placeholder/ComingSoonPage'));
 const PublicPage        = lazy(() => import('./pages/public/PublicPage'));
+const EmbedPage         = lazy(() => import('./pages/public/EmbedPage'));
 const LandingRedirect   = lazy(() => import('./pages/public/LandingRedirect'));
 const BoardMembersPublicPage    = lazy(() => import('./pages/public/team/BoardMembersPublicPage'));
 const ManagementTeamPublicPage  = lazy(() => import('./pages/public/team/ManagementTeamPublicPage'));
@@ -92,6 +93,11 @@ export default function App() {
 
             {/* Admin login */}
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Bare page-content renderer — loaded exclusively as an <iframe src>
+                by PublicPage.tsx, deliberately outside MainLayout (no Navbar/Footer)
+                so a page's own imported CSS/<script> stays isolated to this document. */}
+            <Route path="/embed/page/:slug" element={<EmbedPage />} />
 
             {/* ── Protected admin routes ───────────────────────── */}
             <Route path="/dashboard" element={

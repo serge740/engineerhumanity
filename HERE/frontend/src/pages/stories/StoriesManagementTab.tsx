@@ -75,7 +75,7 @@ function StoryFormModal({ siteId, group, story, onClose, onSave }: {
   return (
     <Modal title={story ? 'Edit entry' : 'New entry'} onClose={onClose} wide>
       <form onSubmit={handleSubmit}>
-        <div className="modal__body" style={{ display: 'flex', flexDirection: 'column', gap: 12, maxHeight: '65vh', overflowY: 'auto' }}>
+        <div className="modal__body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div className="field">
             <label className="field__label">Name *</label>
             <input autoFocus type="text" value={name} onChange={e => setName(e.target.value)} className="input" />

@@ -572,12 +572,11 @@ const Donate = () => {
                             </div>
                             <div>
                                 <p className="font-bold text-purple-700 text-lg leading-tight">Zelle</p>
-                                <p className="text-gray-900 font-semibold break-all">engineers4humanity35@gmail.com</p>
+                                <p className="text-gray-900 font-semibold break-all">donate@engineers4humanity.org</p>
                                 <p className="text-gray-500 text-sm">[E4H Initiative]</p>
                             </div>
                         </div>
                     </div>
-                    
                 </div>
             </section>
 

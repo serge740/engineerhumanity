@@ -8,6 +8,11 @@ export const VOID_TAGS = new Set([
   'link','meta','param','source','track','wbr',
 ]);
 
+// Anchor targets that already break out of an iframe correctly on their own
+// (used by the interactive <a> rendering below and mirrored in EmbedPage.tsx's
+// click interceptor for anchors embedded as raw innerHTML).
+const SAFE_ANCHOR_TARGETS = new Set(['_blank', '_top', '_parent']);
+
 // ── Props ─────────────────────────────────────────────────────────────────────
 export interface NodeProps {
   el:         PageElement;
@@ -111,16 +116,28 @@ export function ElementNode({
     // links actually navigate. Editing mode keeps href="#" so nothing ever
     // navigates away while building the page.
     const hrefVal = interactive ? (rec.href || '#') : '#';
+    // The live public page renders inside an <iframe> (see PublicPage.tsx /
+    // EmbedPage.tsx) so its own imported CSS/<script> stays isolated from the
+    // surrounding Navbar/Footer. A plain <a> click — or one with an imported
+    // target="_self", which imported/scraped HTML commonly carries — would
+    // navigate *inside* that iframe instead of the top-level page, leaving
+    // the browser's address bar stuck on the old URL. Only these targets
+    // already do the right thing natively (a "_self" isn't one of them, so
+    // it still gets overridden); everything else forces a break-out to the
+    // top window. This is a no-op outside an iframe (e.g. Preview mode).
+    const targetVal = interactive ? (SAFE_ANCHOR_TARGETS.has(rec.target) ? rec.target : '_top') : undefined;
     if (innerHTML) {
       return (
         <a {...shared as React.AnchorHTMLAttributes<HTMLAnchorElement>}
           href={hrefVal}
+          target={targetVal}
           dangerouslySetInnerHTML={{ __html: innerHTML }} />
       );
     }
     return (
       <a {...shared as React.AnchorHTMLAttributes<HTMLAnchorElement>}
-        href={hrefVal}>
+        href={hrefVal}
+        target={targetVal}>
         {hasChildren
           ? el.children!.map(c => <ElementNode key={c.id} el={c} depth={depth + 1}
               selectedId={selectedId} editingId={editingId}

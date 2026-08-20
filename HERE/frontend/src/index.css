@@ -500,16 +500,29 @@ a, button { transition-property: color, background-color, border-color, box-shad
 .dash-shell .toolbar__search { flex: 1; min-width: 220px; max-width: 380px; }
 
 /* ─── Modal ──────────────────────────────────────────────── */
-.dash-shell .modal-backdrop { position: fixed; inset: 0; background: oklch(0.15 0.02 250 / 0.45); backdrop-filter: blur(4px); z-index: 50; display: grid; place-items: center; padding: 40px; animation: dash-fade 120ms ease-out; }
+/* The whole modal (header+body+footer together) scrolls as one unit via the
+   backdrop's own overflow-y:auto — no internal max-height/scroll region on
+   .modal or .modal__body. That approach fought flexbox's `min-height: auto`
+   default (a flex child with overflowing content refuses to shrink below its
+   own content size unless min-height:0 is set), which let .modal__body grow
+   past .modal's max-height and pushed .modal__foot (the Save button) beyond
+   the clipped, unreachable edge. Letting the box grow to its natural height
+   and scrolling the backdrop instead sidesteps that entirely: however tall
+   the content, scrolling down always reaches the very bottom. */
+.dash-shell .modal-backdrop { position: fixed; inset: 0; background: oklch(0.15 0.02 250 / 0.45); backdrop-filter: blur(4px); z-index: 50; display: flex; align-items: center; justify-content: center; overflow-y: auto; padding: 40px; animation: dash-fade 120ms ease-out; }
 @keyframes dash-fade { from { opacity: 0; } to { opacity: 1; } }
 @keyframes dash-slide { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-.dash-shell .modal { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-lg); width: 100%; max-width: 560px; box-shadow: var(--shadow-lg); overflow: hidden; animation: dash-slide 160ms ease-out; display: flex; flex-direction: column; max-height: 100%; }
+.dash-shell .modal { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--r-lg); width: 100%; max-width: 560px; box-shadow: var(--shadow-lg); overflow: hidden; animation: dash-slide 160ms ease-out; display: flex; flex-direction: column; flex-shrink: 0; margin: auto; }
 .dash-shell .modal--wide { max-width: 720px; }
 .dash-shell .modal__head { padding: 16px 18px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
 .dash-shell .modal__title { font-family: var(--font-display); font-size: 15px; font-weight: 700; letter-spacing: -0.01em; }
 .dash-shell .modal__sub { font-size: 11px; color: var(--fg-subtle); margin-top: 2px; }
-.dash-shell .modal__body { padding: 18px; overflow: auto; }
+.dash-shell .modal__body { padding: 18px; }
 .dash-shell .modal__foot { padding: 12px 18px; border-top: 1px solid var(--border); background: var(--bg-sunk); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+
+@media (max-width: 640px) {
+  .dash-shell .modal-backdrop { padding: 16px; }
+}
 
 /* ─── Dashboard widgets ──────────────────────────────────── */
 .dash-shell .dash-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--gap-card); align-items: start; }
@@ -600,4 +613,20 @@ a, button { transition-property: color, background-color, border-color, box-shad
 @media (max-width: 640px) {
   .dash-shell .kpi-grid--5, .dash-shell .kpi-grid--4, .dash-shell .kpi-grid--3 { grid-template-columns: 1fr; }
   .dash-shell .detail-grid { grid-template-columns: 1fr; }
+}
+
+/* WhatsApp button: shakes for 0.6s every 4s */
+@keyframes wa-shake {
+    0%, 70%, 100% { transform: rotate(0deg) scale(1); }
+    72%  { transform: rotate(-14deg) scale(1.12); }
+    75%  { transform: rotate(14deg)  scale(1.12); }
+    78%  { transform: rotate(-10deg) scale(1.08); }
+    81%  { transform: rotate(10deg)  scale(1.08); }
+    84%  { transform: rotate(-6deg)  scale(1.04); }
+    87%  { transform: rotate(6deg)   scale(1.04); }
+    90%  { transform: rotate(0deg)   scale(1); }
+}
+
+.wa-btn {
+    animation: wa-shake 4s ease-in-out infinite;
 }

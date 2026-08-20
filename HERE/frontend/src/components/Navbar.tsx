@@ -83,16 +83,16 @@ const Navbar: React.FC<NavbarProps> = () => {
                                     : 'opacity-0 scale-95 -translate-y-2 invisible'
                                     }`}
                             >
-                                <NavLink to="who-we-are" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                <NavLink to="/who-we-are" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Who We Are
                                 </NavLink>
-                                <NavLink to="our-story" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                <NavLink to="/our-story" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Our Story
                                 </NavLink>
-                                <NavLink to="executive-team" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                <NavLink to="/executive-team" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Our Team
                                 </NavLink>
-                                <NavLink to="board-member" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
+                                <NavLink to="/board-member" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
                                     Board Members
                                 </NavLink>
                                 <NavLink to="/get-involved" className={dropdownLinkClasses} onClick={() => setAboutDropdownOpen(false)}>
@@ -305,10 +305,10 @@ const Navbar: React.FC<NavbarProps> = () => {
                                 </button>
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileAboutOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <NavLink to="/about/who-we-are" onClick={closeMobile} className={mobileNavLinkClasses}>Who We Are</NavLink>
-                                        <NavLink to="/about/our-story" onClick={closeMobile} className={mobileNavLinkClasses}>Our Story</NavLink>
-                                        <NavLink to="/about/executive-team" onClick={closeMobile} className={mobileNavLinkClasses}>Our Team</NavLink>
-                                        <NavLink to="/about/board-member" onClick={closeMobile} className={mobileNavLinkClasses}>Board Members</NavLink>
+                                        <NavLink to="/who-we-are" onClick={closeMobile} className={mobileNavLinkClasses}>Who We Are</NavLink>
+                                        <NavLink to="/our-story" onClick={closeMobile} className={mobileNavLinkClasses}>Our Story</NavLink>
+                                        <NavLink to="/executive-team" onClick={closeMobile} className={mobileNavLinkClasses}>Our Team</NavLink>
+                                        <NavLink to="/board-member" onClick={closeMobile} className={mobileNavLinkClasses}>Board Members</NavLink>
                                         <NavLink to="/get-involved" onClick={closeMobile} className={mobileNavLinkClasses}>Join Us</NavLink>
                                     </div>
                                 </div>
@@ -327,16 +327,16 @@ const Navbar: React.FC<NavbarProps> = () => {
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
                                   
                                         <p className="px-4 py-1.5 text-xs font-bold text-sky-600 uppercase tracking-wider mt-1">Education</p>
-                                        <NavLink to="/programs/education-program" onClick={closeMobile} className={mobileNavLinkClasses}>High School & University scholarships</NavLink>
-                                        <NavLink to="/programs/leadership-and-peace" onClick={closeMobile} className={mobileNavLinkClasses}>Leadership & Peacebuilding</NavLink>
+                                        <NavLink to="/education-program" onClick={closeMobile} className={mobileNavLinkClasses}>High School & University scholarships</NavLink>
+                                        <NavLink to="/leadership-and-peace" onClick={closeMobile} className={mobileNavLinkClasses}>Leadership & Peacebuilding</NavLink>
 
                                         <p className="px-4 py-1.5 text-xs font-bold text-green-600 uppercase tracking-wider mt-2">Engineering</p>
-                                        <NavLink to="/programs/public-health-engineering" onClick={closeMobile} className={mobileNavLinkClasses}>Public Health Engineering</NavLink>
-                                        <NavLink to="/programs/entrepreneurship" onClick={closeMobile} className={mobileNavLinkClasses}>Entrepreneurship & Construction Service</NavLink>
+                                        <NavLink to="/public-health-engineering" onClick={closeMobile} className={mobileNavLinkClasses}>Public Health Engineering</NavLink>
+                                        <NavLink to="/entrepreneurship" onClick={closeMobile} className={mobileNavLinkClasses}>Entrepreneurship & Construction Service</NavLink>
 
                                         <p className="px-4 py-1.5 text-xs font-bold text-purple-600 uppercase tracking-wider mt-2">Engineers4Humanity Institute</p>
-                                        <NavLink to="/programs/professional-skills" onClick={closeMobile} className={mobileNavLinkClasses}>Professional Skills Development</NavLink>
-                                        <NavLink to="/programs/research-innovation" onClick={closeMobile} className={mobileNavLinkClasses}>Research & Innovation Hub</NavLink>
+                                        <NavLink to="/professional-skills" onClick={closeMobile} className={mobileNavLinkClasses}>Professional Skills Development</NavLink>
+                                        <NavLink to="/research-innovation" onClick={closeMobile} className={mobileNavLinkClasses}>Research & Innovation Hub</NavLink>
                                     </div>
                                 </div>
                             </div>
@@ -352,11 +352,11 @@ const Navbar: React.FC<NavbarProps> = () => {
                                 </button>
                                 <div className={`overflow-hidden transition-all duration-300 ease-in-out ${mobileImpactOpen ? 'max-h-72 opacity-100' : 'max-h-0 opacity-0'}`}>
                                     <div className="pl-4 mt-1 flex flex-col gap-1 border-l-2 border-sky-200 ml-4">
-                                        <NavLink to="/impact/our-impact" onClick={closeMobile} className={mobileNavLinkClasses}>Our Impact</NavLink>
-                                        <NavLink to="/impact/success-story" onClick={closeMobile} className={mobileNavLinkClasses}>Success Story</NavLink>
-                                        <NavLink to="/impact/testimony" onClick={closeMobile} className={mobileNavLinkClasses}>Testimony</NavLink>
-                                        <NavLink to="/impact/documentary" onClick={closeMobile} className={mobileNavLinkClasses}>Documentary</NavLink>
-                                        <NavLink to="/impact/article-publication" onClick={closeMobile} className={mobileNavLinkClasses}>Article and Publication</NavLink>
+                                        <NavLink to="/our-impact" onClick={closeMobile} className={mobileNavLinkClasses}>Our Impact</NavLink>
+                                        <NavLink to="/success-story" onClick={closeMobile} className={mobileNavLinkClasses}>Success Story</NavLink>
+                                        <NavLink to="/testimony" onClick={closeMobile} className={mobileNavLinkClasses}>Testimony</NavLink>
+                                        <NavLink to="/documentary" onClick={closeMobile} className={mobileNavLinkClasses}>Documentary</NavLink>
+                                        <NavLink to="/article-publication" onClick={closeMobile} className={mobileNavLinkClasses}>Article and Publication</NavLink>
                                     </div>
                                 </div>
                             </div>

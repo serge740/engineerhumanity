@@ -146,7 +146,7 @@ function EventFormModal({ siteId, status, event, onClose, onSave }: {
   return (
     <Modal title={event ? 'Edit event' : 'New event'} onClose={onClose} wide>
       <form onSubmit={handleSubmit}>
-        <div className="modal__body" style={{ display: 'flex', flexDirection: 'column', gap: 12, maxHeight: '65vh', overflowY: 'auto' }}>
+        <div className="modal__body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div className="field">
             <label className="field__label">Title *</label>
             <input autoFocus type="text" value={title} onChange={e => setTitle(e.target.value)} className="input" />

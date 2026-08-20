@@ -85,12 +85,12 @@ const Footer = () => (
             <div>
                 <h4 className="font-serif text-base font-semibold text-white mb-5">Programs</h4>
                 {[
-                    { label: 'High School & University scholarships', to: '/programs/education-program' },
-                    { label: 'Leadership & Peacebuilding', to: '/programs/leadership-and-peace' },
-                    { label: 'Public Health Engineering', to: '/programs/public-health-engineering' },
-                    { label: 'Entrepreneurship & Construction Service', to: '/programs/entrepreneurship' },
-                    { label: 'Professional Skills Development', to: '/programs/professional-skills' },
-                    { label: 'Research & Innovation Hub', to: '/programs/research-innovation' },
+                    { label: 'High School & University scholarships', to: '/education-program' },
+                    { label: 'Leadership & Peacebuilding', to: '/leadership-and-peace' },
+                    { label: 'Public Health Engineering', to: '/public-health-engineering' },
+                    { label: 'Entrepreneurship & Construction Service', to: '/entrepreneurship' },
+                    { label: 'Professional Skills Development', to: '/professional-skills' },
+                    { label: 'Research & Innovation Hub', to: '/research-innovation' },
                 ].map(l => (
                     <Link key={l.to} to={l.to} className="block text-sm text-white/55 hover:text-white no-underline mb-2.5 transition-colors">{l.label}</Link>
                 ))}
@@ -100,13 +100,12 @@ const Footer = () => (
             <div>
                 <h4 className="font-serif text-base font-semibold text-white mb-5">Organization</h4>
                 {[
-                    { label: 'About Us', to: '/about/who-we-are' },
-                    { label: 'Our Story', to: '/about/our-story' },
-                    { label: 'Our Team', to: '/about/executive-team' },
-                    { label: 'Board Member', to: '/about/board-member' },
+                    { label: 'About Us', to: '/who-we-are' },
+                    { label: 'Our Story', to: '/our-story' },
+                    { label: 'Our Team', to: '/executive-team' },
+                    { label: 'Board Member', to: '/board-member' },
                     { label: 'Upcoming Events', to: '/upcoming-event' },
                     { label: 'Past Events', to: '/past-event' },
-                    { label: 'Gallery', to: '/gallery' },
                 ].map(l => (
                     <Link key={l.to} to={l.to} className="block text-sm text-white/55 hover:text-white no-underline mb-2.5 transition-colors">{l.label}</Link>
                 ))}
