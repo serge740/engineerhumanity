@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { X, ExternalLink } from 'lucide-react';
+import { getPublicPartners, type Partner } from '../api/partners';
 
 // lucide-react dropped brand/logo icons — small inline SVGs stand in for them.
 const Facebook = () => (
@@ -19,37 +20,12 @@ const Youtube = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.5s-.23-1.64-.94-2.36c-.9-.94-1.9-.95-2.36-1C16.9 2.8 12 2.8 12 2.8h-.01s-4.9 0-8.2.34c-.46.05-1.46.06-2.36 1C.72 4.86.5 6.5.5 6.5S.27 8.42.27 10.34v1.8c0 1.92.23 3.84.23 3.84s.23 1.64.93 2.36c.9.95 2.08.92 2.6 1.02 1.9.18 8 .24 8 .24s4.9-.01 8.2-.34c.46-.06 1.46-.06 2.36-1.02.71-.72.94-2.36.94-2.36s.23-1.92.23-3.84v-1.8c0-1.92-.23-3.84-.23-3.84zM9.6 15.02V8.3l6.44 3.37-6.44 3.35z"/></svg>
 );
 
-import image1 from '../assets/partners/image1.png'
-import image2 from '../assets/partners/image2.png'
-import image3 from '../assets/partners/image3.png'
+const BACKEND_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
 
-interface Partner {
-    name: string;
-    img: string;
-    link: string;
-    description: string;
+function resolveImage(image: string | null) {
+    if (!image) return undefined;
+    return image.startsWith('http') ? image : `${BACKEND_URL}${image}`;
 }
-
-const partners: Partner[] = [
-    {
-        name: 'MINEMA',
-        img: image1,
-        link: 'https://www.minema.gov.rw/',
-        description: "This partnership establishes Engineers4Humanity Consultancy, an engineering social enterprise as an official operational partner of the Government of Rwanda through MINEMA, the Ministry responsible for disaster management and refugee affairs nationwide. MINEMA leads national coordination of refugee protection, emergency response, and long term resilience programs. Through this MoU, Engineers4Humanity joins MINEMA and UNHCR in implementing the Joint Strategy for the Economic Inclusion of Refugees and Host Communities, expanding livelihood opportunities, financial inclusion, and self reliance. The partnership also strengthens education, vocational skills development, public health engineering, and environmental protection to improve services and resilience in refugee camps and host communities.",
-    },
-    {
-        name: 'UNHCR',
-        img: image2,
-        link: 'https://www.unhcr.org/rw/',
-        description: "This partnership recognizes Engineers4Humanity Consultancy, an Engineering Social Enterprise as an operational partner in the MINEMA UNHCR Joint Strategy for the Economic Inclusion of Refugees and Host Communities in Rwanda. UNHCR is the United Nations agency mandated to protect and support refugees under the 1950 Statute and 1951 Refugee Convention—plays a vital role by ensuring refugee rights, guiding policy, and advancing market driven livelihoods, skills development, and job placement. Engineers4Humanity strengthens this mandate by delivering community based education, vocational training, and public health engineering solutions that expand opportunities, reduce dependency, and promote self reliance for refugee and host populations.",
-    },
-    {
-        name: 'RAPEP',
-        img: image3,
-        link: 'https://www.rapep.org.rw/',
-        description: "Partnership between RAPEP, the national authority regulating Rwanda's environmental professionals and Engineers4Humanity Consultancy, a registered environmental social enterprise founded and led by a refugee background Lead Environmental Expert. Together, they unite professional oversight with refugee led innovation to elevate climate resilient infrastructure and environmental stewardship in refugee camps and host districts. The collaboration directly strengthens the MINEMA–UNHCR Tripartite MoU by delivering compliant Public Health Engineering, accredited green skills training, and environmental restoration. It advances SDG 2030 priorities on climate action, clean water, decent work, and sustainable communities, while supporting UNHCR and MINEMA climate action commitments. Aligned with Rwanda Vision 2050, this partnership promotes resilience, dignity, and green growth for refugees and host communities.",
-    },
-];
 
 function PartnerModal({ partner, onClose }: { partner: Partner; onClose: () => void }) {
     return (
@@ -67,10 +43,13 @@ function PartnerModal({ partner, onClose }: { partner: Partner; onClose: () => v
                 </button>
                 <div className="p-8">
                     <div className="w-full h-48 flex items-center justify-center bg-gray-50 rounded-xl mb-6 border border-gray-100">
-                        <img src={partner.img} alt={partner.name} className="max-h-40 max-w-[80%] object-contain" />
+                        <img src={resolveImage(partner.image)} alt={partner.name} className="max-h-40 max-w-[80%] object-contain" />
                     </div>
                     <h2 className="font-serif text-2xl font-bold text-gray-900 mb-4">{partner.name}</h2>
-                    <p className="text-gray-700 leading-relaxed mb-6">{partner.description}</p>
+                    {partner.description && (
+                        <p className="text-gray-700 leading-relaxed mb-6 whitespace-pre-line">{partner.description}</p>
+                    )}
+                    {partner.link && (
                     <a
                         href={partner.link}
                         target="_blank"
@@ -80,6 +59,7 @@ function PartnerModal({ partner, onClose }: { partner: Partner; onClose: () => v
                         Visit website
                         <ExternalLink className="w-4 h-4" />
                     </a>
+                    )}
                 </div>
             </div>
         </div>
@@ -88,25 +68,31 @@ function PartnerModal({ partner, onClose }: { partner: Partner; onClose: () => v
 
 const Footer = () => {
     const [selectedPartner, setSelectedPartner] = useState<Partner | null>(null);
+    const [partners, setPartners] = useState<Partner[]>([]);
+
+    useEffect(() => {
+        getPublicPartners().then(setPartners).catch(() => setPartners([]));
+    }, []);
 
     return (
     <footer className="bg-[#0A1628] text-white/65" id="contact">
-        {/* Partners — click opens a modal with details instead of navigating directly */}
+        {/* Partners — managed per site from the admin dashboard; click opens a modal instead of navigating directly */}
+        {partners.length > 0 && (
         <div className="border-b border-white/10 py-8">
             <h4 className="text-center font-serif text-sm font-semibold text-white/40 tracking-[0.15em] uppercase mb-6">
                 Our Partners
             </h4>
 
             <div className="flex flex-wrap w-full justify-center">
-                {partners.map((p, i) => (
+                {partners.map(p => (
                     <button
-                        key={i}
+                        key={p.id}
                         type="button"
                         onClick={() => setSelectedPartner(p)}
                         className="w-1/2 sm:w-1/3 flex items-center justify-center px-4 py-2 border-none bg-transparent cursor-pointer"
                     >
                         <img
-                            src={p.img}
+                            src={resolveImage(p.image)}
                             alt={p.name}
                             className="h-40 w-auto object-contain opacity-90 hover:opacity-100 transition-opacity"
                         />
@@ -114,6 +100,7 @@ const Footer = () => {
                 ))}
             </div>
         </div>
+        )}
 
         {/* Top */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-8 lg:gap-12 px-4 sm:px-8 lg:px-16 pt-12 lg:pt-18 pb-8 lg:pb-12 border-b border-white/10">

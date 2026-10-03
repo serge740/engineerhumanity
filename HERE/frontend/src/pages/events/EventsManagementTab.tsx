@@ -1,15 +1,17 @@
 import { useEffect, useRef, useState } from 'react';
 import toast from 'react-hot-toast';
 import {
-  Plus, Trash2, Pencil, GripVertical, Loader2, Calendar, Upload, X, ArrowUp, ArrowDown,
+  Plus, Trash2, Pencil, GripVertical, Loader2, Calendar, Upload, X, ArrowUp, ArrowDown, Crosshair,
 } from 'lucide-react';
 import {
   getEvents, createEvent, updateEvent, deleteEvent, reorderEvents,
-  type SiteEvent, type EventStatus, type EventHighlight, type EventContact,
+  type SiteEvent, type EventStatus, type EventHighlight, type EventContact, type EventImage,
   type CreateEventData,
 } from '../../api/events';
 import { uploadAsset } from '../../api/assets';
 import { Modal } from '../../components/ui/Modal';
+import { ImageFocusPicker } from '../components/ImageFocusPicker';
+import { focusStyle, CENTER, type Focus } from '../../utils/imageFocus';
 import { ImportJsonModal } from './ImportJsonModal';
 import {
   DndContext, PointerSensor, useSensor, useSensors, closestCenter,
@@ -30,9 +32,11 @@ function resolveImage(image: string) {
 // ── Image gallery editor ─────────────────────────────────────────────────────
 
 function ImageGalleryEditor({ siteId, images, onChange }: {
-  siteId: string; images: string[]; onChange: (images: string[]) => void;
+  siteId: string; images: EventImage[]; onChange: (images: EventImage[]) => void;
 }) {
   const [uploading, setUploading] = useState(false);
+  const [adjustIndex, setAdjustIndex] = useState<number | null>(null);
+  const [draft, setDraft] = useState<Focus>(CENTER);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +44,10 @@ function ImageGalleryEditor({ siteId, images, onChange }: {
     if (!files?.length) return;
     setUploading(true);
     try {
-      const uploaded: string[] = [];
+      const uploaded: EventImage[] = [];
       for (const f of Array.from(files)) {
         const asset = await uploadAsset(siteId, f, 'image');
-        uploaded.push(asset.url);
+        uploaded.push({ url: asset.url, focusX: null, focusY: null });
       }
       onChange([...images, ...uploaded]);
     } catch {
@@ -55,6 +59,18 @@ function ImageGalleryEditor({ siteId, images, onChange }: {
   };
 
   const remove = (i: number) => onChange(images.filter((_, idx) => idx !== i));
+
+  const openAdjust = (i: number) => {
+    const img = images[i];
+    setDraft({ x: img.focusX ?? CENTER.x, y: img.focusY ?? CENTER.y });
+    setAdjustIndex(i);
+  };
+
+  const saveAdjust = () => {
+    if (adjustIndex === null) return;
+    onChange(images.map((img, idx) => (idx === adjustIndex ? { ...img, focusX: draft.x, focusY: draft.y } : img)));
+    setAdjustIndex(null);
+  };
   const move = (i: number, dir: -1 | 1) => {
     const j = i + dir;
     if (j < 0 || j >= images.length) return;
@@ -68,9 +84,12 @@ function ImageGalleryEditor({ siteId, images, onChange }: {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))', gap: 8, marginBottom: 8 }}>
         {images.map((img, i) => (
           <div key={i} style={{ position: 'relative', aspectRatio: '1', borderRadius: 'var(--r-sm)', overflow: 'hidden', border: '1px solid var(--border)', background: 'var(--bg-sunk)' }}>
-            <img src={resolveImage(img)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={resolveImage(img.url)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', ...focusStyle(img.focusX, img.focusY) }} />
             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: 3, background: 'linear-gradient(rgba(0,0,0,.35), transparent 30%, transparent 70%, rgba(0,0,0,.35))' }}>
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <button type="button" onClick={() => openAdjust(i)} title="Adjust position" aria-label="Adjust position" style={{ background: 'rgba(0,0,0,.6)', border: 'none', borderRadius: 4, color: '#fff', cursor: 'pointer', padding: 2 }}>
+                  <Crosshair size={11} />
+                </button>
                 <button type="button" onClick={() => remove(i)} style={{ background: 'rgba(0,0,0,.6)', border: 'none', borderRadius: 4, color: '#fff', cursor: 'pointer', padding: 2 }}>
                   <X size={11} />
                 </button>
@@ -92,6 +111,28 @@ function ImageGalleryEditor({ siteId, images, onChange }: {
         {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
         {uploading ? 'Uploading…' : 'Add photos'}
       </button>
+
+      {adjustIndex !== null && images[adjustIndex] && (
+        <Modal
+          title="Adjust image position"
+          subtitle="Choose which part of this photo stays visible on the card"
+          onClose={() => setAdjustIndex(null)}
+        >
+          <div className="modal__body">
+            <ImageFocusPicker
+              src={resolveImage(images[adjustIndex].url)}
+              x={draft.x}
+              y={draft.y}
+              aspect={4 / 3}
+              onChange={(x, y) => setDraft({ x, y })}
+            />
+          </div>
+          <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+            <button type="button" onClick={() => setAdjustIndex(null)} className="btn btn--ghost">Cancel</button>
+            <button type="button" onClick={saveAdjust} className="btn btn--primary">Save position</button>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 }
@@ -113,7 +154,7 @@ function EventFormModal({ siteId, status, event, onClose, onSave }: {
   const [description, setDescription] = useState(event?.description ?? '');
   const [paragraphs, setParagraphs] = useState<string[]>(event?.paragraphs ?? []);
   const [highlights, setHighlights] = useState<EventHighlight[]>(event?.highlights ?? []);
-  const [images, setImages] = useState<string[]>(event?.images ?? []);
+  const [images, setImages] = useState<EventImage[]>(event?.images ?? []);
   const [contacts, setContacts] = useState<EventContact[]>(event?.contacts ?? []);
   const [saving, setSaving] = useState(false);
 
@@ -288,6 +329,7 @@ function EventCard({ event, onEdit, onDelete }: {
 }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id: event.id });
   const cover = event.images[0];
+  const coverSrc = cover ? resolveImage(cover.url) : '';
 
   return (
     <div
@@ -300,7 +342,7 @@ function EventCard({ event, onEdit, onDelete }: {
           <GripVertical size={14} />
         </span>
         <div style={{ width: 48, height: 48, borderRadius: 'var(--r-sm)', overflow: 'hidden', flexShrink: 0, background: 'var(--bg-sunk)', border: '1px solid var(--border)' }}>
-          {cover && <img src={resolveImage(cover)} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+          {cover && <img src={coverSrc} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', ...focusStyle(cover.focusX, cover.focusY) }} />}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

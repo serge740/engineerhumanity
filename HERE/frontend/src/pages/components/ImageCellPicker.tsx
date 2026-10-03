@@ -1,7 +1,10 @@
 import { useRef, useState } from 'react';
 import toast from 'react-hot-toast';
-import { Image as ImageIcon, Upload, X, Loader2 } from 'lucide-react';
+import { Image as ImageIcon, Upload, X, Loader2, Crosshair } from 'lucide-react';
 import { uploadAsset } from '../../api/assets';
+import { Modal } from '../../components/ui/Modal';
+import { ImageFocusPicker } from './ImageFocusPicker';
+import { focusStyle, CENTER, type Focus } from '../../utils/imageFocus';
 
 const BACKEND_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
 
@@ -9,19 +12,34 @@ interface Props {
   siteId: string;
   value:  string | undefined;
   onChange: (url: string | undefined) => void;
+  /** Saved focus point; null/undefined means the surface's default crop. */
+  focusX?: number | null;
+  focusY?: number | null;
+  onFocusChange?: (x: number, y: number) => void;
+  /** Default crop for surfaces that used to hard-code `object-top` (e.g. team photos). */
+  focusFallback?: Focus;
+  /** Card/avatar shape the adjust preview should match (width ÷ height). */
+  focusAspect?: number;
+  focusCircle?: boolean;
 }
 
-// A deliberately minimal image picker for a single Data-tab table cell — just
-// URL-or-upload, no gradients/background modes. The full-featured picker used
-// by the Inspector (right/controls/ImagePicker.tsx) is intentionally not reused
-// here since that logic is coupled to editing a PageElement's style.
-export function ImageCellPicker({ siteId, value, onChange }: Props) {
-  const [open, setOpen]         = useState(false);
-  const [urlDraft, setUrlDraft] = useState(value ?? '');
+// A deliberately minimal image picker for a single cell or form field — URL or
+// upload, plus an optional focus adjustment. The full-featured picker used by the
+// Inspector (right/controls/ImagePicker.tsx) is intentionally not reused here since
+// that logic is coupled to editing a PageElement's style.
+export function ImageCellPicker({
+  siteId, value, onChange, focusX, focusY, onFocusChange, focusFallback, focusAspect, focusCircle,
+}: Props) {
+  const [open, setOpen]           = useState(false);
+  const [urlDraft, setUrlDraft]   = useState(value ?? '');
   const [uploading, setUploading] = useState(false);
+  const [adjusting, setAdjusting] = useState(false);
+  const [draft, setDraft]         = useState<Focus>(CENTER);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const src = value ? (value.startsWith('http') ? value : `${BACKEND_URL}${value}`) : undefined;
+  const fallback = focusFallback ?? CENTER;
+  const current: Focus = { x: focusX ?? fallback.x, y: focusY ?? fallback.y };
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -41,6 +59,17 @@ export function ImageCellPicker({ siteId, value, onChange }: Props) {
     }
   };
 
+  const openAdjust = () => {
+    setDraft(current);
+    setOpen(false);
+    setAdjusting(true);
+  };
+
+  const saveAdjust = () => {
+    onFocusChange?.(draft.x, draft.y);
+    setAdjusting(false);
+  };
+
   return (
     <div style={{ position: 'relative' }}>
       <button
@@ -52,7 +81,7 @@ export function ImageCellPicker({ siteId, value, onChange }: Props) {
         }}
       >
         {src ? (
-          <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+          <img src={src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', ...focusStyle(focusX, focusY, fallback) }} onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
         ) : (
           <ImageIcon size={16} style={{ color: 'var(--fg-subtle)' }} />
         )}
@@ -88,6 +117,11 @@ export function ImageCellPicker({ siteId, value, onChange }: Props) {
             {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
             {uploading ? 'Uploading…' : 'Upload'}
           </button>
+          {value && onFocusChange && (
+            <button type="button" onClick={openAdjust} className="btn btn--block btn--sm">
+              <Crosshair size={12} /> Adjust position
+            </button>
+          )}
           {value && (
             <button
               type="button"
@@ -99,6 +133,29 @@ export function ImageCellPicker({ siteId, value, onChange }: Props) {
             </button>
           )}
         </div>
+      )}
+
+      {adjusting && src && onFocusChange && (
+        <Modal
+          title="Adjust image position"
+          subtitle="Choose which part of the photo stays visible on the card"
+          onClose={() => setAdjusting(false)}
+        >
+          <div className="modal__body">
+            <ImageFocusPicker
+              src={src}
+              x={draft.x}
+              y={draft.y}
+              aspect={focusAspect ?? 4 / 3}
+              circle={focusCircle}
+              onChange={(x, y) => setDraft({ x, y })}
+            />
+          </div>
+          <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+            <button type="button" onClick={() => setAdjusting(false)} className="btn btn--ghost">Cancel</button>
+            <button type="button" onClick={saveAdjust} className="btn btn--primary">Save position</button>
+          </div>
+        </Modal>
       )}
     </div>
   );

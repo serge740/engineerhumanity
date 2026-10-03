@@ -1,6 +1,7 @@
 import { X, Sparkles } from 'lucide-react';
 import type { Story } from '../../../api/stories';
 import { resolveImage } from './resolveImage';
+import { focusStyle } from '../../../utils/imageFocus';
 
 export function StoryModal({ story, onClose }: { story: Story | null; onClose: () => void }) {
   if (!story) return null;
@@ -19,7 +20,8 @@ export function StoryModal({ story, onClose }: { story: Story | null; onClose: (
             <img
               src={resolveImage(story.image)}
               alt={story.name}
-              className="w-32 h-32 rounded-full object-cover object-top border-4 border-sky-600"
+              className="w-32 h-32 rounded-full object-cover border-4 border-sky-600"
+              style={focusStyle(story.imageFocusX, story.imageFocusY, { x: 50, y: 0 })}
             />
             <div>
               <h2 className="font-serif text-3xl font-bold text-gray-900 mb-2">{story.name}</h2>

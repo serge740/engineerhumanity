@@ -4,6 +4,8 @@ export class CreateTeamMemberDto {
   title: string;
   credentials?: string;
   image?: string;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   linkedIn?: string;
   bio?: string;
   role?: 'chair' | 'vice-chair' | 'executive' | 'member';

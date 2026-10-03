@@ -8,6 +8,7 @@ import {
   type Story, type StoryGroup, type StorySection, type CreateStoryData,
 } from '../../api/stories';
 import { ImageCellPicker } from '../components/ImageCellPicker';
+import { focusStyle } from '../../utils/imageFocus';
 import { Modal } from '../../components/ui/Modal';
 import { ImportJsonModal } from './ImportJsonModal';
 import {
@@ -43,6 +44,8 @@ function StoryFormModal({ siteId, group, story, onClose, onSave }: {
   const [name, setName] = useState(story?.name ?? '');
   const [role, setRole] = useState(story?.role ?? '');
   const [image, setImage] = useState<string | undefined>(story?.image ?? undefined);
+  const [focusX, setFocusX] = useState<number | null>(story?.imageFocusX ?? null);
+  const [focusY, setFocusY] = useState<number | null>(story?.imageFocusY ?? null);
   const [summary, setSummary] = useState(story?.summary ?? '');
   const [storyText, setStoryText] = useState(story?.story ?? '');
   const [intro, setIntro] = useState(story?.intro ?? '');
@@ -59,6 +62,8 @@ function StoryFormModal({ siteId, group, story, onClose, onSave }: {
         name: name.trim(),
         role: isSummary ? undefined : (role.trim() || undefined),
         image: isSummary ? undefined : image,
+        imageFocusX: isSummary || !image ? undefined : focusX,
+        imageFocusY: isSummary || !image ? undefined : focusY,
         summary: isSummary ? undefined : (summary.trim() || undefined),
         story: isSummary ? (storyText.trim() || undefined) : undefined,
         intro: isSummary ? undefined : (intro.trim() || undefined),
@@ -91,7 +96,18 @@ function StoryFormModal({ siteId, group, story, onClose, onSave }: {
             <>
               <div className="field">
                 <label className="field__label">Photo</label>
-                <ImageCellPicker siteId={siteId} value={image} onChange={setImage} />
+                <ImageCellPicker
+                  siteId={siteId}
+                  value={image}
+                  onChange={url => {
+                    setImage(url);
+                    if (url !== story?.image) { setFocusX(null); setFocusY(null); }
+                  }}
+                  focusX={focusX}
+                  focusY={focusY}
+                  onFocusChange={(x, y) => { setFocusX(x); setFocusY(y); }}
+                  focusAspect={4 / 3}
+                />
               </div>
               <div className="field">
                 <label className="field__label">Role / caption</label>
@@ -174,7 +190,7 @@ function StoryCard({ group, story, onEdit, onDelete }: {
         </span>
         {!isSummary && (
           <div style={{ width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0, background: 'var(--bg-sunk)', border: '1px solid var(--border)' }}>
-            {src && <img src={src} alt={story.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+            {src && <img src={src} alt={story.name} style={{ width: '100%', height: '100%', objectFit: 'cover', ...focusStyle(story.imageFocusX, story.imageFocusY) }} />}
           </div>
         )}
         <div style={{ flex: 1, minWidth: 0 }}>

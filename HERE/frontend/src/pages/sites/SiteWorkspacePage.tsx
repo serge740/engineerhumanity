@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import {
   Plus, Pencil, Trash2, MoreVertical, Copy, Globe, Eye, EyeOff,
   Loader2, X, FileText, Image, Upload, Check,
-  ExternalLink, Settings, Home, Download, Code, Boxes, Users, Calendar, BookOpen,
+  ExternalLink, Settings, Home, Download, Code, Boxes, Users, Calendar, BookOpen, Handshake,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import AdminLayout from '../../components/layout/AdminLayout';
@@ -21,8 +21,9 @@ import { Modal } from '../../components/ui/Modal';
 import TeamManagementTab from '../team/TeamManagementTab';
 import EventsManagementTab from '../events/EventsManagementTab';
 import StoriesManagementTab from '../stories/StoriesManagementTab';
+import PartnersManagementTab from '../partners/PartnersManagementTab';
 
-type Tab = 'pages' | 'components' | 'team' | 'events' | 'stories' | 'assets' | 'settings';
+type Tab = 'pages' | 'components' | 'team' | 'events' | 'stories' | 'partners' | 'assets' | 'settings';
 
 function timeAgo(iso: string) {
   const d = (Date.now() - new Date(iso).getTime()) / 1000;
@@ -674,6 +675,7 @@ const tabs: { id: Tab; icon: React.FC<any>; label: string }[] = [
   { id: 'team',       icon: Users,    label: 'Team'       },
   { id: 'events',     icon: Calendar, label: 'Events'     },
   { id: 'stories',    icon: BookOpen, label: 'Stories'    },
+  { id: 'partners',   icon: Handshake, label: 'Partners'  },
   { id: 'assets',     icon: Image,    label: 'Assets'     },
   // { id: 'settings',   icon: Settings, label: 'Settings'   },
 ];
@@ -762,6 +764,7 @@ export default function SiteWorkspacePage() {
       {activeTab === 'team'        && <TeamManagementTab siteId={site.id} />}
       {activeTab === 'events'      && <EventsManagementTab siteId={site.id} />}
       {activeTab === 'stories'     && <StoriesManagementTab siteId={site.id} />}
+      {activeTab === 'partners'    && <PartnersManagementTab siteId={site.id} />}
       {activeTab === 'assets'      && <AssetsTab      siteId={site.id} />}
       {activeTab === 'settings'    && <SettingsTab    site={site} onUpdate={setSite} />}
     </AdminLayout>

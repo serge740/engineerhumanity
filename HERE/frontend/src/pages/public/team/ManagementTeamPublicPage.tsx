@@ -3,18 +3,22 @@ import { X, ExternalLink } from 'lucide-react';
 import { getPublicTeamMembers, type TeamMember } from '../../../api/team';
 import { TeamHero } from './TeamHero';
 import { resolveImage } from './resolveImage';
+import { focusStyle, type Focus } from '../../../utils/imageFocus';
+
+// Team photos used to be hard-coded to `object-top` so faces stay in frame.
+const TEAM_FALLBACK: Focus = { x: 50, y: 0 };
 
 function TeamMemberModal({ member, onClose }: { member: TeamMember | null; onClose: () => void }) {
   if (!member) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-2xl w-full relative">
+    <div className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white rounded-2xl max-w-2xl w-full my-8 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 bg-gray-900 text-white p-2 rounded-full hover:bg-gray-700 transition z-10"
+          className="sticky top-4 float-right mr-4 mt-4 bg-gray-900 text-white p-2 rounded-full hover:bg-gray-700 transition z-10"
         >
-          <X className="w-6 h-6" />
+          <X className="w-5 h-5" />
         </button>
 
         <div className="p-8">
@@ -22,16 +26,17 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember | null; onClo
             <img
               src={resolveImage(member.image)}
               alt={member.name}
-              className="w-48 h-48 rounded-full object-cover object-top border-4 border-sky-600 shadow-xl"
+              className="w-48 h-48 rounded-full object-cover border-4 border-sky-600 shadow-xl"
+              style={focusStyle(member.imageFocusX, member.imageFocusY, TEAM_FALLBACK)}
             />
             <div className="text-center md:text-left flex-1">
-              <h2 className="font-serif text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="font-serif text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                 {member.name}
                 {member.credentials && (
-                  <span className="text-2xl text-sky-600">, {member.credentials}</span>
+                  <span className="text-lg sm:text-xl md:text-2xl text-sky-600">, {member.credentials}</span>
                 )}
               </h2>
-              <p className="text-xl text-gray-600 mb-4">{member.title}</p>
+              <p className="text-base sm:text-lg md:text-xl text-gray-600 mb-4">{member.title}</p>
 
               {member.linkedIn && (
                 <a
@@ -48,22 +53,22 @@ function TeamMemberModal({ member, onClose }: { member: TeamMember | null; onClo
           </div>
 
           <div className="bg-gray-50 p-6 rounded-xl border-l-4 border-green-600">
-            <h3 className="font-serif text-xl font-bold text-gray-900 mb-3">
+            <h3 className="font-serif text-lg sm:text-xl font-bold text-gray-900 mb-3">
               Role & Responsibilities
             </h3>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+            <p className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
               {member.bio || `Contributes essential expertise and dedication to Engineers4Humanity's mission as part of the ${member.title} team, working to empower refugees and underserved communities through sustainable development initiatives.`}
             </p>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-4">
             <div className="bg-sky-50 p-4 rounded-lg text-center">
-              <p className="text-sm text-gray-600 mb-1">Category</p>
-              <p className="font-semibold text-gray-900 capitalize">{member.category}</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Category</p>
+              <p className="text-sm sm:text-base font-semibold text-gray-900 capitalize">{member.category}</p>
             </div>
             <div className="bg-green-50 p-4 rounded-lg text-center">
-              <p className="text-sm text-gray-600 mb-1">Location</p>
-              <p className="font-semibold text-gray-900">Rwanda</p>
+              <p className="text-xs sm:text-sm text-gray-600 mb-1">Location</p>
+              <p className="text-sm sm:text-base font-semibold text-gray-900">Rwanda</p>
             </div>
           </div>
         </div>
@@ -106,7 +111,8 @@ export default function ManagementTeamPublicPage() {
                     <img
                       src={resolveImage(member.image)}
                       alt={member.name}
-                      className="w-64 h-64 rounded-full object-cover object-top shadow-xl"
+                      className="w-64 h-64 rounded-full object-cover shadow-xl"
+                      style={focusStyle(member.imageFocusX, member.imageFocusY, TEAM_FALLBACK)}
                     />
                   </div>
                   <div className="p-6">

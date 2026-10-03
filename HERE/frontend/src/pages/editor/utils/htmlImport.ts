@@ -174,6 +174,35 @@ function wrapDomContentLoadedCalls(src: string): string {
   }
 }
 
+// Imported scripts commonly gate their whole init routine behind
+// `document.addEventListener('DOMContentLoaded', fn)`. That's correct for a
+// real page load (the exported static HTML file), but this same script also
+// runs live — injected into the DOM by ElementView.tsx's ScriptNode after
+// the React app (Preview mode / the public page) has already mounted, i.e.
+// always *after* the real DOMContentLoaded already fired. A listener
+// registered for an event that already happened never fires, so `fn` was
+// silently never called there, even though the exact same markup/script
+// works fine as a standalone file.
+//
+// Fix: rewrite `X.addEventListener('DOMContentLoaded', fn)` into a call that
+// checks `document.readyState` itself — if it's still 'loading' (a real,
+// fresh page load, e.g. the exported file), behave exactly as before and
+// wait for the real event; otherwise (already loaded — always true when
+// this runs inside the SPA) call `fn` immediately. One rewrite, correct in
+// both contexts, no separate live-vs-export code paths needed.
+const DOM_READY_CALL_RE = /[\w$]+(?:\.[\w$]+)*\s*\.\s*addEventListener\s*\(\s*(['"])DOMContentLoaded\1\s*,\s*/g;
+
+function makeDomReadySafe(src: string): string {
+  try {
+    return src.replace(
+      DOM_READY_CALL_RE,
+      "(document.readyState === 'loading' ? document.addEventListener.bind(document, 'DOMContentLoaded') : function (fn) { fn(); })(",
+    );
+  } catch {
+    return src; // never let a rewriting bug corrupt the script
+  }
+}
+
 // ── DOM Element → PageElement (recursive) ────────────────────────────────────
 function domToEl(node: Element, depth: number): PageElement | null {
   if (depth > 14) return null;
@@ -222,7 +251,7 @@ function domToEl(node: Element, depth: number): PageElement | null {
 
   // ── <script> ──────────────────────────────────────────────────────────────
   if (tag === 'script') {
-    el.text = wrapDomContentLoadedCalls(node.textContent ?? '');
+    el.text = makeDomReadySafe(wrapDomContentLoadedCalls(node.textContent ?? ''));
     return el;
   }
 

@@ -7,6 +7,7 @@ import {
   type CreateTeamMemberData,
 } from '../../api/team';
 import { ImageCellPicker } from '../components/ImageCellPicker';
+import { focusStyle } from '../../utils/imageFocus';
 import { Modal } from '../../components/ui/Modal';
 import { ImportJsonModal } from './ImportJsonModal';
 import {
@@ -50,6 +51,8 @@ function MemberFormModal({ siteId, group, member, onClose, onSave }: {
   const [title, setTitle] = useState(member?.title ?? '');
   const [credentials, setCredentials] = useState(member?.credentials ?? '');
   const [image, setImage] = useState<string | undefined>(member?.image ?? undefined);
+  const [focusX, setFocusX] = useState<number | null>(member?.imageFocusX ?? null);
+  const [focusY, setFocusY] = useState<number | null>(member?.imageFocusY ?? null);
   const [linkedIn, setLinkedIn] = useState(member?.linkedIn ?? '');
   const [bio, setBio] = useState(member?.bio ?? '');
   const [role, setRole] = useState<BoardRole>(member?.role ?? 'member');
@@ -67,6 +70,8 @@ function MemberFormModal({ siteId, group, member, onClose, onSave }: {
         title: title.trim(),
         credentials: credentials.trim() || undefined,
         image,
+        imageFocusX: image ? focusX : null,
+        imageFocusY: image ? focusY : null,
         linkedIn: linkedIn.trim() || undefined,
         bio: bio.trim() || undefined,
         role: group === 'board' ? role : undefined,
@@ -86,7 +91,20 @@ function MemberFormModal({ siteId, group, member, onClose, onSave }: {
         <div className="modal__body" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div className="field">
             <label className="field__label">Photo</label>
-            <ImageCellPicker siteId={siteId} value={image} onChange={setImage} />
+            <ImageCellPicker
+              siteId={siteId}
+              value={image}
+              onChange={url => {
+                setImage(url);
+                if (url !== member?.image) { setFocusX(null); setFocusY(null); }
+              }}
+              focusX={focusX}
+              focusY={focusY}
+              onFocusChange={(x, y) => { setFocusX(x); setFocusY(y); }}
+              focusFallback={{ x: 50, y: 0 }}
+              focusAspect={group === 'management' ? 1 : 1.25}
+              focusCircle={group === 'management'}
+            />
           </div>
           <div style={{ display: 'flex', gap: 12 }}>
             <div className="field" style={{ flex: 2 }}>
@@ -160,7 +178,7 @@ function MemberCard({ member, onEdit, onDelete }: {
           width: 44, height: 44, borderRadius: '50%', overflow: 'hidden', flexShrink: 0,
           background: 'var(--bg-sunk)', border: '1px solid var(--border)',
         }}>
-          {src && <img src={src} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+          {src && <img src={src} alt={member.name} style={{ width: '100%', height: '100%', objectFit: 'cover', ...focusStyle(member.imageFocusX, member.imageFocusY, { x: 50, y: 0 }) }} />}
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--fg)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>

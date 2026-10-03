@@ -8,6 +8,6 @@ export class CreateEventDto {
   description: string;
   paragraphs?: string[];
   highlights?: { label: string; icon: string }[];
-  images?: string[];
+  images?: (string | { url: string; focusX?: number | null; focusY?: number | null })[];
   contacts?: { label: string; email: string }[];
 }

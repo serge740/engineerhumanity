@@ -1,6 +1,27 @@
 import { useRef, useState } from 'react';
+import { Crosshair } from 'lucide-react';
 import { useEditorStore } from '../../../../stores/editorStore';
 import { uploadAsset, deleteAsset } from '../../../../api/assets';
+import { Modal } from '../../../../components/ui/Modal';
+import { ImageFocusPicker } from '../../../components/ImageFocusPicker';
+import { CENTER, type Focus } from '../../../../utils/imageFocus';
+
+// Accepts the "X% Y%" form the adjust modal writes, plus the keyword presets the
+// Anchor row and older content use. Anything unrecognised reads as centred.
+const POSITION_KEYWORDS: Record<string, Focus> = {
+  'top': { x: 50, y: 0 }, 'bottom': { x: 50, y: 100 }, 'left': { x: 0, y: 50 }, 'right': { x: 100, y: 50 },
+  'center': CENTER, 'center center': CENTER, 'top center': { x: 50, y: 0 }, 'bottom center': { x: 50, y: 100 },
+  'center left': { x: 0, y: 50 }, 'center right': { x: 100, y: 50 },
+  'top left': { x: 0, y: 0 }, 'top right': { x: 100, y: 0 },
+  'bottom left': { x: 0, y: 100 }, 'bottom right': { x: 100, y: 100 },
+};
+
+function parseObjectPosition(value: string | undefined): Focus {
+  const v = (value ?? '').trim().toLowerCase();
+  const m = v.match(/^(-?[\d.]+)%\s+(-?[\d.]+)%$/);
+  if (m) return { x: Math.min(100, Math.max(0, Math.round(+m[1]))), y: Math.min(100, Math.max(0, Math.round(+m[2]))) };
+  return POSITION_KEYWORDS[v] ?? CENTER;
+}
 
 const BACKEND_URL = (import.meta.env.VITE_API_URL as string | undefined) ?? '';
 
@@ -200,6 +221,10 @@ export function ImagePicker({ elId, tag, src, assetRef, style }: ImagePickerProp
   const siteId         = useEditorStore(s => s.siteId);
   const patchElement   = useEditorStore(s => s.patchElement);
   const patchStyleLive = useEditorStore(s => s.patchStyleLive);
+  const patchStyle = useEditorStore(s => s.patchStyle);
+  const [adjusting, setAdjusting] = useState(false);
+  const [draft, setDraft] = useState<Focus>(CENTER);
+  const [aspect, setAspect] = useState(4 / 3);
   const removeStyle    = useEditorStore(s => s.removeStyle);
   const captureHistory = useEditorStore(s => s.captureHistory);
 
@@ -481,6 +506,59 @@ export function ImagePicker({ elId, tag, src, assetRef, style }: ImagePickerProp
           <Seg label="Anchor" value={style.objectPosition || 'center'}
             options={[{ v:'top',l:'Top' },{ v:'center',l:'Center' },{ v:'bottom',l:'Bottom' }]}
             onChange={v => patchStyleLive(elId, 'objectPosition', v)} />
+          <button
+            type="button"
+            onClick={() => {
+              const node = document.querySelector<HTMLElement>(`[data-el-id="${elId}"]`);
+              const box = node?.getBoundingClientRect();
+              setAspect(box && box.width > 0 && box.height > 0 ? box.width / box.height : 4 / 3);
+              setDraft(parseObjectPosition(style.objectPosition));
+              setAdjusting(true);
+            }}
+            style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+              margin: '4px 0 2px', padding: '6px 10px', border: '1px solid #e0e7ff', borderRadius: 6,
+              background: '#f5f3ff', color: '#4f46e5', fontSize: 11, fontWeight: 600, cursor: 'pointer',
+            }}
+          >
+            <Crosshair size={12} /> Adjust position
+          </button>
+
+          {adjusting && (
+            <div className="dash-shell" style={{ display: 'contents' }}>
+              <Modal
+                title="Adjust image position"
+                subtitle="Drag the photo to choose which part stays visible"
+                onClose={() => setAdjusting(false)}
+              >
+                <div className="modal__body">
+                  <ImageFocusPicker
+                    src={currentUrl}
+                    x={draft.x}
+                    y={draft.y}
+                    aspect={aspect}
+                    onChange={(x, y) => setDraft({ x, y })}
+                  />
+                </div>
+                <div className="modal__foot" style={{ justifyContent: 'flex-end' }}>
+                  <button type="button" onClick={() => setAdjusting(false)} className="btn btn--ghost">Cancel</button>
+                  <button
+                    type="button"
+                    className="btn btn--primary"
+                    onClick={() => {
+                      patchStyle(elId, 'objectPosition', `${draft.x}% ${draft.y}%`);
+                      // Position only applies when the photo is cropped to fill the box, so
+                      // switch Fit to Cover (the adjust preview is cover-cropped too).
+                      if ((style.objectFit || 'fill') !== 'cover') patchStyle(elId, 'objectFit', 'cover');
+                      setAdjusting(false);
+                    }}
+                  >
+                    Save position
+                  </button>
+                </div>
+              </Modal>
+            </div>
+          )}
         </div>
       )}
 

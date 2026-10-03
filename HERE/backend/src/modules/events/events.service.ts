@@ -7,6 +7,11 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
 import { ReorderEventsDto } from './dto/reorder-events.dto';
+import { normalizeEventImages, parseEventImagesInput } from 'src/common/image-focus';
+
+function withNormalizedImages<T extends { images: unknown }>(row: T) {
+  return { ...row, images: normalizeEventImages(row.images) };
+}
 
 @Injectable()
 export class EventsService {
@@ -31,10 +36,11 @@ export class EventsService {
 
   async findAll(siteId: string, adminId: string, status?: string) {
     await this.assertSiteOwner(siteId, adminId);
-    return this.prisma.event.findMany({
+    const rows = await this.prisma.event.findMany({
       where: { siteId, ...(status ? { status } : {}) },
       orderBy: { order: 'asc' },
     });
+    return rows.map(withNormalizedImages);
   }
 
   async create(siteId: string, adminId: string, dto: CreateEventDto) {
@@ -52,7 +58,7 @@ export class EventsService {
       select: { order: true },
     });
 
-    return this.prisma.event.create({
+    const created = await this.prisma.event.create({
       data: {
         siteId,
         status: dto.status,
@@ -64,11 +70,12 @@ export class EventsService {
         description: dto.description ?? '',
         paragraphs: dto.paragraphs ?? [],
         highlights: dto.highlights ?? [],
-        images: dto.images ?? [],
+        images: dto.images ? parseEventImagesInput(dto.images) : [],
         contacts: dto.status === 'upcoming' ? (dto.contacts ?? []) : undefined,
         order: (last?.order ?? -1) + 1,
       },
     });
+    return withNormalizedImages(created);
   }
 
   async update(siteId: string, id: string, adminId: string, dto: UpdateEventDto) {
@@ -81,12 +88,13 @@ export class EventsService {
     if (dto.description !== undefined) data.description = dto.description;
     if (dto.paragraphs !== undefined) data.paragraphs = dto.paragraphs;
     if (dto.highlights !== undefined) data.highlights = dto.highlights;
-    if (dto.images !== undefined) data.images = dto.images;
+    if (dto.images !== undefined) data.images = parseEventImagesInput(dto.images);
     if (dto.time !== undefined && event.status === 'upcoming') data.time = dto.time;
     if (dto.attendees !== undefined && event.status === 'past') data.attendees = dto.attendees;
     if (dto.contacts !== undefined && event.status === 'upcoming') data.contacts = dto.contacts;
 
-    return this.prisma.event.update({ where: { id }, data });
+    const updated = await this.prisma.event.update({ where: { id }, data });
+    return withNormalizedImages(updated);
   }
 
   async remove(siteId: string, id: string, adminId: string) {

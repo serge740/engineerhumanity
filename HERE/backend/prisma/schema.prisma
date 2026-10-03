@@ -41,6 +41,7 @@ model Site {
   teamMembers TeamMember[]
   events      Event[]
   stories     Story[]
+  partners    Partner[]
 
   @@index([adminId])
   @@map("sites")
@@ -141,6 +142,8 @@ model TeamMember {
   title       String
   credentials String?
   image       String?
+  imageFocusX Float?
+  imageFocusY Float?
   linkedIn    String?
   bio         String?  @db.Text
   role        String?  // board only: 'chair' | 'vice-chair' | 'executive' | 'member'
@@ -151,6 +154,22 @@ model TeamMember {
 
   @@index([siteId, group, order])
   @@map("team_members")
+}
+
+model Partner {
+  id          String   @id @default(cuid())
+  siteId      String
+  site        Site     @relation(fields: [siteId], references: [id], onDelete: Cascade)
+  name        String
+  image       String?
+  link        String?
+  description String?  @db.Text
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([siteId, order])
+  @@map("partners")
 }
 
 model Event {
@@ -217,6 +236,8 @@ model Story {
   name      String
   role      String?  // success / testimony only
   image     String?  // success / testimony only
+  imageFocusX Float?
+  imageFocusY Float?
   summary   String?  @db.Text // card preview text — success / testimony only
   story     String?  @db.Text // short quote text — success-summary only
   intro     String?  @db.Text // modal intro paragraph — success / testimony only

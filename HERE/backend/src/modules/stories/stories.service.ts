@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateStoryDto } from './dto/create-story.dto';
 import { UpdateStoryDto } from './dto/update-story.dto';
 import { ReorderStoriesDto } from './dto/reorder-stories.dto';
+import { applyFocus, parseFocusCoord } from 'src/common/image-focus';
 
 const GROUPS = ['success', 'success-summary', 'testimony'];
 
@@ -63,6 +64,8 @@ export class StoriesService {
         name: dto.name.trim(),
         role: isSummary ? null : (dto.role ?? null),
         image: isSummary ? null : (dto.image ?? null),
+        imageFocusX: isSummary ? null : parseFocusCoord(dto.imageFocusX, 'imageFocusX'),
+        imageFocusY: isSummary ? null : parseFocusCoord(dto.imageFocusY, 'imageFocusY'),
         summary: isSummary ? null : (dto.summary ?? null),
         story: isSummary ? (dto.story ?? null) : null,
         intro: isSummary ? null : (dto.intro ?? null),
@@ -81,6 +84,7 @@ export class StoriesService {
     if (!isSummary) {
       if (dto.role !== undefined) data.role = dto.role;
       if (dto.image !== undefined) data.image = dto.image;
+      applyFocus(data, existing.image, dto);
       if (dto.summary !== undefined) data.summary = dto.summary;
       if (dto.intro !== undefined) data.intro = dto.intro;
       if (dto.sections !== undefined) data.sections = dto.sections;

@@ -24,6 +24,15 @@ export class PublicController {
     }
   }
 
+  @Get('partners')
+  async getPartners() {
+    try {
+      return await this.publicService.getPartners();
+    } catch (error) {
+      throw new HttpException(error.message, error.status || 400);
+    }
+  }
+
   @Get('events')
   async getEvents(@Query('status') status: 'upcoming' | 'past' | undefined) {
     try {

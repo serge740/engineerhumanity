@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useEditorStore } from '../../stores/editorStore';
 import { ShortcutsModal } from './ShortcutsModal';
+import { downloadPageHtml } from './utils/exportHtml';
 
 // ── Icons ─────────────────────────────────────────────────────────────────────
 const IBack    = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>;
@@ -10,6 +11,7 @@ const IFrame   = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="non
 const IUndo    = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M5.5 6H10a3 3 0 010 6H6.5M5.5 6l2-2M5.5 6l2 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 const IRedo    = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M10.5 6H6a3 3 0 100 6h3.5M10.5 6l-2-2M10.5 6l-2 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>;
 const IImport  = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v8M5 7l3 3 3-3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 12h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
+const IExport  = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 10V2M5 5l3-3 3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 12h10" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>;
 const IShare   = () => <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><circle cx="11.5" cy="4" r="1.8" stroke="currentColor" strokeWidth="1.3"/><circle cx="4.5" cy="8" r="1.8" stroke="currentColor" strokeWidth="1.3"/><circle cx="11.5" cy="12" r="1.8" stroke="currentColor" strokeWidth="1.3"/><path d="M6 7l4-2M6 9l4 2" stroke="currentColor" strokeWidth="1.3"/></svg>;
 const IEye     = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z" stroke="currentColor" strokeWidth="1.3"/><circle cx="8" cy="8" r="1.8" stroke="currentColor" strokeWidth="1.3"/></svg>;
 const IEyeOff  = () => <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M6.5 6.6A3.5 3.5 0 0011.4 11M4.5 4.6C2.9 5.6 1.5 8 1.5 8S4 12.5 8 12.5c1.2 0 2.3-.3 3.2-.8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/><path d="M8 3.5c.7 0 1.3.1 1.9.3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>;
@@ -27,6 +29,7 @@ interface Props {
 export function EditorTopBar({ onOpenImport, siteId, previewMode, onTogglePreview, autoSaving }: Props) {
   const pageMeta = useEditorStore(s => s.pageMeta);
   const slug     = useEditorStore(s => s.slug);
+  const elements = useEditorStore(s => s.elements);
   const isDirty  = useEditorStore(s => s.isDirty);
   const isSaving = useEditorStore(s => s.isSaving);
   const canUndo  = useEditorStore(s => s.canUndo);
@@ -53,6 +56,14 @@ export function EditorTopBar({ onOpenImport, siteId, previewMode, onTogglePrevie
   const handleBack = async () => {
     if (isDirty) await save().catch(() => {});
     navigate(`/sites/${siteId}`);
+  };
+
+  const handleExport = () => {
+    downloadPageHtml(elements, slug || 'page', {
+      title: pageMeta?.title || slug,
+      description: pageMeta?.description,
+    });
+    toast.success('Page exported');
   };
 
   return (
@@ -90,6 +101,11 @@ export function EditorTopBar({ onOpenImport, siteId, previewMode, onTogglePrevie
             <IImport /> Import HTML
           </button>
         )}
+
+        {/* Export / download the page currently being viewed as a standalone HTML file */}
+        <button className="l-btn-ghost" onClick={handleExport} title="Download this page as a standalone HTML file">
+          <IExport /> Export
+        </button>
 
         {/* Save status */}
         {(autoSaving || isSaving) && (

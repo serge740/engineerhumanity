@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getPublicEvent, type SiteEvent } from '../../../api/events';
 import { EventHero } from './EventHero';
 import { resolveImage } from './resolveImage';
+import { focusStyle } from '../../../utils/imageFocus';
 
 function HighlightIcon({ icon }: { icon: string }) {
   if (icon === 'users') return (
@@ -65,7 +66,7 @@ export default function PastEventDetailPublicPage() {
     );
   }
 
-  const images = event.images.map(resolveImage);
+  const images = event.images.map(i => resolveImage(i.url));
   const coverImage = images[0];
 
   const openLightbox = (index: number) => {
@@ -195,6 +196,7 @@ export default function PastEventDetailPublicPage() {
                     src={img}
                     alt={`${event.title} – photo ${index + 1}`}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    style={focusStyle(event.images[index]?.focusX, event.images[index]?.focusY)}
                   />
                   <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/90 rounded-full p-3 shadow-lg">

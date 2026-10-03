@@ -48,13 +48,23 @@ function rewritePageLinks(val: string, slugs: Set<string>): string {
 }
 
 function buildAttrs(el: PageElement, slugs: Set<string>): string {
-  const SKIP = new Set(['id','tag','text','children','innerHTML','class','style','assetRef','_frameType','_frameName','_collection','_modalTarget','_modalClose']);
+  const SKIP = new Set(['id','tag','text','children','innerHTML','class','style','assetRef','_frameType','_frameName','_collection','_modalTarget','_modalClose','_htmlId','_onClick']);
   const parts: string[] = [];
 
   // Always emitted so a `_modalTarget` trigger elsewhere on the page can find
   // this exact node via `document.querySelector('[data-el-id="..."]')` — the
   // same handle the React-rendered editor/public-page paths already use.
   parts.push(`data-el-id="${el.id}"`);
+
+  // The importer stores an imported element's original `id`/`onclick` under
+  // these internal marker keys instead of real attributes (see htmlImport.ts)
+  // so the builder's own `data-el-id` never collides with hand-authored ids.
+  // This is the one export path where the original attributes are restored
+  // verbatim — a static HTML file has no framework to rewire event handlers,
+  // so any inline script doing `document.getElementById('x')` only works if
+  // the real `id="x"` attribute actually made it into the output.
+  if (typeof el._htmlId === 'string' && el._htmlId) parts.push(`id="${el._htmlId.replace(/"/g, '&quot;')}"`);
+  if (typeof el._onClick === 'string' && el._onClick) parts.push(`onclick="${el._onClick.replace(/"/g, '&quot;')}"`);
 
   if (el.class) parts.push(`class="${el.class}"`);
   if (el.style && Object.keys(el.style).length) {

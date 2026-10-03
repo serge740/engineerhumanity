@@ -3,6 +3,10 @@ import { X, ExternalLink, Shield, Award, Users } from 'lucide-react';
 import { getPublicTeamMembers, type TeamMember } from '../../../api/team';
 import { TeamHero } from './TeamHero';
 import { resolveImage } from './resolveImage';
+import { focusStyle, type Focus } from '../../../utils/imageFocus';
+
+// Team photos used to be hard-coded to `object-top` so faces stay in frame.
+const TEAM_FALLBACK: Focus = { x: 50, y: 0 };
 
 function BoardMemberModal({ member, onClose }: { member: TeamMember | null; onClose: () => void }) {
   if (!member) return null;
@@ -22,7 +26,8 @@ function BoardMemberModal({ member, onClose }: { member: TeamMember | null; onCl
             <img
               src={resolveImage(member.image)}
               alt={member.name}
-              className="w-32 h-32 rounded-full object-cover object-top border-4 border-sky-600 shadow-lg"
+              className="w-32 h-32 rounded-full object-cover border-4 border-sky-600 shadow-lg"
+              style={focusStyle(member.imageFocusX, member.imageFocusY, TEAM_FALLBACK)}
             />
             <div className="flex-1 text-center md:text-left">
               <h2 className="font-serif text-2xl font-bold text-gray-900 mb-1">
@@ -111,7 +116,8 @@ export default function BoardMembersPublicPage() {
                     <img
                       src={resolveImage(member.image)}
                       alt={member.name}
-                      className="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      style={focusStyle(member.imageFocusX, member.imageFocusY, TEAM_FALLBACK)}
                     />
                   </div>
                   <div className="p-6">

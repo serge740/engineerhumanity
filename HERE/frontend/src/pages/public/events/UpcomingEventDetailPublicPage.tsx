@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getPublicEvent, type SiteEvent } from '../../../api/events';
 import { EventHero } from './EventHero';
 import { resolveImage } from './resolveImage';
+import { focusStyle } from '../../../utils/imageFocus';
 
 export default function UpcomingEventDetailPublicPage() {
   const { id } = useParams<{ id: string }>();
@@ -36,7 +37,7 @@ export default function UpcomingEventDetailPublicPage() {
     );
   }
 
-  const images = event.images.map(resolveImage);
+  const images = event.images.map(i => resolveImage(i.url));
 
   return (
     <div className="min-h-screen bg-white font-sans">
@@ -136,6 +137,7 @@ export default function UpcomingEventDetailPublicPage() {
                     src={img}
                     alt={`${event.title} – photo ${index + 1}`}
                     className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    style={focusStyle(event.images[index]?.focusX, event.images[index]?.focusY)}
                   />
                 </div>
               ))}

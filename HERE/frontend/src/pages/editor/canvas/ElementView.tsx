@@ -13,6 +13,37 @@ export const VOID_TAGS = new Set([
 // click interceptor for anchors embedded as raw innerHTML).
 const SAFE_ANCHOR_TARGETS = new Set(['_blank', '_top', '_parent']);
 
+// Attributes forwarded verbatim onto every rendered element — not just the
+// handful of tags (<a>, <img>, <input>) special-cased below. Mirrors
+// htmlImport.ts's ATTRS whitelist, which captures these off the original DOM
+// node at import time and stores them directly on the PageElement. Without
+// this, they were only ever kept on the *data* — never actually rendered —
+// so an imported page's own script doing `el.getAttribute('name')`,
+// `document.querySelector('[rel=...]')` etc. found nothing, even though the
+// same markup works fine as plain static HTML. Explicit props set further
+// down for <a>/<img>/<input> are spread after this and win on conflict.
+const PASSTHROUGH_ATTRS = [
+  'src', 'href', 'alt', 'type', 'name', 'placeholder', 'rel', 'media',
+  'target', 'action', 'method', 'enctype', 'for', 'value',
+  'min', 'max', 'step', 'rows', 'cols',
+  'width', 'height', 'loading', 'decoding', 'crossorigin',
+] as const;
+const PASSTHROUGH_BOOL_ATTRS = [
+  'checked', 'selected', 'disabled', 'readonly', 'required',
+  'multiple', 'async', 'defer',
+] as const;
+
+// A few HTML attribute names differ from their React DOM prop name — pass
+// those through under the raw name and React silently no-ops them (or, for
+// `for`/`class`-shaped collisions, warns) instead of actually setting the
+// attribute the imported script expects.
+const REACT_PROP_NAME: Record<string, string> = {
+  for: 'htmlFor',
+  readonly: 'readOnly',
+  crossorigin: 'crossOrigin',
+  enctype: 'encType',
+};
+
 // ── Props ─────────────────────────────────────────────────────────────────────
 export interface NodeProps {
   el:         PageElement;
@@ -115,6 +146,33 @@ export function ElementNode({
     onClick:       handleClick,
     onDoubleClick: (e: React.MouseEvent) => { e.stopPropagation(); onDblClick(el.id, hasChildren); },
   };
+
+  // An imported element's original `id` (see htmlImport.ts's `_htmlId`) is
+  // restored as a real `id` attribute only when `interactive` — Preview mode
+  // and the live public/embed page — the same gating the modal trigger/close
+  // mechanism above uses. This is what lets an imported page's own inline
+  // `document.getElementById(...)` script actually find its elements and run,
+  // matching what the static HTML export already does. Left out of the plain
+  // edit canvas so duplicating a component mid-edit can't produce two live
+  // DOM nodes sharing the same real id.
+  if (interactive && typeof rec._htmlId === 'string' && rec._htmlId) {
+    shared.id = rec._htmlId;
+  }
+
+  // Generic attribute passthrough — see PASSTHROUGH_ATTRS above. Applied
+  // unconditionally (unlike the id restore above): these are page-content
+  // attributes, not the builder's own identity mechanism, so there's no
+  // duplicate-component collision risk in leaving them on during plain edits.
+  for (const attr of PASSTHROUGH_ATTRS) {
+    const v = rec[attr];
+    if (v !== undefined && v !== null && v !== '') shared[REACT_PROP_NAME[attr] ?? attr] = v;
+  }
+  for (const attr of PASSTHROUGH_BOOL_ATTRS) {
+    if (rec[attr]) shared[REACT_PROP_NAME[attr] ?? attr] = true;
+  }
+  for (const key of Object.keys(rec)) {
+    if (key.startsWith('data-')) shared[key] = rec[key];
+  }
 
   // ── <a> ───────────────────────────────────────────────────────────────────
   if (el.tag === 'a') {

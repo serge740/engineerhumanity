@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTeamMemberDto } from './dto/create-team-member.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { ReorderTeamMembersDto } from './dto/reorder-team-members.dto';
+import { applyFocus, parseFocusCoord } from 'src/common/image-focus';
 
 @Injectable()
 export class TeamService {
@@ -59,6 +60,8 @@ export class TeamService {
         title: dto.title.trim(),
         credentials: dto.credentials ?? null,
         image: dto.image ?? null,
+        imageFocusX: parseFocusCoord(dto.imageFocusX, 'imageFocusX'),
+        imageFocusY: parseFocusCoord(dto.imageFocusY, 'imageFocusY'),
         linkedIn: dto.linkedIn ?? null,
         bio: dto.bio ?? null,
         role: dto.group === 'board' ? (dto.role ?? null) : null,
@@ -81,6 +84,7 @@ export class TeamService {
     if (dto.title !== undefined) data.title = dto.title.trim();
     if (dto.credentials !== undefined) data.credentials = dto.credentials;
     if (dto.image !== undefined) data.image = dto.image;
+    applyFocus(data, member.image, dto);
     if (dto.linkedIn !== undefined) data.linkedIn = dto.linkedIn;
     if (dto.bio !== undefined) data.bio = dto.bio;
     if (dto.role !== undefined && member.group === 'board') data.role = dto.role;

@@ -13,6 +13,12 @@ export interface EventContact {
   email: string;
 }
 
+export interface EventImage {
+  url: string;
+  focusX: number | null;
+  focusY: number | null;
+}
+
 export interface SiteEvent {
   id: string;
   siteId: string;
@@ -25,7 +31,7 @@ export interface SiteEvent {
   description: string;
   paragraphs: string[];
   highlights: EventHighlight[];
-  images: string[];
+  images: EventImage[];
   contacts: EventContact[] | null;
   order: number;
   createdAt: string;
@@ -42,7 +48,7 @@ export interface CreateEventData {
   description: string;
   paragraphs?: string[];
   highlights?: EventHighlight[];
-  images?: string[];
+  images?: EventImage[];
   contacts?: EventContact[];
 }
 
@@ -55,7 +61,7 @@ export interface UpdateEventData {
   description?: string;
   paragraphs?: string[];
   highlights?: EventHighlight[];
-  images?: string[];
+  images?: EventImage[];
   contacts?: EventContact[] | null;
 }
 

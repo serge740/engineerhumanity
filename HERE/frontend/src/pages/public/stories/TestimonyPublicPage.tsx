@@ -4,6 +4,7 @@ import { getPublicStories, type Story } from '../../../api/stories';
 import { StoryHero } from './StoryHero';
 import { StoryModal } from './StoryModal';
 import { resolveImage } from './resolveImage';
+import { focusStyle } from '../../../utils/imageFocus';
 
 export default function TestimonyPublicPage() {
   const [stories, setStories] = useState<Story[]>([]);
@@ -49,7 +50,8 @@ export default function TestimonyPublicPage() {
                     <img
                       src={resolveImage(story.image)}
                       alt={story.name}
-                      className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-300"
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                      style={focusStyle(story.imageFocusX, story.imageFocusY, { x: 50, y: 0 })}
                     />
                   </div>
                   <div className="p-4 sm:p-6">

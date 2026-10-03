@@ -13,6 +13,8 @@ export interface TeamMember {
   title: string;
   credentials: string | null;
   image: string | null;
+  imageFocusX: number | null;
+  imageFocusY: number | null;
   linkedIn: string | null;
   bio: string | null;
   role: BoardRole | null;
@@ -28,6 +30,8 @@ export interface CreateTeamMemberData {
   title: string;
   credentials?: string;
   image?: string;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   linkedIn?: string;
   bio?: string;
   role?: BoardRole;
@@ -39,6 +43,8 @@ export interface UpdateTeamMemberData {
   title?: string;
   credentials?: string | null;
   image?: string | null;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   linkedIn?: string | null;
   bio?: string | null;
   role?: BoardRole | null;

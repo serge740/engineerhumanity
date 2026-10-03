@@ -3,6 +3,8 @@ export class UpdateTeamMemberDto {
   title?: string;
   credentials?: string | null;
   image?: string | null;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   linkedIn?: string | null;
   bio?: string | null;
   role?: 'chair' | 'vice-chair' | 'executive' | 'member' | null;

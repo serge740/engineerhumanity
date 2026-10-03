@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Engineers4Humanity — Get Involved</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box;  }
+
+:root {
+  --navy: #0A1628;
+  --sky: #0284c7; --green: #16a34a;
+  --gray-50: #f9fafb; --gray-200: #e5e7eb; --gray-600: #4b5563; --gray-800: #1f2937;
+  --stat-blue: #5DADE2;
+  --red-500: #ef4444; --red-600: #dc2626;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-sans:  "Poppins", sans-serif;
+}
+
+body { font-family: var(--font-sans); font-size: 16px; line-height: 1.6; color: var(--gray-800); background: var(--gray-50); }
+h1, h2, h3 { font-family: var(--font-sans); font-weight: 700; }
+h1 { font-size: 32px; line-height: 1.1; margin: 0 0 20px; }
+h2 { font-size: 30px; line-height: 1.2; margin: 0 0 16px; color: var(--gray-800); }
+h3 { font-size: 20px; line-height: 1.3; margin: 0 0 12px; color: var(--gray-800); }
+p  { font-size: 16px; line-height: 1.75; margin: 0; color: var(--gray-600); }
+a  { color: inherit; text-decoration: none; }
+button { font-family: inherit; }
+img { max-width: 100%; display: block; }
+.line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.page { position: relative; overflow: hidden; }
+
+.wa-btn { position: absolute; right: 24px; bottom: 24px; z-index: 40; width: 56px; height: 56px; border-radius: 50%; background: #25D366; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,.25); animation: wa-shake 4s ease-in-out infinite; }
+.wa-btn:hover { transform: scale(1.1); }
+.wa-btn img { width: 30px; height: 30px; }
+.wa-badge { position: absolute; top: -4px; right: -4px; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; }
+.wa-badge-ping { position: absolute; width: 100%; height: 100%; border-radius: 50%; background: var(--red-500); opacity: .75; animation: ping 1s cubic-bezier(0,0,0.2,1) infinite; }
+.wa-badge-count { position: relative; width: 16px; height: 16px; border-radius: 50%; background: var(--red-600); color: #fff; font-size: 9px; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+@keyframes ping { 75%, 100% { transform: scale(2); opacity: 0; } }
+@keyframes wa-shake { 0%, 70%, 100% { transform: rotate(0deg) scale(1); } 72% { transform: rotate(-14deg) scale(1.12); } 75% { transform: rotate(14deg) scale(1.12); } 78% { transform: rotate(-10deg) scale(1.08); } 81% { transform: rotate(10deg) scale(1.08); } 84% { transform: rotate(-6deg) scale(1.04); } 87% { transform: rotate(6deg) scale(1.04); } 90% { transform: rotate(0deg) scale(1); } }
+
+.page-header { position: relative; min-height: 420px; display: flex; align-items: center; overflow: hidden; background: var(--navy); }
+.page-header > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.4); }
+.page-header-overlay { position: absolute; inset: 0; background: linear-gradient(105deg, rgba(7,115,171,.75) 0%, rgba(5,150,105,.3) 60%, transparent 100%); }
+.page-header-content { position: relative; z-index: 10; padding: 80px 16px 0; }
+.page-header h1 { font-family: var(--font-serif); font-weight: 300; font-size: 34px; line-height: 1; letter-spacing: -.02em; color: #fff; margin-bottom: 16px; }
+.page-header-crumb { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; color: rgba(255,255,255,.6); }
+.page-header-crumb a:first-child:hover { color: #fff; }
+.page-header-crumb .sep { color: rgba(255,255,255,.4); }
+.page-header-crumb .current { color: rgba(255,255,255,.8); font-weight: 500; }
+@media (min-width: 640px) { .page-header-content { padding: 96px 32px 0; } }
+@media (min-width: 1024px) { .page-header-content { padding: 112px 64px 0; } .page-header h1 { font-size: 56px; } }
+
+/* GET INVOLVED — page content */
+.gi-wrap { max-width: 1400px; margin: 0 auto; padding: 64px 16px; }
+.gi-grid { display: grid; grid-template-columns: 1fr; gap: 32px; }
+.gi-card { background: #fff; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,.1); overflow: hidden; transition: box-shadow .3s; }
+.gi-card:hover { box-shadow: 0 20px 40px rgba(0,0,0,.15); }
+.gi-img-wrap { height: 288px; overflow: hidden; }
+.gi-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s; }
+.gi-card:hover .gi-img-wrap img { transform: scale(1.1); }
+.gi-body { padding: 24px; }
+.gi-desc { font-size: 14px; margin-bottom: 24px; }
+.gi-btn { display: block; width: 100%; background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; padding: 12px 16px; border-radius: 999px; font-weight: 500; border: none; cursor: pointer; font-size: 15px; transition: opacity .3s, box-shadow .3s; }
+.gi-btn:hover { opacity: .9; box-shadow: 0 10px 20px rgba(0,0,0,.15); }
+
+.gi-cta { margin-top: 64px; background: #fff; border-radius: 16px; box-shadow: 0 15px 30px rgba(0,0,0,.15); padding: 32px; text-align: center; }
+.gi-cta h2 { font-size: 28px; }
+.gi-cta-lead { font-size: 18px; max-width: 640px; margin: 0 auto 32px; }
+.gi-stats { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; padding-top: 32px; border-top: 1px solid var(--gray-200); }
+.gi-stat-val { font-size: 34px; font-weight: 700; color: var(--stat-blue); margin-bottom: 8px; }
+.gi-stat-label { color: var(--gray-600); }
+
+.modal { position: absolute; inset: 0; z-index: 70; display: none; align-items: center; justify-content: center; padding: 16px; background: rgba(0,0,0,.5); overflow-y: auto; }
+.modal.open { display: flex; }
+.modal-inner { position: relative; background: #fff; border-radius: 16px; max-width: 900px; width: 100%; max-height: 90vh; overflow-y: auto; }
+.modal-close { position: absolute; top: 16px; right: 16px; z-index: 2; background: #fff; border-radius: 50%; padding: 8px; box-shadow: 0 4px 10px rgba(0,0,0,.15); border: none; cursor: pointer; }
+.modal-close:hover { background: var(--gray-50); }
+.modal-close svg { width: 24px; height: 24px; color: var(--gray-600); }
+.modal-body { padding: 32px; }
+.modal-img-wrap { height: 260px; overflow: hidden; border-radius: 12px; margin-bottom: 24px; }
+.modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; }
+.modal-body h2 { font-size: 32px; margin-bottom: 24px; }
+.modal-body p { font-size: 18px; margin-bottom: 32px; }
+.modal-action-btn { display: block; width: 100%; background: linear-gradient(to bottom right, var(--sky), var(--green)); color: #fff; text-align: center; padding: 16px 24px; border-radius: 999px; font-weight: 500; font-size: 18px; border: none; cursor: pointer; transition: opacity .3s, box-shadow .3s; }
+.modal-action-btn:hover { opacity: .9; box-shadow: 0 10px 20px rgba(0,0,0,.15); }
+
+@media (min-width: 640px) { .gi-wrap { padding: 64px 24px; } }
+@media (min-width: 768px) { .gi-grid { grid-template-columns: 1fr 1fr; } .gi-stats { grid-template-columns: repeat(3, 1fr); } .modal-img-wrap { height: 384px; } }
+@media (min-width: 1024px) { .gi-wrap { padding: 64px 32px; } .gi-grid { grid-template-columns: repeat(3, 1fr); } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <main>
+    <div class="page-header">
+      <img src="https://res.cloudinary.com/dqqxov3sn/image/upload/v1783509783/sites/cmr9lsz5j0001f32ojdrosxmu/assets/au2pqkvfujxmvk1q0fnp.jpg" alt="Get Involved" />
+      <div class="page-header-overlay"></div>
+      <div class="page-header-content">
+        <h1>Get Involved</h1>
+        <div class="page-header-crumb"><a href="Home.html">Home</a><span class="sep">›</span><a href="GetInvolved.html" class="current">Get Involved</a></div>
+      </div>
+    </div>
+
+    <div class="gi-wrap">
+      <div class="gi-grid" id="giGrid">
+        <div class="gi-card" data-id="1">
+          <div class="gi-img-wrap"><img src="https://res.cloudinary.com/dqqxov3sn/image/upload/v1783805681/sites/cmr9lsz5j0001f32ojdrosxmu/assets/vcvqzif31endlqqqtnuv.jpg" alt="Donate" /></div>
+          <div class="gi-body">
+            <h3>Donate</h3>
+            <p class="gi-desc line-clamp-3">Your financial contributions are vital to the success of our programs. Donations go directly towards funding our public health programming projects, community development programs, and Refugee Youth Education in Rwanda.</p>
+            <button class="gi-btn" data-id="1">View More</button>
+          </div>
+        </div>
+
+        <div class="gi-card" data-id="2">
+          <div class="gi-img-wrap"><img src="https://res.cloudinary.com/dqqxov3sn/image/upload/v1783805691/sites/cmr9lsz5j0001f32ojdrosxmu/assets/ttco9mod8sd57bkbgmwm.jpg" alt="Volunteer Talent Pool" /></div>
+          <div class="gi-body">
+            <h3>Volunteer Talent Pool</h3>
+            <p class="gi-desc line-clamp-3">Engineers4Humanity welcomes dedicated professionals and volunteers across multiple fields — engineering, environmental studies, business development, communications, design, and community engagement. Submit your résumé to join our Volunteer Talent Pool. Our team will contact you when your skills align with current program needs in Rwanda.</p>
+            <button class="gi-btn" data-id="2">View More</button>
+          </div>
+        </div>
+
+        <div class="gi-card" data-id="3">
+          <div class="gi-img-wrap"><img src="https://res.cloudinary.com/dqqxov3sn/image/upload/v1783805708/sites/cmr9lsz5j0001f32ojdrosxmu/assets/kthkzt3iro5rfntjhrbo.jpg" alt="Professional & Institutional Partnership" /></div>
+          <div class="gi-body">
+            <h3>Professional &amp; Institutional Partnership</h3>
+            <p class="gi-desc line-clamp-3">Organizations seeking to create sustainable impact are invited to partner with us. We collaborate with engineering companies, academic institutions, youth organizations, peace building groups, and humanitarian agencies to empower refugees and strengthen community resilience. Let's work together to build hope, opportunity, and long term self reliance of refugees in Rwanda.</p>
+            <button class="gi-btn" data-id="3">View More</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="gi-cta" id="giCta">
+        <h2>Ready to Make a Difference?</h2>
+        <p class="gi-cta-lead">Every action counts. Whether you donate, volunteer your time, partner with us, or participate in our programs, you're helping create a brighter future for our community.</p>
+        <div class="gi-stats">
+          <div><div class="gi-stat-val">500+</div><div class="gi-stat-label">Hope School Graduates</div></div>
+          <div><div class="gi-stat-val">2,000+</div><div class="gi-stat-label">Lives Transformed</div></div>
+          <div><div class="gi-stat-val">17+</div><div class="gi-stat-label">Years of Founder in Humanitarian Service</div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <a href="https://wa.me/14699670444" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp" class="wa-btn">
+    <span class="wa-badge"><span class="wa-badge-ping"></span><span class="wa-badge-count">1</span></span>
+    <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0id2hpdGUiPjxwYXRoIGQ9Ik0xNiAwQzcuMTYzIDAgMCA3LjE2MyAwIDE2YzAgMi44MjIuNzM2IDUuNDcgMi4wMjcgNy43N0wwIDMybDguNDM3LTIuMDFBMTUuOTMgMTUuOTMgMCAwIDAgMTYgMzJjOC44MzcgMCAxNi03LjE2MyAxNi0xNlMyNC44MzcgMCAxNiAwem0wIDI5LjMzM2ExMy4yNyAxMy4yNyAwIDAgMS02Ljc3MS0xLjg1NGwtLjQ4Ni0uMjktNS4wMSAxLjE5NCAxLjIxOC00Ljg3NC0uMzE3LS41QTEzLjI2OCAxMy4yNjggMCAwIDEgMi42NjcgMTZDMi42NjcgOC42MzYgOC42MzYgMi42NjcgMTYgMi42NjdTMjkuMzMzIDguNjM2IDI5LjMzMyAxNiAyMy4zNjQgMjkuMzMzIDE2IDI5LjMzM3ptNy4yNy05Ljg3OGMtLjM5OC0uMTk5LTIuMzUzLTEuMTYxLTIuNzE4LTEuMjk0LS4zNjUtLjEzMy0uNjMtLjE5OS0uODk2LjE5OS0uMjY1LjM5OC0xLjAyOSAxLjI5NC0xLjI2MSAxLjU2LS4yMzIuMjY1LS40NjUuMjk4LS44NjMuMS0uMzk4LS4yLTEuNjgxLS42Mi0zLjIwMi0xLjk3Ny0xLjE4My0xLjA1Ni0xLjk4Mi0yLjM2LTIuMjE0LTIuNzU4LS4yMzItLjM5OC0uMDI1LS42MTMuMTc0LS44MTEuMTc5LS4xNzguMzk4LS40NjUuNTk3LS42OTcuMi0uMjMyLjI2Ni0uMzk4LjM5OS0uNjYzLjEzMi0uMjY1LjA2Ni0uNDk3LS4wMzMtLjY5Ni0uMS0uMi0uODk2LTIuMTYxLTEuMjI4LTIuOTYtLjMyMy0uNzc3LS42NTEtLjY3Mi0uODk2LS42ODRsLS43NjMtLjAxM2MtLjI2NSAwLS42OTYuMS0xLjA2MS40OTctLjM2NS4zOTgtMS4zOTQgMS4zNjItMS4zOTQgMy4zMjNzMS40MjcgMy44NTUgMS42MjYgNC4xMmMuMTk5LjI2NSAyLjgwOCA0LjI4NyA2LjgwMyA2LjAxNi45NTEuNDEgMS42OTMuNjU1IDIuMjcyLjgzOS45NTQuMzA0IDEuODIzLjI2MSAyLjUxLjE1OC43NjUtLjExNCAyLjM1My0uOTYyIDIuNjg1LTEuODkxLjMzMi0uOTI5LjMzMi0xLjcyNi4yMzItMS44OTEtLjA5OS0uMTY2LS4zNjQtLjI2NS0uNzYzLS40NjR6Ii8+PC9zdmc+Cg==" alt="WhatsApp" width="30" height="30" />
+  </a>
+
+  <div class="modal" id="giModal">
+    <div class="modal-inner">
+      <button class="modal-close" id="giModalClose" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
+      <div class="modal-body">
+        <div class="modal-img-wrap"><img id="modalImg" src="" alt="" /></div>
+        <h2 id="modalTitle"></h2>
+        <p id="modalDesc"></p>
+        <button class="modal-action-btn" id="modalActionBtn"></button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* All three cards' "View More" buttons open this same in-page modal —
+     none of them redirect directly. Only the modal's own action button
+     navigates, and only the Donate card's goes to /donate; Volunteer and
+     Partnership go to /contact (there's no dedicated form URL for either,
+     so routing them to the contact page is the real, working destination
+     instead of a placeholder). */
+  var opportunities = {
+    1: { title: 'Donate', image: 'https://res.cloudinary.com/dqqxov3sn/image/upload/v1783805681/sites/cmr9lsz5j0001f32ojdrosxmu/assets/vcvqzif31endlqqqtnuv.jpg',
+      description: "Your financial contributions are vital to the success of our programs. Donations go directly towards funding our public health programming projects, community development programs, and Refugee Youth Education in Rwanda.",
+      buttonText: 'Donate Now', target: '/donate' },
+    2: { title: 'Volunteer Talent Pool', image: 'https://res.cloudinary.com/dqqxov3sn/image/upload/v1783805691/sites/cmr9lsz5j0001f32ojdrosxmu/assets/ttco9mod8sd57bkbgmwm.jpg',
+      description: "Engineers4Humanity welcomes dedicated professionals and volunteers across multiple fields — engineering, environmental studies, business development, communications, design, and community engagement. Submit your résumé to join our Volunteer Talent Pool. Our team will contact you when your skills align with current program needs in Rwanda.",
+      buttonText: 'Join Our Volunteer Talent Pool', target: '/contact' },
+    3: { title: 'Professional & Institutional Partnership', image: 'https://res.cloudinary.com/dqqxov3sn/image/upload/v1783805708/sites/cmr9lsz5j0001f32ojdrosxmu/assets/kthkzt3iro5rfntjhrbo.jpg',
+      description: "Organizations seeking to create sustainable impact are invited to partner with us. We collaborate with engineering companies, academic institutions, youth organizations, peace building groups, and humanitarian agencies to empower refugees and strengthen community resilience. Let's work together to build hope, opportunity, and long term self reliance of refugees in Rwanda.",
+      buttonText: 'Link for Partnership Application', target: '/contact' }
+  };
+
+  function initModal() {
+    var modal = document.getElementById('giModal');
+    var modalImg = document.getElementById('modalImg');
+    var modalTitle = document.getElementById('modalTitle');
+    var modalDesc = document.getElementById('modalDesc');
+    var modalActionBtn = document.getElementById('modalActionBtn');
+    var currentTarget = null;
+
+    function openModal(id) {
+      var o = opportunities[id];
+      modalImg.src = o.image;
+      modalImg.alt = o.title;
+      modalTitle.textContent = o.title;
+      modalDesc.textContent = o.description;
+      modalActionBtn.textContent = o.buttonText;
+      currentTarget = o.target;
+      modal.classList.add('open');
+    }
+    function closeModal() { modal.classList.remove('open'); }
+
+    document.querySelectorAll('.gi-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        openModal(btn.getAttribute('data-id'));
+      });
+    });
+
+    modalActionBtn.addEventListener('click', function () {
+      // This page renders inside an <iframe> on the live site (see
+      // EmbedPage.tsx/PublicPage.tsx) so its own content stays isolated from
+      // the surrounding Navbar/Footer. window.top (not window) makes this
+      // navigate the real top-level page instead of getting trapped inside
+      // that iframe — window.location alone would only change the iframe's
+      // own internal URL, leaving the visible address bar on the old page.
+      if (currentTarget) (window.top || window).location.href = currentTarget;
+    });
+
+    modal.addEventListener('click', closeModal);
+    modal.querySelector('.modal-inner').addEventListener('click', function (e) { e.stopPropagation(); });
+    document.getElementById('giModalClose').addEventListener('click', closeModal);
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    initModal();
+  });
+})();
+</script>
+</body>
+</html>

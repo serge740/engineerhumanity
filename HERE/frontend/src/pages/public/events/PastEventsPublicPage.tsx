@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { getPublicEvents, type SiteEvent } from '../../../api/events';
 import { EventHero } from './EventHero';
 import { resolveImage } from './resolveImage';
+import { focusStyle } from '../../../utils/imageFocus';
 
 export default function PastEventsPublicPage() {
   const [events, setEvents] = useState<SiteEvent[]>([]);
@@ -34,7 +35,8 @@ export default function PastEventsPublicPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto">
             {events.map((event, index) => {
-              const coverImage = event.images[0] ? resolveImage(event.images[0]) : undefined;
+              const cover = event.images[0];
+              const coverImage = cover ? resolveImage(cover.url) : undefined;
               return (
                 <div
                   key={event.id}
@@ -46,6 +48,7 @@ export default function PastEventsPublicPage() {
                         src={coverImage}
                         alt={event.title}
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                        style={focusStyle(cover?.focusX, cover?.focusY)}
                       />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-blue-100 to-sky-200 flex items-center justify-center">

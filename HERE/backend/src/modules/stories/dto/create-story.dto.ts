@@ -3,6 +3,8 @@ export class CreateStoryDto {
   name: string;
   role?: string;
   image?: string;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   summary?: string;
   story?: string;
   intro?: string;

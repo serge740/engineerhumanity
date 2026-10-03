@@ -15,6 +15,8 @@ export interface Story {
   name: string;
   role: string | null;
   image: string | null;
+  imageFocusX: number | null;
+  imageFocusY: number | null;
   summary: string | null;
   story: string | null;
   intro: string | null;
@@ -29,6 +31,8 @@ export interface CreateStoryData {
   name: string;
   role?: string;
   image?: string;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   summary?: string;
   story?: string;
   intro?: string;
@@ -39,6 +43,8 @@ export interface UpdateStoryData {
   name?: string;
   role?: string | null;
   image?: string | null;
+  imageFocusX?: number | null;
+  imageFocusY?: number | null;
   summary?: string | null;
   story?: string | null;
   intro?: string | null;

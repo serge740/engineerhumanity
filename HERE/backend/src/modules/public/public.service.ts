@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { normalizeEventImages } from 'src/common/image-focus';
 import {
   expandCollectionNodes,
   PageElement,
@@ -30,20 +31,25 @@ export class PublicService {
     });
   }
 
+  async getPartners() {
+    return this.prisma.partner.findMany({ orderBy: { order: 'asc' } });
+  }
+
   async getEvents(status?: 'upcoming' | 'past') {
     if (status && !['upcoming', 'past'].includes(status)) {
       throw new NotFoundException('Invalid status');
     }
-    return this.prisma.event.findMany({
+    const rows = await this.prisma.event.findMany({
       where: status ? { status } : undefined,
       orderBy: { order: 'asc' },
     });
+    return rows.map(row => ({ ...row, images: normalizeEventImages(row.images) }));
   }
 
   async getEvent(id: string) {
     const event = await this.prisma.event.findFirst({ where: { id } });
     if (!event) throw new NotFoundException('Event not found');
-    return event;
+    return { ...event, images: normalizeEventImages(event.images) };
   }
 
   async getStories(group?: string) {
